@@ -24,6 +24,13 @@ updateJSONURL="https://etithespir.it/minecraft/version.json"
     versionRange="[34,)"
     ordering="NONE"
     side="BOTH"
+	
+  [[dependencies.etimod]]
+    modId="hwyla"
+    mandatory=false
+    versionRange="[34,)"
+    ordering="NONE"
+    side="BOTH"
 
   [[dependencies.etimod]]
     modId="minecraft"

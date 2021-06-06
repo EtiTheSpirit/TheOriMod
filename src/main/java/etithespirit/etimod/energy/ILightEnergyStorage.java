@@ -52,22 +52,16 @@ public interface ILightEnergyStorage {
     boolean canReceiveLight();
     
     /**
-     * Used to determine if this storage is affected by light-flux in the air, which will randomly add or remove energy from this device.
-     */
-    boolean subjectToFlux();
-    
-    /**
      * Whether or not this can both receive and give RF (as opposed to Light), which determines its usability in {@link etithespirit.etimod.energy.LightEnergyAdapter LightEnergyAdapter}.
      */
     boolean acceptsConversion();
     
     /**
-     * Granted acceptsConversion() returns true, this is the conversion ratio from Light -&gt; RF. This has a default implementation returning 50.
-     * @return A value that outgoing Light will be multiplied by to get equivalent RF, and a value that incoming RF will be divided by to get equivalent Light.
+     * The FluxBehavior responsible for returning unfiltered environmental flux values.<br/>
+     * <strong>NULL IS NOT ACCEPTABLE.</strong> This should always return {@link etithespirit.etimod.energy.FluxBehavior#DISABLED FluxBehavior.DISABLED} if there is no flux.
+     * @return
      */
-    default double getLightToRFConversionRatio() {
-    	return 50D;
-    }
+    FluxBehavior getFluxBehavior();
 	
 	/**
 	 * Stores or takes an arbitrary amount of energy from no particular source or sink. 
@@ -81,18 +75,20 @@ public interface ILightEnergyStorage {
 	 * If a randomizer is implemented, the iteration number should be tracked so that if applyEnvFlux is called with a given range where simulate=true, 
 	 * the behavior <em>must</em> be reflective of what will occur on the next call where simulate=false, granted no changes have occurred between the two
 	 * calls. Calling with simulate=true will only provide one step of lookahead, and will not reveal results further than one iteration forward.
-	 * 
-	 * @param minGen
-	 *            Minimum amount of energy that can be generated. This can be negative to cause flux to take energy out of the device.
-	 * 
-	 * @param maxGen
-     *            Maximum amount of energy that can be generated. This can be negative to cause flux to take energy out of the device.
      *            
 	 * @param simulate
      *            If TRUE, the generation will only be simulated.
      *            
 	 * @return Amount of energy that was (or would have been, if simulated) generated from this device and placed into its own storage.
 	 */
-    double applyEnvFlux(double minGen, double maxGen, boolean simulate);
+    double applyEnvFlux(boolean simulate);
 
+    /**
+     * Granted acceptsConversion() returns true, this is the conversion ratio from Light -&gt; RF. This has a default implementation returning 50.
+     * @return A value that outgoing Light will be multiplied by to get equivalent RF, and a value that incoming RF will be divided by to get equivalent Light.
+     */
+    default double getLightToRFConversionRatio() {
+    	return 50D;
+    }
+    
 }

@@ -34,8 +34,8 @@
 	"config.etimod.spirit.air_jumps" : "Air Jump Count",
 	"config.etimod.spirit.air_jumps.description" : "The amount of jumps a spirit can perform in the air. 1 is double jump, and 2 is triple jump.",
 
-	"waila.etimod.energy" : "%1$s Lux",
-	"waila.etimod.energy_rf" : "%1$s Lux (%2$s RF)",
+	"waila.etimod.energy" : "Storage: §b%1$s Lux",
+	"waila.etimod.energy_rf" : "Storage: §b%1$s Lux (%2$s RF)",
 	"waila.etimod.env_flux" : "§3Affected by Environmental Flux",
 
 	"config.etimod.world" : "World Configuration"

@@ -146,8 +146,8 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 	
 	annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
-	compile fg.deobf("net.darkhax.wawla:WAWLA-1.16.5:8.0.1")
-	compile fg.deobf("net.darkhax.bookshelf:Bookshelf-1.16.5:10.1.11")
+	// compile fg.deobf("net.darkhax.wawla:WAWLA-1.16.5:8.0.1")
+	// compile fg.deobf("net.darkhax.bookshelf:Bookshelf-1.16.5:10.1.11")
 	compile fg.deobf("curse.maven:hwyla-253449:3033593")
 }
 

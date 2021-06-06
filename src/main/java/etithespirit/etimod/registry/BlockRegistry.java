@@ -1,5 +1,8 @@
 package etithespirit.etimod.registry;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import etithespirit.etimod.EtiMod;
 import etithespirit.etimod.common.block.decay.flora.DecayLogBlock;
 import etithespirit.etimod.common.block.decay.flora.DecayStrippedLogBlock;
@@ -17,6 +20,9 @@ import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
 public class BlockRegistry {
+	
+	/** Used in the item registry to generate BlockItems. */
+	public static final List<RegistryObject<Block>> BLOCKS_TO_REGISTER = new ArrayList<RegistryObject<Block>>();
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// DEFERRED REGISTERS PROVIDED BY FORGE
@@ -42,6 +48,15 @@ public class BlockRegistry {
 	/// FLUIDS
 	public static final RegistryObject<Fluid> DECAY_FLUID_STATIC = FLUIDS.register("decay", () -> DecayFluid.DECAY);
 	public static final RegistryObject<Fluid> DECAY_FLUID_FLOWING = FLUIDS.register("flowing_decay", () -> DecayFluid.DECAY_FLOWING);
+	
+	static {
+		BLOCKS_TO_REGISTER.add(DECAY_MYCELIUM);
+		BLOCKS_TO_REGISTER.add(DECAY_LOG);
+		BLOCKS_TO_REGISTER.add(DECAY_STRIPPED_LOG);
+		BLOCKS_TO_REGISTER.add(DECAY_SURFACE_MYCELIUM);
+		
+		BLOCKS_TO_REGISTER.add(LIGHT_CAPACITOR);
+	}
 	
 	public static void registerAll() {
 		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());

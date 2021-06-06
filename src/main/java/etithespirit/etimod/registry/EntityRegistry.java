@@ -16,9 +16,11 @@ public class EntityRegistry {
 	
 	public static final ResourceLocation SPIRIT_ID = new ResourceLocation(EtiMod.MODID, "spirit");
 	public static final RegistryObject<EntityType<SpiritEntity>> SPIRIT = ENTITIES.register(SPIRIT_ID.getPath(), () -> { 
-		return EntityType.Builder.<SpiritEntity>create(SpiritEntity::new, EntityClassification.CREATURE)
+		return EntityType.Builder
+			.create(SpiritEntity::new, EntityClassification.CREATURE)
 			.size(0.475f, 0.5f)
-			.build(SPIRIT_ID.toString()); 
+			.disableSerialization()
+		.build(SPIRIT_ID.toString()); 
 	});
 	
 	public static void registerAll() {

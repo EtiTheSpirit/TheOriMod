@@ -1,7 +1,6 @@
 package etithespirit.etimod.common.tile.light;
 
-import java.util.Random;
-
+import etithespirit.etimod.energy.FluxBehavior;
 import etithespirit.etimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundNBT;
 
@@ -17,16 +16,13 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 */
 	public static final String ENERGY_KEY = "lightEnergy";
 	
-	
 	protected double energy;
 	protected double capacity;
 	protected double maxReceive;
 	protected double maxExtract;
-	protected boolean allowFlux;
 	protected boolean allowRFConversion;
 	protected final Runnable markDirty;
-	protected long iteration;
-	protected Random rng;
+	protected FluxBehavior flux;
 	
 	/**
 	 * If set, this string will be used to save this container's energy to NBT. If left alone, then {@link #ENERGY_KEY} will be used.
@@ -34,23 +30,23 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	public String energyKeyOverride = ENERGY_KEY;
 
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity) {
-		this(markDirty, capacity, capacity, capacity, false, false, 0);
+		this(markDirty, capacity, capacity, capacity, null, false, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxTransfer) {
-		this(markDirty, capacity, maxTransfer, maxTransfer, false, false, 0);
+		this(markDirty, capacity, maxTransfer, maxTransfer, null, false, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxTransfer, boolean allowRFConversion) {
-		this(markDirty, capacity, maxTransfer, maxTransfer, false, allowRFConversion, 0);
+		this(markDirty, capacity, maxTransfer, maxTransfer, null, allowRFConversion, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract) {
-		this(markDirty, capacity, maxReceive, maxExtract, false, false, 0);
+		this(markDirty, capacity, maxReceive, maxExtract, null, false, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion) {
-		this(markDirty, capacity, maxReceive, maxExtract, false, allowRFConversion, 0);
+		this(markDirty, capacity, maxReceive, maxExtract, null, allowRFConversion, 0);
 	}
 
 	/**
@@ -59,22 +55,20 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 * @param capacity The maximum amount of energy this storage can containe
 	 * @param maxReceive The maximum amount of energy that can be stored in a single action.
 	 * @param maxExtract The maximum amount of energy that can be extracted in a single action.
-	 * @param allowFlux Whether or not this storage is subject to environmental flux.
+	 * @param flux A NumberRange representing the possible environmental flux. NumberRange.ZERO will disable flux. Note that this is cloned for internal use.
 	 * @param allowRFConversion Whether or not this storage can convert to and from RF
 	 * @param energy The amount of energy within this storage at first.
 	 */
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowFlux, boolean allowRFConversion, double energy) {
+	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, FluxBehavior flux, boolean allowRFConversion, double energy) {
+		if (flux == null) flux = FluxBehavior.DISABLED;
+		
 		this.capacity = capacity;
 		this.maxReceive = maxReceive;
 		this.maxExtract = maxExtract;
 		this.energy = Math.max(0, Math.min(capacity, energy));
-		this.allowFlux = allowFlux;
 		this.allowRFConversion = allowRFConversion;
 		this.markDirty = markDirty;
-		
-		this.rng = new Random();
-		this.iteration = rng.nextInt();
-		this.rng = new Random(this.iteration);
+		this.flux = flux;
 	}
 	
 	/**
@@ -139,37 +133,28 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	public boolean canReceiveLight() {
 		return maxReceive > 0;
 	}
-
-	@Override
-	public boolean subjectToFlux() {
-		return allowFlux;
-	}
-
+	
 	@Override
 	public boolean acceptsConversion() {
 		return allowRFConversion;
 	}
 
 	@Override
-	public double applyEnvFlux(double minGen, double maxGen, boolean simulate) {
-		if (!subjectToFlux()) return 0;
-		if (maxGen < minGen) {
-			double oldMax = maxGen;
-			maxGen = minGen;
-			minGen = oldMax;
+	public FluxBehavior getFluxBehavior() {
+		return flux;
+	}
+
+	@Override
+	public double applyEnvFlux(boolean simulate) {
+		double amount = getFluxBehavior().getNextEnvFlux(canExtractLight(), canReceiveLight(), simulate);
+		
+		if (amount > 0) {
+			amount = receiveLight(amount, simulate);
+		} else if (amount < 0) {
+			amount = extractLight(amount, simulate);
 		}
-		rng.setSeed(iteration);
-		double range = maxGen - minGen;
-		double amount = (rng.nextDouble() * range) - minGen;
-		if (!simulate) {
-			if (amount > 0) {
-				if (!canReceiveLight()) amount = 0;
-			} else if (amount < 0) {
-				if (!canExtractLight()) amount = 0;
-			}
-			iteration++;
-			if (amount != 0 && markDirty != null) markDirty.run();
-		}
+		
+		if (amount != 0 && markDirty != null && !simulate) markDirty.run();
 		return amount;
 	}
 

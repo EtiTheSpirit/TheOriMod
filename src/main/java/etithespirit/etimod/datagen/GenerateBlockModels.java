@@ -45,6 +45,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 	@Override
 	protected void registerStatesAndModels() {
 		EtiMod.LOG.printf(Level.INFO, "Starting block model generation.");
+		
 		registerBlockAndItem(BlockRegistry.DECAY_MYCELIUM);
 		registerLogBlockAndItem(BlockRegistry.DECAY_LOG);
 		registerLogBlockAndItem(BlockRegistry.DECAY_STRIPPED_LOG);

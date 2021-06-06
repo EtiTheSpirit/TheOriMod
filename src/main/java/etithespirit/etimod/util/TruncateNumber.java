@@ -19,7 +19,7 @@ public final class TruncateNumber {
 	 * @param value
 	 * @return
 	 */
-	private static double tenToPow(double value) {
+	private static double tenToPowerOf(double value) {
 		return Math.pow(10, value);
 	}
 	
@@ -30,7 +30,7 @@ public final class TruncateNumber {
 	 * @return
 	 */
 	private static double roundPlaces(double value, int places) {
-		double e = tenToPow(places);
+		double e = tenToPowerOf(places);
 		return Math.round(value * e) / e;
 	}
 	
@@ -58,7 +58,7 @@ public final class TruncateNumber {
 		int count = 0;
 		// int letterCount = 0; // If we're over the limit of the truncate letter pool, this will increase, allowing for things like "1KY" for 1000Y. It is tested by Count.
 		
-		double resultingValue = number / tenToPow(div);
+		double resultingValue = number / tenToPowerOf(div);
 		if (resultingValue < 1) {
 			return String.valueOf(roundPlaces(number, placeCount));
 		}
@@ -67,14 +67,14 @@ public final class TruncateNumber {
 			// letterCount = (int) (1 + Math.floor(count / TRUNCATE_LABELS.length));
 			div += 3;
 			count += 1;
-			resultingValue = number / tenToPow(div);
+			resultingValue = number / tenToPowerOf(div);
 		}
 		String letterChain = "";
 		resultingValue = roundPlaces(resultingValue * 1000, placeCount);
 		
 		do {
-			int letterIndex = clamp(count, 0, TRUNCATE_LABELS.length - 1);
-			letterChain += TRUNCATE_LABELS[letterIndex];
+			int letterIndex = clamp(count, 1, TRUNCATE_LABELS.length); // This was written for Lua indexing, so it's from 1=>len, not 0=>(len-1)
+			letterChain += TRUNCATE_LABELS[letterIndex - 1]; // sub 1 from here instead. do NOT offset the clamp.
 			count -= TRUNCATE_LABELS.length;
 		} while (count > 0);
 		
