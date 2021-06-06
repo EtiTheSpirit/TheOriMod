@@ -25,6 +25,7 @@ import etithespirit.etimod.registry.ItemRegistry;
 import etithespirit.etimod.registry.PotionRegistry;
 import etithespirit.etimod.registry.RenderRegistry;
 import etithespirit.etimod.registry.SoundRegistry;
+import etithespirit.etimod.registry.TileEntityRegistry;
 import etithespirit.etimod.util.EtiUtils;
 import etithespirit.etimod.util.blockmtl.BlockToMaterialBinding;
 import etithespirit.etimod.world.dimension.LightForestBiomeProvider;
@@ -78,6 +79,7 @@ public class EtiMod {
     	SoundRegistry.registerAll();
     	PotionRegistry.registerAll();
     	BlockRegistry.registerAll();
+    	TileEntityRegistry.registerAll();
     	ItemRegistry.registerAll();
     	BiomeRegistry.registerAll();
     	DimensionRegistry.registerAll();

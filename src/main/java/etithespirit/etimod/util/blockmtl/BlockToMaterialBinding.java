@@ -46,6 +46,8 @@ import net.minecraftforge.registries.ForgeRegistries;
 @SuppressWarnings("unused")
 public class BlockToMaterialBinding {
 	
+	private BlockToMaterialBinding() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
+	
 	/**
 	 * Maps blocks to materials. Searched after SPECIFIC_STATE_TO_SPIRIT_MTL
 	 */

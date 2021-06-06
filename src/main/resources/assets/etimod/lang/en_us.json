@@ -14,6 +14,12 @@
 	"input.etimod.cling" : "Wall Cling",
 
 	"entity.etimod.spiritguardian.name" : "Spirit Guardian",
+	
+	"block.etimod.decay_log" : "§5Petrified Log",
+	"block.etimod.decay_mycelium" : "§5Decay Mycelium",
+	"block.etimod.stripped_decay_log" : "§5Stripped Petrified Log",
+	"block.etimod.decay_surface_mycelium" : "§5Decay Mycelium Coating",
+	"block.etimod.light_capacitor" : "Light Capacitor",
 
 	"effect.etimod.spirit" : "Spirit Guardian",
 	"effect.etimod.decay" : "Decay",
@@ -28,7 +34,9 @@
 	"config.etimod.spirit.air_jumps" : "Air Jump Count",
 	"config.etimod.spirit.air_jumps.description" : "The amount of jumps a spirit can perform in the air. 1 is double jump, and 2 is triple jump.",
 
-
+	"waila.etimod.energy" : "%1$s Lux",
+	"waila.etimod.energy_rf" : "%1$s Lux (%2$s RF)",
+	"waila.etimod.env_flux" : "§3Affected by Environmental Flux",
 
 	"config.etimod.world" : "World Configuration"
 }

@@ -3,7 +3,6 @@ package etithespirit.etimod.common.tile.light;
 import java.util.Random;
 
 import etithespirit.etimod.energy.ILightEnergyStorage;
-import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 
 /**
@@ -83,7 +82,7 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 * @param state
 	 * @param nbt
 	 */
-	public void readFromNBT(BlockState state, CompoundNBT nbt) {
+	public void readFromNBT(CompoundNBT nbt) {
 		this.energy = Math.max(Math.min(capacity, nbt.getDouble(energyKeyOverride)), 0);
 	}
 	

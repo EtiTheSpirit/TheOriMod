@@ -17,6 +17,8 @@ public class EtiUtils {
 	
 	static {
 		IS_DEV_ENV = Block.class.getTypeName() == "net.minecraft.block.Block";
+		// https://youtu.be/0OAky2hyQzw?t=26
+		// we gotta call the aquarium or somethin dude
 	}
 	
 	/**

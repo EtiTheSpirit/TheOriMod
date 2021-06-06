@@ -16,6 +16,7 @@ import net.minecraft.util.Direction.Axis;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
+import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
@@ -50,6 +51,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 		registerInsideOutBlockAndItem(BlockRegistry.DECAY_SURFACE_MYCELIUM);
 		
 		registerBlockAndItem(BlockRegistry.DECAY_POISON);
+		registerBlockAndItem(BlockRegistry.LIGHT_CAPACITOR);
 		
 		EtiMod.LOG.printf(Level.INFO, "Block models registered!");
 	}
@@ -62,7 +64,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 		Block block = blockReg.get();
 		ModelFile model = this.cubeAll(block);
 		VariantBlockStateBuilder builder = this.getVariantBuilder(block);
-		builder.forAllStates((BlockState state) -> {
+		builder.forAllStates(state -> {
 			return new ConfiguredModel[] { new ConfiguredModel(model) };
 		});
 		
@@ -78,7 +80,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 	 */
 	private void registerInsideOutBlockAndItem(RegistryObject<Block> block) {
 		MultiPartBlockStateBuilder multiPart = this.getMultipartBuilder(block.get());
-		ModelFile model = getInsideOutBlockModel(block, 0f);
+		ModelFile model = getInsideOutBlockModel(block, 0f, 0.05f);
 		model.assertExistence();
 		multiPart
 		.part().modelFile(model).rotationX( 90).rotationY(180).addModel().condition(BlockStateProperties.NORTH, true).end()
@@ -88,7 +90,8 @@ public class GenerateBlockModels extends BlockStateProvider {
 		.part().modelFile(model).rotationX(180).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).end()
 		.part().modelFile(model).rotationX(  0).rotationX(  0).addModel().condition(BlockStateProperties.DOWN, true).end();
 		
-		this.simpleBlockItem(block.get(), model);
+		ModelFile fullCube = this.cubeAll(block.get());
+		this.simpleBlockItem(block.get(), fullCube);
 		EtiMod.LOG.printf(Level.INFO, "Generated inside out block at %s", model.getLocation().toString());
 	}
 	
@@ -125,37 +128,57 @@ public class GenerateBlockModels extends BlockStateProvider {
 				vertical.getLocation(), horizontal.getLocation()
 			);
 		}
+		
+		EtiMod.LOG.printf(Level.INFO, "Creating item for log block.");
+		this.simpleBlockItem(block, vertical);
 	    
 	}
 	
 	/**
 	 * Returns a model suited for the inside out block type.
 	 * @param block
+	 * @param surfaceOffset How far away from the surface that the plane covering a specific surface is. Useful mostly for 2D models (thickness=0)
+	 * @param thickness The depth of each surface plane. Looks a bit better, but also has more to render. This can be used to mitigate z-fighting without introducing gaps on outward-facing corners.
 	 * @return
 	 */
-	@SuppressWarnings("unused")
-	private ModelFile getInsideOutBlockModel(RegistryObject<Block> block) {
-		return getInsideOutBlockModel(block, 0.03f);
-	}
-	
-	/**
-	 * Returns a model suited for the inside out block type.
-	 * @param block
-	 * @return
-	 */
-	private ModelFile getInsideOutBlockModel(RegistryObject<Block> block, float surfaceOffset) {
+	@SuppressWarnings("rawtypes")
+	private ModelFile getInsideOutBlockModel(RegistryObject<Block> block, float surfaceOffset, float thickness) {
 		String path = "block/" + block.getId().getPath();
 		BlockModelBuilder blockBuilder = models().cubeAll(path, blockTexture(block.get()));
 		blockBuilder.ao(false).texture("all", modLoc(path));
-		blockBuilder.element()
+		ElementBuilder element = blockBuilder.element()
 			.from(0f, surfaceOffset, 0f)
-			.to(16f, surfaceOffset, 16f)
+			.to(16f, surfaceOffset + thickness, 16f)
 			.shade(false)
 				.face(Direction.UP)
 					.uvs(0, 0, 16, 16)
 					.texture("#all")
 				.end()
-			.end();
+				.face(Direction.DOWN)
+					.uvs(0, 0, 16, 16)
+					.texture("#all")
+				.end();
+			if (thickness > 0) {
+				// Condition: If there's depth to this, also render the horizontal sides.
+				element
+				.face(Direction.NORTH)
+					.uvs(0, 0, thickness, thickness)
+					.texture("#all")
+				.end()
+				.face(Direction.WEST)
+					.uvs(0, 0, thickness, thickness)
+					.texture("#all")
+				.end()
+				.face(Direction.SOUTH)
+					.uvs(0, 0, thickness, thickness)
+					.texture("#all")
+				.end()
+				.face(Direction.EAST)
+					.uvs(0, 0, thickness, thickness)
+					.texture("#all")
+				.end();
+			}
+		element.end();
 		return blockBuilder;
 	}
 }

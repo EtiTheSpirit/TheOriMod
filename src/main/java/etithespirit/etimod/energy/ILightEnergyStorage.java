@@ -60,6 +60,14 @@ public interface ILightEnergyStorage {
      * Whether or not this can both receive and give RF (as opposed to Light), which determines its usability in {@link etithespirit.etimod.energy.LightEnergyAdapter LightEnergyAdapter}.
      */
     boolean acceptsConversion();
+    
+    /**
+     * Granted acceptsConversion() returns true, this is the conversion ratio from Light -&gt; RF. This has a default implementation returning 50.
+     * @return A value that outgoing Light will be multiplied by to get equivalent RF, and a value that incoming RF will be divided by to get equivalent Light.
+     */
+    default double getLightToRFConversionRatio() {
+    	return 50D;
+    }
 	
 	/**
 	 * Stores or takes an arbitrary amount of energy from no particular source or sink. 

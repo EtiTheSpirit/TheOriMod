@@ -9,16 +9,10 @@ import net.minecraftforge.energy.IEnergyStorage;
  */
 public final class LightEnergyAdapter {
 	// Prevent instances from being created. Shame Java has no static classes.
-	private LightEnergyAdapter() { }
-	
-	
+	private LightEnergyAdapter() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
+
 	/**
-	 * When converting Light -&gt; RF, the value of Light is multiplied by this much when being translated into RF.
-	 */
-	public static final double DEFAULT_RATIO_FROM_LIGHT_TO_RF = 50;
-	
-	/**
-	 * Transfer energy between a container of Light and a container of RF at the {@link #DEFAULT_RATIO_FROM_LIGHT_TO_RF}
+	 * Transfer energy between a container of Light and a container of RF at a custom conversion ratio.
 	 * @param lightContainer The container for Light energy.
 	 * @param rfContainer The container for RF energy.
 	 * @param direction The direction in which the conversion is occurring (Light -&gt; RF or RF -&gt; Light)
@@ -27,26 +21,12 @@ public final class LightEnergyAdapter {
 	 * @return An {@link LightEnergyAdapter.EnergyTransactionResult EnergyTransactionResult} describing the amount of energy transferred in both units, the direction in which the energy was transferred, at what ratio, and whether or not it was simulated.
 	 */
 	public static final EnergyTransactionResult performTransfer(ILightEnergyStorage lightContainer, IEnergyStorage rfContainer, EnergyTransactionDirection direction, double amount, boolean simulate) {
-		return performTransfer(lightContainer, rfContainer, direction, amount, DEFAULT_RATIO_FROM_LIGHT_TO_RF, simulate);
-	}
-
-	/**
-	 * Transfer energy between a container of Light and a container of RF at a custom conversion ratio.
-	 * @param lightContainer The container for Light energy.
-	 * @param rfContainer The container for RF energy.
-	 * @param direction The direction in which the conversion is occurring (Light -&gt; RF or RF -&gt; Light)
-	 * @param amount The amount of energy to transfer. The unit this represents depends on the "from" component of the direction, so if transferring from light to RF, the unit is light ("from light"), and if transferring from RF to light, the unit is RF ("from RF"). For cases where RF is the "from" component, it will be cast into int32.
-	 * @param lightToRFRatio The conversion ratio from Light to RF. Contrary to {@code amount}, this is <strong>ALWAYS</strong> in Light -&gt; RF.
-	 * @param simulate If true, the transaction will only be simulated and not actually affect the containers.
-	 * @return An {@link LightEnergyAdapter.EnergyTransactionResult EnergyTransactionResult} describing the amount of energy transferred in both units, the direction in which the energy was transferred, at what ratio, and whether or not it was simulated.
-	 */
-	public static final EnergyTransactionResult performTransfer(ILightEnergyStorage lightContainer, IEnergyStorage rfContainer, EnergyTransactionDirection direction, double amount, double lightToRFRatio, boolean simulate) {
 		if (!lightContainer.acceptsConversion()) {
-			return new EnergyTransactionResult(0, 0, lightToRFRatio, direction, simulate);
+			return new EnergyTransactionResult(0, 0, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 		}
 		if (direction == EnergyTransactionDirection.FROM_LIGHT_TO_RF) {
 			if (!lightContainer.canExtractLight() || !rfContainer.canReceive()) {
-				return new EnergyTransactionResult(0, 0, lightToRFRatio, direction, simulate);
+				return new EnergyTransactionResult(0, 0, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 			}
 			
 			final double lightToTransfer = amount;
@@ -58,20 +38,20 @@ public final class LightEnergyAdapter {
 			// Now, let's try to see how much RF we can receive. There's a good chance that while we were able to get a given amount of Light, we were
 			// NOT able to translate all of it into RF for this container (maybe this container is too full?)
 			// Contrarily to above, we don't have to simulate this. We can actually use the return value to our advantage.
-			final int rfReceived = rfContainer.receiveEnergy((int)(lightInitiallyExtracted * lightToRFRatio), simulate);
+			final int rfReceived = rfContainer.receiveEnergy((int)(lightInitiallyExtracted * lightContainer.getLightToRFConversionRatio()), simulate);
 			
 			// Now one thing is that since the above depends on the simulate parameter, if we *did* just so happen to simulate, then we need to have
 			// some different behavior.
 			
 			// So now we need to figure out how much Light that equates to before anything else. RF device was able to store (r)
 			// so what is (r) in (L)?
-			final double lightReceivedByRF = rfReceived / lightToRFRatio; 
+			final double lightReceivedByRF = rfReceived / lightContainer.getLightToRFConversionRatio(); 
 			final double lightActuallyExtracted = lightContainer.extractLight(lightReceivedByRF, simulate);
 			
-			return new EnergyTransactionResult(lightActuallyExtracted, rfReceived, lightToRFRatio, direction, simulate);
+			return new EnergyTransactionResult(lightActuallyExtracted, rfReceived, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 		} else {
 			if (!lightContainer.canReceiveLight() || !rfContainer.canExtract()) {
-				return new EnergyTransactionResult(0, 0, lightToRFRatio, direction, simulate);
+				return new EnergyTransactionResult(0, 0, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 			}
 			
 			final int rfToTransfer = (int)amount;
@@ -83,17 +63,17 @@ public final class LightEnergyAdapter {
 			// Now, let's try to see how much Light we can receive. There's a good chance that while we were able to get a given amount of RF, we were
 			// NOT able to translate all of it into Light for this container (maybe this container is too full?)
 			// Contrarily to above, we don't have to simulate this. We can actually use the return value to our advantage.
-			final double lightReceived = lightContainer.receiveLight(rfInitiallyExtracted / lightToRFRatio, simulate);
+			final double lightReceived = lightContainer.receiveLight(rfInitiallyExtracted / lightContainer.getLightToRFConversionRatio(), simulate);
 			
 			// Now one thing is that since the above depends on the simulate parameter, if we *did* just so happen to simulate, then we need to have
 			// some different behavior.
 			
 			// So now we need to figure out how much RF that equates to before anything else. Light device was able to store (L)
 			// so what is (L) in (r)?
-			final int rfReceivedByLight = (int)(lightReceived * lightToRFRatio); 
+			final int rfReceivedByLight = (int)(lightReceived * lightContainer.getLightToRFConversionRatio()); 
 			final int rfActuallyExtracted = rfContainer.extractEnergy(rfReceivedByLight, simulate);
 			
-			return new EnergyTransactionResult(lightReceived, rfActuallyExtracted, lightToRFRatio, direction, simulate);
+			return new EnergyTransactionResult(lightReceived, rfActuallyExtracted, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 		}
 	}
 	
