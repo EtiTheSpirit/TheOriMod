@@ -1,0 +1,9 @@
+{
+	"required": true,
+	"package": "etithespirit.mixin",
+	"refmap": "etimod.refmap.json",
+	"minVersion": "0.8.2",
+	"mixins": ["OverrideEntityPlaySound", "OverridePlayerEntityPlaySound", "OverridePlayerEntityAttackTarget"],
+	"client": ["OverrideClientPlayerEntityPlaySound"],
+	"server": ["OverrideServerPlayerEntityPlaySound"]
+}

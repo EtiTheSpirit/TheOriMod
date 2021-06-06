@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "side": "etimod:block/stripped_decay_log",
+    "end": "etimod:block/stripped_decay_log_top"
+  }
+}

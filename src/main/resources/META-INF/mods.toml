@@ -1,0 +1,33 @@
+ # The name of the mod loader type to load - for regular FML @Mod mods it should be javafml
+modLoader="javafml"
+# A version range to match for said mod loader - for regular FML @Mod it will be the forge version
+loaderVersion="[34,)"
+license="GNU GENERAL PUBLIC LICENSE VERSION 3 // https://etithespir.it/"
+# If the mods defined in this file should show as seperate resource packs
+showAsResourcePack=false
+issueTrackerURL="https://github.com/EtiTheSpirit/The-Ori-Minecraft-Mod/issues/new/choose"
+updateJSONURL="https://etithespir.it/minecraft/version.json"
+
+[[mods]]
+  modId="etimod"
+  version="ALPHA-7.1"
+  displayName="Eti's Mod"
+  authors="Eti"
+  license="GNU GENERAL PUBLIC LICENSE VERSION 3 // https://etithespir.it/"
+  description='''
+  Appends data used for the official Ori server modpack. https://etithespir.it/minecraft
+  '''
+
+  [[dependencies.etimod]]
+    modId="forge"
+    mandatory=true
+    versionRange="[34,)"
+    ordering="NONE"
+    side="BOTH"
+
+  [[dependencies.etimod]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.16.4,)"
+    ordering="NONE"
+    side="BOTH"

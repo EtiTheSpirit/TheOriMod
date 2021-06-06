@@ -1,0 +1,17 @@
+{
+	"name": "Light Forest",
+	"ultrawarm": false,
+	"natural": true,
+	"coordinate_scale": 0.03125,
+	"has_skylight": true,
+	"has_ceiling": false,
+	"ambient_light": 0.2,
+	"fixed_time": false,
+	"piglin_safe": true,
+	"bed_works": true,
+	"respawn_anchor_works": true,
+	"has_raids": false,
+	"logical_height": 256,
+	"infiniburn": "minecraft:infiniburn_overworld",
+	"effects": "minecraft:overworld"
+}

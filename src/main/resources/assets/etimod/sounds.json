@@ -1,0 +1,694 @@
+{
+	"entity.spirit.hurt" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/hurt/merged/hurt0",
+			"etimod:spirit/hurt/merged/hurt1",
+			"etimod:spirit/hurt/merged/hurt2",
+			"etimod:spirit/hurt/merged/hurt3",
+			"etimod:spirit/hurt/merged/hurt4"
+		]
+	},
+	"entity.spirit.hurt.takedamage" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/hurt/takedamage/takedamage0",
+			"etimod:spirit/hurt/takedamage/takedamage1",
+			"etimod:spirit/hurt/takedamage/takedamage2",
+			"etimod:spirit/hurt/takedamage/takedamage3",
+			"etimod:spirit/hurt/takedamage/takedamage4"
+		]
+	},
+	"entity.spirit.hurt.vo" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/hurt/vo/hurtvo0",
+			"etimod:spirit/hurt/vo/hurtvo1",
+			"etimod:spirit/hurt/vo/hurtvo2",
+			"etimod:spirit/hurt/vo/hurtvo3",
+			"etimod:spirit/hurt/vo/hurtvo4"
+		]
+	},
+	
+	
+	"entity.spirit.death.generic" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/death/generic/death0",
+			"etimod:spirit/death/generic/death1",
+			"etimod:spirit/death/generic/death2",
+			"etimod:spirit/death/generic/death3",
+			"etimod:spirit/death/generic/death4"
+		]
+	},
+	"entity.spirit.death.burn" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/death/burn/deathburn0",
+			"etimod:spirit/death/burn/deathburn1",
+			"etimod:spirit/death/burn/deathburn2",
+			"etimod:spirit/death/burn/deathburn3",
+			"etimod:spirit/death/burn/deathburn4"
+		]
+	},
+	"entity.spirit.death.drown" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/death/drown/deathdrown0",
+			"etimod:spirit/death/drown/deathdrown1",
+			"etimod:spirit/death/drown/deathdrown2"
+		]
+	},
+	"entity.spirit.death.decay" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/death/decay/deathdecay0",
+			"etimod:spirit/death/decay/deathdecay1",
+			"etimod:spirit/death/decay/deathdecay2",
+			"etimod:spirit/death/decay/deathdecay3",
+			"etimod:spirit/death/decay/deathdecay4",
+			"etimod:spirit/death/decay/deathdecay5",
+			"etimod:spirit/death/decay/deathdecay6",
+			"etimod:spirit/death/decay/deathdecay7"
+		]
+	},
+	"entity.spirit.death.vo" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/death/vo/deathvo0",
+			"etimod:spirit/death/vo/deathvo1",
+			"etimod:spirit/death/vo/deathvo2",
+			"etimod:spirit/death/vo/deathvo3"
+		]
+	},
+	
+	"entity.spirit.jump.single" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/jump/single/singlejump0",
+			"etimod:spirit/jump/single/singlejump1",
+			"etimod:spirit/jump/single/singlejump2",
+			"etimod:spirit/jump/single/singlejump3",
+			"etimod:spirit/jump/single/singlejump4"
+		]
+	},
+	"entity.spirit.jump.double" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/jump/double/doublejump0",
+			"etimod:spirit/jump/double/doublejump1",
+			"etimod:spirit/jump/double/doublejump2",
+			"etimod:spirit/jump/double/doublejump3",
+			"etimod:spirit/jump/double/doublejump4"
+		]
+	},
+	"entity.spirit.jump.triple" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/jump/triple/triplejump0",
+			"etimod:spirit/jump/triple/triplejump1",
+			"etimod:spirit/jump/triple/triplejump2",
+			"etimod:spirit/jump/triple/triplejump3",
+			"etimod:spirit/jump/triple/triplejump4"
+		]
+	},
+	"entity.spirit.jump.wall" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/jump/wall/walljump0",
+			"etimod:spirit/jump/wall/walljump1",
+			"etimod:spirit/jump/wall/walljump2",
+			"etimod:spirit/jump/wall/walljump3",
+			"etimod:spirit/jump/wall/walljump4"
+		]
+	},
+	
+	
+	"entity.spirit.dash" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/dash/action/oridash0",
+			"etimod:spirit/dash/action/oridash1",
+			"etimod:spirit/dash/action/oridash2",
+			"etimod:spirit/dash/action/oridash3",
+			"etimod:spirit/dash/action/oridash4"
+		]
+	},
+	"entity.spirit.dash.impactwall" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/dash/impact/hitwall0",
+			"etimod:spirit/dash/impact/hitwall1",
+			"etimod:spirit/dash/impact/hitwall2"
+		]
+	},
+	
+	
+	"entity.spirit.respawn" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/respawn/respawn"
+		]
+	},
+	"entity.spirit.respawn2" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/respawn/respawnalt"
+		]
+	},
+	
+	
+	"entity.spirit.aquatic.breath.big" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/aquatic/breath/big/breathbig0",
+			"etimod:spirit/aquatic/breath/big/breathbig1",
+			"etimod:spirit/aquatic/breath/big/breathbig2",
+			"etimod:spirit/aquatic/breath/big/breathbig3"
+		]
+	},
+	"entity.spirit.aquatic.breath.medium" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/aquatic/breath/medium/breathmed0",
+			"etimod:spirit/aquatic/breath/medium/breathmed1",
+			"etimod:spirit/aquatic/breath/medium/breathmed2",
+			"etimod:spirit/aquatic/breath/medium/breathmed3",
+			"etimod:spirit/aquatic/breath/medium/breathmed4"
+		]
+	},
+	"entity.spirit.aquatic.breath.little" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/aquatic/breath/little/breathlittle0",
+			"etimod:spirit/aquatic/breath/little/breathlittle1",
+			"etimod:spirit/aquatic/breath/little/breathlittle2",
+			"etimod:spirit/aquatic/breath/little/breathlittle3",
+			"etimod:spirit/aquatic/breath/little/breathlittle4"
+		]
+	},
+	"entity.spirit.aquatic.swim" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/aquatic/swim/swim0",
+			"etimod:spirit/aquatic/swim/swim1",
+			"etimod:spirit/aquatic/swim/swim2",
+			"etimod:spirit/aquatic/swim/swim3"
+		]
+	},
+	"entity.spirit.aquatic.swim_above" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/aquatic/swim_above/swimsurface0",
+			"etimod:spirit/aquatic/swim_above/swimsurface1",
+			"etimod:spirit/aquatic/swim_above/swimsurface2",
+			"etimod:spirit/aquatic/swim_above/swimsurface3"
+		]
+	},
+	
+	
+	"entity.spirit.attack.nothing" : {
+		"category" : "player",
+		"sounds" : [
+			
+		]
+	},
+	"entity.spirit.attack.weak" : {
+		"category" : "player",
+		"sounds" : [
+			
+		]
+	},
+	"entity.spirit.attack.standard" : {
+		"category" : "player",
+		"sounds" : [
+			
+		]
+	},
+	"entity.spirit.attack.strong" : {
+		"category" : "player",
+		"sounds" : [
+			
+		]
+	},
+	"entity.spirit.attack.crit" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/attack/crit/crit0",
+			"etimod:spirit/attack/crit/crit1",
+			"etimod:spirit/attack/crit/crit2"
+		]
+	},
+	"entity.spirit.attack.knockback" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/attack/knockback/knockback0",
+			"etimod:spirit/attack/knockback/knockback1",
+			"etimod:spirit/attack/knockback/knockback2"
+		]
+	},
+	"entity.spirit.attack.sweep" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/attack/sweep/sweep0",
+			"etimod:spirit/attack/sweep/sweep1",
+			"etimod:spirit/attack/sweep/sweep2"
+		]
+	},
+	
+	
+	"entity.spirit.step.ash" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/ash/stepash0",
+			"etimod:spirit/step/ash/stepash1",
+			"etimod:spirit/step/ash/stepash2",
+			"etimod:spirit/step/ash/stepash3",
+			"etimod:spirit/step/ash/stepash4",
+			"etimod:spirit/step/ash/stepash5",
+			"etimod:spirit/step/ash/stepash6",
+			"etimod:spirit/step/ash/stepash7",
+			"etimod:spirit/step/ash/stepash8",
+			"etimod:spirit/step/ash/stepash9"
+		]
+	},
+	"entity.spirit.step.bone" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/bone/stepbone0",
+			"etimod:spirit/step/bone/stepbone1",
+			"etimod:spirit/step/bone/stepbone2",
+			"etimod:spirit/step/bone/stepbone3",
+			"etimod:spirit/step/bone/stepbone4",
+			"etimod:spirit/step/bone/stepbone5",
+			"etimod:spirit/step/bone/stepbone6",
+			"etimod:spirit/step/bone/stepbone7",
+			"etimod:spirit/step/bone/stepbone8",
+			"etimod:spirit/step/bone/stepbone9"
+		]
+	},
+	"entity.spirit.step.ceramic.solid" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic0",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic1",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic2",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic3",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic4",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic5",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic6",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic7",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic8",
+			"etimod:spirit/step/ceramic/solid/stepsolidceramic9"
+		]
+	},
+	"entity.spirit.step.ceramic.broken" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic0",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic1",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic2",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic3",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic4",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic5",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic6",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic7",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic8",
+			"etimod:spirit/step/ceramic/broken/stepbrokenceramic9"
+		]
+	},
+	"entity.spirit.step.chitin" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/chitin/stepchitin0",
+			"etimod:spirit/step/chitin/stepchitin1",
+			"etimod:spirit/step/chitin/stepchitin2",
+			"etimod:spirit/step/chitin/stepchitin3",
+			"etimod:spirit/step/chitin/stepchitin4",
+			"etimod:spirit/step/chitin/stepchitin5",
+			"etimod:spirit/step/chitin/stepchitin6",
+			"etimod:spirit/step/chitin/stepchitin7",
+			"etimod:spirit/step/chitin/stepchitin8",
+			"etimod:spirit/step/chitin/stepchitin9"
+		]
+	},
+	"entity.spirit.step.glass" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/glass/stepglass0",
+			"etimod:spirit/step/glass/stepglass1",
+			"etimod:spirit/step/glass/stepglass2"
+		]
+	},
+	"entity.spirit.step.grass.hard" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/grass_hard/stephardgrass0",
+			"etimod:spirit/step/grass_hard/stephardgrass1",
+			"etimod:spirit/step/grass_hard/stephardgrass2",
+			"etimod:spirit/step/grass_hard/stephardgrass3",
+			"etimod:spirit/step/grass_hard/stephardgrass4",
+			"etimod:spirit/step/grass_hard/stephardgrass5",
+			"etimod:spirit/step/grass_hard/stephardgrass6",
+			"etimod:spirit/step/grass_hard/stephardgrass7",
+			"etimod:spirit/step/grass_hard/stephardgrass8",
+			"etimod:spirit/step/grass_hard/stephardgrass9",
+			"etimod:spirit/step/grass_hard/stephardgrass10"
+		]
+	},
+	"entity.spirit.step.grass.soft" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/grass_soft/stepsoftgrass0",
+			"etimod:spirit/step/grass_soft/stepsoftgrass1",
+			"etimod:spirit/step/grass_soft/stepsoftgrass2",
+			"etimod:spirit/step/grass_soft/stepsoftgrass3",
+			"etimod:spirit/step/grass_soft/stepsoftgrass4",
+			"etimod:spirit/step/grass_soft/stepsoftgrass5",
+			"etimod:spirit/step/grass_soft/stepsoftgrass6",
+			"etimod:spirit/step/grass_soft/stepsoftgrass7",
+			"etimod:spirit/step/grass_soft/stepsoftgrass8",
+			"etimod:spirit/step/grass_soft/stepsoftgrass9"
+		]
+	},
+	"entity.spirit.step.gravel.dry" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/gravel/dry/stepdrygravel0",
+			"etimod:spirit/step/gravel/dry/stepdrygravel1",
+			"etimod:spirit/step/gravel/dry/stepdrygravel2",
+			"etimod:spirit/step/gravel/dry/stepdrygravel3",
+			"etimod:spirit/step/gravel/dry/stepdrygravel4"
+		]
+	},
+	"entity.spirit.step.gravel.wet" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/gravel/wet/stepwetgravel0",
+			"etimod:spirit/step/gravel/wet/stepwetgravel1",
+			"etimod:spirit/step/gravel/wet/stepwetgravel2",
+			"etimod:spirit/step/gravel/wet/stepwetgravel3",
+			"etimod:spirit/step/gravel/wet/stepwetgravel4",
+			"etimod:spirit/step/gravel/wet/stepwetgravel5",
+			"etimod:spirit/step/gravel/wet/stepwetgravel6"
+		]
+	},
+	"entity.spirit.step.gravel.snowy" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel0",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel1",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel2",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel3",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel4",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel5",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel6",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel7",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel8",
+			"etimod:spirit/step/gravel/snowy/stepsnowygravel9"
+		]
+	},
+	"entity.spirit.step.ice" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/ice/stepice0",
+			"etimod:spirit/step/ice/stepice1",
+			"etimod:spirit/step/ice/stepice2",
+			"etimod:spirit/step/ice/stepice3",
+			"etimod:spirit/step/ice/stepice4",
+			"etimod:spirit/step/ice/stepice5",
+			"etimod:spirit/step/ice/stepice6",
+			"etimod:spirit/step/ice/stepice7",
+			"etimod:spirit/step/ice/stepice8",
+			"etimod:spirit/step/ice/stepice9"
+		]
+	},
+	"entity.spirit.step.metal" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/metal/stepmetal0",
+			"etimod:spirit/step/metal/stepmetal1",
+			"etimod:spirit/step/metal/stepmetal2",
+			"etimod:spirit/step/metal/stepmetal3",
+			"etimod:spirit/step/metal/stepmetal4",
+			"etimod:spirit/step/metal/stepmetal5",
+			"etimod:spirit/step/metal/stepmetal6",
+			"etimod:spirit/step/metal/stepmetal7",
+			"etimod:spirit/step/metal/stepmetal8",
+			"etimod:spirit/step/metal/stepmetal9"
+		]
+	},
+	"entity.spirit.step.organic" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/organic/steporganic0",
+			"etimod:spirit/step/organic/steporganic1",
+			"etimod:spirit/step/organic/steporganic2",
+			"etimod:spirit/step/organic/steporganic3",
+			"etimod:spirit/step/organic/steporganic4",
+			"etimod:spirit/step/organic/steporganic5",
+			"etimod:spirit/step/organic/steporganic6",
+			"etimod:spirit/step/organic/steporganic7",
+			"etimod:spirit/step/organic/steporganic8",
+			"etimod:spirit/step/organic/steporganic9"
+		]
+	},
+	"entity.spirit.step.rock" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/rock/stepdryrock0",
+			"etimod:spirit/step/rock/stepdryrock1",
+			"etimod:spirit/step/rock/stepdryrock2",
+			"etimod:spirit/step/rock/stepdryrock3",
+			"etimod:spirit/step/rock/stepdryrock4",
+			"etimod:spirit/step/rock/stepdryrock5",
+			"etimod:spirit/step/rock/stepdryrock6",
+			"etimod:spirit/step/rock/stepdryrock7",
+			"etimod:spirit/step/rock/stepdryrock8",
+			"etimod:spirit/step/rock/stepdryrock9"
+		]
+	},
+	"entity.spirit.step.sand" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/sand/stepsand0",
+			"etimod:spirit/step/sand/stepsand1",
+			"etimod:spirit/step/sand/stepsand2",
+			"etimod:spirit/step/sand/stepsand3",
+			"etimod:spirit/step/sand/stepsand4",
+			"etimod:spirit/step/sand/stepsand5",
+			"etimod:spirit/step/sand/stepsand6",
+			"etimod:spirit/step/sand/stepsand7",
+			"etimod:spirit/step/sand/stepsand8",
+			"etimod:spirit/step/sand/stepsand9"
+		]
+	},
+	"entity.spirit.step.shroom" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/shroom/stepshroom0",
+			"etimod:spirit/step/shroom/stepshroom1",
+			"etimod:spirit/step/shroom/stepshroom2",
+			"etimod:spirit/step/shroom/stepshroom3",
+			"etimod:spirit/step/shroom/stepshroom4"
+		]
+	},
+	"entity.spirit.step.slimy" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/slimy/stepslimy0",
+			"etimod:spirit/step/slimy/stepslimy1",
+			"etimod:spirit/step/slimy/stepslimy2",
+			"etimod:spirit/step/slimy/stepslimy3",
+			"etimod:spirit/step/slimy/stepslimy4",
+			"etimod:spirit/step/slimy/stepslimy5",
+			"etimod:spirit/step/slimy/stepslimy6"
+		]
+	},
+	"entity.spirit.step.snow" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/snow/stepsnow0",
+			"etimod:spirit/step/snow/stepsnow1",
+			"etimod:spirit/step/snow/stepsnow2",
+			"etimod:spirit/step/snow/stepsnow3",
+			"etimod:spirit/step/snow/stepsnow4",
+			"etimod:spirit/step/snow/stepsnow5",
+			"etimod:spirit/step/snow/stepsnow6",
+			"etimod:spirit/step/snow/stepsnow7",
+			"etimod:spirit/step/snow/stepsnow8",
+			"etimod:spirit/step/snow/stepsnow9"
+		]
+	},
+	"entity.spirit.step.wood.dry" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/wood/dry/stepdrywood0",
+			"etimod:spirit/step/wood/dry/stepdrywood1",
+			"etimod:spirit/step/wood/dry/stepdrywood2",
+			"etimod:spirit/step/wood/dry/stepdrywood3",
+			"etimod:spirit/step/wood/dry/stepdrywood4"
+		]
+	},
+	"entity.spirit.step.wood.mossy" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/wood/mossy/stepmossywood0",
+			"etimod:spirit/step/wood/mossy/stepmossywood1",
+			"etimod:spirit/step/wood/mossy/stepmossywood2",
+			"etimod:spirit/step/wood/mossy/stepmossywood3",
+			"etimod:spirit/step/wood/mossy/stepmossywood4"
+		]
+	},
+	"entity.spirit.step.wood.snowy" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/wood/snowy/stepsnowywood0",
+			"etimod:spirit/step/wood/snowy/stepsnowywood1",
+			"etimod:spirit/step/wood/snowy/stepsnowywood2",
+			"etimod:spirit/step/wood/snowy/stepsnowywood3",
+			"etimod:spirit/step/wood/snowy/stepsnowywood4",
+			"etimod:spirit/step/wood/snowy/stepsnowywood5",
+			"etimod:spirit/step/wood/snowy/stepsnowywood6",
+			"etimod:spirit/step/wood/snowy/stepsnowywood7",
+			"etimod:spirit/step/wood/snowy/stepsnowywood8",
+			"etimod:spirit/step/wood/snowy/stepsnowywood9"
+		]
+	},
+	"entity.spirit.step.wood.wet" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/wood/wet/stepwetwood0",
+			"etimod:spirit/step/wood/wet/stepwetwood1",
+			"etimod:spirit/step/wood/wet/stepwetwood2",
+			"etimod:spirit/step/wood/wet/stepwetwood3",
+			"etimod:spirit/step/wood/wet/stepwetwood4",
+			"etimod:spirit/step/wood/wet/stepwetwood5",
+			"etimod:spirit/step/wood/wet/stepwetwood6"
+		]
+	},
+	"entity.spirit.step.water.shallow" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/water/shallow/stepwater0",
+			"etimod:spirit/step/water/shallow/stepwater1",
+			"etimod:spirit/step/water/shallow/stepwater2",
+			"etimod:spirit/step/water/shallow/stepwater3"
+		]
+	},
+	"entity.spirit.step.water.deep" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/water/deep/stepdeeppuddle0",
+			"etimod:spirit/step/water/deep/stepdeeppuddle1",
+			"etimod:spirit/step/water/deep/stepdeeppuddle2",
+			"etimod:spirit/step/water/deep/stepdeeppuddle3",
+			"etimod:spirit/step/water/deep/stepdeeppuddle4",
+			"etimod:spirit/step/water/deep/stepdeeppuddle5",
+			"etimod:spirit/step/water/deep/stepdeeppuddle6",
+			"etimod:spirit/step/water/deep/stepdeeppuddle7",
+			"etimod:spirit/step/water/deep/stepdeeppuddle8",
+			"etimod:spirit/step/water/deep/stepdeeppuddle9"
+		]
+	},
+	"entity.spirit.step.wool" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/step/wool/stepwool0",
+			"etimod:spirit/step/wool/stepwool1"
+		]
+	},
+	
+	
+	"item.light_shield.impact" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/shield/impact/impact0",
+			"etimod:spirit/shield/impact/impact1",
+			"etimod:spirit/shield/impact/impact2"
+		]
+	},
+	"item.light_shield.break" : {
+		"category" : "player",
+		"sounds" : [
+			"etimod:spirit/shield/break/break0",
+			"etimod:spirit/shield/break/break1",
+			"etimod:spirit/shield/break/break2"
+		]
+	},
+	
+	
+	"entity.light_vessel.spawn" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_vessel/spawn"
+		]
+	},
+	"entity.light_vessel.create" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_vessel/create"
+		]
+	},
+	"entity.light_vessel.ambient" : {
+		"category" : "ambient",
+		"sounds" : [
+			"etimod:light_vessel/ambient"
+		]
+	},
+	"entity.light_vessel.drop" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_vessel/drop"
+		]
+	},
+	"entity.light_vessel.scrape" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_vessel/collision0",
+			"etimod:light_vessel/collision1",
+			"etimod:light_vessel/collision2",
+			"etimod:light_vessel/collision3"
+		]
+	},
+	
+	
+	"tile.light_tech.activate" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/activate"
+		]
+	},
+	"tile.light_tech.activate_large_a" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/activate_large_a"
+		]
+	},
+	"tile.light_tech.activate_large_b" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/activate_large_b"
+		]
+	},
+	"tile.light_tech.deactivate" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/deactivate"
+		]
+	},
+	"tile.light_tech.active_loop" : {
+		"category" : "ambient",
+		"sounds" : [
+			"etimod:light_equipment/ambient"
+		]
+	},
+	
+	
+	"nullsound" : {
+		"category" : "master",
+		"sounds" : [
+			"etimod:nullsound"
+		]
+	}
+}

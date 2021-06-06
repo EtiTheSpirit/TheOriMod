@@ -1,0 +1,40 @@
+{
+  "variants": {
+    "adjacent_filled=false,edge_test_rarity=0": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=true,edge_test_rarity=0": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=false,edge_test_rarity=1": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=true,edge_test_rarity=1": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=false,edge_test_rarity=2": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=true,edge_test_rarity=2": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=false,edge_test_rarity=3": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=true,edge_test_rarity=3": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=false,edge_test_rarity=4": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=true,edge_test_rarity=4": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=false,edge_test_rarity=5": {
+      "model": "etimod:block/decay_mycelium"
+    },
+    "adjacent_filled=true,edge_test_rarity=5": {
+      "model": "etimod:block/decay_mycelium"
+    }
+  }
+}

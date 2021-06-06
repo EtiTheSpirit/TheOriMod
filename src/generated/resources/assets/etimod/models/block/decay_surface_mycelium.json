@@ -1,0 +1,27 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "ambientocclusion": false,
+  "textures": {
+    "all": "etimod:block/decay_surface_mycelium"
+  },
+  "elements": [
+    {
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        0,
+        16
+      ],
+      "shade": false,
+      "faces": {
+        "up": {
+          "texture": "#all"
+        }
+      }
+    }
+  ]
+}

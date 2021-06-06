@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "side": "etimod:block/decay_log",
+    "end": "etimod:block/decay_log_top"
+  }
+}

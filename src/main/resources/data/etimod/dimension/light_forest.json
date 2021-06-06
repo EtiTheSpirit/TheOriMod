@@ -1,0 +1,41 @@
+{
+	"type": "etimod:light_forest",
+	"generator": {
+		"type": "etimod:light_forest_chunkgen",
+		"settings" : {
+			"water" : {
+				"enabled" : true,
+				"waterLevel" : 58
+			},
+		
+			"skyShards" : {
+				"enabled" : true,
+				"_block" : "minecraft:dirt",
+				
+				"noiseStretchX" : 64,
+				"noiseStretchZ" : 64,
+				
+				"upperHeightLimit" : 0.7,
+				"lowerHeightLimit" : 0.5,
+				
+				"upperNoiseCompressionX" : 6,
+				"upperNoiseCompressionZ" : 6,
+				
+				"lowerNoiseCompressionX" : 2,
+				"lowerNoiseCompressionZ" : 2
+			},
+			
+			"glades" : {
+				"enabled" : true,
+				
+				"noiseStretchX" : 256,
+				"noiseStretchZ" : 200,
+				
+				"terrainHeight" : 32,
+				"terrainMagnitude": 8,
+				"terrainHeightStretchXZ" : 700,
+				"terrainHeightVariance" : 10
+			}
+		}
+	}
+}

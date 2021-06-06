@@ -1,0 +1,12 @@
+{
+    "type": "minecraft:crafting_shapeless",
+    "ingredients": [
+        {
+            "item": "eticore:locked_weedwood_trapdoor"
+        }
+    ],
+    "result": {
+        "item": "thebetweenlands:weedwood_trapdoor",
+        "count": 1
+    }
+}

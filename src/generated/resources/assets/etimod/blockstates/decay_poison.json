@@ -1,0 +1,100 @@
+{
+  "variants": {
+    "fully_decayed=false,level=0": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=0": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=1": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=1": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=2": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=2": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=3": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=3": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=4": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=4": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=5": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=5": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=6": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=6": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=7": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=7": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=8": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=8": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=9": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=9": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=10": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=10": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=11": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=11": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=12": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=12": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=13": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=13": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=14": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=14": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=false,level=15": {
+      "model": "etimod:block/decay_poison"
+    },
+    "fully_decayed=true,level=15": {
+      "model": "etimod:block/decay_poison"
+    }
+  }
+}

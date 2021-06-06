@@ -1,0 +1,34 @@
+{
+	"item.etimod.spiritglow.name" : "Spirit Glow",
+	"item.etimod.lifecell.name" : "Life Cell",
+
+	"item.etimod.light_omnitool" : "Spirit Omni-Tool",
+	"item.etimod.light_shield" : "Spirit Shield",
+
+	"tooltip.etimod.focuslight.1" : "§3Sneak and hold RMB",
+	"tooltip.etimod.focuslight.2" : "§3to focus your §bLight",
+	"tooltip.etimod.focuslight.3" : "§3and repair this item!",
+
+	"input.etimod.dash" : "Dash",
+	"input.etimod.climb" : "Climb",
+	"input.etimod.cling" : "Wall Cling",
+
+	"entity.etimod.spiritguardian.name" : "Spirit Guardian",
+
+	"effect.etimod.spirit" : "Spirit Guardian",
+	"effect.etimod.decay" : "Decay",
+	"effect.etimod.radiant" : "Radiant",
+
+	"death.attack.decay" : "%1$s was lost to The Decay.",
+	"death.attack.decay.player" : "%1$s was lost to The Decay.",
+
+	"config.etimod.general" : "General Configuration",
+
+	"config.etimod.spirit" : "Spirit Configuration",
+	"config.etimod.spirit.air_jumps" : "Air Jump Count",
+	"config.etimod.spirit.air_jumps.description" : "The amount of jumps a spirit can perform in the air. 1 is double jump, and 2 is triple jump.",
+
+
+
+	"config.etimod.world" : "World Configuration"
+}
