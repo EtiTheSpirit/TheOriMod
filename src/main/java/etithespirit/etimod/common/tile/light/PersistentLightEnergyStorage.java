@@ -5,7 +5,8 @@ import etithespirit.etimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundNBT;
 
 /**
- * An extension to Forge's EnergyStorage that binds to a TileEntity and automatically modifies its NBT and marks it as dirty.
+ * An extension to Forge's EnergyStorage that binds to a TileEntity and automatically modifies its NBT and marks it as dirty. This variant is specifically
+ * designed for ILightEnergyStorage rather than the standard IEnergyStorage
  * @author Eti
  *
  */

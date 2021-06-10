@@ -21,6 +21,7 @@ public class BiomeRegistry {
 	//////////////////////////////////////////////////////////////////////////////
 	/// BIOME KEYS
 	public static final RegistryKey<Biome> GLADES_KEY = makeKey("glades");
+	public static final RegistryKey<Biome> DECAY_BADLANDS_KEY = makeKey("decay_badlands");
 	
 	
 	//////////////////////////////////////////////////////////////////////////////
@@ -30,13 +31,37 @@ public class BiomeRegistry {
 	
 	public static final RegistryObject<Biome> GLADES = BIOMES.register("glades", () -> {
 		// 118, 123
+				BiomeAmbience effects = new BiomeAmbience.Builder()
+						.setWaterColor(0x99FFEC)
+						.setWaterFogColor(0x99FFEC)
+						.withGrassColor(0x5FC774)
+						.withFoliageColor(0x5FC774)
+						.withSkyColor(0x99FFFF)
+						.setFogColor(0xEEEEEE)
+						.build();
+				
+				return new Biome.Builder()
+						.downfall(1)
+						.temperature(0.5f)
+						.depth(1)
+						.scale(1)
+						.withGenerationSettings(BiomeGenerationSettings.DEFAULT_SETTINGS)
+						.withMobSpawnSettings(MobSpawnInfo.EMPTY)
+						.setEffects(effects)
+						.precipitation(RainType.RAIN)
+						.category(Category.PLAINS)
+						.build();
+	});
+	
+	public static final RegistryObject<Biome> DECAY_BADLANDS = BIOMES.register("decay_badlands", () -> {
+		// 118, 123
 		BiomeAmbience effects = new BiomeAmbience.Builder()
-				.setWaterColor(0x99FFEC)
-				.setWaterFogColor(0x99FFEC)
-				.withGrassColor(0x5FC774)
-				.withFoliageColor(0x5FC774)
-				.withSkyColor(0x99FFFF)
-				.setFogColor(0xEEEEEE)
+				.setWaterColor(0x222222)
+				.setWaterFogColor(0x000000)
+				.withGrassColor(0x808080)
+				.withFoliageColor(0x808080)
+				.withSkyColor(0xBBBBAF)
+				.setFogColor(0x666666)
 				.build();
 		
 		return new Biome.Builder()
@@ -47,7 +72,7 @@ public class BiomeRegistry {
 				.withGenerationSettings(BiomeGenerationSettings.DEFAULT_SETTINGS)
 				.withMobSpawnSettings(MobSpawnInfo.EMPTY)
 				.setEffects(effects)
-				.precipitation(RainType.RAIN)
+				.precipitation(RainType.SNOW)
 				.category(Category.PLAINS)
 				.build();
 	});

@@ -81,7 +81,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 	 */
 	private void registerInsideOutBlockAndItem(RegistryObject<Block> block) {
 		MultiPartBlockStateBuilder multiPart = this.getMultipartBuilder(block.get());
-		ModelFile model = getInsideOutBlockModel(block, 0f, 0.05f);
+		ModelFile model = getInsideOutBlockModel(block, 0f, 0.1f);
 		model.assertExistence();
 		multiPart
 		.part().modelFile(model).rotationX( 90).rotationY(180).addModel().condition(BlockStateProperties.NORTH, true).end()
@@ -148,8 +148,8 @@ public class GenerateBlockModels extends BlockStateProvider {
 		BlockModelBuilder blockBuilder = models().cubeAll(path, blockTexture(block.get()));
 		blockBuilder.ao(false).texture("all", modLoc(path));
 		ElementBuilder element = blockBuilder.element()
-			.from(0f, surfaceOffset, 0f)
-			.to(16f, surfaceOffset + thickness, 16f)
+			.from(-thickness, surfaceOffset, -thickness)
+			.to(16f + thickness, surfaceOffset + thickness, 16f + thickness)
 			.shade(false)
 				.face(Direction.UP)
 					.uvs(0, 0, 16, 16)

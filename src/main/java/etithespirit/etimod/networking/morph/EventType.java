@@ -25,18 +25,19 @@ public enum EventType {
 	/** A player wants to figure out who is a spirit and who isn't. */
 	GetEveryPlayerModel,
 	
-	/** Omnidirectional event that relays arbitrary data. */
-	@Deprecated 
-	Arbitrary,
+	/** A response to GetEveryPlayerModel. This packet type sends a list of every player's UUID coupled with a Boolean representing whether or not they are a spirit. */
+	TellEveryPlayerModel,
 	
 	/** An invalid event type. This cannot be used in ToByte and will never be returned by FromByte. */
 	Invalid;
 	
-	public byte ToByte() {
+	public byte ToByte() throws IllegalArgumentException {
 		if (this == UpdatePlayerModel) return 0;
 		if (this == RequestChangePlayerModel) return 1;
 		if (this == GetPlayerModel) return 2;
 		if (this == IsPlayerModel) return 3;
+		if (this == GetEveryPlayerModel) return 4;
+		if (this == TellEveryPlayerModel) return 5;
 		throw new IllegalArgumentException("Cannot convert EventType.Invalid to byte.");
 	}
 	
@@ -45,7 +46,9 @@ public enum EventType {
 		if (b == 1) return RequestChangePlayerModel;
 		if (b == 2) return GetPlayerModel;
 		if (b == 3) return IsPlayerModel;
-		throw new IllegalArgumentException("The argument [b] was out of the expected range of [0, 3].");
+		if (b == 4) return GetEveryPlayerModel;
+		if (b == 5) return TellEveryPlayerModel;
+		throw new IllegalArgumentException("The argument [b] was out of the expected range of [0, 5].");
 	}
 	
 }

@@ -1,8 +1,11 @@
 package etithespirit.etimod.energy;
 
+import javax.annotation.Nonnull;
+
 /**
- * An energy system similar to (but purposely not directly compatible with) {@link net.minecraftforge.energy.IEnergyStorage}. It has a number of unique quirks to it, such as the ability to be affected by environmental flux.<br/> 
- * This is also based on custom lore regarding Spirit Light.
+ * An energy system similar to (but purposely not directly compatible with) {@link net.minecraftforge.energy.IEnergyStorage IEnergyStorage}. It has a number of unique quirks to it, such as the ability to be affected by environmental flux.<br/><br/> 
+ * 
+ * Additionally, the mechanics of this storage medium are based off of my custom written lore for Spirit Light.
  * @author Eti
  */
 public interface ILightEnergyStorage {
@@ -59,27 +62,20 @@ public interface ILightEnergyStorage {
     /**
      * The FluxBehavior responsible for returning unfiltered environmental flux values.<br/>
      * <strong>NULL IS NOT ACCEPTABLE.</strong> This should always return {@link etithespirit.etimod.energy.FluxBehavior#DISABLED FluxBehavior.DISABLED} if there is no flux.
-     * @return
+     * @return A FluxBehavior instance describing how flux is applied.
      */
-    FluxBehavior getFluxBehavior();
+    @Nonnull FluxBehavior getFluxBehavior();
 	
 	/**
 	 * Stores or takes an arbitrary amount of energy from no particular source or sink. 
 	 * Intended to represent gains or losses from environmental noise.<br/><br/>
 	 * 
-	 * This requires not only hasEnvNoise to return true. Specifically, if at least one of min or max are less than zero, it requires canExtract to be true, 
-	 * and if at least one of the two are greater than zero, it requires canReceive to be true. If these requirements are not met, 
-	 * then the energy will be "clipped"; if the range is -0.5 to +0.5, and canExtract is false, then any values that generate less 
-	 * than zero will be discarded (and 0 returned), rendering only half of the range usable.<br/><br/>
-	 * 
-	 * If a randomizer is implemented, the iteration number should be tracked so that if applyEnvFlux is called with a given range where simulate=true, 
-	 * the behavior <em>must</em> be reflective of what will occur on the next call where simulate=false, granted no changes have occurred between the two
-	 * calls. Calling with simulate=true will only provide one step of lookahead, and will not reveal results further than one iteration forward.
+	 * Implementors should make use of {@link #getFluxBehavior()} to determine the returned value.
      *            
 	 * @param simulate
-     *            If TRUE, the generation will only be simulated.
+     *            If TRUE, the fluctuations in power will only be simulated.
      *            
-	 * @return Amount of energy that was (or would have been, if simulated) generated from this device and placed into its own storage.
+	 * @return Amount of energy that was (or would have been, if simulated) generated (or sapped) from this device and placed into (or taken from) its own storage.
 	 */
     double applyEnvFlux(boolean simulate);
 

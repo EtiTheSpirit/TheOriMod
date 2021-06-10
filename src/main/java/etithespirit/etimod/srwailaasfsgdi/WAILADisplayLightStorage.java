@@ -44,7 +44,7 @@ public class WAILADisplayLightStorage implements IComponentProvider {
 					addComponent(info, "waila.etimod.energy", TruncateNumber.truncateNumber(stored, 2));
 				}
 			}
-			if (config.get(SHOW_FLUX) && container.subjectToFlux()) {
+			if (config.get(SHOW_FLUX) && container.getFluxBehavior().isEnabled()) {
 				addComponent(info, "waila.etimod.env_flux");
 			}
 		}

@@ -1,6 +1,5 @@
 package etithespirit.etimod.util;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
@@ -13,13 +12,7 @@ public class EtiUtils {
 	/**
 	 * True if this is the development environment and false if this is the live game.
 	 */
-	public static final boolean IS_DEV_ENV;
-	
-	static {
-		IS_DEV_ENV = Block.class.getTypeName() == "net.minecraft.block.Block";
-		// https://youtu.be/0OAky2hyQzw?t=26
-		// we gotta call the aquarium or somethin dude
-	}
+	public static final boolean IS_DEV_ENV = FMLEnvironment.production;
 	
 	/**
 	 * Given a mod's ID, this will attempt to locate the mod's user-friendly display name through Forge's mod list. Throws an exception if the mod couldn't be found.

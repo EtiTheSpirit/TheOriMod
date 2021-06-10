@@ -20,7 +20,6 @@ import javax.annotation.Nullable;
 
 import etithespirit.etimod.common.block.decay.DecayCommon;
 import etithespirit.etimod.common.block.decay.IDecayBlock;
-import net.minecraft.block.AirBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -64,6 +63,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 		// The bit order is:
 		// right, left, up, down, front, back
 		// Reverse bit order (that is, the above line is listed backwards. b000001 is right, and b100000 is back)
+		// Using these combos, I basically create a combination of up to six panels at once for a VoxelShape.
 		for (int idx = 0; idx < 64; idx++) {
 			COLLISION_SHAPES[idx] = getShapeFor(idx);
 		}
@@ -228,12 +228,12 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	/// DECAY IMPLEMENTATION ///
 	@Override
 	public void registerReplacements(List<BlockState> blocksToReplaceWithSelf) {
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.AIR); // to prevent error
+		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.AIR); // to prevent error. Something has to be registered.
 	}
 	
 	@Override
 	public boolean hasDecayReplacementFor(World worldIn, BlockPos at, BlockState existingBlock) {
-		return existingBlock.getBlock() instanceof AirBlock && hasNeighbor(worldIn, at);
+		return canSpreadTo(worldIn, at, existingBlock);
 	}
 	
 	//////////////////////////////////////////////////////////////////
@@ -250,6 +250,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 * @param at
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	private static int getNeighborFlags(IWorldReader worldIn, BlockPos at, BlockPos... forcedNeighbors) {
 		if (forcedNeighbors == null) forcedNeighbors = new BlockPos[0];
 		int flags = 0;
@@ -259,7 +260,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 			Vector3i offset = ADJACENTS_IN_ORDER[o];
 			BlockPos targetPos = at.add(offset);
 			BlockState neighbor = worldIn.getBlockState(targetPos);
-			if (!(neighbor.getBlock() instanceof AirBlock) && (neighbor.getFluidState().getFluid() == Fluids.EMPTY)) {
+			if (!(neighbor.isAir(worldIn, at)) && (neighbor.getFluidState().getFluid() == Fluids.EMPTY)) {
 				// if the neighbor isn't air, and if it's not occupied by a fluid...
 				
 				// isFaceSturdy
@@ -291,7 +292,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 * @param at
 	 * @return
 	 */
-	private static boolean hasNeighbor(IWorldReader worldIn, BlockPos at) {
+	private static boolean hasAnyNeighbor(IWorldReader worldIn, BlockPos at) {
 		return getNeighborFlags(worldIn, at) != 0;
 	}
 	
@@ -319,7 +320,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (!hasNeighbor(worldIn, pos)) {
+		if (!hasAnyNeighbor(worldIn, pos)) {
 			// No neighbors around this block now? Delete it.
 			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
 			return;
@@ -352,9 +353,10 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 * @param existingBlock
 	 * @return
 	 */
+	@SuppressWarnings("deprecation")
 	public static boolean canSpreadTo(World worldIn, BlockPos at, BlockState existingBlock) {
-		boolean willBeReplacedByThis = existingBlock.getBlock() instanceof AirBlock; //BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock) && BLOCK_REPLACEMENT_TARGETS.get(existingBlock).getBlock() instanceof DecaySurfaceMyceliumBlock;
-		boolean neighbor = hasNeighbor(worldIn, at);
+		boolean willBeReplacedByThis = existingBlock.isAir(worldIn, at); //BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock) && BLOCK_REPLACEMENT_TARGETS.get(existingBlock).getBlock() instanceof DecaySurfaceMyceliumBlock;
+		boolean neighbor = hasAnyNeighbor(worldIn, at);
 		return neighbor && willBeReplacedByThis;
 	}
 }

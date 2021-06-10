@@ -16,7 +16,7 @@ apply plugin: 'eclipse'
 apply plugin: 'maven-publish'
 apply plugin: 'org.spongepowered.mixin'
 
-version = 'ALPHA-7.1'
+version = 'ALPHA-8.0'
 group = 'etithespirit.etimod'
 archivesBaseName = 'etimod'
 

@@ -13,7 +13,7 @@ public final class ExtendedMaterial {
 	/**
 	 * A material representing all light-composed blocks, for instance, any variant of a hard-light block.
 	 */
-	public static final Material LIGHT = new Material.Builder(MaterialColor.WOOL).build();
+	public static final Material LIGHT = new Material.Builder(MaterialColor.QUARTZ).build();
 	
 	
 

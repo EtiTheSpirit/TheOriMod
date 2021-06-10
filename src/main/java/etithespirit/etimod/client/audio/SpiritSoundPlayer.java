@@ -138,7 +138,7 @@ public final class SpiritSoundPlayer {
 		if (block == null) throw new ArgumentNullException("block");
 		
     	if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
-	        SoundEvent fromSpiritProvider = SpiritSoundProvider.getSpiritStepSound(player, block, null, null);
+	        SoundEvent fromSpiritProvider = SpiritSoundProvider.getSpiritStepSound(player, block, block.up(), null);
 	        if (fromSpiritProvider != null) {
 	        	player.playSound(fromSpiritProvider, 0.025f, 1f);
 	        } else {

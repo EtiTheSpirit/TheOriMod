@@ -54,7 +54,7 @@ public class SetSpiritCommand {
 			.executes((src) -> {
 				boolean isSpirit = SpiritIdentifier.isSpirit(src.getSource().asPlayer(), SpiritIdentificationType.FROM_PLAYER_MODEL);
 				if (src.getSource().asPlayer().getEntityWorld().isRemote) {
-					ReplicateMorphStatus.askToSetSpiritStatus(!isSpirit);
+					ReplicateMorphStatus.askToSetSpiritStatusAsync(!isSpirit);
 					src.getSource().sendFeedback(new StringTextComponent("Sent a request to set your spirit status to " + (!isSpirit) + " to the server."), false);
 				} else {
 					ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(src.getSource().asPlayer().getUniqueID(), !isSpirit);

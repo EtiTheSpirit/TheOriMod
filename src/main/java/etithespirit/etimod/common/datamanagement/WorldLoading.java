@@ -37,7 +37,7 @@ public class WorldLoading {
 			player.recalculateSize();
 		} else {
 			// NEW BEHAVIOR: We need to ask the server who is a spirit so that we see it once we join.
-			ReplicateMorphStatus.askWhoIsASpirit(); // The server will reply to this on its own accord.
+			ReplicateMorphStatus.askWhoIsASpiritAsync(); // The server will reply to this on its own accord.
 		}
 	}
 	

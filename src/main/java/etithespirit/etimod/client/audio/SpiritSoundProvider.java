@@ -84,25 +84,13 @@ public class SpiritSoundProvider {
     public static SoundEvent getSpiritFallSound(float height, @Nonnull LivingEntity entity, @Nullable SoundEvent vanilla) {
     	if (entity == null) throw new ArgumentNullException("entity");
     	
-    	return getSpiritFallSound(height, getBlockOn(entity), getBlockIn(entity), vanilla);
-    }
-    
-    /**
-     * Returns a unique sound for falling onto a given block as a spirit.
-     * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
-     */
-    @Deprecated
-	public static SoundEvent getSpiritFallSound(float height, @Nonnull BlockState on, @Nonnull BlockState in, @Nullable SoundEvent vanilla) {
-    	/*
-		if (on == null) throw new ArgumentNullException("on");
 		
-    	SpiritMaterial spiritMtl = BlockToMaterialBinding.getMaterialFor(null, on, in);
+    	SpiritMaterial spiritMtl = BlockToMaterialBinding.getMaterialFor(entity, getBlockOnPos(entity), getBlockInPos(entity));
     	if (spiritMtl.useVanillaInstead) return vanilla;
     	SoundEvent spiritSound = spiritMtl.getSound(true);
     	return spiritSound != null ? spiritSound : vanilla;
-    	*/
-    	return vanilla;
     }
+    
     
 	/**
      * Returns a unique sound for stepping on a given block as a spirit.
@@ -119,12 +107,12 @@ public class SpiritSoundProvider {
      * Returns a unique sound for stepping on a given block as a spirit.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
-    public static SoundEvent getSpiritStepSound(@Nonnull LivingEntity entity, @Nonnull BlockPos on, @Nullable BlockPos in, @Nullable SoundEvent vanilla) {
+    public static SoundEvent getSpiritStepSound(@Nonnull LivingEntity entity, @Nonnull BlockPos on, @Nonnull BlockPos in, @Nullable SoundEvent vanilla) {
     	if (on == null) throw new ArgumentNullException("on");
     	
     	SpiritMaterial spiritMtl = BlockToMaterialBinding.getMaterialFor(entity, on, in);
     	if (spiritMtl.useVanillaInstead) return vanilla;
-    	SoundEvent spiritSound = spiritMtl.getSound(entity, on, in);
+    	SoundEvent spiritSound = spiritMtl.getSound(false);
     	return spiritSound != null ? spiritSound : vanilla;
     }
     

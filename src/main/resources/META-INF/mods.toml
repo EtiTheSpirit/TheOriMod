@@ -10,7 +10,7 @@ updateJSONURL="https://etithespir.it/minecraft/version.json"
 
 [[mods]]
   modId="etimod"
-  version="ALPHA-7.1"
+  version="ALPHA-8.0"
   displayName="Eti's Mod"
   authors="Eti"
   license="GNU GENERAL PUBLIC LICENSE VERSION 3 // https://etithespir.it/"

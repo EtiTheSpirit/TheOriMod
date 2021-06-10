@@ -1,15 +1,15 @@
 package etithespirit.etimod.exception;
 
 /**
- * The exception that is thrown when a null reference is passed to a method that does not accept it as a valid argument.<br/>
+ * The exception that is thrown when a null reference is passed to a method that does not accept it as a valid argument. It is a more precise alternative to {@link IllegalArgumentException}<br/>
  * <br/>
  * Derived from .NET (mscorlib.dll, System.Runtime.dll) // See <a href="https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0">https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0</a>
- * @author Microsoft
+ * @author Microsoft (for the .NET implementation)
  * @author Eti (for the Java implementation)
  *
  */
 public class ArgumentNullException extends IllegalArgumentException {
-	private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 148904892384923213L;
 	
 	private final String detailMessage;
 	

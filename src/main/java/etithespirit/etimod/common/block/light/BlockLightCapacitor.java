@@ -24,6 +24,7 @@ public class BlockLightCapacitor extends Block implements ILightBlockIdentifier 
 
 	public BlockLightCapacitor(Properties properties) {
 		super(properties);
+		
 	}
 	
 	@Override

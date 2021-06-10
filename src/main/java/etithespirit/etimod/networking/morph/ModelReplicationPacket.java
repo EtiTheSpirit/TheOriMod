@@ -1,8 +1,10 @@
 package etithespirit.etimod.networking.morph;
 
+import java.util.Map;
 import java.util.UUID;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
@@ -21,6 +23,9 @@ public class ModelReplicationPacket {
 	
 	/** Whether or not this player wants to be a spirit. For event types AllowDecay and DenyDecay, the meaning of this is changed. If this is false, the setting only applies to mushroom biomes. If this is true, the setting only applies to mycelium blocks. Two packets must be sent to change both. */
 	public boolean wantsToBeSpirit;
+	
+	/** Only exists for {@link EventType#TellEveryPlayerModel} and will be null otherwise. */
+	public @Nullable Map<UUID, Boolean> playersWhoAreSpirits;
 	
 	public ModelReplicationPacket() { }
 	
@@ -44,7 +49,6 @@ public class ModelReplicationPacket {
 	/**
 	 * SERVER ONLY<br/>
 	 * An alias method used to tell all clients that the given player is using the given model.
-	 * @param model
 	 * @return
 	 */
 	public static ModelReplicationPacket ToTellAllClientsSomeoneIsA(UUID refPlayerID, boolean beSpirit) {
@@ -70,7 +74,6 @@ public class ModelReplicationPacket {
 	/**
 	 * CLIENT ONLY<br/>
 	 * An alias method that requests I turn into the given model.
-	 * @param model
 	 * @return
 	 */
 	@SuppressWarnings("resource")
@@ -85,7 +88,6 @@ public class ModelReplicationPacket {
 	/**
 	 * CLIENT ONLY<br/>
 	 * An alias method that requests I turn the given player into the given model.
-	 * @param model
 	 * @return
 	 */
 	@SuppressWarnings("resource")
@@ -102,7 +104,6 @@ public class ModelReplicationPacket {
 	/**
 	 * CLIENT ONLY<br/>
 	 * An alias method that requests a list of who is a spirit.
-	 * @param model
 	 * @return
 	 */
 	@SuppressWarnings("resource")
@@ -111,6 +112,21 @@ public class ModelReplicationPacket {
 		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUniqueID());
 		pack.type = EventType.GetEveryPlayerModel;
 		return pack;
+	}
+	
+	/**
+	 * SERVER ONLY<br/>
+	 * Tells a given client the status of every player.
+	 * @param playerSendingTo
+	 * @param whoIsASpirit
+	 * @return
+	 */
+	public static ModelReplicationPacket ToTellClientWhatEveryoneIs(UUID playerSendingTo, Map<UUID, Boolean> whoIsASpirit) {
+		ModelReplicationPacket pack = new ModelReplicationPacket(playerSendingTo);
+		pack.type = EventType.TellEveryPlayerModel;
+		pack.playersWhoAreSpirits = whoIsASpirit;
+		return pack;
+		
 	}
 	
 }

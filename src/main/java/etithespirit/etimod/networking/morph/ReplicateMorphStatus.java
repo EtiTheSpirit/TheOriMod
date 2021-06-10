@@ -1,5 +1,9 @@
 package etithespirit.etimod.networking.morph;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -8,6 +12,7 @@ import java.util.function.Supplier;
 import etithespirit.etimod.EtiMod;
 import etithespirit.etimod.common.morph.PlayerToSpiritBinding;
 import etithespirit.etimod.networking.ReplicationData;
+import etithespirit.etimod.util.collection.ConcurrentBag;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.server.MinecraftServer;
@@ -28,8 +33,14 @@ public class ReplicateMorphStatus {
 	
 	@OnlyIn(Dist.CLIENT)
 	private static BiConsumer<ModelReplicationPacket, Supplier<NetworkEvent.Context>> ON_CLIENT_EVENT;
-	
 	private static BiConsumer<ModelReplicationPacket, Supplier<NetworkEvent.Context>> ON_SERVER_EVENT;
+	
+	@OnlyIn(Dist.CLIENT)
+	/** Callbacks that are registered, and will unregister if they return true. */
+	public static final ConcurrentBag<Function<ModelReplicationPacket, Boolean>> CLIENT_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS = new ConcurrentBag<Function<ModelReplicationPacket, Boolean>>();
+	
+	/** Callbacks that are registered, and will unregister if they return true. Note that this accepts garbage data too. Please verify data. */
+	public static final ConcurrentBag<Function<ModelReplicationPacket, Boolean>> SERVER_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS = new ConcurrentBag<Function<ModelReplicationPacket, Boolean>>();
 	
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
 		new ResourceLocation(EtiMod.MODID, "model_replication"),
@@ -119,15 +130,14 @@ public class ReplicateMorphStatus {
 				NetworkEvent.Context context = ctx.get();
 				ServerPlayerEntity sender = context.getSender();
 				UUID id = msg.playerID;
-				MinecraftServer server = sender.getServer();
-				ServerPlayerEntity referencedPlayer = server.getPlayerList().getPlayerByUUID(id);
+				//MinecraftServer server = sender.getServer();
+				//ServerPlayerEntity referencedPlayer = server.getPlayerList().getPlayerByUUID(id);
 				
-				if (referencedPlayer != null) {
-					// TODO: Model!
-					boolean isSpirit = PlayerToSpiritBinding.get(id);
-					ModelReplicationPacket toSend = ModelReplicationPacket.AsResponseToGetPlayerModel(id, isSpirit);
-					INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), toSend);
-				}
+				//if (referencedPlayer != null) {
+				boolean isSpirit = PlayerToSpiritBinding.get(id);
+				ModelReplicationPacket toSend = ModelReplicationPacket.AsResponseToGetPlayerModel(id, isSpirit);
+				INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), toSend);
+				//}
 		    });
 		} else if (msg.type == EventType.RequestChangePlayerModel) {
 			ctx.get().enqueueWork(() -> {
@@ -155,15 +165,31 @@ public class ReplicateMorphStatus {
 				NetworkEvent.Context context = ctx.get();
 				ServerPlayerEntity sender = context.getSender();
 				MinecraftServer server = sender.getServer();
+				Map<UUID, Boolean> whoIsASpirit = new HashMap<UUID, Boolean>();
 				for (ServerPlayerEntity other : server.getPlayerList().getPlayers()) {
 					if (other.equals(sender)) continue;
 					UUID id = other.getUniqueID();
 					boolean isSpirit = PlayerToSpiritBinding.get(id);
-					ModelReplicationPacket toSend = ModelReplicationPacket.AsResponseToGetPlayerModel(id, isSpirit);
-					INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), toSend);
+					whoIsASpirit.put(id, isSpirit);
+					//ModelReplicationPacket toSend = ModelReplicationPacket.AsResponseToGetPlayerModel(id, isSpirit);
+					//INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), toSend);
 				}
+				ModelReplicationPacket toSend = ModelReplicationPacket.ToTellClientWhatEveryoneIs(sender.getUniqueID(), whoIsASpirit);
+				INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), toSend);
 			});
 		}
+		
+		ctx.get().enqueueWork(() -> {
+			ArrayList<Function<ModelReplicationPacket, Boolean>> toRemove = new ArrayList<Function<ModelReplicationPacket, Boolean>>();
+			for (Function<ModelReplicationPacket, Boolean> func : SERVER_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS) {
+				if (func.apply(msg)) {
+					toRemove.add(func);
+				}
+			}
+			for (Function<ModelReplicationPacket, Boolean> func : toRemove) {
+				SERVER_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS.remove(func);
+			}
+		});
 		
 		// else { // Client bullshittin on network services }
 		ctx.get().setPacketHandled(true);
@@ -178,44 +204,64 @@ public class ReplicateMorphStatus {
 				// Let's update our data.
 				PlayerToSpiritBinding.put(msg.playerID, msg.wantsToBeSpirit);
 		    });
-		} else {
-			// This could be singleplayer too, which means that serverside events will fire on the client.
-			if (msg.type == EventType.GetPlayerModel) {
-				ctx.get().enqueueWork(() -> {
-					NetworkEvent.Context context = ctx.get();
-					ServerPlayerEntity sender = context.getSender();
-					UUID id = msg.playerID;
-					MinecraftServer server = sender.getServer();
-					ServerPlayerEntity referencedPlayer = server.getPlayerList().getPlayerByUUID(id);
-					
-					if (referencedPlayer != null) {
-						boolean isSpirit = PlayerToSpiritBinding.get(id);
-						ModelReplicationPacket toSend = ModelReplicationPacket.AsResponseToGetPlayerModel(id, isSpirit);
-						INSTANCE.send(PacketDistributor.PLAYER.with(() -> {return sender;}), toSend);
+			
+		} else if (msg.type == EventType.TellEveryPlayerModel) {
+			ctx.get().enqueueWork(() -> {
+				Set<UUID> keys = msg.playersWhoAreSpirits.keySet();
+				for (UUID key : keys) {
+					boolean isSpirit = msg.playersWhoAreSpirits.get(key);
+					PlayerToSpiritBinding.put(key, isSpirit);
+				}
+			});
+		// This could be singleplayer too, which means that serverside events will fire on the client.
+		} else if (msg.type == EventType.GetPlayerModel) {
+			ctx.get().enqueueWork(() -> {
+				NetworkEvent.Context context = ctx.get();
+				ServerPlayerEntity sender = context.getSender();
+				UUID id = msg.playerID;
+				MinecraftServer server = sender.getServer();
+				ServerPlayerEntity referencedPlayer = server.getPlayerList().getPlayerByUUID(id);
+				
+				if (referencedPlayer != null) {
+					boolean isSpirit = PlayerToSpiritBinding.get(id);
+					ModelReplicationPacket toSend = ModelReplicationPacket.AsResponseToGetPlayerModel(id, isSpirit);
+					INSTANCE.send(PacketDistributor.PLAYER.with(() -> {return sender;}), toSend);
+				}
+		    });
+		} else if (msg.type == EventType.RequestChangePlayerModel) {
+			ctx.get().enqueueWork(() -> {
+				NetworkEvent.Context context = ctx.get();
+				// Right now there's no actual requirements in place so....
+				ServerPlayerEntity sender = context.getSender();
+				UUID id = sender.getUniqueID();
+				if (!sender.getUniqueID().equals(msg.playerID)) {
+					if (sender.hasPermissionLevel(sender.server.getOpPermissionLevel())) {
+						// Are they an op? If so, we'll allow the different ID.
+						id = msg.playerID;
+					} else {
+						EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUniqueID().toString() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
+						return;
 					}
-			    });
-			} else if (msg.type == EventType.RequestChangePlayerModel) {
-				ctx.get().enqueueWork(() -> {
-					NetworkEvent.Context context = ctx.get();
-					// Right now there's no actual requirements in place so....
-					ServerPlayerEntity sender = context.getSender();
-					UUID id = sender.getUniqueID();
-					if (!sender.getUniqueID().equals(msg.playerID)) {
-						if (sender.hasPermissionLevel(sender.server.getOpPermissionLevel())) {
-							// Are they an op? If so, we'll allow the different ID.
-							id = msg.playerID;
-						} else {
-							EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUniqueID().toString() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
-							return;
-						}
-					}
-					
-					//PlayerToSpiritBinding.Put(id, msg.TargetEntity);
-					PlayerToSpiritBinding.put(id, msg.wantsToBeSpirit);
-					INSTANCE.send(PacketDistributor.ALL.noArg(), ModelReplicationPacket.ToTellAllClientsSomeoneIsA(id, msg.wantsToBeSpirit));
-			    });
-			}
+				}
+				
+				//PlayerToSpiritBinding.Put(id, msg.TargetEntity);
+				PlayerToSpiritBinding.put(id, msg.wantsToBeSpirit);
+				INSTANCE.send(PacketDistributor.ALL.noArg(), ModelReplicationPacket.ToTellAllClientsSomeoneIsA(id, msg.wantsToBeSpirit));
+		    });
 		}
+		
+		ctx.get().enqueueWork(() -> {
+			ArrayList<Function<ModelReplicationPacket, Boolean>> toRemove = new ArrayList<Function<ModelReplicationPacket, Boolean>>();
+			for (Function<ModelReplicationPacket, Boolean> func : CLIENT_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS) {
+				if (func.apply(msg)) {
+					toRemove.add(func);
+				}
+			}
+			for (Function<ModelReplicationPacket, Boolean> func : toRemove) {
+				CLIENT_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS.remove(func);
+			}
+		});
+		
 		ctx.get().setPacketHandled(true);
 	}
 	
@@ -234,25 +280,24 @@ public class ReplicateMorphStatus {
 	 * @param isSpirit
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public static void askToSetSpiritStatus(boolean isSpirit) {
+	public static void askToSetSpiritStatusAsync(boolean isSpirit) {
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.AsRequestSetModel(isSpirit));
 	}
 	
 	/**
-	 * Politely asks the server if I can become a spirit (or no longer be one).
-	 * @param isSpirit
+	 * Politely asks the server if the player with the given ID is a spirit, or was last seen as a spirit before they left the server.
+	 * @param id
 	 */
 	@OnlyIn(Dist.CLIENT)
-	@Deprecated
-	public static void askToSetSpiritStatus(UUID playerId, boolean isSpirit) {
-		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.AsRequestSetModel(isSpirit));
+	public static void askIfSomeoneIsASpiritAsync(UUID id) {
+		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.AsRequestGetPlayerModel(id));
 	}
 	
 	/**
-	 * Politely asks the server who is a spirit.
+	 * Politely asks the server which people are spirits right now.
 	 */
 	@OnlyIn(Dist.CLIENT)
-	public static void askWhoIsASpirit() {
+	public static void askWhoIsASpiritAsync() {
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.AsRequestGetAllModels());
 	}
 	

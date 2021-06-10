@@ -1,15 +1,12 @@
 package etithespirit.etimod.util.blockmtl.defaultimpl;
 
-import javax.annotation.Nullable;
-
-import etithespirit.etimod.util.blockmtl.SpiritMaterialModState;
+import etithespirit.etimod.util.blockmtl.SpiritMaterial;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
-@SuppressWarnings("deprecation")
 public final class DefaultImplementations {
 
 	/**
@@ -18,65 +15,58 @@ public final class DefaultImplementations {
 	public static final int SHALLOW_WATER_LEVEL = 3;
 	
 	// Prevent instances
-	private DefaultImplementations() { }
+	private DefaultImplementations() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
-	/**
-	 * The default method to determine the sound of a woody block. If your mod needs to have its own function, you can optionally call this too.
-	 * @param entity
-	 * @param on
-	 * @param in
-	 * @return
-	 */
-	public static final SpiritMaterialModState getModStateForWoodBlock(Entity entity, BlockPos on, @Nullable BlockPos in) {
+	@SuppressWarnings("deprecation")
+	public static final SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		World world = entity.getEntityWorld();
-		if (in != null) {
+		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
 			if (world.isRainingAt(in)) {
-				return SpiritMaterialModState.WET;
+				return SpiritMaterial.WOOD_WET;
 			}
 			if (inBlock.isAir(world, in)) {
 				// ^ As per forge standards, the one with params (world, in) should be used.
 				// Nothing is on top of this block.
-				return SpiritMaterialModState.DRY;
+				return SpiritMaterial.WOOD_DRY;
 			} else {
 				if (inBlock.getBlock() == Blocks.VINE) {
-					return SpiritMaterialModState.MOSSY;
+					return SpiritMaterial.WOOD_MOSSY;
 				}
 				if (inBlock.getBlock() == Blocks.SNOW) {
-					return SpiritMaterialModState.SNOWY;
+					return SpiritMaterial.WOOD_SNOWY;
 				}
 				if (inBlock.getFluidState() != null) {
 					// We are on a fluid.
 					int level = inBlock.getFluidState().getLevel();
 					if (level > 0 && level <= 2) {
 						// New: Test if level is >0 as well, because waterlogged blocks DO have a FluidState, just with a 0 level.
-						return SpiritMaterialModState.WET;
+						return SpiritMaterial.WOOD_WET;
 					}
 				}
 			}
 		}
-		return SpiritMaterialModState.DEFAULT;
+		return SpiritMaterial.WOOD_DRY;
 	}
 	
-	public static final SpiritMaterialModState getModStateForWater(Entity entity, BlockPos on, @Nullable BlockPos in) {
+	@SuppressWarnings("deprecation")
+	public static final SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		World world = entity.getEntityWorld();
-		if (in != null) {
+		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
-			if (inBlock.isAir(world, in)) {
-				// Should never happen.
-				return SpiritMaterialModState.DEFAULT;
-			} else {
+			if (!inBlock.isAir(world, in)) {
 				if (inBlock.getFluidState() != null) {
 					int level = inBlock.getFluidState().getLevel();
 					if (level <= SHALLOW_WATER_LEVEL && level > 0) {
 						// We are on a fluid, but this fluid is super shallow. Return the wet state.
-						return SpiritMaterialModState.SHALLOW;
+						// Check for a level greater than zero to not play wet sounds on waterlogged blocks.
+						return SpiritMaterial.WATER_SHALLOW;
 					}
 				}
-				return SpiritMaterialModState.DEEP;
+				return SpiritMaterial.WATER_DEEP;
 			}
 		}
-		return SpiritMaterialModState.DEFAULT;
+		return SpiritMaterial.WATER_SHALLOW;
 	}
 	
 }

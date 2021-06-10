@@ -37,8 +37,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	
 	/**
 	 * When given a list of BlockStates and a Block instance, this will iterate through all of its states and put them into the list. 
-	 * @param intoThisList
-	 * @param from
+	 * @param blocksToReplaceWithSelf This is a list storing all block states that can be replaced by this Decay block.
+	 * @param from All states of this block will be registered as replacable by this Decay block.
 	 */
 	public static void registerAllStatesForBlock(List<BlockState> blocksToReplaceWithSelf, Block from) {
 		StateContainer<Block, BlockState> container = from.getStateContainer();
@@ -92,7 +92,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	/**
 	 * Provides a means of altering the given state. The input state is the state of this block when it replaces a non-decay block.
 	 * @param originalState
-	 * @return
+	 * @return The state of the decay block when replacing a given block.
 	 */
 	default BlockState mutateReplacementState(BlockState originalState) {
 		return originalState;
@@ -100,11 +100,10 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	
 	/**
 	 * Returns an array of 6 boolean values mapping in the order of: EAST, WEST, UP, DOWN, NORTH, SOUTH<br>
-	 * The boolean is true if the block is occupied by an instance of a decay block, and false if it is not.<br>
-	 * @param airIsOccupied If true, air is treated as occupied by decay.
+	 * A given boolean is true if the corresponding block has no decay replacement. Note that decay blocks are not decayable either. As such, this method better describes when a block is stopping decay spread.<br>
 	 * @return
 	 */
-	default boolean[] getOccupiedAdjacents(World world, BlockPos pos) {
+	default boolean[] getNonDecayableAdjacents(World world, BlockPos pos) {
 		boolean[] result = new boolean[6];
 		for (int idx = 0; idx < ADJACENTS_IN_ORDER.length; idx++) {
 			BlockPos newPos = pos.add(ADJACENTS_IN_ORDER[idx]);
@@ -114,8 +113,15 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		return result;
 	}
 	
+	/**
+	 * Returns a random unoccupied adjacent block. "Unoccupied" refers to meaning that the adjacent space has a valid decay block replacement.
+	 * @param world
+	 * @param originalPos
+	 * @param rng
+	 * @return
+	 */
 	default BlockPos randomUnoccupiedDirection(World world, BlockPos originalPos, Random rng) {
-		boolean[] adjacents = getOccupiedAdjacents(world, originalPos);
+		boolean[] adjacents = getNonDecayableAdjacents(world, originalPos);
 		int[] validIndices = new int[6];
 		int numIndices = 0;
 		for (int idx = 0; idx < adjacents.length; idx++) {
@@ -131,6 +137,13 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		return originalPos.add(ADJACENTS_IN_ORDER[index]);
 	}
 	
+	/**
+	 * Returns one of the 20 possible diagonal adjacent directions that are occupied by a block that can decay.
+	 * @param world
+	 * @param originalPos
+	 * @param rng
+	 * @return
+	 */
 	default BlockPos randomUnoccupiedDiagonal(World world, BlockPos originalPos, Random rng) {
 		for (int idx = 0; idx < MAX_DIAGONAL_TESTS; idx++) {
 			int rngIdx = rng.nextInt(DIAGONALS_IN_ORDER.length);
