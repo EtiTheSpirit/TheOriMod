@@ -61,7 +61,7 @@ public class SpiritSounds {
 		if (evt.player == null) return;
 		if (evt.phase == TickEvent.Phase.END) return;
 		if (!SpiritIdentifier.isSpirit(evt.player, SpiritIdentificationType.FROM_PLAYER_MODEL)) return;
-		if (!evt.player.getEntityWorld().isRemote) return; // Never run on the server, even in sp
+		if (!evt.player.getCommandSenderWorld().isClientSide) return; // Never run on the server, even in sp
 		if (evt.player != Minecraft.getInstance().player) return; // Ignore other players in the world.
 		if (evt.player.canBreatheUnderwater()) {
 			airOnLastTick = 300;
@@ -70,8 +70,8 @@ public class SpiritSounds {
 			return;
 		}
 		int prev = airOnLastTick;
-		int current = evt.player.getAir();
-		int max = evt.player.getMaxAir();
+		int current = evt.player.getAirSupply();
+		int max = evt.player.getMaxAirSupply();
 		float bubbleInc = max / 10f;
 		
 		int bubbles = (int)Math.ceil(current / bubbleInc);
@@ -167,7 +167,7 @@ public class SpiritSounds {
 					event.setCanceled(true);
 					return;
 				} else if (type == CustomSoundType.SWIM) {
-					sound = SpiritSoundProvider.getSpiritSwimSound(player.areEyesInFluid(FluidTags.WATER));
+					sound = SpiritSoundProvider.getSpiritSwimSound(player.isEyeInFluid(FluidTags.WATER));
 					event.setVolume(0.3f);
 					event.setPitch(SpiritSoundPlayer.getRandomPitch());
 					

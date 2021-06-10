@@ -9,7 +9,7 @@ import net.minecraft.util.LazyValue;
 
 public enum SpiritItemTier implements IItemTier {
 	LIGHT(3, 1561, 8.0F, 2.0F, 7, () -> {
-		return Ingredient.fromItems(Items.DIAMOND);
+		return Ingredient.of(Items.DIAMOND);
 	});
 	
 	private final int harvestLevel;
@@ -28,28 +28,28 @@ public enum SpiritItemTier implements IItemTier {
 		this.repairMaterial = new LazyValue<>(repairMaterialIn);
 	}
 
-	public int getMaxUses() {
+	public int getUses() {
 		return this.maxUses;
 	}
 
-	public float getEfficiency() {
+	public float getSpeed() {
 		return this.efficiency;
 	}
 
-	public float getAttackDamage() {
+	public float getAttackDamageBonus() {
 		return this.attackDamage;
 	}
 
-	public int getHarvestLevel() {
+	public int getLevel() {
 		return this.harvestLevel;
 	}
 
-	public int getEnchantability() {
+	public int getEnchantmentValue() {
 		return this.enchantability;
 	}
 
-	public Ingredient getRepairMaterial() {
-		return this.repairMaterial.getValue();
+	public Ingredient getRepairIngredient() {
+		return this.repairMaterial.get();
 	}
 
 }

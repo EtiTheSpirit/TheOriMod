@@ -84,7 +84,7 @@ public class PlayerToDecayBehavior {
 	 * @param infectLevel
 	 */
 	public static void put(PlayerEntity player, Boolean infectInBiome, Boolean infectInBlock, Byte infectChance, Byte infectLevel) {
-		put(player.getUniqueID(), infectInBiome, infectInBlock, infectChance, infectLevel);
+		put(player.getUUID(), infectInBiome, infectInBlock, infectChance, infectLevel);
 	}
 
 	public static void put(UUID id, Boolean infectInBiome, Boolean infectInBlock, Byte infectChance, Byte infectLevel) {
@@ -107,12 +107,12 @@ public class PlayerToDecayBehavior {
 	
 	public static void rawPut(PlayerEntity player, byte value) {
 		if (player == null) return;
-		rawPut(player.getUniqueID(), value);
+		rawPut(player.getUUID(), value);
 	}
 	
 	public static byte rawGet(PlayerEntity player) {
 		if (player == null) return 0;
-		return rawGet(player.getUniqueID());
+		return rawGet(player.getUUID());
 	}
 	
 	public static byte rawGet(UUID id) {

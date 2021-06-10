@@ -36,9 +36,9 @@ public class Glades extends GenerationStyle<LightForestSettings.GladesSettings> 
 		
 		if (worldY <= blockHeight) {
 			if (worldY == blockHeight) {
-				chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.GRASS_BLOCK.getDefaultState(), false);
+				chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.GRASS_BLOCK.defaultBlockState(), false);
 			} else {
-				chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.DIRT.getDefaultState(), false);
+				chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.DIRT.defaultBlockState(), false);
 			}
 			return true;
 		}

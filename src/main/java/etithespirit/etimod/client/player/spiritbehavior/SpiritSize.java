@@ -84,10 +84,10 @@ public class SpiritSize {
 	 * @return
 	 */
 	private static Pose getDesiredForcedPose(PlayerEntity player) {
-		boolean isSwimming = player.isSwimming() && player.isInWaterOrBubbleColumn();
-		boolean isFlying = player.isElytraFlying();
-		boolean isSpinAttacking = player.isSpinAttacking();
-		boolean isCrouching = player.isSneaking();
+		boolean isSwimming = player.isSwimming() && player.isInWaterOrBubble();
+		boolean isFlying = player.isFallFlying();
+		boolean isSpinAttacking = player.isAutoSpinAttack();
+		boolean isCrouching = player.isShiftKeyDown();
 		
 		if (isFlying) return Pose.FALL_FLYING;
 		if (isSwimming) return Pose.SWIMMING;
@@ -134,7 +134,7 @@ public class SpiritSize {
 	public static boolean isPoseClear(PlayerEntity player, EntitySize entSize) {
 		// NEW TEST: Null entity changes anything?
 		// TODO: Why shrink by 0.0000001? What effect or benefit does this have?
-		return player.getEntityWorld().hasNoCollisions(null, atWithSize(player.getPositionVec(), entSize).shrink(1.0E-7D));
+		return player.getCommandSenderWorld().noCollision(null, atWithSize(player.position(), entSize).deflate(1.0E-7D));
 	}
 	
 	/**
@@ -179,13 +179,13 @@ public class SpiritSize {
 		if (SpiritIdentifier.isSpirit(evt.player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
 			updatePose(evt.player);
 			if (!wasSpiritOnLastTick) {
-				evt.player.recalculateSize();
+				evt.player.refreshDimensions();
 				wasSpiritOnLastTick = true;
 			}
 		} else {
 			if (wasSpiritOnLastTick) {
 				evt.player.setForcedPose(null);
-				evt.player.recalculateSize();
+				evt.player.refreshDimensions();
 				wasSpiritOnLastTick = false;
 			}
 		}

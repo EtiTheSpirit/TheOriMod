@@ -55,14 +55,14 @@ public final class DecayCommon {
 	 * An array of panel shaped collision boxes. For those unaware, the units are pixels, so 16 is a full block. The order of this array matters for use in {@link etithespirit.etimod.common.block.decay.world.DecaySurfaceMyceliumBlock}
 	 */
 	public static final VoxelShape[] PANELS = new VoxelShape[] {
-		Block.makeCuboidShape(15D, 0D, 0D, 16D, 16D, 16D),
-		Block.makeCuboidShape(0D, 0D, 0D, 1D, 16D, 16D),
+		Block.box(15D, 0D, 0D, 16D, 16D, 16D),
+		Block.box(0D, 0D, 0D, 1D, 16D, 16D),
 		
-		Block.makeCuboidShape(0D, 15D, 0D, 16D, 16D, 16D),
-		Block.makeCuboidShape(0D, 0D, 0D, 16D, 1D, 16D),
+		Block.box(0D, 15D, 0D, 16D, 16D, 16D),
+		Block.box(0D, 0D, 0D, 16D, 1D, 16D),
 		
-		Block.makeCuboidShape(0D, 0D, 0D, 16D, 16D, 1D),
-		Block.makeCuboidShape(0D, 0D, 15D, 16D, 16D, 16D),
+		Block.box(0D, 0D, 0D, 16D, 16D, 1D),
+		Block.box(0D, 0D, 15D, 16D, 16D, 16D),
 	};
 	
 	/**

@@ -19,7 +19,7 @@ public final class DefaultImplementations {
 	
 	@SuppressWarnings("deprecation")
 	public static final SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
-		World world = entity.getEntityWorld();
+		World world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
 			if (world.isRainingAt(in)) {
@@ -38,7 +38,7 @@ public final class DefaultImplementations {
 				}
 				if (inBlock.getFluidState() != null) {
 					// We are on a fluid.
-					int level = inBlock.getFluidState().getLevel();
+					int level = inBlock.getFluidState().getAmount();
 					if (level > 0 && level <= 2) {
 						// New: Test if level is >0 as well, because waterlogged blocks DO have a FluidState, just with a 0 level.
 						return SpiritMaterial.WOOD_WET;
@@ -51,12 +51,12 @@ public final class DefaultImplementations {
 	
 	@SuppressWarnings("deprecation")
 	public static final SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
-		World world = entity.getEntityWorld();
+		World world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
 			if (!inBlock.isAir(world, in)) {
 				if (inBlock.getFluidState() != null) {
-					int level = inBlock.getFluidState().getLevel();
+					int level = inBlock.getFluidState().getAmount();
 					if (level <= SHALLOW_WATER_LEVEL && level > 0) {
 						// We are on a fluid, but this fluid is super shallow. Return the wet state.
 						// Check for a level greater than zero to not play wet sounds on waterlogged blocks.

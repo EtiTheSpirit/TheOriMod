@@ -20,7 +20,7 @@ public class SpiritEntity extends AnimalEntity {
     }
     
     @Override
-	protected float getJumpUpwardsMotion() {
+	protected float getJumpPower() {
 	    return 0.84f;
 	}
     
@@ -35,13 +35,13 @@ public class SpiritEntity extends AnimalEntity {
     }
     
     @Override
-    public boolean attackEntityFrom(DamageSource src, float amount) {
+    public boolean hurt(DamageSource src, float amount) {
     	if (src == DamageSource.FLY_INTO_WALL || src == DamageSource.FALL) return false;
-    	return super.attackEntityFrom(src, amount);
+    	return super.hurt(src, amount);
     }
 
 	@Override
-	public AgeableEntity createChild(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
+	public AgeableEntity getBreedOffspring(ServerWorld p_241840_1_, AgeableEntity p_241840_2_) {
 		return null;
 	}
 	

@@ -40,7 +40,6 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
-@OnlyIn(Dist.CLIENT)
 public class RenderPlayerAsSpirit {
 	
 	private static RenderSpiritMob RENDERER = null;
@@ -60,15 +59,15 @@ public class RenderPlayerAsSpirit {
 		
 		if (RENDERER == null) {
 			// Late population method.
-			RENDERER = (RenderSpiritMob) Minecraft.getInstance().getRenderManager().renderers.get(EntityRegistry.SPIRIT.get());
+			RENDERER = (RenderSpiritMob) Minecraft.getInstance().getEntityRenderDispatcher().renderers.get(EntityRegistry.SPIRIT.get());
 			SPIRIT_ARMOR_MODEL = new ModelSpiritArmor();
-			SPIRIT_MODEL = RENDERER.getEntityModel();
+			SPIRIT_MODEL = RENDERER.getModel();
 		}
 		
 		PlayerEntity player = preRenderEvent.getPlayer();
 		if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
 			IRenderTypeBuffer buf = preRenderEvent.getBuffers();
-			IVertexBuilder solidEntityBuffer = buf.getBuffer(RenderType.getEntitySolid(RenderSpiritMob.SPIRIT_TEXTURE));
+			IVertexBuilder solidEntityBuffer = buf.getBuffer(RenderType.entitySolid(RenderSpiritMob.SPIRIT_TEXTURE));
 			MatrixStack mtx = preRenderEvent.getMatrixStack();
 			int light = preRenderEvent.getLight();
 			float partialTicks = preRenderEvent.getPartialRenderTick();
@@ -78,6 +77,8 @@ public class RenderPlayerAsSpirit {
 			mtx.translate(-crouchTranslation.x, -crouchTranslation.y, -crouchTranslation.z); // Undo the translation applied by crouching.
 			mtx.translate(0, player.getForcedPose() == Pose.CROUCHING ? -0.125 : 0, 0);
 			// ^ This is done here because the shadow moves inversely if it's done after pushing the matrix.
+			
+			preRenderEvent.getRenderer().shadowRadius = 0.5f;
 			
 			float r = 1;
 			float g = 1;
@@ -89,11 +90,11 @@ public class RenderPlayerAsSpirit {
 			}
 			
 			
-			mtx.push(); // [
+			mtx.pushPose(); // [
 				mtx.scale(ModelSpirit.WIDTH_MOD, ModelSpirit.HEIGHT_MOD, ModelSpirit.WIDTH_MOD);
-				setRotationAnglesFrom(partialTicks, mtx, player, preRenderEvent.getRenderer().getEntityModel());
+				setRotationAnglesFrom(partialTicks, mtx, player, preRenderEvent.getRenderer().getModel());
 				
-				SPIRIT_MODEL.render(mtx, solidEntityBuffer, light, 0xFFFFFF, r, g, b, 1f);
+				SPIRIT_MODEL.renderToBuffer(mtx, solidEntityBuffer, light, 0xFFFFFF, r, g, b, 1f);
 				
 				//solidEntityBuffer.color(1, 1, 1, 1);
 				r = 1;
@@ -109,12 +110,12 @@ public class RenderPlayerAsSpirit {
 				
 				for (int i = 0; i < SLOTS.length; i++) {
 					EquipmentSlotType slot = SLOTS[i];
-					ItemStack item = player.getItemStackFromSlot(slot);
+					ItemStack item = player.getItemBySlot(slot);
 					ResourceLocation armorRsrc = getArmorResource(player, item, slot, false);
 					if (armorRsrc == null) continue; // next iteration
 					
 					// is this even a good idea lol
-					IVertexBuilder drawBuffer = ItemRenderer.getArmorVertexBuilder(buf, RenderType.getArmorCutoutNoCull(armorRsrc), false, item.hasEffect());
+					IVertexBuilder drawBuffer = ItemRenderer.getArmorFoilBuffer(buf, RenderType.armorCutoutNoCull(armorRsrc), false, item.hasFoil());
 					
 					switch (i) {
 					case 0:
@@ -143,16 +144,16 @@ public class RenderPlayerAsSpirit {
 						g = (float)(itemClr >> 8 & 255) / 255.0F;
 						b = (float)(itemClr & 255) / 255.0F;
 						
-						SPIRIT_ARMOR_MODEL.render(mtx, drawBuffer, light, 0xFFFFFF, r, g, b, 1);
+						SPIRIT_ARMOR_MODEL.renderToBuffer(mtx, drawBuffer, light, 0xFFFFFF, r, g, b, 1);
 						r = 1;
 						g = 1;
 						b = 1;
 					} else {					
-						SPIRIT_ARMOR_MODEL.render(mtx, drawBuffer, light, 0xFFFFFF, 1, 1, 1, 1);
+						SPIRIT_ARMOR_MODEL.renderToBuffer(mtx, drawBuffer, light, 0xFFFFFF, 1, 1, 1, 1);
 					}
 				}
 				render(mtx, buf, light, player);
-			mtx.pop(); // ]
+			mtx.popPose(); // ]
 			
 			if (!preRenderEvent.getPlayer().equals(Minecraft.getInstance().player)) {
 				// Do not render our own nametag on our screen
@@ -180,7 +181,7 @@ public class RenderPlayerAsSpirit {
 		
 		ArmorItem item = (ArmorItem)stack.getItem();
 		
-		String texture = item.getArmorMaterial().getName();
+		String texture = item.getMaterial().getName();
 		String domain = "minecraft";
 		int idx = texture.indexOf(':');
 		if (idx != -1) {
@@ -190,11 +191,11 @@ public class RenderPlayerAsSpirit {
 		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, 1, isOverlay ? "_overlay" : "");
 	
 		s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, isOverlay ? "overlay" : null);
-		ResourceLocation resourcelocation = BipedArmorLayer.ARMOR_TEXTURE_RES_MAP.get(s1);
+		ResourceLocation resourcelocation = BipedArmorLayer.ARMOR_LOCATION_CACHE.get(s1);
 	
 		if (resourcelocation == null) {
 			resourcelocation = new ResourceLocation(s1);
-			BipedArmorLayer.ARMOR_TEXTURE_RES_MAP.put(s1, resourcelocation);
+			BipedArmorLayer.ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
 		}
 	
 		return resourcelocation;
@@ -202,65 +203,65 @@ public class RenderPlayerAsSpirit {
 
 	@SuppressWarnings("resource")
 	protected static void renderName(PlayerRenderer renderer, AbstractClientPlayerEntity entityIn, ITextComponent displayNameIn, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn) {
-		double d0 = renderer.getRenderManager().squareDistanceTo(entityIn);
+		double d0 = renderer.getDispatcher().distanceToSqr(entityIn);
 	    if (!(d0 > 100.0D)) {
 			boolean flag = !entityIn.isDiscrete();
-			float f = entityIn.getHeight() + 0.5F;
+			float f = entityIn.getBbHeight() + 0.5F;
 			int i = "deadmau5".equals(displayNameIn.getString()) ? -10 : 0;
-			matrixStackIn.push();
+			matrixStackIn.pushPose();
 			matrixStackIn.translate(0.0D, (double)f, 0.0D);
-			matrixStackIn.rotate(renderer.getRenderManager().getCameraOrientation());
+			matrixStackIn.mulPose(renderer.getDispatcher().cameraOrientation());
 			matrixStackIn.scale(-0.025F, -0.025F, 0.025F);
-			Matrix4f matrix4f = matrixStackIn.getLast().getMatrix();
-			float f1 = (float) Minecraft.getInstance().gameSettings.accessibilityTextBackgroundOpacity;
+			Matrix4f matrix4f = matrixStackIn.last().pose();
+			float f1 = (float) Minecraft.getInstance().options.textBackgroundOpacity;
 			int j = (int)(f1 * 255.0F) << 24;
-			FontRenderer fontrenderer = renderer.getFontRendererFromRenderManager();
-			float f2 = (float)(-fontrenderer.getStringPropertyWidth(displayNameIn) / 2);
-			fontrenderer.func_243247_a(displayNameIn, f2, (float)i, 0x20FFFFFF, false, matrix4f, bufferIn, flag, j, packedLightIn);
+			FontRenderer fontrenderer = renderer.getFont();
+			float f2 = (float)(-fontrenderer.width(displayNameIn) / 2);
+			fontrenderer.drawInBatch(displayNameIn, f2, (float)i, 0x20FFFFFF, false, matrix4f, bufferIn, flag, j, packedLightIn);
 			if (flag) {
-			   fontrenderer.func_243247_a(displayNameIn, f2, (float)i, 0xFFFFFFFF, false, matrix4f, bufferIn, false, 0, packedLightIn);
+			   fontrenderer.drawInBatch(displayNameIn, f2, (float)i, 0xFFFFFFFF, false, matrix4f, bufferIn, false, 0, packedLightIn);
 			}
 			
-			matrixStackIn.pop();
+			matrixStackIn.popPose();
 	    }
 	}
 	
 	public static void render(MatrixStack matrix, IRenderTypeBuffer renBuf, int combinedLightIn, LivingEntity entity) {
-		boolean flag = entity.getPrimaryHand() == HandSide.RIGHT;
-		ItemStack itemstack = flag ? entity.getHeldItemOffhand() : entity.getHeldItemMainhand();
-		ItemStack itemstack1 = flag ? entity.getHeldItemMainhand() : entity.getHeldItemOffhand();
+		boolean flag = entity.getMainArm() == HandSide.RIGHT;
+		ItemStack itemstack = flag ? entity.getOffhandItem() : entity.getMainHandItem();
+		ItemStack itemstack1 = flag ? entity.getMainHandItem() : entity.getOffhandItem();
 		if (!itemstack.isEmpty() || !itemstack1.isEmpty()) {
-			matrix.push();
+			matrix.pushPose();
 			
 			renderArmWithItem(entity, itemstack1, ItemCameraTransforms.TransformType.THIRD_PERSON_RIGHT_HAND, HandSide.RIGHT, matrix, renBuf, combinedLightIn);
 			renderArmWithItem(entity, itemstack, ItemCameraTransforms.TransformType.THIRD_PERSON_LEFT_HAND, HandSide.LEFT, matrix, renBuf, combinedLightIn);
-			matrix.pop();
+			matrix.popPose();
 		}
 	}
 
 	private static void renderArmWithItem(LivingEntity entity, ItemStack heldItemStack, ItemCameraTransforms.TransformType trsType, HandSide handSide, MatrixStack mtx, IRenderTypeBuffer renType, int combinedLightIn) {
 		if (!heldItemStack.isEmpty()) {
-			mtx.push();
-			SPIRIT_MODEL.translateHand(handSide, mtx);
-			mtx.rotate(Vector3f.XP.rotationDegrees(-90.0F));
-			mtx.rotate(Vector3f.YP.rotationDegrees(180.0F));
+			mtx.pushPose();
+			SPIRIT_MODEL.translateToHand(handSide, mtx);
+			mtx.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
+			mtx.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 			boolean flag = handSide == HandSide.LEFT;
 			mtx.translate((double)((float)(flag ? -1 : 1) / 16.0F), 0.125D, -0.625D);
-			Minecraft.getInstance().getFirstPersonRenderer().renderItemSide(entity, heldItemStack, trsType, flag, mtx, renType, combinedLightIn);
-			mtx.pop();
+			Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, heldItemStack, trsType, flag, mtx, renType, combinedLightIn);
+			mtx.popPose();
 		}
 	}
 	
 	private static void setRotationAnglesFrom(float partialTicks, MatrixStack mtx, LivingEntity entity, PlayerModel<AbstractClientPlayerEntity> playerModel) {
 		
-		float headYawOffset = entity.rotationYawHead;
-		float renderYawOffset = entity.renderYawOffset;
-		float pitchOffset = entity.rotationPitch;
+		float headYawOffset = entity.yHeadRot;
+		float renderYawOffset = entity.yBodyRot;
+		float pitchOffset = entity.xRot;
 	    
 	    float renderYawRadians = renderYawOffset / ModelSpirit.RADIAN_DIVISOR;
 	    // An identical implementation of PlayerRenderer.applyRotations.
 	    // Said method would be used, but type constraints prevent that from happening.
-	    RENDERER.applyRotationsPlayer(entity, mtx, entity.ticksExisted, renderYawRadians, partialTicks);
+	    RENDERER.applyRotationsPlayer(entity, mtx, entity.tickCount, renderYawRadians, partialTicks);
 		
 	    Pose currentPose = entity.getPose();
 	    if (entity instanceof PlayerEntity) {
@@ -270,21 +271,21 @@ public class RenderPlayerAsSpirit {
 	    
 	    // Upright poses first.
 	    if (currentPose == Pose.STANDING || currentPose == Pose.CROUCHING || currentPose == Pose.SPIN_ATTACK) {
-	    	mtx.rotate(fromAxisAngle(0, 1, 0, -renderYawRadians + ModelSpirit.PI));
-			mtx.rotate(new Quaternion(0, 0, -1, 0));
+	    	mtx.mulPose(fromAxisAngle(0, 1, 0, -renderYawRadians + ModelSpirit.PI));
+			mtx.mulPose(new Quaternion(0, 0, -1, 0));
 			mtx.translate(0, -1.5, 0);
 		
 		// Lateral poses.
 		} else if (currentPose == Pose.SWIMMING || currentPose == Pose.FALL_FLYING) {
-			mtx.rotate(new Quaternion(0, 0, -1, 0));
-			mtx.rotate(fromAxisAngle(0, 0, 1, -renderYawRadians + ModelSpirit.PI));
+			mtx.mulPose(new Quaternion(0, 0, -1, 0));
+			mtx.mulPose(fromAxisAngle(0, 0, 1, -renderYawRadians + ModelSpirit.PI));
 			mtx.translate(0, 0, 0.4); // x was -0.5
 			pitchOffset -= 75; // If not sleeping, look up at least a little ways. This is so that we look forward when swimming.
 		}
 	    
 	    // Pass in the entity (which is a player, not a spirit) into the model so that the biped stuff works
-		SPIRIT_MODEL.setRotationAngles(entity, entity.limbSwing, entity.limbSwingAmount, entity.ticksExisted, headYawOffset - renderYawOffset, pitchOffset, playerModel);
-		SPIRIT_ARMOR_MODEL.setRotationAngles(entity, entity.limbSwing, entity.limbSwingAmount, entity.ticksExisted, headYawOffset - renderYawOffset, pitchOffset, playerModel);
+		SPIRIT_MODEL.setRotationAngles(entity, entity.animationPosition, entity.animationSpeed, entity.tickCount, headYawOffset - renderYawOffset, pitchOffset, playerModel);
+		SPIRIT_ARMOR_MODEL.setRotationAngles(entity, entity.animationPosition, entity.animationSpeed, entity.tickCount, headYawOffset - renderYawOffset, pitchOffset, playerModel);
 	}
 	
 	private static Quaternion fromAxisAngle(float x, float y, float z, float angle) {

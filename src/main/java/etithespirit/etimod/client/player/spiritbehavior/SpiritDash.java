@@ -20,7 +20,6 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  * @author Eti
  *
  */
-@OnlyIn(Dist.CLIENT)
 public class SpiritDash {
 
 	public static final KeyBinding DASH_BIND = new KeyBinding("input.etimod.dash", 341, "key.categories.movement"); // Bind dash to l-ctrl
@@ -35,20 +34,19 @@ public class SpiritDash {
 	private static Vector3d velocityBeforeLatestDash = null;
 	
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public static void onKeyPressed(InputEvent.KeyInputEvent evt) {
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientPlayerEntity player = minecraft.player;
 		if (player == null) return;
-		if (minecraft.currentScreen != null) return;
+		if (minecraft.screen != null) return;
 		
 		
-		boolean isInFluid = player.isInWaterOrBubbleColumn() || player.isInLava();
+		boolean isInFluid = player.isInWaterOrBubble() || player.isInLava();
 		if (player.isOnGround() || isInFluid) hasAirDashed = false; // On the ground? Reset air dash.
 		if (!SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) return;
 		
 		// isPressed doesn't get along very well.
-		if (DASH_BIND.isKeyDown()) {
+		if (DASH_BIND.isDown()) {
 			if (needsToReleaseDash) return;
 			needsToReleaseDash = true;
 			if (ticksSinceLastDash >= DASH_DELAY) {
@@ -60,7 +58,6 @@ public class SpiritDash {
 	}
 	
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public static void onClientUpdated(ClientTickEvent evt) {
 		if (evt.phase == TickEvent.Phase.START) return;
 		
@@ -69,7 +66,7 @@ public class SpiritDash {
 		if (player == null) return;
 		
 		if (ticksSinceLastDash == 8 && velocityBeforeLatestDash != null) {
-			player.setMotion(velocityBeforeLatestDash.x, player.getMotion().y, velocityBeforeLatestDash.z);
+			player.setDeltaMovement(velocityBeforeLatestDash.x, player.getDeltaMovement().y, velocityBeforeLatestDash.z);
 		}
 		ticksSinceLastDash++;
 		
@@ -80,10 +77,10 @@ public class SpiritDash {
 	}
 	
 	private static void performDash(PlayerEntity player) {
-		boolean isInFluid = player.isInWaterOrBubbleColumn() || player.isInLava();
+		boolean isInFluid = player.isInWaterOrBubble() || player.isInLava();
 		
 		Vector3d movementClamp = isInFluid ? new Vector3d(1, 1, 1) : new Vector3d(1, 0, 1);
-		Vector3d movement = player.getLookVec().mul(movementClamp).normalize();		
+		Vector3d movement = player.getLookAngle().multiply(movementClamp).normalize();		
 		
 		if (player.isOnGround() || isInFluid) {
 			// on ground
@@ -96,11 +93,11 @@ public class SpiritDash {
 				return; // Abort.
 			}
 		}
-		velocityBeforeLatestDash = player.getMotion();
+		velocityBeforeLatestDash = player.getDeltaMovement();
 		if (!isInFluid) {
-			player.setMotion(velocityBeforeLatestDash.x + movement.x, 0.02, velocityBeforeLatestDash.z + movement.z);
+			player.setDeltaMovement(velocityBeforeLatestDash.x + movement.x, 0.02, velocityBeforeLatestDash.z + movement.z);
 		} else {
-			player.setMotion(velocityBeforeLatestDash.x + movement.x, velocityBeforeLatestDash.y + movement.y, velocityBeforeLatestDash.z + movement.z);
+			player.setDeltaMovement(velocityBeforeLatestDash.x + movement.x, velocityBeforeLatestDash.y + movement.y, velocityBeforeLatestDash.z + movement.z);
 		}
 		
 		

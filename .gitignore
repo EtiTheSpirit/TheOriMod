@@ -27,3 +27,5 @@ forge*changelog.txt
 #garbage
 README.txt
 LICENSE.txt
+/.apt_generated_tests/
+/__MINECRAFT_FORGE/

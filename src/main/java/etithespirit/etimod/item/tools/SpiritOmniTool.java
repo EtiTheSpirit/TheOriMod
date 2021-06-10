@@ -37,6 +37,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
+import net.minecraft.item.Item.Properties;
+
 public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	/** Modifiers applied when the item is in the mainhand of a user. */
 	private final Multimap<Attribute, AttributeModifier> attributeModifiers;
@@ -48,24 +50,24 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	public SpiritOmniTool(float attackDamageIn, float attackSpeedIn, IItemTier tier, Properties builderIn, Supplier<Integer> expPerRepair, Supplier<Integer> repairIncrement) {
 		super(attackDamageIn, attackSpeedIn, tier, NO_BLOCKS, builderIn);
 		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(ATTACK_DAMAGE_MODIFIER, "Weapon modifier", (double)this.getAttackDamage(), AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(ATTACK_SPEED_MODIFIER, "Weapon modifier", (double)attackSpeedIn, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)this.getAttackDamage(), AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)attackSpeedIn, AttributeModifier.Operation.ADDITION));
 		attributeModifiers = builder.build();
 		this.expPerRepair = expPerRepair;
 		this.repairIncrement = repairIncrement;
 	}
 
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
-		return this.efficiency;
+		return this.speed;
 	}
 
 	/**
 	* Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
 	* the damage on the stack.
 	*/
-	public boolean hitEntity(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.damageItem(1, attacker, (entity) -> {
-			entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+		stack.hurtAndBreak(1, attacker, (entity) -> {
+			entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 		});
 		return true;
 	}
@@ -73,10 +75,10 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	/**
 	* Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
 	*/
-	public boolean onBlockDestroyed(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
-		if (state.getBlockHardness(worldIn, pos) != 0.0F) {
-			stack.damageItem(1, entityLiving, (entity) -> {
-				entity.sendBreakAnimation(EquipmentSlotType.MAINHAND);
+	public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
+		if (state.getDestroySpeed(worldIn, pos) != 0.0F) {
+			stack.hurtAndBreak(1, entityLiving, (entity) -> {
+				entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
 			});
 		}
 
@@ -86,7 +88,7 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	/**
 	* Check whether this Item can harvest the given Block
 	*/
-	public boolean canHarvestBlock(BlockState blockIn) {
+	public boolean isCorrectToolForDrops(BlockState blockIn) {
 		if (blockIn.getBlock() instanceof IDecayBlockIdentifier) {
 			return false;
 		}
@@ -96,8 +98,8 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	/**
 	* Gets a map of item attribute modifiers, used by ItemSword to increase hit damage.
 	*/
-	public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlotType equipmentSlot) {
-		return equipmentSlot == EquipmentSlotType.MAINHAND ? this.attributeModifiers : super.getAttributeModifiers(equipmentSlot);
+	public Multimap<Attribute, AttributeModifier> getDefaultAttributeModifiers(EquipmentSlotType equipmentSlot) {
+		return equipmentSlot == EquipmentSlotType.MAINHAND ? this.attributeModifiers : super.getDefaultAttributeModifiers(equipmentSlot);
 	}
 	
 	/**
@@ -109,10 +111,10 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 		if (!(entityIn instanceof PlayerEntity)) return;
 		
 		final PlayerEntity playerIn = (PlayerEntity)entityIn;
-		if (!playerIn.isHandActive()) return;
-		final ItemStack item = playerIn.inventory.getStackInSlot(itemSlot);
+		if (!playerIn.isUsingItem()) return;
+		final ItemStack item = playerIn.inventory.getItem(itemSlot);
 		
-		if (item.isDamaged() && (playerIn.getExperiencePoints(playerIn) > 0 || playerIn.abilities.isCreativeMode)) {
+		if (item.isDamaged() && (playerIn.getExperienceReward(playerIn) > 0 || playerIn.abilities.instabuild)) {
 			ItemRecharger instance = ItemRecharger.get(playerIn, stack, this);
 			instance.updateTick();
 		}
@@ -120,27 +122,27 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	
 	@OnlyIn(Dist.CLIENT)
 	@Override
-	public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
 		tooltip.add(new TranslationTextComponent("tooltip.etimod.focuslight.1"));
 		tooltip.add(new TranslationTextComponent("tooltip.etimod.focuslight.2"));
 		tooltip.add(new TranslationTextComponent("tooltip.etimod.focuslight.3"));
 	}
 	
 	@Override
-	public void onPlayerStoppedUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
+	public void releaseUsing(ItemStack stack, World worldIn, LivingEntity entityLiving, int timeLeft) {
 		ItemRecharger instance = ItemRecharger.rawGet(stack);
 		if (instance != null) instance.dispose();
 	}
 
 	@Override
-	public ActionResult<ItemStack> onItemRightClick(World worldIn, PlayerEntity playerIn, Hand handIn) {
-		final ItemStack item = playerIn.getHeldItem(handIn);
+	public ActionResult<ItemStack> use(World worldIn, PlayerEntity playerIn, Hand handIn) {
+		final ItemStack item = playerIn.getItemInHand(handIn);
 		// final int expCost = getExperienceCostToRepair();
-		if (item.isDamaged() && (playerIn.getExperiencePoints(playerIn) > 0 || playerIn.abilities.isCreativeMode)) {
-			playerIn.setActiveHand(handIn);
-			return ActionResult.resultPass(item);
+		if (item.isDamaged() && (playerIn.getExperienceReward(playerIn) > 0 || playerIn.abilities.instabuild)) {
+			playerIn.startUsingItem(handIn);
+			return ActionResult.pass(item);
 		}
-		return ActionResult.resultFail(item);
+		return ActionResult.fail(item);
 	}
 	
 	/**
@@ -155,7 +157,7 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	* returns the action that specifies what animation to play when the item is being used
 	*/
 	@Override
-	public UseAction getUseAction(ItemStack stack) {
+	public UseAction getUseAnimation(ItemStack stack) {
 		return UseAction.BOW;
 	}
 	

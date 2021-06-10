@@ -12,7 +12,7 @@ public class DecayFluidTags {
 	
 	private static ITag.INamedTag<Fluid> createFluidTag(String fluidName) {
 		ResourceLocation location = new ResourceLocation(EtiMod.MODID, fluidName);
-		return FluidTags.makeWrapperTag(location.toString());
+		return FluidTags.bind(location.toString());
 	}
 	
 	/** Does nothing. Serves the purpose of allowing something to reference this class so that it initializes and does the registry that it needs to do. */

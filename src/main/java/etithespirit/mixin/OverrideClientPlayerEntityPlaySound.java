@@ -34,7 +34,7 @@ public abstract class OverrideClientPlayerEntityPlaySound extends AbstractClient
 			return;
 		}
 		
-		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(this, (PlayerEntity)this, this.getPosX(), this.getPosY(), this.getPosZ(), soundIn, this.getSoundCategory(), volume, pitch);
+		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(this, (PlayerEntity)this, this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
 			return;
@@ -49,14 +49,14 @@ public abstract class OverrideClientPlayerEntityPlaySound extends AbstractClient
 	}
 	
 	
-	@Inject(method = "playSound(Lnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FF)V", at = @At("HEAD"), cancellable = true)
+	@Inject(method = "playNotifySound(Lnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalledWithCategory(SoundEvent soundIn, SoundCategory category, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.
 		if (soundIn instanceof DuplicateSoundEvent) {
 			return;
 		}
 		
-		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(this, (PlayerEntity)this, this.getPosX(), this.getPosY(), this.getPosZ(), soundIn, category, volume, pitch);
+		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(this, (PlayerEntity)this, this.getX(), this.getY(), this.getZ(), soundIn, category, volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
 			return;
@@ -64,7 +64,7 @@ public abstract class OverrideClientPlayerEntityPlaySound extends AbstractClient
 		
 		if (evt.wasModified()) {
 			// See OverrideEntityPlaySound for what this garbage is.
-			playSound(new DuplicateSoundEvent(evt.getSound()), evt.getCategory(), evt.getVolume(), evt.getPitch());
+			playNotifySound(new DuplicateSoundEvent(evt.getSound()), evt.getCategory(), evt.getVolume(), evt.getPitch());
 			ci.cancel();
 			return;
 		}

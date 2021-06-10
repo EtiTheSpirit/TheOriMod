@@ -45,7 +45,7 @@ public abstract class OverridePlayerEntityAttackTarget extends LivingEntity impl
 	 * @param pitch
 	 */
 	@Redirect(
-		method = "attackTargetEntityWithCurrentItem(Lnet/minecraft/entity/Entity;)V", 
+		method = "attack(Lnet/minecraft/entity/Entity;)V", 
 		at = @At(
 			value = "INVOKE", 
 			target = "Lnet/minecraft/world/World;playSound(Lnet/minecraft/entity/player/PlayerEntity;DDDLnet/minecraft/util/SoundEvent;Lnet/minecraft/util/SoundCategory;FF)V"
@@ -75,10 +75,10 @@ public abstract class OverridePlayerEntityAttackTarget extends LivingEntity impl
 	 */
 	private static DamageLevel damageLevelFromVanillaSoundEvent(@Nonnull SoundEvent sound) {
 		if (sound == null) throw new NullPointerException();
-		if (sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_NODAMAGE)) return DamageLevel.INEFFECTIVE;
-		if (sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_WEAK)) return DamageLevel.WEAK;
-		if (sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_STRONG)) return DamageLevel.STRONG;
-		if (sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_CRIT)) return DamageLevel.CRITICAL;
+		if (sound.equals(SoundEvents.PLAYER_ATTACK_NODAMAGE)) return DamageLevel.INEFFECTIVE;
+		if (sound.equals(SoundEvents.PLAYER_ATTACK_WEAK)) return DamageLevel.WEAK;
+		if (sound.equals(SoundEvents.PLAYER_ATTACK_STRONG)) return DamageLevel.STRONG;
+		if (sound.equals(SoundEvents.PLAYER_ATTACK_CRIT)) return DamageLevel.CRITICAL;
 		return null;
 	}
 	
@@ -89,8 +89,8 @@ public abstract class OverridePlayerEntityAttackTarget extends LivingEntity impl
 	 */
 	private static SpecialAttackType attackTypeFromVanillaSoundEvent(@Nonnull SoundEvent sound) {
 		if (sound == null) throw new NullPointerException();
-		if (sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_KNOCKBACK)) return SpecialAttackType.KNOCKBACK;
-		if (sound.equals(SoundEvents.ENTITY_PLAYER_ATTACK_SWEEP)) return SpecialAttackType.SWEEP;
+		if (sound.equals(SoundEvents.PLAYER_ATTACK_KNOCKBACK)) return SpecialAttackType.KNOCKBACK;
+		if (sound.equals(SoundEvents.PLAYER_ATTACK_SWEEP)) return SpecialAttackType.SWEEP;
 		return null;
 	}
 

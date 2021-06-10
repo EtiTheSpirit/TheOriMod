@@ -34,9 +34,9 @@ public class SpiritSoundProvider {
 	public static BlockPos getBlockOnPos(@Nonnull Entity entity) {
 		if (entity == null) throw new ArgumentNullException("entity");
 		
-		int x = MathHelper.floor(entity.getPosX());
-        int y = MathHelper.floor(entity.getPosY() - 0.2);
-        int z = MathHelper.floor(entity.getPosZ());
+		int x = MathHelper.floor(entity.getX());
+        int y = MathHelper.floor(entity.getY() - 0.2);
+        int z = MathHelper.floor(entity.getZ());
         return new BlockPos(x, y, z);
 	}
 	
@@ -48,9 +48,9 @@ public class SpiritSoundProvider {
 	public static BlockPos getBlockInPos(@Nonnull Entity entity) {
 		if (entity == null) throw new ArgumentNullException("entity");
 		
-		int x = MathHelper.floor(entity.getPosX());
-        int y = MathHelper.floor(entity.getPosY() + 0.2);
-        int z = MathHelper.floor(entity.getPosZ());
+		int x = MathHelper.floor(entity.getX());
+        int y = MathHelper.floor(entity.getY() + 0.2);
+        int z = MathHelper.floor(entity.getZ());
         return new BlockPos(x, y, z);
 	}
 
@@ -61,7 +61,7 @@ public class SpiritSoundProvider {
     public static BlockState getBlockOn(@Nonnull Entity entity) {
     	if (entity == null) throw new ArgumentNullException("entity");
     	
-        BlockState blockState = entity.getEntityWorld().getBlockState(getBlockOnPos(entity));
+        BlockState blockState = entity.getCommandSenderWorld().getBlockState(getBlockOnPos(entity));
         return blockState;
     }
     
@@ -72,7 +72,7 @@ public class SpiritSoundProvider {
     public static BlockState getBlockIn(@Nonnull Entity entity) {
     	if (entity == null) throw new ArgumentNullException("entity");
     	
-        BlockState blockState = entity.getEntityWorld().getBlockState(getBlockInPos(entity));
+        BlockState blockState = entity.getCommandSenderWorld().getBlockState(getBlockInPos(entity));
         return blockState;
     }
 	
@@ -136,7 +136,7 @@ public class SpiritSoundProvider {
     	if (damageType == null) throw new ArgumentNullException("damageType");
     	
     	if (damageType != null) {
-    		if (damageType.isFireDamage() || damageType == DamageSource.DRAGON_BREATH || damageType == DamageSource.LIGHTNING_BOLT)
+    		if (damageType.isFire() || damageType == DamageSource.DRAGON_BREATH || damageType == DamageSource.LIGHTNING_BOLT)
     		{
     			return SoundRegistry.get("entity.spirit.death.burn");
     		} else if (damageType == DamageSource.DROWN) {

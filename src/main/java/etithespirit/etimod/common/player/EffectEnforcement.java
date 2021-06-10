@@ -20,17 +20,17 @@ public class EffectEnforcement {
 	@SubscribeEvent
 	public static void enforceEffects(PlayerTickEvent event) {
 		SpiritEffect spiritEffect = (SpiritEffect) PotionRegistry.get(SpiritEffect.class);
-		EffectInstance instance = event.player.getActivePotionEffect(spiritEffect);
+		EffectInstance instance = event.player.getEffect(spiritEffect);
 		if (SpiritIdentifier.isSpirit(event.player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
 			if (instance == null) {
 				EffectInstance spiritTag = spiritEffect.constructInfiniteEffect();
 				spiritTag.setCurativeItems(EMPTY_LIST);
-				event.player.addPotionEffect(spiritTag);
+				event.player.addEffect(spiritTag);
 			}
 			//SetScale(event.player, true);
 		} else {
 			if (instance != null) {
-				event.player.removePotionEffect(spiritEffect);
+				event.player.removeEffect(spiritEffect);
 			}
 			//SetScale(event.player, false);
 		}

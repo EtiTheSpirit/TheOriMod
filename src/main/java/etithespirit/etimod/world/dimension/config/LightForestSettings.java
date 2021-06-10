@@ -61,7 +61,7 @@ public final class LightForestSettings {
 			
 			@SuppressWarnings("deprecation")
 			Block blockObj = targetBlock.orElseGet(() -> Registry.BLOCK.getOptional(rsrc).get());
-			this.blockState = blockObj.getDefaultState();
+			this.blockState = blockObj.defaultBlockState();
 		}
 		
 		/**

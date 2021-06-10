@@ -20,12 +20,12 @@ public class PlayerToSpiritBinding {
 	
 	public static void put(PlayerEntity player, boolean loc) {
 		if (player == null) return;
-		put(player.getUniqueID(), loc);
+		put(player.getUUID(), loc);
 	}
 	
 	public static boolean get(PlayerEntity player) {
 		if (player == null) return false;
-		return get(player.getUniqueID());
+		return get(player.getUUID());
 	}
 	
 	public static boolean get(UUID id) {

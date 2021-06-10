@@ -23,7 +23,6 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import etithespirit.etimod.common.mob.SpiritEntity;
 
-@OnlyIn(Dist.CLIENT)
 public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, IHasHead {
 	
 	/** The mathematical constant pi */
@@ -61,131 +60,131 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 	private final ModelRenderer RightEar;
 
 	public ModelSpirit() {
-		textureWidth = 70;
-		textureHeight = 32;
+		texWidth = 70;
+		texHeight = 32;
 		
 		Torso = new ModelRenderer(this);
-		Torso.setRotationPoint(0.0F, 24.0F, 0.0F);
-		Torso.setTextureOffset(0, 24).addBox(-3.5F, -16.0F, -2.0F, 7.0F, 4.0F, 4.0F, 0.0F, true);
-		Torso.setTextureOffset(0, 16).addBox(-3.0F, -21.0F, -1.7F, 6.0F, 5.0F, 3.0F, 0.0F, true);
-		Torso.setTextureOffset(40, 25).addBox(-4.0F, -24.0F, -2.0F, 8.0F, 3.0F, 4.0F, 0.0F, true);
+		Torso.setPos(0.0F, 24.0F, 0.0F);
+		Torso.texOffs(0, 24).addBox(-3.5F, -16.0F, -2.0F, 7.0F, 4.0F, 4.0F, 0.0F, true);
+		Torso.texOffs(0, 16).addBox(-3.0F, -21.0F, -1.7F, 6.0F, 5.0F, 3.0F, 0.0F, true);
+		Torso.texOffs(40, 25).addBox(-4.0F, -24.0F, -2.0F, 8.0F, 3.0F, 4.0F, 0.0F, true);
 
 		Tail = new ModelRenderer(this);
-		Tail.setRotationPoint(0.0F, -13.0F, 2.0F);
+		Tail.setPos(0.0F, -13.0F, 2.0F);
 		Torso.addChild(Tail);
 		
 
 		TailCmp1_r1 = new ModelRenderer(this);
-		TailCmp1_r1.setRotationPoint(0.0F, 5.675F, 5.15F);
+		TailCmp1_r1.setPos(0.0F, 5.675F, 5.15F);
 		Tail.addChild(TailCmp1_r1);
 		setRotationAngle(TailCmp1_r1, 1.5708F, 0.0F, 0.0F);
-		TailCmp1_r1.setTextureOffset(52, 0).addBox(-1.0F, -0.2F, -1.1F, 2.0F, 9.0F, 2.0F, -0.05F, true);
+		TailCmp1_r1.texOffs(52, 0).addBox(-1.0F, -0.2F, -1.1F, 2.0F, 9.0F, 2.0F, -0.05F, true);
 
 		TailCmp0_r1 = new ModelRenderer(this);
-		TailCmp0_r1.setRotationPoint(0.0F, -1.0F, 0.0F);
+		TailCmp0_r1.setPos(0.0F, -1.0F, 0.0F);
 		Tail.addChild(TailCmp0_r1);
 		setRotationAngle(TailCmp0_r1, 0.7854F, 0.0F, 0.0F);
-		TailCmp0_r1.setTextureOffset(52, 0).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 9.0F, 2.0F, 0.0F, true);
+		TailCmp0_r1.texOffs(52, 0).addBox(-1.0F, 0.0F, -2.0F, 2.0F, 9.0F, 2.0F, 0.0F, true);
 
 		RLeg = new ModelRenderer(this);
-		RLeg.setRotationPoint(-2.0F, -12.0F, 0.0F);
+		RLeg.setPos(-2.0F, -12.0F, 0.0F);
 		Torso.addChild(RLeg);
 		
 
 		RightLegMid_r1 = new ModelRenderer(this);
-		RightLegMid_r1.setRotationPoint(-0.4494F, 5.2412F, 0.5354F);
+		RightLegMid_r1.setPos(-0.4494F, 5.2412F, 0.5354F);
 		RLeg.addChild(RightLegMid_r1);
 		setRotationAngle(RightLegMid_r1, 1.309F, 0.0262F, 0.0436F);
-		RightLegMid_r1.setTextureOffset(24, 0).addBox(-1.2F, -2.5F, -1.5F, 3.0F, 5.0F, 3.0F, 0.0F, false);
+		RightLegMid_r1.texOffs(24, 0).addBox(-1.2F, -2.5F, -1.5F, 3.0F, 5.0F, 3.0F, 0.0F, false);
 
 		RightLegHigh_r1 = new ModelRenderer(this);
-		RightLegHigh_r1.setRotationPoint(-0.1F, 1.6464F, -2.5718F);
+		RightLegHigh_r1.setPos(-0.1F, 1.6464F, -2.5718F);
 		RLeg.addChild(RightLegHigh_r1);
 		setRotationAngle(RightLegHigh_r1, -0.5672F, 0.0436F, 0.0F);
-		RightLegHigh_r1.setTextureOffset(32, 4).addBox(-2.2F, -4.0F, -1.0F, 4.0F, 8.0F, 4.0F, 0.0F, false);
+		RightLegHigh_r1.texOffs(32, 4).addBox(-2.2F, -4.0F, -1.0F, 4.0F, 8.0F, 4.0F, 0.0F, false);
 
 		RightLegLow_r1 = new ModelRenderer(this);
-		RightLegLow_r1.setRotationPoint(-0.5442F, 8.4613F, 1.2628F);
+		RightLegLow_r1.setPos(-0.5442F, 8.4613F, 1.2628F);
 		RLeg.addChild(RightLegLow_r1);
 		setRotationAngle(RightLegLow_r1, -0.4538F, 0.0436F, 0.0175F);
-		RightLegLow_r1.setTextureOffset(44, 0).addBox(-0.9F, -3.0F, -1.0F, 2.0F, 6.0F, 2.0F, 0.0F, false);
+		RightLegLow_r1.texOffs(44, 0).addBox(-0.9F, -3.0F, -1.0F, 2.0F, 6.0F, 2.0F, 0.0F, false);
 
 		RightHoof_r1 = new ModelRenderer(this);
-		RightHoof_r1.setRotationPoint(2.0F, 12.0F, 0.0F);
+		RightHoof_r1.setPos(2.0F, 12.0F, 0.0F);
 		RLeg.addChild(RightHoof_r1);
 		setRotationAngle(RightHoof_r1, 1.5708F, 0.0F, 0.0F);
-		RightHoof_r1.setTextureOffset(36, 0).addBox(-3.6F, -2.0F, 0.0F, 2.0F, 3.0F, 1.0F, 0.0F, false);
+		RightHoof_r1.texOffs(36, 0).addBox(-3.6F, -2.0F, 0.0F, 2.0F, 3.0F, 1.0F, 0.0F, false);
 
 		LLeg = new ModelRenderer(this);
-		LLeg.setRotationPoint(2.0F, -12.0F, 0.0F);
+		LLeg.setPos(2.0F, -12.0F, 0.0F);
 		Torso.addChild(LLeg);
 		
 
 		LeftLegMid_r1 = new ModelRenderer(this);
-		LeftLegMid_r1.setRotationPoint(0.4494F, 5.2412F, 0.5354F);
+		LeftLegMid_r1.setPos(0.4494F, 5.2412F, 0.5354F);
 		LLeg.addChild(LeftLegMid_r1);
 		setRotationAngle(LeftLegMid_r1, 1.309F, -0.0262F, -0.0436F);
-		LeftLegMid_r1.setTextureOffset(24, 0).addBox(-1.8F, -2.5F, -1.5F, 3.0F, 5.0F, 3.0F, 0.0F, true);
+		LeftLegMid_r1.texOffs(24, 0).addBox(-1.8F, -2.5F, -1.5F, 3.0F, 5.0F, 3.0F, 0.0F, true);
 
 		LeftLegHigh_r1 = new ModelRenderer(this);
-		LeftLegHigh_r1.setRotationPoint(0.1F, 1.6464F, -2.5718F);
+		LeftLegHigh_r1.setPos(0.1F, 1.6464F, -2.5718F);
 		LLeg.addChild(LeftLegHigh_r1);
 		setRotationAngle(LeftLegHigh_r1, -0.5672F, -0.0436F, 0.0F);
-		LeftLegHigh_r1.setTextureOffset(32, 4).addBox(-1.8F, -4.0F, -1.0F, 4.0F, 8.0F, 4.0F, 0.0F, true);
+		LeftLegHigh_r1.texOffs(32, 4).addBox(-1.8F, -4.0F, -1.0F, 4.0F, 8.0F, 4.0F, 0.0F, true);
 
 		LeftLegLow_r1 = new ModelRenderer(this);
-		LeftLegLow_r1.setRotationPoint(0.5442F, 8.4613F, 1.2628F);
+		LeftLegLow_r1.setPos(0.5442F, 8.4613F, 1.2628F);
 		LLeg.addChild(LeftLegLow_r1);
 		setRotationAngle(LeftLegLow_r1, -0.4538F, -0.0436F, -0.0175F);
-		LeftLegLow_r1.setTextureOffset(44, 0).addBox(-1.1F, -3.0F, -1.0F, 2.0F, 6.0F, 2.0F, 0.0F, true);
+		LeftLegLow_r1.texOffs(44, 0).addBox(-1.1F, -3.0F, -1.0F, 2.0F, 6.0F, 2.0F, 0.0F, true);
 
 		LeftHoof_r1 = new ModelRenderer(this);
-		LeftHoof_r1.setRotationPoint(-2.0F, 12.0F, 0.0F);
+		LeftHoof_r1.setPos(-2.0F, 12.0F, 0.0F);
 		LLeg.addChild(LeftHoof_r1);
 		setRotationAngle(LeftHoof_r1, 1.5708F, 0.0F, 0.0F);
-		LeftHoof_r1.setTextureOffset(36, 0).addBox(1.6F, -2.0F, 0.0F, 2.0F, 3.0F, 1.0F, 0.0F, true);
+		LeftHoof_r1.texOffs(36, 0).addBox(1.6F, -2.0F, 0.0F, 2.0F, 3.0F, 1.0F, 0.0F, true);
 
 		LeftArm = new ModelRenderer(this);
-		LeftArm.setRotationPoint(4.0F, -22.0F, 0.0F);
+		LeftArm.setPos(4.0F, -22.0F, 0.0F);
 		Torso.addChild(LeftArm);
-		LeftArm.setTextureOffset(22, 18).addBox(0.0F, -1.8F, -1.5F, 3.0F, 11.0F, 3.0F, 0.0F, true);
+		LeftArm.texOffs(22, 18).addBox(0.0F, -1.8F, -1.5F, 3.0F, 11.0F, 3.0F, 0.0F, true);
 
 		RightArm = new ModelRenderer(this);
-		RightArm.setRotationPoint(-4.0F, -22.0F, 0.0F);
+		RightArm.setPos(-4.0F, -22.0F, 0.0F);
 		Torso.addChild(RightArm);
-		RightArm.setTextureOffset(22, 18).addBox(-3.0F, -1.8F, -1.5F, 3.0F, 11.0F, 3.0F, 0.0F, false);
+		RightArm.texOffs(22, 18).addBox(-3.0F, -1.8F, -1.5F, 3.0F, 11.0F, 3.0F, 0.0F, false);
 
 		Head = new ModelRenderer(this);
-		Head.setRotationPoint(0.0F, -24.0F, 0.0F);
+		Head.setPos(0.0F, -24.0F, 0.0F);
 		Torso.addChild(Head);
-		Head.setTextureOffset(34, 25).addBox(-2.0F, -3.0F, -5.0F, 4.0F, 3.0F, 1.0F, 0.0F, true);
-		Head.setTextureOffset(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, true);
+		Head.texOffs(34, 25).addBox(-2.0F, -3.0F, -5.0F, 4.0F, 3.0F, 1.0F, 0.0F, true);
+		Head.texOffs(0, 0).addBox(-4.0F, -8.0F, -4.0F, 8.0F, 8.0F, 8.0F, 0.0F, true);
 
 		RightAntenna_r1 = new ModelRenderer(this);
-		RightAntenna_r1.setRotationPoint(-1.5F, -7.4F, -2.0F);
+		RightAntenna_r1.setPos(-1.5F, -7.4F, -2.0F);
 		Head.addChild(RightAntenna_r1);
 		setRotationAngle(RightAntenna_r1, -1.0472F, 0.0F, -0.0873F);
-		RightAntenna_r1.setTextureOffset(60, 22).addBox(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, 0.0F, false);
+		RightAntenna_r1.texOffs(60, 22).addBox(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, 0.0F, false);
 
 		LeftAntenna_r1 = new ModelRenderer(this);
-		LeftAntenna_r1.setRotationPoint(1.5F, -7.4F, -2.0F);
+		LeftAntenna_r1.setPos(1.5F, -7.4F, -2.0F);
 		Head.addChild(LeftAntenna_r1);
 		setRotationAngle(LeftAntenna_r1, -1.0472F, 0.0F, 0.0873F);
-		LeftAntenna_r1.setTextureOffset(60, 22).addBox(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, 0.0F, true);
+		LeftAntenna_r1.texOffs(60, 22).addBox(-0.5F, -6.0F, -0.5F, 1.0F, 6.0F, 1.0F, 0.0F, true);
 
 		LeftEar = new ModelRenderer(this);
-		LeftEar.setRotationPoint(3.3F, -6.0F, 2.0F);
+		LeftEar.setPos(3.3F, -6.0F, 2.0F);
 		Head.addChild(LeftEar);
 		setRotationAngle(LeftEar, 0.5236F, 0.0698F, 0.0698F);
-		LeftEar.setTextureOffset(44, 14).addBox(-0.5625F, -2.1863F, 0.065F, 1.0F, 4.0F, 7.0F, 0.0F, true);
-		LeftEar.setTextureOffset(36, 19).addBox(-0.5625F, -2.1863F, 7.065F, 1.0F, 3.0F, 3.0F, 0.0F, true);
+		LeftEar.texOffs(44, 14).addBox(-0.5625F, -2.1863F, 0.065F, 1.0F, 4.0F, 7.0F, 0.0F, true);
+		LeftEar.texOffs(36, 19).addBox(-0.5625F, -2.1863F, 7.065F, 1.0F, 3.0F, 3.0F, 0.0F, true);
 
 		RightEar = new ModelRenderer(this);
-		RightEar.setRotationPoint(-3.3F, -6.0F, 2.0F);
+		RightEar.setPos(-3.3F, -6.0F, 2.0F);
 		Head.addChild(RightEar);
 		setRotationAngle(RightEar, 0.5236F, -0.0698F, -0.0698F);
-		RightEar.setTextureOffset(44, 14).addBox(-0.4375F, -2.1863F, 0.065F, 1.0F, 4.0F, 7.0F, 0.0F, false);
-		RightEar.setTextureOffset(36, 19).addBox(-0.4375F, -2.1863F, 7.065F, 1.0F, 3.0F, 3.0F, 0.0F, false);
+		RightEar.texOffs(44, 14).addBox(-0.4375F, -2.1863F, 0.065F, 1.0F, 4.0F, 7.0F, 0.0F, false);
+		RightEar.texOffs(36, 19).addBox(-0.4375F, -2.1863F, 7.065F, 1.0F, 3.0F, 3.0F, 0.0F, false);
 	}
 	
 	/**
@@ -213,7 +212,7 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 	}
 
 	@Override
-	public void setRotationAngles(final @Nullable SpiritEntity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYawDegrees, final float headPitchDegrees) {
+	public void setupAnim(final @Nullable SpiritEntity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYawDegrees, final float headPitchDegrees) {
 		setRotationAngles((LivingEntity)entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYawDegrees, headPitchDegrees, null);
 	}
 	
@@ -226,18 +225,18 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 		
 		// Arm Swing...
 		// ... While moving:
-		RightArm.rotateAngleX = MathHelper.cos(limbSwing * 2/3 + PI) * 2.0f * limbSwingAmount * 0.5f;
-		RightArm.rotateAngleY = 0.0f;
-		RightArm.rotateAngleZ = 0.0f;
-		LeftArm.rotateAngleX = MathHelper.cos(limbSwing * 2/3) * 2.0f * limbSwingAmount * 0.5f;
-		LeftArm.rotateAngleY = 0.0f;
-		LeftArm.rotateAngleZ = 0.0f;
+		RightArm.xRot = MathHelper.cos(limbSwing * 2/3 + PI) * 2.0f * limbSwingAmount * 0.5f;
+		RightArm.yRot = 0.0f;
+		RightArm.zRot = 0.0f;
+		LeftArm.xRot = MathHelper.cos(limbSwing * 2/3) * 2.0f * limbSwingAmount * 0.5f;
+		LeftArm.yRot = 0.0f;
+		LeftArm.zRot = 0.0f;
 		
 		// ... When idle:
-		RightArm.rotateAngleZ += MathHelper.cos(ageInTicks * 0.09f) * 0.05f + 0.05f;
-		LeftArm.rotateAngleZ -= MathHelper.cos(ageInTicks * 0.09f) * 0.05f + 0.05f;
-		RightArm.rotateAngleX += MathHelper.cos(ageInTicks * 0.067f) * 0.05f;
-		LeftArm.rotateAngleX -= MathHelper.cos(ageInTicks * 0.067f) * 0.05f;
+		RightArm.zRot += MathHelper.cos(ageInTicks * 0.09f) * 0.05f + 0.05f;
+		LeftArm.zRot -= MathHelper.cos(ageInTicks * 0.09f) * 0.05f + 0.05f;
+		RightArm.xRot += MathHelper.cos(ageInTicks * 0.067f) * 0.05f;
+		LeftArm.xRot -= MathHelper.cos(ageInTicks * 0.067f) * 0.05f;
 		
 		// I want it to be affected by both idle animation and motion like arms are.
 		// Wag tail... 
@@ -245,12 +244,12 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 		setRotationAngle(Tail, 0, MathHelper.sin(limbSwing * 2/3f) * limbSwingAmount / 2, 0);		
 		
 		// ... While idle:
-		Tail.rotateAngleX += MathHelper.sin(ageInTicks / 20) / 40;
-		Tail.rotateAngleY += MathHelper.sin(ageInTicks / 20) / 40;
+		Tail.xRot += MathHelper.sin(ageInTicks / 20) / 40;
+		Tail.yRot += MathHelper.sin(ageInTicks / 20) / 40;
 		
 		setupAttackAnimation(entityIn);
-		boolean isRightHanded = entityIn.getPrimaryHand() == HandSide.RIGHT;
-		boolean isOppositeHandTwoHanded = isRightHanded ? model.leftArmPose.func_241657_a_() : model.rightArmPose.func_241657_a_();
+		boolean isRightHanded = entityIn.getMainArm() == HandSide.RIGHT;
+		boolean isOppositeHandTwoHanded = isRightHanded ? model.leftArmPose.isTwoHanded() : model.rightArmPose.isTwoHanded();
 		if (isRightHanded != isOppositeHandTwoHanded) {
 			this.poseLeftArm(entityIn, model);
 			this.poseRightArm(entityIn, model);
@@ -261,111 +260,111 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 	}
 
 	@Override
-	public void render(final MatrixStack matrixStackIn, final IVertexBuilder bufferIn, final int packedLightIn, final int packedOverlayIn, final float red, final float green, final float blue, final float alpha) {
+	public void renderToBuffer(final MatrixStack matrixStackIn, final IVertexBuilder bufferIn, final int packedLightIn, final int packedOverlayIn, final float red, final float green, final float blue, final float alpha) {
 		Torso.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}
 	
 	private void setRotationAngle(ModelRenderer modelRenderer, float x, float y, float z) {
-		modelRenderer.rotateAngleX = x;
-		modelRenderer.rotateAngleY = y;
-		modelRenderer.rotateAngleZ = z;
+		modelRenderer.xRot = x;
+		modelRenderer.yRot = y;
+		modelRenderer.zRot = z;
 	}
 
 	@Override
-	public ModelRenderer getModelHead() {
+	public ModelRenderer getHead() {
 		return Head;
 	}
 	
 	private void translateAndRotate(ModelRenderer renderer, MatrixStack transformation) {
-		transformation.translate((double)(renderer.rotationPointX / (8.0F / WIDTH_MOD)), 1/8D, 0);
-		if (renderer.rotateAngleZ != 0.0F) {
-			transformation.rotate(Vector3f.ZP.rotation(renderer.rotateAngleZ));
+		transformation.translate((double)(renderer.x / (8.0F / WIDTH_MOD)), 1/8D, 0);
+		if (renderer.zRot != 0.0F) {
+			transformation.mulPose(Vector3f.ZP.rotation(renderer.zRot));
 		}
 
-		if (renderer.rotateAngleY != 0.0F) {
-			transformation.rotate(Vector3f.YP.rotation(renderer.rotateAngleY));
+		if (renderer.yRot != 0.0F) {
+			transformation.mulPose(Vector3f.YP.rotation(renderer.yRot));
 		}
 
-		if (renderer.rotateAngleX != 0.0F) {
-			transformation.rotate(Vector3f.XP.rotation(renderer.rotateAngleX));
+		if (renderer.xRot != 0.0F) {
+			transformation.mulPose(Vector3f.XP.rotation(renderer.xRot));
 		}
 	}
 
 	@Override
-	public void translateHand(HandSide handSide, MatrixStack transformationMatrix) {
+	public void translateToHand(HandSide handSide, MatrixStack transformationMatrix) {
 		translateAndRotate(this.getArm(handSide), transformationMatrix);
 	}
 	
 	private void poseRightArm(LivingEntity entity, PlayerModel<AbstractClientPlayerEntity> model) {
 		switch(model.rightArmPose) {
 			case EMPTY:
-				this.RightArm.rotateAngleY = 0.0F;
+				this.RightArm.yRot = 0.0F;
 				break;
 			case BLOCK:
-				this.RightArm.rotateAngleX = this.RightArm.rotateAngleX * 0.5F - 0.9424779F;
-				this.RightArm.rotateAngleY = (-(float)Math.PI / 6F);
+				this.RightArm.xRot = this.RightArm.xRot * 0.5F - 0.9424779F;
+				this.RightArm.yRot = (-(float)Math.PI / 6F);
 				break;
 			case ITEM:
-				this.RightArm.rotateAngleX = this.RightArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
-				this.RightArm.rotateAngleY = 0.0F;
+				this.RightArm.xRot = this.RightArm.xRot * 0.5F - ((float)Math.PI / 10F);
+				this.RightArm.yRot = 0.0F;
 				break;
 			case THROW_SPEAR:
-				this.RightArm.rotateAngleX = this.RightArm.rotateAngleX * 0.5F - (float)Math.PI;
-				this.RightArm.rotateAngleY = 0.0F;
+				this.RightArm.xRot = this.RightArm.xRot * 0.5F - (float)Math.PI;
+				this.RightArm.yRot = 0.0F;
 				break;
 			case BOW_AND_ARROW:
-				this.RightArm.rotateAngleY = -0.1F + this.Head.rotateAngleY;
-				this.LeftArm.rotateAngleY = 0.1F + this.Head.rotateAngleY + 0.4F;
-				this.RightArm.rotateAngleX = (-(float)Math.PI / 2F) + this.Head.rotateAngleX;
-				this.LeftArm.rotateAngleX = (-(float)Math.PI / 2F) + this.Head.rotateAngleX;
+				this.RightArm.yRot = -0.1F + this.Head.yRot;
+				this.LeftArm.yRot = 0.1F + this.Head.yRot + 0.4F;
+				this.RightArm.xRot = (-(float)Math.PI / 2F) + this.Head.xRot;
+				this.LeftArm.xRot = (-(float)Math.PI / 2F) + this.Head.xRot;
 				break;
 			case CROSSBOW_CHARGE:
-				ModelHelper.func_239102_a_(this.RightArm, this.LeftArm, entity, true);
+				ModelHelper.animateCrossbowCharge(this.RightArm, this.LeftArm, entity, true);
 				break;
 			case CROSSBOW_HOLD:
-				ModelHelper.func_239104_a_(this.RightArm, this.LeftArm, this.Head, true);
+				ModelHelper.animateCrossbowHold(this.RightArm, this.LeftArm, this.Head, true);
 		}
 	}
 
 	private void poseLeftArm(LivingEntity entity, PlayerModel<AbstractClientPlayerEntity> model) {
 		switch(model.leftArmPose) {
 			case EMPTY:
-				this.LeftArm.rotateAngleY = 0.0F;
+				this.LeftArm.yRot = 0.0F;
 				break;
 			case BLOCK:
-				this.LeftArm.rotateAngleX = this.LeftArm.rotateAngleX * 0.5F - 0.9424779F;
-				this.LeftArm.rotateAngleY = ((float)Math.PI / 6F);
+				this.LeftArm.xRot = this.LeftArm.xRot * 0.5F - 0.9424779F;
+				this.LeftArm.yRot = ((float)Math.PI / 6F);
 				break;
 			case ITEM:
-				this.LeftArm.rotateAngleX = this.LeftArm.rotateAngleX * 0.5F - ((float)Math.PI / 10F);
-				this.LeftArm.rotateAngleY = 0.0F;
+				this.LeftArm.xRot = this.LeftArm.xRot * 0.5F - ((float)Math.PI / 10F);
+				this.LeftArm.yRot = 0.0F;
 				break;
 			case THROW_SPEAR:
-				this.LeftArm.rotateAngleX = this.LeftArm.rotateAngleX * 0.5F - (float)Math.PI;
-				this.LeftArm.rotateAngleY = 0.0F;
+				this.LeftArm.xRot = this.LeftArm.xRot * 0.5F - (float)Math.PI;
+				this.LeftArm.yRot = 0.0F;
 				break;
 			case BOW_AND_ARROW:
-				this.RightArm.rotateAngleY = -0.1F + this.Head.rotateAngleY - 0.4F;
-				this.LeftArm.rotateAngleY = 0.1F + this.Head.rotateAngleY;
-				this.RightArm.rotateAngleX = (-(float)Math.PI / 2F) + this.Head.rotateAngleX;
-				this.LeftArm.rotateAngleX = (-(float)Math.PI / 2F) + this.Head.rotateAngleX;
+				this.RightArm.yRot = -0.1F + this.Head.yRot - 0.4F;
+				this.LeftArm.yRot = 0.1F + this.Head.yRot;
+				this.RightArm.xRot = (-(float)Math.PI / 2F) + this.Head.xRot;
+				this.LeftArm.xRot = (-(float)Math.PI / 2F) + this.Head.xRot;
 				break;
 			case CROSSBOW_CHARGE:
-				ModelHelper.func_239102_a_(this.RightArm, this.LeftArm, entity, false);
+				ModelHelper.animateCrossbowCharge(this.RightArm, this.LeftArm, entity, false);
 				break;
 			case CROSSBOW_HOLD:
-				ModelHelper.func_239104_a_(this.RightArm, this.LeftArm, this.Head, false);
+				ModelHelper.animateCrossbowHold(this.RightArm, this.LeftArm, this.Head, false);
 		}
 	}
 	
 	private void setupAttackAnimation(LivingEntity entity) {
-		if (entity.swingProgress > 0.0F) {
+		if (entity.attackAnim > 0.0F) {
 			HandSide handside = this.getAttackArm(entity);
 			ModelRenderer modelrenderer = this.getArm(handside);
-			float f = entity.swingProgress;
-			this.Torso.rotateAngleY = MathHelper.sin(MathHelper.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
+			float f = entity.attackAnim;
+			this.Torso.yRot = MathHelper.sin(MathHelper.sqrt(f) * ((float)Math.PI * 2F)) * 0.2F;
 			if (handside == HandSide.LEFT) {
-				this.Torso.rotateAngleY *= -1.0F;
+				this.Torso.yRot *= -1.0F;
 			}
 
 			/*
@@ -374,20 +373,20 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 			this.LeftArm.z = -MathHelper.sin(this.Torso.rotateAngleY) * 5.0F;
 			this.LeftArm.x = MathHelper.cos(this.Torso.rotateAngleY) * 5.0F;
 			*/
-			this.RightArm.rotateAngleY += this.Torso.rotateAngleY;
-			this.LeftArm.rotateAngleY += this.Torso.rotateAngleY;
-			this.LeftArm.rotateAngleX += this.Torso.rotateAngleY;
-			f = 1.0F - entity.swingProgress;
+			this.RightArm.yRot += this.Torso.yRot;
+			this.LeftArm.yRot += this.Torso.yRot;
+			this.LeftArm.xRot += this.Torso.yRot;
+			f = 1.0F - entity.attackAnim;
 			f = f * f;
 			f = f * f;
 			f = 1.0F - f;
 			float f1 = MathHelper.sin(f * (float)Math.PI);
-			float f2 = MathHelper.sin(entity.swingProgress * (float)Math.PI) * -(this.Head.rotateAngleX - 0.7F) * 0.75F;
-			modelrenderer.rotateAngleX = (float)((double)modelrenderer.rotateAngleX - ((double)f1 * 1.2D + (double)f2));
-			modelrenderer.rotateAngleY += this.Torso.rotateAngleY * 2.0F;
-			modelrenderer.rotateAngleZ += MathHelper.sin(entity.swingProgress * (float)Math.PI) * -0.4F;
+			float f2 = MathHelper.sin(entity.attackAnim * (float)Math.PI) * -(this.Head.xRot - 0.7F) * 0.75F;
+			modelrenderer.xRot = (float)((double)modelrenderer.xRot - ((double)f1 * 1.2D + (double)f2));
+			modelrenderer.yRot += this.Torso.yRot * 2.0F;
+			modelrenderer.zRot += MathHelper.sin(entity.attackAnim * (float)Math.PI) * -0.4F;
 		} else {
-			this.Torso.rotateAngleY = 0;
+			this.Torso.yRot = 0;
 		}
 	}
 
@@ -396,7 +395,7 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 	}
 
 	protected HandSide getAttackArm(LivingEntity spirit) {
-		HandSide handside = spirit.getPrimaryHand();
-		return spirit.swingingHand == Hand.MAIN_HAND ? handside : handside.opposite();
+		HandSide handside = spirit.getMainArm();
+		return spirit.swingingArm == Hand.MAIN_HAND ? handside : handside.getOpposite();
 	}
 }

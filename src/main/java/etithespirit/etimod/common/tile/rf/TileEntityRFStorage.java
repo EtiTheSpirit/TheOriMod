@@ -8,22 +8,22 @@ import net.minecraftforge.energy.IEnergyStorage;
 
 public class TileEntityRFStorage extends TileEntity implements IEnergyStorage {
 	
-	private PersistentEnergyStorage storage = new PersistentEnergyStorage(this::markDirty, 1000000, 100, 100, 1000000);
+	private PersistentEnergyStorage storage = new PersistentEnergyStorage(this::setChanged, 1000000, 100, 100, 1000000);
 
 	public TileEntityRFStorage(TileEntityType<?> tileEntityTypeIn) {
 		super(tileEntityTypeIn);
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		super.write(nbt);
+	public CompoundNBT save(CompoundNBT nbt) {
+		super.save(nbt);
 		storage.writeToNBT(nbt);
 		return nbt;
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
-		super.read(state, nbt);
+	public void load(BlockState state, CompoundNBT nbt) {
+		super.load(state, nbt);
 		storage.readFromNBT(state, nbt);
 	}
 

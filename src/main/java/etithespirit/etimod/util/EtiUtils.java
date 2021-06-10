@@ -74,7 +74,7 @@ public class EtiUtils {
 	 * @return
 	 */
 	public static boolean isClient(World worldIn) {
-		return worldIn.isRemote;
+		return worldIn.isClientSide;
 	}
 	
 	/**
@@ -83,7 +83,7 @@ public class EtiUtils {
 	 * @return
 	 */
 	public static boolean isServer(World worldIn) {
-		return !worldIn.isRemote;
+		return !worldIn.isClientSide;
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class EtiUtils {
 	 * @return
 	 */
 	public static boolean isClient(Entity entityIn) {
-		return isClient(entityIn.getEntityWorld());
+		return isClient(entityIn.getCommandSenderWorld());
 	}
 
 	/**
@@ -101,7 +101,7 @@ public class EtiUtils {
 	 * @return
 	 */
 	public static boolean isServer(Entity entityIn) {
-		return isServer(entityIn.getEntityWorld());
+		return isServer(entityIn.getCommandSenderWorld());
 	}
 	
 	/**

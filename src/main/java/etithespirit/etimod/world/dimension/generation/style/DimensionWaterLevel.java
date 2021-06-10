@@ -21,10 +21,10 @@ public class DimensionWaterLevel extends GenerationStyle<LightForestSettings.Wat
 	@Override
 	public boolean generateBlock(GeneratorController source, IChunk chunk, long seed, long worldX, long worldY, long worldZ, long maxHeight) {
 		if (worldY <= getSettings().getWaterLevel()) {
-			chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.WATER.getDefaultState(), false);
+			chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.WATER.defaultBlockState(), false);
 			BlockPos below = new BlockPos(worldX, worldY - 1, worldZ);
 			if (chunk.getBlockState(below).getBlock().equals(Blocks.GRASS_BLOCK)) {
-				chunk.setBlockState(below, Blocks.DIRT.getDefaultState(), false);
+				chunk.setBlockState(below, Blocks.DIRT.defaultBlockState(), false);
 			}
 			return true;
 		}

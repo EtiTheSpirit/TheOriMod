@@ -8,10 +8,12 @@ import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.state.StateContainer;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class DecayPoisonBlock extends FlowingFluidBlock {
 	
 	public DecayPoisonBlock() {
-		this(() -> DecayFluid.DECAY, Properties.create(Material.WATER).doesNotBlockMovement().hardnessAndResistance(100.0F).noDrops());
+		this(() -> DecayFluid.DECAY, Properties.of(Material.WATER).noCollission().strength(100.0F).noDrops());
 	}
 
 	public DecayPoisonBlock(Supplier<? extends FlowingFluid> supplier, Properties properties) {
@@ -20,8 +22,8 @@ public class DecayPoisonBlock extends FlowingFluidBlock {
 	
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" }) 
-	public void fillStateContainer(StateContainer.Builder builder) {
-		super.fillStateContainer(builder);
+	public void createBlockStateDefinition(StateContainer.Builder builder) {
+		super.createBlockStateDefinition(builder);
 		builder.add(DecayFluid.IS_FULL_DECAY);
 	}
 

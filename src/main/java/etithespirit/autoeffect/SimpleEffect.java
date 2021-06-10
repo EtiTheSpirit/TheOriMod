@@ -22,7 +22,7 @@ public abstract class SimpleEffect extends Effect {
 	}
 	
 	@Override
-	public EffectType getEffectType() {
+	public EffectType getCategory() {
 		if (!hasGottenType) {
 			storedType = getType();
 			this.type = storedType;
@@ -32,7 +32,7 @@ public abstract class SimpleEffect extends Effect {
 	}
 	
 	@Override
-	public int getLiquidColor() {
+	public int getColor() {
 		if (!hasGottenColor) {
 			storedColor = getColor();
 			this.liquidColor = storedColor;
@@ -51,6 +51,6 @@ public abstract class SimpleEffect extends Effect {
 	 * Returns the default color for this effect. This value is cached and this method will only be called once.
 	 * @return
 	 */
-	public abstract int getColor();
+	public abstract int getCustomColor();
 
 }

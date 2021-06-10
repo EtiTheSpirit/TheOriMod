@@ -38,6 +38,8 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 /**
  * A unique block that represents a thin film of Decay mycelium. It grows over the surface of blocks.
  * @author Eti
@@ -78,7 +80,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 * @return
 	 */
 	private static VoxelShape getShapeFor(int flags) {
-		if (flags == 0) return VoxelShapes.fullCube(); 
+		if (flags == 0) return VoxelShapes.block(); 
 		// ^ This is intentional in order to allow the block to be broken if it is placed somewhere where it shouldn't be.
 		// By setting its collision box to a full cube, if for whatever reason the automatic removal (see the bottom)
 		// fails, we can remove it manually rather than creating a block with no hitbox.
@@ -104,23 +106,23 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	/// CTOR ///
 	
 	public DecaySurfaceMyceliumBlock() {
-		super(Properties.create(Material.TALL_PLANTS).variableOpacity().hardnessAndResistance(0.4f).doesNotBlockMovement().sound(SoundType.SLIME).tickRandomly().noDrops().setOpaque(FALSE_POSITION_PREDICATE));
-		this.setDefaultState(
-			this.stateContainer.getBaseState()
-			.with(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE)
-			.with(EDGE_DETECTION_RARITY, 1)
-			.with(WEST, false)
-			.with(EAST, false)
-			.with(UP, false)
-			.with(DOWN, false)
-			.with(NORTH, false)
-			.with(SOUTH, false)
+		super(Properties.of(Material.REPLACEABLE_PLANT).dynamicShape().strength(0.4f).noCollission().sound(SoundType.SLIME_BLOCK).randomTicks().noDrops().isRedstoneConductor(FALSE_POSITION_PREDICATE));
+		this.registerDefaultState(
+			this.stateDefinition.any()
+			.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE)
+			.setValue(EDGE_DETECTION_RARITY, 1)
+			.setValue(WEST, false)
+			.setValue(EAST, false)
+			.setValue(UP, false)
+			.setValue(DOWN, false)
+			.setValue(NORTH, false)
+			.setValue(SOUTH, false)
 		);
 	}
 	
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" }) 
-	public void fillStateContainer(StateContainer.Builder builder) {
+	public void createBlockStateDefinition(StateContainer.Builder builder) {
 		builder.add(ALL_ADJACENT_ARE_DECAY);
 		builder.add(EDGE_DETECTION_RARITY);
 		builder.add(WEST);
@@ -176,12 +178,12 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 */
 	private static int getNumberFromSurfaces(BlockState state) {
 		return getNumberFromSurfaces(
-			state.get(WEST), 
-			state.get(EAST),
-			state.get(UP),
-			state.get(DOWN),
-			state.get(NORTH),
-			state.get(SOUTH)
+			state.getValue(WEST), 
+			state.getValue(EAST),
+			state.getValue(UP),
+			state.getValue(DOWN),
+			state.getValue(NORTH),
+			state.getValue(SOUTH)
 		);
 	}
 	
@@ -194,24 +196,24 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	private static BlockState modifyStateForNeighbors(IWorldReader worldIn, BlockPos pos, BlockState state, @Nullable BlockPos forcedActive) {
 		int f = getNeighborFlags(worldIn, pos, forcedActive);
-		BlockState retn = state.getBlock().getDefaultState();
+		BlockState retn = state.getBlock().defaultBlockState();
 		if (hasFlag(f, 0b000001)) {
-			retn = retn.with(WEST, true);
+			retn = retn.setValue(WEST, true);
 		}
 		if (hasFlag(f, 0b000010)) {
-			retn = retn.with(EAST, true);
+			retn = retn.setValue(EAST, true);
 		}
 		if (hasFlag(f, 0b000100)) {
-			retn = retn.with(UP, true);
+			retn = retn.setValue(UP, true);
 		}
 		if (hasFlag(f, 0b001000)) {
-			retn = retn.with(DOWN, true);
+			retn = retn.setValue(DOWN, true);
 		}
 		if (hasFlag(f, 0b010000)) {
-			retn = retn.with(NORTH, true);
+			retn = retn.setValue(NORTH, true);
 		}
 		if (hasFlag(f, 0b100000)) {
-			retn = retn.with(SOUTH, true);
+			retn = retn.setValue(SOUTH, true);
 		}
 		return retn;
 	}
@@ -258,13 +260,13 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 		// ADJACENTS_IN_ORDER is an ordered array of six Vector3is representing a direction to an adjacent block.
 		for (int o = 0; o < ADJACENTS_IN_ORDER.length; o++) {
 			Vector3i offset = ADJACENTS_IN_ORDER[o];
-			BlockPos targetPos = at.add(offset);
+			BlockPos targetPos = at.offset(offset);
 			BlockState neighbor = worldIn.getBlockState(targetPos);
-			if (!(neighbor.isAir(worldIn, at)) && (neighbor.getFluidState().getFluid() == Fluids.EMPTY)) {
+			if (!(neighbor.isAir(worldIn, at)) && (neighbor.getFluidState().getType() == Fluids.EMPTY)) {
 				// if the neighbor isn't air, and if it's not occupied by a fluid...
 				
 				// isFaceSturdy
-				if (neighbor.isSolidSide(worldIn, at, Direction.getFacingFromVector(-offset.getX(), -offset.getY(), -offset.getZ())) || isLeafBlock(neighbor.getBlock()))
+				if (neighbor.isFaceSturdy(worldIn, at, Direction.getNearest(-offset.getX(), -offset.getY(), -offset.getZ())) || isLeafBlock(neighbor.getBlock()))
 					// and if the surface that I'm connecting to is solid or the block is a leaf block...
 					flags |= (1 << o); // add the flag
 					
@@ -302,11 +304,11 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 		if (randomUnoccupied != null) {
 			BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(randomUnoccupied));
 			if (replacement != null) {
-				worldIn.setBlockState(randomUnoccupied, mutateReplacementState(replacement));
+				worldIn.setBlockAndUpdate(randomUnoccupied, mutateReplacementState(replacement));
 			}
 		} else {
 			// No unoccupied blocks!
-			worldIn.setBlockState(pos, state.with(ALL_ADJACENT_ARE_DECAY, Boolean.TRUE).with(EDGE_DETECTION_RARITY, 0));
+			worldIn.setBlockAndUpdate(pos, state.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.TRUE).setValue(EDGE_DETECTION_RARITY, 0));
 			// Also reset edge detection rarity to promote more.
 		}
 	}
@@ -322,28 +324,28 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (!hasAnyNeighbor(worldIn, pos)) {
 			// No neighbors around this block now? Delete it.
-			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+			worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			return;
 		}
 		
 		BlockState newState = modifyStateForNeighbors(worldIn, pos, state); // Modify this state to adapt to its neighbors.
 		if (!(blockIn instanceof IDecayBlock) && getDecayReplacementFor(worldIn.getBlockState(fromPos)) != null) {
 			// If the new neighbor wasn't a decay block and there is no replacement for it, mark this as false.
-			newState = newState.with(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE);
+			newState = newState.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE);
 		}
-		worldIn.setBlockState(pos, newState); // Update the state
+		worldIn.setBlockAndUpdate(pos, newState); // Update the state
 	}
 	
 	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		// onPlace
 		BlockState newState = modifyStateForNeighbors(worldIn, pos, state);
-		if (newState == state.getBlock().getDefaultState()) {
+		if (newState == state.getBlock().defaultBlockState()) {
 			// Update our state to fit the new neighbors, but if there are no neighbors, then set the block state to air instead to delete it.
-			worldIn.setBlockState(pos, Blocks.AIR.getDefaultState());
+			worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			return;
 		}
-		worldIn.setBlockState(pos, newState);
+		worldIn.setBlockAndUpdate(pos, newState);
 	}
 	
 	/**

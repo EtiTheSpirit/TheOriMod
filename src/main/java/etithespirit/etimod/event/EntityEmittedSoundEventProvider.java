@@ -40,7 +40,7 @@ public class EntityEmittedSoundEventProvider {
 	 */
 	public static @Nullable EntityEmittedSoundEvent getSound(@Nonnull Entity source, @Nullable PlayerEntity player, double x, double y, double z, @Nonnull SoundEvent sound, SoundCategory category, float volume, float pitch) {
 		EntityEmittedSoundEvent evt = new EntityEmittedSoundEvent(source, new Vector3d(x, y, z), sound, category, volume, pitch);
-		World world = source.world;
+		World world = source.level;
 		if (world == null) {
 			return evt;
 		}
@@ -60,7 +60,7 @@ public class EntityEmittedSoundEventProvider {
 	 */
 	@Deprecated
 	public static void playSoundClient(@Nullable PlayerEntity player, EntityEmittedSoundEvent evt) {
-		World world = evt.getEntity().world;
+		World world = evt.getEntity().level;
 		if (world == null) return;
 		if (evt.isCanceled()) return;
 		Vector3d pos = evt.getPosition();
@@ -74,11 +74,11 @@ public class EntityEmittedSoundEventProvider {
 	 */
 	@Deprecated
 	public static void playSoundServer(@Nonnull ServerPlayerEntity player, EntityEmittedSoundEvent evt) {
-		World world = evt.getEntity().world;
+		World world = evt.getEntity().level;
 		if (world == null) return;
 		if (evt.isCanceled()) return;
 		Vector3d pos = evt.getPosition();
-		player.connection.sendPacket(new SPlaySoundEffectPacket(evt.getSound(), evt.getCategory(), pos.x, pos.y, pos.z, evt.getVolume(), evt.getPitch()));
+		player.connection.send(new SPlaySoundEffectPacket(evt.getSound(), evt.getCategory(), pos.x, pos.y, pos.z, evt.getVolume(), evt.getPitch()));
 	}
 	
 	/**
@@ -96,7 +96,7 @@ public class EntityEmittedSoundEventProvider {
 	 */
 	@Deprecated // Intrusive! This needs to be removed immediately in favor of injectors and variable modifications.
 	public static void _playSound(@Nonnull Entity source, @Nullable PlayerEntity player, double x, double y, double z, @Nonnull SoundEvent sound, SoundCategory category, float volume, float pitch) {
-		World world = source.world;
+		World world = source.level;
 		if (world == null) return;
 		
 		EntityEmittedSoundEvent evt = getSound(source, player, x, y, z, sound, category, volume, pitch);
@@ -120,7 +120,7 @@ public class EntityEmittedSoundEventProvider {
 	 */
 	@Deprecated // Intrusive! This needs to be removed immediately in favor of injectors and variable modifications.
 	public static void _serverPlaySound(@Nonnull ServerPlayerEntity player, double x, double y, double z, @Nonnull SoundEvent sound, SoundCategory category, float volume, float pitch) {
-		World world = player.world;
+		World world = player.level;
 		if (world == null) return;
 		
 		EntityEmittedSoundEvent evt = getSound(player, player, x, y, z, sound, category, volume, pitch);
@@ -128,7 +128,7 @@ public class EntityEmittedSoundEventProvider {
 		
 		Vector3d pos = evt.getPosition();
 		
-		player.connection.sendPacket(new SPlaySoundEffectPacket(evt.getSound(), evt.getCategory(), pos.x, pos.y, pos.z, evt.getVolume(), evt.getPitch()));
+		player.connection.send(new SPlaySoundEffectPacket(evt.getSound(), evt.getCategory(), pos.x, pos.y, pos.z, evt.getVolume(), evt.getPitch()));
 	}
 	
 	public static void registerHandler(Consumer<EntityEmittedSoundEvent> handler) {

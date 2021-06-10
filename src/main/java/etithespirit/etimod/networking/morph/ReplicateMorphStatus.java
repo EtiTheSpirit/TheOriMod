@@ -87,7 +87,7 @@ public class ReplicateMorphStatus {
 			msg.type = EventType.FromByte(type);
 			msg.wantsToBeSpirit = buffer.readBoolean();
 			
-			if ((flags & 1) == 1) msg.playerID = UUID.fromString(buffer.readString());
+			if ((flags & 1) == 1) msg.playerID = UUID.fromString(buffer.readUtf());
 			// if ((flags & 2) == 2) msg.TargetEntity = new ResourceLocation(buffer.readString());
 			
 		} catch (IllegalArgumentException exc) {
@@ -116,7 +116,7 @@ public class ReplicateMorphStatus {
 		buffer.writeBoolean(packet.wantsToBeSpirit);
 		
 		if (packet.playerID != null) {
-			buffer.writeString(packet.playerID.toString());
+			buffer.writeUtf(packet.playerID.toString());
 		}
 		
 		//if (packet.TargetEntity != null) {
@@ -144,20 +144,20 @@ public class ReplicateMorphStatus {
 				NetworkEvent.Context context = ctx.get();
 				// Right now there's no actual requirements in place so....
 				ServerPlayerEntity sender = context.getSender();
-				UUID id = sender.getUniqueID();
-				if (!sender.getUniqueID().equals(msg.playerID)) {
-					if (sender.hasPermissionLevel(sender.server.getOpPermissionLevel())) {
+				UUID id = sender.getUUID();
+				if (!sender.getUUID().equals(msg.playerID)) {
+					if (sender.hasPermissions(sender.server.getOperatorUserPermissionLevel())) {
 						// Are they an op? If so, we'll allow the different ID.
 						id = msg.playerID;
 					} else {
-						EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUniqueID().toString() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
+						EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUUID().toString() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
 						return;
 					}
 				}
 				
 				//PlayerToSpiritBinding.Put(id, msg.TargetEntity);
 				PlayerToSpiritBinding.put(id, msg.wantsToBeSpirit);
-				sender.recalculateSize(); // Potentially fix bug with jittering. EDIT: Nope lol
+				sender.refreshDimensions(); // Potentially fix bug with jittering. EDIT: Nope lol
 				INSTANCE.send(PacketDistributor.ALL.noArg(), ModelReplicationPacket.ToTellAllClientsSomeoneIsA(id, msg.wantsToBeSpirit));
 		    });
 		} else if (msg.type == EventType.GetEveryPlayerModel) {
@@ -168,13 +168,13 @@ public class ReplicateMorphStatus {
 				Map<UUID, Boolean> whoIsASpirit = new HashMap<UUID, Boolean>();
 				for (ServerPlayerEntity other : server.getPlayerList().getPlayers()) {
 					if (other.equals(sender)) continue;
-					UUID id = other.getUniqueID();
+					UUID id = other.getUUID();
 					boolean isSpirit = PlayerToSpiritBinding.get(id);
 					whoIsASpirit.put(id, isSpirit);
 					//ModelReplicationPacket toSend = ModelReplicationPacket.AsResponseToGetPlayerModel(id, isSpirit);
 					//INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), toSend);
 				}
-				ModelReplicationPacket toSend = ModelReplicationPacket.ToTellClientWhatEveryoneIs(sender.getUniqueID(), whoIsASpirit);
+				ModelReplicationPacket toSend = ModelReplicationPacket.ToTellClientWhatEveryoneIs(sender.getUUID(), whoIsASpirit);
 				INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), toSend);
 			});
 		}
@@ -195,8 +195,6 @@ public class ReplicateMorphStatus {
 		ctx.get().setPacketHandled(true);
 	}
 	
-	
-	@OnlyIn(Dist.CLIENT)
 	protected static void onClientEvent(ModelReplicationPacket msg, Supplier<NetworkEvent.Context> ctx) {
 		if (msg.type == EventType.IsPlayerModel || msg.type == EventType.UpdatePlayerModel) {
 			ctx.get().enqueueWork(() -> {
@@ -220,7 +218,7 @@ public class ReplicateMorphStatus {
 				ServerPlayerEntity sender = context.getSender();
 				UUID id = msg.playerID;
 				MinecraftServer server = sender.getServer();
-				ServerPlayerEntity referencedPlayer = server.getPlayerList().getPlayerByUUID(id);
+				ServerPlayerEntity referencedPlayer = server.getPlayerList().getPlayer(id);
 				
 				if (referencedPlayer != null) {
 					boolean isSpirit = PlayerToSpiritBinding.get(id);
@@ -233,13 +231,13 @@ public class ReplicateMorphStatus {
 				NetworkEvent.Context context = ctx.get();
 				// Right now there's no actual requirements in place so....
 				ServerPlayerEntity sender = context.getSender();
-				UUID id = sender.getUniqueID();
-				if (!sender.getUniqueID().equals(msg.playerID)) {
-					if (sender.hasPermissionLevel(sender.server.getOpPermissionLevel())) {
+				UUID id = sender.getUUID();
+				if (!sender.getUUID().equals(msg.playerID)) {
+					if (sender.hasPermissions(sender.server.getOperatorUserPermissionLevel())) {
 						// Are they an op? If so, we'll allow the different ID.
 						id = msg.playerID;
 					} else {
-						EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUniqueID().toString() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
+						EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUUID().toString() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
 						return;
 					}
 				}
@@ -279,7 +277,6 @@ public class ReplicateMorphStatus {
 	 * Politely asks the server if I can become a spirit (or no longer be one).
 	 * @param isSpirit
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void askToSetSpiritStatusAsync(boolean isSpirit) {
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.AsRequestSetModel(isSpirit));
 	}
@@ -288,7 +285,6 @@ public class ReplicateMorphStatus {
 	 * Politely asks the server if the player with the given ID is a spirit, or was last seen as a spirit before they left the server.
 	 * @param id
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void askIfSomeoneIsASpiritAsync(UUID id) {
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.AsRequestGetPlayerModel(id));
 	}
@@ -296,7 +292,6 @@ public class ReplicateMorphStatus {
 	/**
 	 * Politely asks the server which people are spirits right now.
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static void askWhoIsASpiritAsync() {
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.AsRequestGetAllModels());
 	}

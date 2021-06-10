@@ -54,19 +54,19 @@ public class StatusEffectPacket {
 	}
 	
 	public StatusEffectPacket(EffectInstance fromEffect, boolean add) {
-		statusEffect = fromEffect.getPotion().getRegistryName();
+		statusEffect = fromEffect.getEffect().getRegistryName();
 		shouldBeAdding = add;
 		duration = fromEffect.getDuration();
 		amplifier = fromEffect.getAmplifier();
-		particles = fromEffect.doesShowParticles();
+		particles = fromEffect.isVisible();
 		ambient = fromEffect.isAmbient();
-		showIcon = fromEffect.isShowIcon();
+		showIcon = fromEffect.showIcon();
 	}
 	
 	public void PopulateBuffer(PacketBuffer buffer) {
 		String fx = statusEffect.toString();
 		buffer.writeInt(fx.length());
-		buffer.writeString(fx);
+		buffer.writeUtf(fx);
 		if (!shouldBeAdding) {
 			buffer.writeBoolean(false);
 			return;
@@ -98,7 +98,7 @@ public class StatusEffectPacket {
 	public static StatusEffectPacket BufferToPacket(PacketBuffer buffer) {
 		StatusEffectPacket packet = new StatusEffectPacket();
 		int len = buffer.readInt();
-		packet.statusEffect = new ResourceLocation(buffer.readString(len));
+		packet.statusEffect = new ResourceLocation(buffer.readUtf(len));
 		packet.shouldBeAdding = buffer.readBoolean();
 		if (packet.shouldBeAdding) {
 			packet.duration = buffer.readInt();

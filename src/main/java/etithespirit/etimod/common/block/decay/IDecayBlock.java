@@ -41,8 +41,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * @param from All states of this block will be registered as replacable by this Decay block.
 	 */
 	public static void registerAllStatesForBlock(List<BlockState> blocksToReplaceWithSelf, Block from) {
-		StateContainer<Block, BlockState> container = from.getStateContainer();
-		blocksToReplaceWithSelf.addAll(container.getValidStates());
+		StateContainer<Block, BlockState> container = from.getStateDefinition();
+		blocksToReplaceWithSelf.addAll(container.getPossibleStates());
 	}
 	
 	/**
@@ -70,7 +70,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * Returns whether or not this decay block needs to spread because one or more of its adjacent blocks is not a decay block.
 	 */
 	default boolean needsToSpread(BlockState decayBlock) {
-		return !decayBlock.get(ALL_ADJACENT_ARE_DECAY);
+		return !decayBlock.getValue(ALL_ADJACENT_ARE_DECAY);
 	}
 	
 	/**
@@ -106,7 +106,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	default boolean[] getNonDecayableAdjacents(World world, BlockPos pos) {
 		boolean[] result = new boolean[6];
 		for (int idx = 0; idx < ADJACENTS_IN_ORDER.length; idx++) {
-			BlockPos newPos = pos.add(ADJACENTS_IN_ORDER[idx]);
+			BlockPos newPos = pos.offset(ADJACENTS_IN_ORDER[idx]);
 			BlockState neighbor = world.getBlockState(newPos);
 			result[idx] = !hasDecayReplacementFor(world, newPos, neighbor); // It is considered occupied if there is no replacement for it.
 		}
@@ -134,7 +134,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		
 		if (numIndices == 0) return null;
 		int index = validIndices[rng.nextInt(numIndices)];
-		return originalPos.add(ADJACENTS_IN_ORDER[index]);
+		return originalPos.offset(ADJACENTS_IN_ORDER[index]);
 	}
 	
 	/**
@@ -147,7 +147,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	default BlockPos randomUnoccupiedDiagonal(World world, BlockPos originalPos, Random rng) {
 		for (int idx = 0; idx < MAX_DIAGONAL_TESTS; idx++) {
 			int rngIdx = rng.nextInt(DIAGONALS_IN_ORDER.length);
-			BlockPos newPos = originalPos.add(DIAGONALS_IN_ORDER[rngIdx]);
+			BlockPos newPos = originalPos.offset(DIAGONALS_IN_ORDER[rngIdx]);
 			BlockState neighbor = world.getBlockState(newPos);
 			if (hasDecayReplacementFor(world, newPos, neighbor)) {
 				return newPos;
@@ -157,7 +157,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	}
 	
 	default void defaultRandomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
-		boolean doEdgeCheckInstead = needsToDoEdgeCheck(random, state.get(EDGE_DETECTION_RARITY), EDGE_TEST_MINIMUM_CHANCE);
+		boolean doEdgeCheckInstead = needsToDoEdgeCheck(random, state.getValue(EDGE_DETECTION_RARITY), EDGE_TEST_MINIMUM_CHANCE);
 		boolean needsToSpreadToNewBlock = needsToSpread(state);
 		if (!needsToSpreadToNewBlock) {
 			if (doEdgeCheckInstead) {
@@ -177,13 +177,13 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		if (randomUnoccupied != null) {
 			BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(randomUnoccupied));
 			if (replacement != null) {
-				worldIn.setBlockState(randomUnoccupied, mutateReplacementState(replacement));
+				worldIn.setBlockAndUpdate(randomUnoccupied, mutateReplacementState(replacement));
 			} else {
 				throw new IllegalStateException("An unoccupied space was present with no replacement! This should NEVER happen! Did you accidentally explicitly allow a type of block in randomUnoccupiedDirection?");
 			}
 		} else {
 			// No unoccupied blocks!
-			worldIn.setBlockState(pos, state.with(ALL_ADJACENT_ARE_DECAY, Boolean.TRUE).with(EDGE_DETECTION_RARITY, 0));
+			worldIn.setBlockAndUpdate(pos, state.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.TRUE).setValue(EDGE_DETECTION_RARITY, 0));
 			// Also reset edge detection rarity to promote more.
 		}
 	}
@@ -194,18 +194,18 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 			// Could find one. Replace and increase the chance.
 			BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(randomUnoccupied));
 			if (replacement != null) {
-				worldIn.setBlockState(randomUnoccupied, mutateReplacementState(replacement));
-				int currentRarity = state.get(EDGE_DETECTION_RARITY);
+				worldIn.setBlockAndUpdate(randomUnoccupied, mutateReplacementState(replacement));
+				int currentRarity = state.getValue(EDGE_DETECTION_RARITY);
 				if (currentRarity > 0) {
-					worldIn.setBlockState(pos, state.with(EDGE_DETECTION_RARITY, currentRarity - 1));
+					worldIn.setBlockAndUpdate(pos, state.setValue(EDGE_DETECTION_RARITY, currentRarity - 1));
 				}
 				return;
 			}
 		}
 		// Couldn't find one. Reduce the chance.
-		int currentRarity = state.get(EDGE_DETECTION_RARITY);
+		int currentRarity = state.getValue(EDGE_DETECTION_RARITY);
 		if (currentRarity < EDGE_TEST_MINIMUM_CHANCE) {
-			worldIn.setBlockState(pos, state.with(EDGE_DETECTION_RARITY, currentRarity + 1));
+			worldIn.setBlockAndUpdate(pos, state.setValue(EDGE_DETECTION_RARITY, currentRarity + 1));
 		}
 	}
 	
@@ -214,7 +214,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	default void defaultNeighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(fromPos));
 		if (!(blockIn instanceof IDecayBlock) && replacement != null && !(replacement.getBlock() instanceof DecaySurfaceMyceliumBlock)) {
-			worldIn.setBlockState(pos, state.with(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE));
+			worldIn.setBlockAndUpdate(pos, state.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE));
 		}
 	}
 	
@@ -223,7 +223,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		LivingEntity entity = (LivingEntity)entityIn;
 		if (worldIn.getRandom().nextDouble() > 0.3D) {
 			DecayEffect decay = (DecayEffect)PotionRegistry.get(DecayEffect.class);
-			entity.addPotionEffect(decay.constructEffect(20, 0));
+			entity.addEffect(decay.constructEffect(20, 0));
 		}
 	}
 	

@@ -27,9 +27,9 @@ public class MorphDataPersistence extends MapData {
 	}
 
 	@Override
-	public void read(CompoundNBT nbt) {
+	public void load(CompoundNBT nbt) {
 		CompoundNBT data = nbt.getCompound("MorphBindings");
-		Set<String> keys = data.keySet();
+		Set<String> keys = data.getAllKeys();
 		for (String key : keys) {
 			boolean value = data.getBoolean(key);
 			try {
@@ -40,7 +40,7 @@ public class MorphDataPersistence extends MapData {
 	}
 
 	@Override
-	public CompoundNBT write(CompoundNBT compound) {
+	public CompoundNBT save(CompoundNBT compound) {
 		Map<UUID, Boolean> binding = PlayerToSpiritBinding.BINDINGS;
 		Set<UUID> uuids = binding.keySet();
 		CompoundNBT container = new CompoundNBT();
@@ -63,7 +63,7 @@ public class MorphDataPersistence extends MapData {
 		MapData instance = world.getMapData(DATA_NAME);
 		if (instance == null || !(instance instanceof MorphDataPersistence)) {
 			MorphDataPersistence data = new MorphDataPersistence();
-			world.registerMapData(data);
+			world.setMapData(data);
 			return data;
 		}
 		return (MorphDataPersistence)instance;

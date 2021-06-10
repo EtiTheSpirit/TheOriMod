@@ -64,7 +64,6 @@ public class ModelReplicationPacket {
 	 * @param refPlayerID
 	 * @return
 	 */
-	@OnlyIn(Dist.CLIENT)
 	public static ModelReplicationPacket AsRequestGetPlayerModel(UUID refPlayerID) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(refPlayerID);
 		pack.type = EventType.GetPlayerModel;
@@ -77,9 +76,8 @@ public class ModelReplicationPacket {
 	 * @return
 	 */
 	@SuppressWarnings("resource")
-	@OnlyIn(Dist.CLIENT)
 	public static ModelReplicationPacket AsRequestSetModel(boolean beSpirit) {
-		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUniqueID());
+		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUUID());
 		pack.type = EventType.RequestChangePlayerModel;
 		pack.wantsToBeSpirit = beSpirit;
 		return pack;
@@ -91,9 +89,8 @@ public class ModelReplicationPacket {
 	 * @return
 	 */
 	@SuppressWarnings("resource")
-	@OnlyIn(Dist.CLIENT)
 	public static ModelReplicationPacket AsRequestSetModel(UUID playerId, boolean beSpirit) {
-		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUniqueID());
+		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUUID());
 		pack.type = EventType.RequestChangePlayerModel;
 		pack.wantsToBeSpirit = beSpirit;
 		pack.playerID = playerId;
@@ -107,9 +104,8 @@ public class ModelReplicationPacket {
 	 * @return
 	 */
 	@SuppressWarnings("resource")
-	@OnlyIn(Dist.CLIENT)
 	public static ModelReplicationPacket AsRequestGetAllModels() {
-		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUniqueID());
+		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUUID());
 		pack.type = EventType.GetEveryPlayerModel;
 		return pack;
 	}

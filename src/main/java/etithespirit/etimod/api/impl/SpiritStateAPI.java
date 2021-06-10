@@ -33,7 +33,7 @@ public class SpiritStateAPI implements ISpiritStateAPI {
 		UUID id = playerId;
 		if (id == null) {
 			Minecraft game = Minecraft.getInstance();
-			id = game.player.getUniqueID();
+			id = game.player.getUUID();
 		}
 		if (forceSkipLocal) {
 			return createOnClientEventWaiter(id);

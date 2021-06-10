@@ -26,12 +26,12 @@ public class SpiritIdentifier {
 		}
 		if (EtiUtils.hasFlag(identificationMethod, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
 			if (livingEntity instanceof PlayerEntity) {
-				UUID id = livingEntity.getUniqueID();
+				UUID id = livingEntity.getUUID();
 				return PlayerToSpiritBinding.get(id);
 			}
 		}
 		if (EtiUtils.hasFlag(identificationMethod, SpiritIdentificationType.FROM_POTION_EFFECT)) {
-			return livingEntity.getActivePotionEffect(PotionRegistry.get(SpiritEffect.class)) != null;
+			return livingEntity.getEffect(PotionRegistry.get(SpiritEffect.class)) != null;
 		}
 		return false;
 	}

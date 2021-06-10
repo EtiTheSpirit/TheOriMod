@@ -7,9 +7,11 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class DecayLogBlock extends DecayLogBase {
 	
-	private static final Properties DEFAULT_PROPERTIES = Properties.from(Blocks.OAK_LOG).sound(SoundType.STONE);
+	private static final Properties DEFAULT_PROPERTIES = Properties.copy(Blocks.OAK_LOG).sound(SoundType.STONE);
 	
 	public DecayLogBlock() {
 		super(DEFAULT_PROPERTIES, true);

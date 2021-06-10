@@ -18,6 +18,8 @@ import static etithespirit.etimod.common.block.decay.DecayCommon.ALL_ADJACENT_AR
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 /**
  * A decayed tree log.
  * @author Eti
@@ -39,8 +41,8 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 	 * @param spreads Whether or not this decay block spreads (replaces certain adjacent blocks with a decay equivalent). Setting this to true will set the {@code ticksRandomly} field on the input properties.
 	 */
 	public DecayLogBase(Properties properties, boolean spreads) {
-		super(spreads ? properties.tickRandomly() : properties);
-		this.setDefaultState(this.stateContainer.getBaseState().with(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).with(EDGE_DETECTION_RARITY, 1)); // Set this to 1 so that it's a half chance.
+		super(spreads ? properties.randomTicks() : properties);
+		this.registerDefaultState(this.stateDefinition.any().setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).setValue(EDGE_DETECTION_RARITY, 1)); // Set this to 1 so that it's a half chance.
 		if (spreads) {
 			List<BlockState> thisBlockReplacements = new ArrayList<BlockState>();
 			registerReplacements(thisBlockReplacements);
@@ -49,9 +51,9 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 				return;
 			} else {
 				for (BlockState repl : thisBlockReplacements) {
-					BLOCK_REPLACEMENT_TARGETS.put(repl, this.getDefaultState().with(AXIS, repl.get(AXIS)));
+					BLOCK_REPLACEMENT_TARGETS.put(repl, this.defaultBlockState().setValue(AXIS, repl.getValue(AXIS)));
 				}
-				properties.tickRandomly();
+				properties.randomTicks();
 				return;
 			}
 		}
@@ -59,7 +61,7 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 		
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" }) 
-	public void fillStateContainer(StateContainer.Builder builder) {
+	public void createBlockStateDefinition(StateContainer.Builder builder) {
 		builder.add(AXIS);
 		builder.add(ALL_ADJACENT_ARE_DECAY);
 		builder.add(EDGE_DETECTION_RARITY);

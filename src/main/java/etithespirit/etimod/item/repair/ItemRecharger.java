@@ -69,13 +69,13 @@ public final class ItemRecharger {
 		speedCoefficient = clamp(speedCoefficient * (1 + deltaTime));
 		final double ratio = maxCost * speedCoefficient;
 		int expToTake = (int)(ratio);
-		int currentExp = player.getExperiencePoints(player);
+		int currentExp = player.getExperienceReward(player);
 		
 		if (expToTake == 0) expToTake = 1;
 		if (currentExp >= expToTake && itemReference.isDamaged()) {
 			PlayerDataUtils.removeExperiencePoints(player, expToTake);
-			itemReference.setDamage(itemReference.getDamage() - (int)(repair * speedCoefficient));
-			currentExp = player.getExperiencePoints(player);
+			itemReference.setDamageValue(itemReference.getDamageValue() - (int)(repair * speedCoefficient));
+			currentExp = player.getExperienceReward(player);
 		}
 	}
 	

@@ -10,6 +10,8 @@ import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraftforge.common.ToolType;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 /**
  * Decay mycelium, which replaces dirt and grass.
  * @author Eti
@@ -17,7 +19,7 @@ import net.minecraftforge.common.ToolType;
  */
 public class DecayMyceliumBlock extends DecayBlockBase {
 
-	private static final Properties DEFAULT_PROPERTIES = Properties.create(Material.ORGANIC).sound(SoundType.SLIME).harvestLevel(0).harvestTool(ToolType.SHOVEL).hardnessAndResistance(1.2f).slipperiness(0.9995f);
+	private static final Properties DEFAULT_PROPERTIES = Properties.of(Material.GRASS).sound(SoundType.SLIME_BLOCK).harvestLevel(0).harvestTool(ToolType.SHOVEL).strength(1.2f).friction(0.9995f);
 	
 	public DecayMyceliumBlock() {
 		super(DEFAULT_PROPERTIES, true);
@@ -26,9 +28,9 @@ public class DecayMyceliumBlock extends DecayBlockBase {
 	@Override
 	public void registerReplacements(List<BlockState> blocksToReplaceWithSelf) {
 		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.GRASS_BLOCK);
-		blocksToReplaceWithSelf.add(Blocks.DIRT.getDefaultState());
-		blocksToReplaceWithSelf.add(Blocks.COARSE_DIRT.getDefaultState());
-		blocksToReplaceWithSelf.add(Blocks.PODZOL.getDefaultState());
+		blocksToReplaceWithSelf.add(Blocks.DIRT.defaultBlockState());
+		blocksToReplaceWithSelf.add(Blocks.COARSE_DIRT.defaultBlockState());
+		blocksToReplaceWithSelf.add(Blocks.PODZOL.defaultBlockState());
 	}
 	
 	

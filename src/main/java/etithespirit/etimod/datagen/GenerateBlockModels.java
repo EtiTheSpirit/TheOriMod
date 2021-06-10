@@ -106,11 +106,11 @@ public class GenerateBlockModels extends BlockStateProvider {
 
 	public void axisBlockWithStates(RotatedPillarBlock block, ModelFile vertical, ModelFile horizontal) {
 	    
-		for (BlockState fullState : block.getStateContainer().getValidStates()) {
+		for (BlockState fullState : block.getStateDefinition().getPossibleStates()) {
 			
-			Axis axis = fullState.get(RotatedPillarBlock.AXIS);
-			boolean allAdjacentDecayed = fullState.get(DecayCommon.ALL_ADJACENT_ARE_DECAY);
-			int edgeSpreadRarity = fullState.get(DecayCommon.EDGE_DETECTION_RARITY);
+			Axis axis = fullState.getValue(RotatedPillarBlock.AXIS);
+			boolean allAdjacentDecayed = fullState.getValue(DecayCommon.ALL_ADJACENT_ARE_DECAY);
+			int edgeSpreadRarity = fullState.getValue(DecayCommon.EDGE_DETECTION_RARITY);
 			
 			// Populate the required state.
 			PartialBlockstate basic = getVariantBuilder(block).partialState().with(DecayCommon.ALL_ADJACENT_ARE_DECAY, allAdjacentDecayed).with(DecayCommon.EDGE_DETECTION_RARITY, edgeSpreadRarity).with(RotatedPillarBlock.AXIS, axis);
@@ -125,7 +125,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 			EtiMod.LOG.printf(Level.INFO, "Generating special log block state where %s = %s, %s = %s | axis = %s at %s / %s", 
 				DecayCommon.ALL_ADJACENT_ARE_DECAY.getName(), allAdjacentDecayed, 
 				DecayCommon.EDGE_DETECTION_RARITY.getName(), edgeSpreadRarity,
-				axis.getName2(),
+				axis.getName(),
 				vertical.getLocation(), horizontal.getLocation()
 			);
 		}

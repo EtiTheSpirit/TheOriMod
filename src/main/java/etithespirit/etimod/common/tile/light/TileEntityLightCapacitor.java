@@ -13,7 +13,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
 
 	public TileEntityLightCapacitor() {
 		super(TileEntityRegistry.LIGHT_CAPACITOR.get());
-		this.storage = new PersistentLightEnergyStorage(this::markDirty, 10000, 20, 20, FluxBehavior.DISABLED, false, 10000);
+		this.storage = new PersistentLightEnergyStorage(this::setChanged, 10000, 20, 20, FluxBehavior.DISABLED, false, 10000);
 	}
 	
 	@Override
@@ -22,24 +22,24 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
 	}
 	
 	@Override
-	public CompoundNBT write(CompoundNBT nbt) {
-		return storage.writeToNBT(super.write(nbt)); 
+	public CompoundNBT save(CompoundNBT nbt) {
+		return storage.writeToNBT(super.save(nbt)); 
 	}
 	
 	@Override
-	public void read(BlockState state, CompoundNBT nbt) {
+	public void load(BlockState state, CompoundNBT nbt) {
 		storage.readFromNBT(nbt);
 	}
 	
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
 		CompoundNBT nbt = storage.writeToNBT(new CompoundNBT());
-		return new SUpdateTileEntityPacket(getPos(), -1, nbt);
+		return new SUpdateTileEntityPacket(getBlockPos(), -1, nbt);
 	}
 	
 	@Override
 	public void onDataPacket(NetworkManager mgr, SUpdateTileEntityPacket packet) {
-		CompoundNBT nbt = packet.getNbtCompound();
+		CompoundNBT nbt = packet.getTag();
 		storage.readFromNBT(nbt);
 	}
 
@@ -47,7 +47,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
 	public double receiveLight(double maxReceive, boolean simulate) {
 		double amount = storage.receiveLight(maxReceive, simulate);
 		if (amount != 0) {
-			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 		}
 		return amount;
 	}
@@ -56,7 +56,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
 	public double extractLight(double maxExtract, boolean simulate) {
 		double amount = storage.extractLight(maxExtract, simulate);
 		if (amount != 0) {
-			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 		}
 		return amount;
 	}
@@ -95,7 +95,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
 	public double applyEnvFlux(boolean simulate) {
 		double amount = storage.applyEnvFlux(simulate);
 		if (amount != 0) {
-			world.notifyBlockUpdate(pos, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 		}
 		return amount;
 	}

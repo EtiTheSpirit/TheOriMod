@@ -32,7 +32,7 @@ public abstract class OverridePlayerEntityPlaySound extends LivingEntity impleme
 			return;
 		}
 		
-		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(self(), null, this.getPosX(), this.getPosY(), this.getPosZ(), soundIn, this.getSoundCategory(), volume, pitch);
+		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(self(), null, this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
 			return;

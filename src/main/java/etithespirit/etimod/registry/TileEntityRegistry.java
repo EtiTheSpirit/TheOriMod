@@ -29,7 +29,7 @@ public class TileEntityRegistry {
 	private static <T extends TileEntity> Supplier<TileEntityType<T>> getBuilderFor(Supplier<T> ctor, RegistryObject<Block> block) {
 		// TODO: This is a bit "grotesque" in general, feels a bit wrong to use. I wrote it so that it was shorter up top.
 		// Shall I keep it? It's kinda stanky ngl
-		return () -> TileEntityType.Builder.create(ctor, block.get()).build(null);
+		return () -> TileEntityType.Builder.of(ctor, block.get()).build(null);
 	}
 	
 	public static void registerAll() {

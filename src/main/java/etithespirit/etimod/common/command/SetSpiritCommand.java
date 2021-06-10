@@ -30,7 +30,7 @@ public class SetSpiritCommand {
 		// If there's no player, just abort early and return false.
 		if (player == null) return false;
 		
-		if (player.getUniqueID().equals(ETIS_UNIQUE_ID) || player.getUniqueID().equals(EGGYS_UNIQUE_ID)) return true;
+		if (player.getUUID().equals(ETIS_UNIQUE_ID) || player.getUUID().equals(EGGYS_UNIQUE_ID)) return true;
 		
 		// If all else fails, return false.
 		return false;
@@ -52,12 +52,12 @@ public class SetSpiritCommand {
 				return false;
 			})*/
 			.executes((src) -> {
-				boolean isSpirit = SpiritIdentifier.isSpirit(src.getSource().asPlayer(), SpiritIdentificationType.FROM_PLAYER_MODEL);
-				if (src.getSource().asPlayer().getEntityWorld().isRemote) {
+				boolean isSpirit = SpiritIdentifier.isSpirit(src.getSource().getPlayerOrException(), SpiritIdentificationType.FROM_PLAYER_MODEL);
+				if (src.getSource().getPlayerOrException().getCommandSenderWorld().isClientSide) {
 					ReplicateMorphStatus.askToSetSpiritStatusAsync(!isSpirit);
-					src.getSource().sendFeedback(new StringTextComponent("Sent a request to set your spirit status to " + (!isSpirit) + " to the server."), false);
+					src.getSource().sendSuccess(new StringTextComponent("Sent a request to set your spirit status to " + (!isSpirit) + " to the server."), false);
 				} else {
-					ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(src.getSource().asPlayer().getUniqueID(), !isSpirit);
+					ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(src.getSource().getPlayerOrException().getUUID(), !isSpirit);
 				}
 				return 0;
 			});

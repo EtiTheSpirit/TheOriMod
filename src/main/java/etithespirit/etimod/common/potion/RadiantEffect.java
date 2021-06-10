@@ -36,14 +36,14 @@ public class RadiantEffect extends SimpleEffect implements IAutoEffect {
 	}
 	
 	@Override
-	public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
+	public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {
 		if (amplifier > 0) {
 			entityLivingBaseIn.heal(amplifier);
 		}
 	}
 	
 	@Override
-	public boolean isReady(int duration, int amplifier) {
+	public boolean isDurationEffectTick(int duration, int amplifier) {
 		if (amplifier > MAX_AMP) amplifier = MAX_AMP;
 		int ticksRequired = lerp(40, 10, (float)amplifier / MAX_AMP);
 		return duration % ticksRequired == 0;
@@ -59,7 +59,7 @@ public class RadiantEffect extends SimpleEffect implements IAutoEffect {
 	}
 
 	@Override
-	public int getColor() {
+	public int getCustomColor() {
 		return 0xB2FFE9;
 	}
 	

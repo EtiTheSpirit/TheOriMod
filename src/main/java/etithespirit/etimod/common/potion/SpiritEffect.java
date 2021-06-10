@@ -25,9 +25,9 @@ public class SpiritEffect extends SimpleEffect implements IAutoEffect {
 	private static final String SPIRIT_EFFECT_MAX_HEALTH_UUID = "39BA687E-176C-11EB-ADC1-0242AC120002";
 	
 	public SpiritEffect() {
-		this.addAttributesModifier(Attributes.KNOCKBACK_RESISTANCE, SPIRIT_EFFECT_KNOCKBACK_UUID, 1.0D, AttributeModifier.Operation.ADDITION);
-		this.addAttributesModifier(Attributes.MOVEMENT_SPEED, SPIRIT_EFFECT_SPEED_UUID, SPEED_MOD, AttributeModifier.Operation.ADDITION);
-		this.addAttributesModifier(Attributes.MAX_HEALTH, SPIRIT_EFFECT_MAX_HEALTH_UUID, -10D, AttributeModifier.Operation.ADDITION);
+		this.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, SPIRIT_EFFECT_KNOCKBACK_UUID, 1.0D, AttributeModifier.Operation.ADDITION);
+		this.addAttributeModifier(Attributes.MOVEMENT_SPEED, SPIRIT_EFFECT_SPEED_UUID, SPEED_MOD, AttributeModifier.Operation.ADDITION);
+		this.addAttributeModifier(Attributes.MAX_HEALTH, SPIRIT_EFFECT_MAX_HEALTH_UUID, -10D, AttributeModifier.Operation.ADDITION);
 	}
 	
 	@Override
@@ -54,14 +54,14 @@ public class SpiritEffect extends SimpleEffect implements IAutoEffect {
 	}
 	
 	@Override
-	public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
+	public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {
 		if (entityLivingBaseIn.getHealth() > entityLivingBaseIn.getMaxHealth()) {
 			entityLivingBaseIn.setHealth(entityLivingBaseIn.getMaxHealth());
 		}
 	}
 	
 	@Override
-	public boolean isReady(int duration, int amplifier) {
+	public boolean isDurationEffectTick(int duration, int amplifier) {
 		return true;
 	}
 
@@ -71,7 +71,7 @@ public class SpiritEffect extends SimpleEffect implements IAutoEffect {
 	}
 
 	@Override
-	public int getColor() {
+	public int getCustomColor() {
 		return 0xB2FFE9;
 	}
 }

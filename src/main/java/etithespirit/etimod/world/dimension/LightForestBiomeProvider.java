@@ -21,7 +21,7 @@ import net.minecraft.world.biome.provider.BiomeProvider;
  */
 public class LightForestBiomeProvider extends BiomeProvider {
 	
-	public static final Codec<LightForestBiomeProvider> BIOME_CODEC = RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY)
+	public static final Codec<LightForestBiomeProvider> BIOME_CODEC = RegistryLookupCodec.create(Registry.BIOME_REGISTRY)
 			.xmap(LightForestBiomeProvider::new, LightForestBiomeProvider::getBiomeRegistry).codec();
 
 	
@@ -37,11 +37,11 @@ public class LightForestBiomeProvider extends BiomeProvider {
 	}
 	
 	private Biome getBiome(RegistryKey<Biome> key) {
-		return biomeRegistry.getOrDefault(key.getLocation());
+		return biomeRegistry.get(key.location());
 	}
 	
 	private static List<Biome> getStartBiomes(Registry<Biome> registry) {
-		return SPAWN_BIOMES.stream().map(s -> registry.getOrDefault(s.getLocation())).collect(Collectors.toList());
+		return SPAWN_BIOMES.stream().map(s -> registry.get(s.location())).collect(Collectors.toList());
 	};
 	
 	public Registry<Biome> getBiomeRegistry() {
@@ -54,12 +54,12 @@ public class LightForestBiomeProvider extends BiomeProvider {
 	}
 
 	@Override
-	protected Codec<? extends BiomeProvider> getBiomeProviderCodec() {
+	protected Codec<? extends BiomeProvider> codec() {
 		return BIOME_CODEC;
 	}
 
 	@Override
-	public BiomeProvider getBiomeProvider(long seed) {
+	public BiomeProvider withSeed(long seed) {
 		return this;
 	}
 

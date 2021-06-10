@@ -20,11 +20,11 @@ public class CustomHealthForEffects {
 	public static void onElementDrawn(RenderGameOverlayEvent evt) {
 		if (evt.getType() == ElementType.HEALTH) {
 			Minecraft minecraft = Minecraft.getInstance();
-			boolean isDecaying = minecraft.player.isPotionActive(PotionRegistry.get(DecayEffect.class));
-			boolean isRadiant = minecraft.player.isPotionActive(PotionRegistry.get(RadiantEffect.class));
-			if (isDecaying && isRadiant) minecraft.getTextureManager().bindTexture(DECAY_RADIANT_HEALTH_ICONS);
-			else if (isDecaying) minecraft.getTextureManager().bindTexture(DECAY_HEALTH_ICONS);
-			else if (isRadiant) minecraft.getTextureManager().bindTexture(RADIANT_HEALTH_ICONS);
+			boolean isDecaying = minecraft.player.hasEffect(PotionRegistry.get(DecayEffect.class));
+			boolean isRadiant = minecraft.player.hasEffect(PotionRegistry.get(RadiantEffect.class));
+			if (isDecaying && isRadiant) minecraft.getTextureManager().bind(DECAY_RADIANT_HEALTH_ICONS);
+			else if (isDecaying) minecraft.getTextureManager().bind(DECAY_HEALTH_ICONS);
+			else if (isRadiant) minecraft.getTextureManager().bind(RADIANT_HEALTH_ICONS);
 		}
 	}
 	

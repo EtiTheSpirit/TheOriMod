@@ -82,7 +82,7 @@ public abstract class GenerationStyle<TGenSettings extends LightForestSettings.G
 	
 	public GenerationStyle(LightForestChunkGenerator generator) {
 		this.generator = generator;
-		settings = generator.getSettings();
+		settings = generator.getMySettings();
 	}
 
 }

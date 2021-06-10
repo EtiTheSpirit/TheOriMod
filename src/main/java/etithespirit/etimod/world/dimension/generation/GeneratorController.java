@@ -46,7 +46,7 @@ public final class GeneratorController {
 		registerGenerator(new IGeneratorRoutine() {
 			@Override public boolean generateBlock(GeneratorController source, IChunk chunk, long seed, long worldX, long worldY, long worldZ, long maxHeight) {
 				if (worldY > 0) return false;
-				chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.BEDROCK.getDefaultState(), false);
+				chunk.setBlockState(new BlockPos(worldX, worldY, worldZ), Blocks.BEDROCK.defaultBlockState(), false);
 				return true;
 			}
 

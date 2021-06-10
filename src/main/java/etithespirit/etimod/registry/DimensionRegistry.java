@@ -9,8 +9,8 @@ import net.minecraft.world.World;
 
 public class DimensionRegistry {
 	
-	public static final RegistryKey<DimensionType> LIGHT_FOREST_TYPE = RegistryKey.getOrCreateKey(Registry.DIMENSION_TYPE_KEY, new ResourceLocation(EtiMod.MODID, "light_forest"));
-    public static final RegistryKey<World> LIGHT_FOREST = RegistryKey.getOrCreateKey(Registry.WORLD_KEY, new ResourceLocation(EtiMod.MODID, "light_forest"));
+	public static final RegistryKey<DimensionType> LIGHT_FOREST_TYPE = RegistryKey.create(Registry.DIMENSION_TYPE_REGISTRY, new ResourceLocation(EtiMod.MODID, "light_forest"));
+    public static final RegistryKey<World> LIGHT_FOREST = RegistryKey.create(Registry.DIMENSION_REGISTRY, new ResourceLocation(EtiMod.MODID, "light_forest"));
     
     /** Does nothing except for allow something to reference this class. */
     public static final void registerAll() { }

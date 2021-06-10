@@ -17,7 +17,7 @@ public final class PlayerDataUtils {
 		if (fromPlayer == null) throw new ArgumentNullException("fromPlayer");
 		
 		fromPlayer.giveExperiencePoints(-amount);
-		fromPlayer.addScore(amount);
+		fromPlayer.increaseScore(amount);
 	}
 
 }

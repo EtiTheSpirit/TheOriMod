@@ -38,16 +38,16 @@ public class DecayEffect extends SimpleEffect implements IAutoEffect {
 	}
 	
 	@Override
-	public void performEffect(LivingEntity entityLivingBaseIn, int amplifier) {
+	public void applyEffectTick(LivingEntity entityLivingBaseIn, int amplifier) {
 		// New behavior: Do they have radiant?
-		if (entityLivingBaseIn.isPotionActive(PotionRegistry.get(RadiantEffect.class))) {
+		if (entityLivingBaseIn.hasEffect(PotionRegistry.get(RadiantEffect.class))) {
 			return; // Yeah, so don't do anything.
 		}
-		entityLivingBaseIn.attackEntityFrom(EtiModDamageSource.DECAY, getDamageAmount(amplifier));
+		entityLivingBaseIn.hurt(EtiModDamageSource.DECAY, getDamageAmount(amplifier));
 	}
 
 	@Override
-	public boolean isReady(int duration, int amplifier) {
+	public boolean isDurationEffectTick(int duration, int amplifier) {
 		if (duration % getDamageRate(amplifier) == 0) return true;
 		return false;
 	}
@@ -83,7 +83,7 @@ public class DecayEffect extends SimpleEffect implements IAutoEffect {
 	}
 
 	@Override
-	public int getColor() {
+	public int getCustomColor() {
 		return 0x555555;
 	}
 }

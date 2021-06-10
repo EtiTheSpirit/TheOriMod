@@ -104,8 +104,8 @@ public class LightForestChunkGenerator extends ChunkGenerator {
 	 */
 	public static final Codec<LightForestChunkGenerator> CORE_CODEC = RecordCodecBuilder.create(instance ->
 		instance.group(
-			RegistryLookupCodec.getLookUpCodec(Registry.BIOME_KEY).forGetter(LightForestChunkGenerator::getBiomeRegistry),
-			GENERATION_SETTINGS_CODEC.fieldOf("settings").forGetter(LightForestChunkGenerator::getSettings)
+			RegistryLookupCodec.create(Registry.BIOME_REGISTRY).forGetter(LightForestChunkGenerator::getBiomeRegistry),
+			GENERATION_SETTINGS_CODEC.fieldOf("settings").forGetter(LightForestChunkGenerator::getMySettings)
 		).apply(instance, LightForestChunkGenerator::new)
 	);
 
@@ -134,26 +134,26 @@ public class LightForestChunkGenerator extends ChunkGenerator {
 		// ^ The generator controller is responsible for iterating over all possible blocks in a chunk and running an IGeneratorRoutine on each.
 	}
 	
-	public LightForestSettings getSettings() {
+	public LightForestSettings getMySettings() {
 		return settings;
 	}
 	
 	public Registry<Biome> getBiomeRegistry() {
-		return ((LightForestBiomeProvider)biomeProvider).getBiomeRegistry();
+		return ((LightForestBiomeProvider)biomeSource).getBiomeRegistry();
 	}
 
 	@Override
-	protected Codec<? extends ChunkGenerator> func_230347_a_() {
+	protected Codec<? extends ChunkGenerator> codec() {
 		return CORE_CODEC;
 	}
 
 	@Override
-	public ChunkGenerator func_230349_a_(long seed) {
+	public ChunkGenerator withSeed(long seed) {
 		return new LightForestChunkGenerator(getBiomeRegistry(), settings);
 	}
 
 	@Override
-	public void generateSurface(WorldGenRegion worldGenRegion, IChunk chunk) {
+	public void buildSurfaceAndBedrock(WorldGenRegion worldGenRegion, IChunk chunk) {
 		controller.processForChunk(worldGenRegion.getSeed(), chunk);
 		// ^ GeneratorController performs its loop here through 16x256x16.
 	}
@@ -166,17 +166,17 @@ public class LightForestChunkGenerator extends ChunkGenerator {
 	 * I don't exactly know how this couples with generateSurface, but I think I have a general idea.
 	 */
 	@Override
-	public void func_230352_b_(IWorld world, StructureManager structMgr, IChunk chunk) {
+	public void fillFromNoise(IWorld world, StructureManager structMgr, IChunk chunk) {
 		
 	}
 
 	@Override
-	public int getHeight(int x, int z, Type heightmapType) {
+	public int getBaseHeight(int x, int z, Type heightmapType) {
 		return 0;
 	}
 
 	@Override
-	public IBlockReader func_230348_a_(int x, int z) {
+	public IBlockReader getBaseColumn(int x, int z) {
 		return new Blockreader(new BlockState[0]);
 	}
 

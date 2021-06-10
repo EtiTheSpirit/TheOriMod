@@ -100,7 +100,7 @@ public class BlockToMaterialBinding {
 	 * @return
 	 */
 	public static SpiritMaterial getMaterialFor(Entity entity, BlockPos standingOn, BlockPos standingIn) {
-		World world = entity.getEntityWorld();
+		World world = entity.getCommandSenderWorld();
 		BlockState on = world.getBlockState(standingOn);
 		BlockState in = world.getBlockState(standingIn);
 		BlockState state = getAppropriateMaterialBetween(on, in);
@@ -238,43 +238,43 @@ public class BlockToMaterialBinding {
 		MATERIAL_TO_SPIRIT_MTL.put(Material.AIR, SpiritMaterial.NULL);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.BAMBOO, SpiritMaterial.WOOD_DRY);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.BAMBOO_SAPLING, SpiritMaterial.GRASS_CRISP);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.STRUCTURE_VOID, SpiritMaterial.INHERITED); // mojmap: STRUCTURAL_AIR
+		MATERIAL_TO_SPIRIT_MTL.put(Material.STRUCTURAL_AIR, SpiritMaterial.INHERITED); // mojmap: STRUCTURAL_AIR
 		MATERIAL_TO_SPIRIT_MTL.put(Material.BUBBLE_COLUMN, SpiritMaterial.INHERITED);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.BARRIER, SpiritMaterial.GLASS);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.CACTUS, SpiritMaterial.SHROOM);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.CAKE, SpiritMaterial.SHROOM);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.CLAY, SpiritMaterial.SLIMY);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.CARPET, SpiritMaterial.WOOL); // mojmap: CLOTH_DECORATION
+		MATERIAL_TO_SPIRIT_MTL.put(Material.CLOTH_DECORATION, SpiritMaterial.WOOL); // mojmap: CLOTH_DECORATION
 		MATERIAL_TO_SPIRIT_MTL.put(Material.CORAL, SpiritMaterial.ICE);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.MISCELLANEOUS, SpiritMaterial.INHERITED); // mojmap: DECORATION
-		MATERIAL_TO_SPIRIT_MTL.put(Material.EARTH, SpiritMaterial.SAND); // mojmap: DIRT
-		MATERIAL_TO_SPIRIT_MTL.put(Material.DRAGON_EGG, SpiritMaterial.ICE); // mojmap: EGG
-		MATERIAL_TO_SPIRIT_MTL.put(Material.TNT, SpiritMaterial.SAND); // mojmap: EXPLOSIVE
+		MATERIAL_TO_SPIRIT_MTL.put(Material.DECORATION, SpiritMaterial.INHERITED); // mojmap: DECORATION
+		MATERIAL_TO_SPIRIT_MTL.put(Material.DIRT, SpiritMaterial.SAND); // mojmap: DIRT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.EGG, SpiritMaterial.ICE); // mojmap: EGG
+		MATERIAL_TO_SPIRIT_MTL.put(Material.EXPLOSIVE, SpiritMaterial.SAND); // mojmap: EXPLOSIVE
 		MATERIAL_TO_SPIRIT_MTL.put(Material.FIRE, SpiritMaterial.INHERITED);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.GLASS, SpiritMaterial.GLASS);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.PLANTS, SpiritMaterial.GRASS_SOFT); // mojmap: PLANT
-		MATERIAL_TO_SPIRIT_MTL.put(Material.ANVIL, SpiritMaterial.METAL); // mojmap: HEAVY_METAL
+		MATERIAL_TO_SPIRIT_MTL.put(Material.PLANT, SpiritMaterial.GRASS_SOFT); // mojmap: PLANT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.HEAVY_METAL, SpiritMaterial.METAL); // mojmap: HEAVY_METAL
 		MATERIAL_TO_SPIRIT_MTL.put(Material.ICE, SpiritMaterial.ICE);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.PACKED_ICE, SpiritMaterial.ICE); // mojmap: ICE_SOLID
+		MATERIAL_TO_SPIRIT_MTL.put(Material.ICE_SOLID, SpiritMaterial.ICE); // mojmap: ICE_SOLID
 		MATERIAL_TO_SPIRIT_MTL.put(Material.LAVA, SpiritMaterial.INHERITED);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.LEAVES, SpiritMaterial.GRASS_SOFT);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.IRON, SpiritMaterial.METAL); // mojmap: METAL
+		MATERIAL_TO_SPIRIT_MTL.put(Material.METAL, SpiritMaterial.METAL); // mojmap: METAL
 		// MATERIAL_TO_SPIRIT_MTL.put(Material.NETHER_WOOD, SpiritMaterial.CONDITIONAL_WOOD);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.PISTON, SpiritMaterial.ROCK);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.TALL_PLANTS, SpiritMaterial.GRASS_SOFT); // mojmap: REPLACEABLE_PLANT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_PLANT, SpiritMaterial.GRASS_SOFT); // mojmap: REPLACEABLE_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.PORTAL, SpiritMaterial.GLASS);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.NETHER_PLANTS, SpiritMaterial.GRASS_CRISP); // mojmap: REPLACEABLE_FIREPROOF_PLANT
-		MATERIAL_TO_SPIRIT_MTL.put(Material.PLANTS, SpiritMaterial.GRASS_SOFT); // mojmap: PLANT
-		MATERIAL_TO_SPIRIT_MTL.put(Material.OCEAN_PLANT, SpiritMaterial.SHROOM); // mojmap: WATER_PLANT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_FIREPROOF_PLANT, SpiritMaterial.GRASS_CRISP); // mojmap: REPLACEABLE_FIREPROOF_PLANT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.PLANT, SpiritMaterial.GRASS_SOFT); // mojmap: PLANT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.WATER_PLANT, SpiritMaterial.SHROOM); // mojmap: WATER_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.SAND, SpiritMaterial.SAND);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.SHULKER, SpiritMaterial.ROCK); // mojmap: SHULKER_SHELL
-		MATERIAL_TO_SPIRIT_MTL.put(Material.SNOW_BLOCK, SpiritMaterial.SNOW); // mojmap: SNOW
+		MATERIAL_TO_SPIRIT_MTL.put(Material.SHULKER_SHELL, SpiritMaterial.ROCK); // mojmap: SHULKER_SHELL
+		MATERIAL_TO_SPIRIT_MTL.put(Material.SNOW, SpiritMaterial.SNOW); // mojmap: SNOW
 		MATERIAL_TO_SPIRIT_MTL.put(Material.SPONGE, SpiritMaterial.WOOL);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.ROCK, SpiritMaterial.ROCK); // mojmap: STONE
-		MATERIAL_TO_SPIRIT_MTL.put(Material.SNOW, SpiritMaterial.SNOW); // mojmap: TOP_SNOW
-		MATERIAL_TO_SPIRIT_MTL.put(Material.GOURD, SpiritMaterial.SHROOM); // mojmap: VEGETABLE
+		MATERIAL_TO_SPIRIT_MTL.put(Material.STONE, SpiritMaterial.ROCK); // mojmap: STONE
+		MATERIAL_TO_SPIRIT_MTL.put(Material.TOP_SNOW, SpiritMaterial.SNOW); // mojmap: TOP_SNOW
+		MATERIAL_TO_SPIRIT_MTL.put(Material.VEGETABLE, SpiritMaterial.SHROOM); // mojmap: VEGETABLE
 		// MATERIAL_TO_SPIRIT_MTL.put(Material.WATER, SpiritMaterial.CONDITIONAL_WATER);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.SEA_GRASS, SpiritMaterial.SHROOM); // mojmap: REPLACEABLE_WATER_PLANT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_WATER_PLANT, SpiritMaterial.SHROOM); // mojmap: REPLACEABLE_WATER_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.WEB, SpiritMaterial.INHERITED);
 		// MATERIAL_TO_SPIRIT_MTL.put(Material.WOOD, SpiritMaterial.CONDITIONAL_WOOD);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.WOOL, SpiritMaterial.WOOL);
@@ -290,7 +290,7 @@ public class BlockToMaterialBinding {
 	
 	private static void populateEffectiveMaterialsForBlocks() {
 		// STATE BINDINGS
-		setSpiritMaterialForState(Blocks.GRASS_BLOCK.getDefaultState().with(BlockStateProperties.SNOWY, Boolean.TRUE), SpiritMaterial.SNOW);
+		setSpiritMaterialForState(Blocks.GRASS_BLOCK.defaultBlockState().setValue(BlockStateProperties.SNOWY, Boolean.TRUE), SpiritMaterial.SNOW);
 		
 		// VANILLA BLOCKS
 		// Grass variants & General Overworld

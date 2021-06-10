@@ -18,6 +18,8 @@ import static etithespirit.etimod.common.block.decay.DecayCommon.ALL_ADJACENT_AR
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 /**
  * This base class represents a block associated with The Decay. It provides a crude implementation of spreading and "infecting" (replacing) other blocks as defined by IDecayBlock.
  * @author Eti
@@ -39,8 +41,8 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 	 * @param spreads Whether or not this decay block spreads (replaces certain adjacent blocks with a decay equivalent). Setting this to true will set the {@code ticksRandomly} field on the input properties. This requires that at least one replaceable block is registered in {@code registerReplacements}, otherwise this ctor will raise a {@link java.lang.IllegalStateException}.
 	 */
 	public DecayBlockBase(Properties properties, boolean spreads) {
-		super(spreads ? properties.tickRandomly() : properties);
-		this.setDefaultState(this.stateContainer.getBaseState().with(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).with(EDGE_DETECTION_RARITY, 1)); // Set this to 1 so that it's a half chance.
+		super(spreads ? properties.randomTicks() : properties);
+		this.registerDefaultState(this.stateDefinition.any().setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).setValue(EDGE_DETECTION_RARITY, 1)); // Set this to 1 so that it's a half chance.
 		if (spreads) {
 			List<BlockState> thisBlockReplacements = new ArrayList<BlockState>();
 			registerReplacements(thisBlockReplacements);
@@ -48,9 +50,9 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 				throw new IllegalStateException("New Decay block had SPREADS=TRUE but did not register any blocks to spread to! Offender: " + this.getClass().getName());
 			} else {
 				for (BlockState repl : thisBlockReplacements) {
-					BLOCK_REPLACEMENT_TARGETS.put(repl, this.getDefaultState());
+					BLOCK_REPLACEMENT_TARGETS.put(repl, this.defaultBlockState());
 				}
-				properties.tickRandomly();
+				properties.randomTicks();
 				return;
 			}
 		}
@@ -58,7 +60,7 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 		
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" }) 
-	public void fillStateContainer(StateContainer.Builder builder) {
+	public void createBlockStateDefinition(StateContainer.Builder builder) {
 		builder.add(ALL_ADJACENT_ARE_DECAY);
 		builder.add(EDGE_DETECTION_RARITY);
 	}
@@ -74,13 +76,13 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 	}
 	
 	@Override
-	public void onBlockAdded(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
+	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		// When the block is added, automatically set all neighbors to mycelium where applicable
 		for (int i = 0; i < 6; i++) {		
 			Vector3i adj = DecayCommon.ADJACENTS_IN_ORDER[i];
-			BlockPos myceliumSpreadPos = pos.add(adj);
+			BlockPos myceliumSpreadPos = pos.offset(adj);
 			if (DecaySurfaceMyceliumBlock.canSpreadTo(worldIn, myceliumSpreadPos, worldIn.getBlockState(myceliumSpreadPos))) {
-				worldIn.setBlockState(myceliumSpreadPos, BlockRegistry.DECAY_SURFACE_MYCELIUM.get().getDefaultState()); // It'll update its own state.
+				worldIn.setBlockAndUpdate(myceliumSpreadPos, BlockRegistry.DECAY_SURFACE_MYCELIUM.get().defaultBlockState()); // It'll update its own state.
 			}
 		}
 	}

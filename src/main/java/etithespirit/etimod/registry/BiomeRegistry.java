@@ -32,12 +32,12 @@ public class BiomeRegistry {
 	public static final RegistryObject<Biome> GLADES = BIOMES.register("glades", () -> {
 		// 118, 123
 				BiomeAmbience effects = new BiomeAmbience.Builder()
-						.setWaterColor(0x99FFEC)
-						.setWaterFogColor(0x99FFEC)
-						.withGrassColor(0x5FC774)
-						.withFoliageColor(0x5FC774)
-						.withSkyColor(0x99FFFF)
-						.setFogColor(0xEEEEEE)
+						.waterColor(0x99FFEC)
+						.waterFogColor(0x99FFEC)
+						.grassColorOverride(0x5FC774)
+						.foliageColorOverride(0x5FC774)
+						.skyColor(0x99FFFF)
+						.fogColor(0xEEEEEE)
 						.build();
 				
 				return new Biome.Builder()
@@ -45,23 +45,23 @@ public class BiomeRegistry {
 						.temperature(0.5f)
 						.depth(1)
 						.scale(1)
-						.withGenerationSettings(BiomeGenerationSettings.DEFAULT_SETTINGS)
-						.withMobSpawnSettings(MobSpawnInfo.EMPTY)
-						.setEffects(effects)
+						.generationSettings(BiomeGenerationSettings.EMPTY)
+						.mobSpawnSettings(MobSpawnInfo.EMPTY)
+						.specialEffects(effects)
 						.precipitation(RainType.RAIN)
-						.category(Category.PLAINS)
+						.biomeCategory(Category.PLAINS)
 						.build();
 	});
 	
 	public static final RegistryObject<Biome> DECAY_BADLANDS = BIOMES.register("decay_badlands", () -> {
 		// 118, 123
 		BiomeAmbience effects = new BiomeAmbience.Builder()
-				.setWaterColor(0x222222)
-				.setWaterFogColor(0x000000)
-				.withGrassColor(0x808080)
-				.withFoliageColor(0x808080)
-				.withSkyColor(0xBBBBAF)
-				.setFogColor(0x666666)
+				.waterColor(0x222222)
+				.waterFogColor(0x000000)
+				.grassColorOverride(0x808080)
+				.foliageColorOverride(0x808080)
+				.skyColor(0xBBBBAF)
+				.fogColor(0x666666)
 				.build();
 		
 		return new Biome.Builder()
@@ -69,11 +69,11 @@ public class BiomeRegistry {
 				.temperature(0.5f)
 				.depth(1)
 				.scale(1)
-				.withGenerationSettings(BiomeGenerationSettings.DEFAULT_SETTINGS)
-				.withMobSpawnSettings(MobSpawnInfo.EMPTY)
-				.setEffects(effects)
+				.generationSettings(BiomeGenerationSettings.EMPTY)
+				.mobSpawnSettings(MobSpawnInfo.EMPTY)
+				.specialEffects(effects)
 				.precipitation(RainType.SNOW)
-				.category(Category.PLAINS)
+				.biomeCategory(Category.PLAINS)
 				.build();
 	});
 	
@@ -82,6 +82,6 @@ public class BiomeRegistry {
 	}
 	
 	private static RegistryKey<Biome> makeKey(String name) {
-		return RegistryKey.getOrCreateKey(Registry.BIOME_KEY, new ResourceLocation(EtiMod.MODID, name));
+		return RegistryKey.create(Registry.BIOME_REGISTRY, new ResourceLocation(EtiMod.MODID, name));
 	}
 }

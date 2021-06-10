@@ -41,23 +41,23 @@ public abstract class DecayFluid extends FlowingFluid {
 	public static final FlowingFluid DECAY_FLOWING = new Flowing();
 	
 	@Override
-	public Fluid getFlowingFluid() {
+	public Fluid getFlowing() {
 		return DECAY_FLOWING;
 	}
 	
 	@Override
-	public Fluid getStillFluid() {
+	public Fluid getSource() {
 		return DECAY;
 	}
 	
 	@Override
-	public Item getFilledBucket() {
+	public Item getBucket() {
 		return null;
 	}
 	
 	@Override
-	protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder) {
-		super.fillStateContainer(builder);
+	protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder) {
+		super.createFluidStateDefinition(builder);
 		builder.add(IS_FULL_DECAY);
 	}
 	
@@ -67,7 +67,7 @@ public abstract class DecayFluid extends FlowingFluid {
 	 * @return
 	 */
 	public boolean isFullyDecayed(FluidState state) {
-		return state.get(IS_FULL_DECAY);
+		return state.getValue(IS_FULL_DECAY);
 	}
 	
 	@Override
@@ -86,8 +86,8 @@ public abstract class DecayFluid extends FlowingFluid {
 					FluidState fstate = bstate.getFluidState();
 					if (fstate == null) continue;
 					
-					if (fstate.isSource() && fstate.isTagged(FluidTags.WATER)) {
-						worldIn.setBlockState(neighbor, getBlockState(DECAY.getDefaultState()).with(IS_FULL_DECAY, Boolean.FALSE));
+					if (fstate.isSource() && fstate.is(FluidTags.WATER)) {
+						worldIn.setBlockAndUpdate(neighbor, createLegacyBlock(DECAY.defaultFluidState()).setValue(IS_FULL_DECAY, Boolean.FALSE));
 					}
 				}
 			}
@@ -96,8 +96,8 @@ public abstract class DecayFluid extends FlowingFluid {
 	
 	private static BlockPos[] getAdjacentsTo(BlockPos pos) {
 		BlockPos[] poses = new BlockPos[6];
-		poses[0] = pos.up();
-		poses[1] = pos.down();
+		poses[0] = pos.above();
+		poses[1] = pos.below();
 		poses[2] = pos.east();
 		poses[3] = pos.west();
 		poses[4] = pos.north();
@@ -107,19 +107,19 @@ public abstract class DecayFluid extends FlowingFluid {
 	
 	@Nullable
 	@Override
-	public IParticleData getDripParticleData() {
+	public IParticleData getDripParticle() {
 		return ParticleTypes.MYCELIUM;
 	}
 	
 	@Override
-	protected boolean canSourcesMultiply() {
+	protected boolean canConvertToSource() {
 		return true;
 	}
 	
 	@Override
-	protected void beforeReplacingBlock(IWorld worldIn, BlockPos pos, BlockState state) {
-		TileEntity tileentity = state.hasTileEntity() ? worldIn.getTileEntity(pos) : null;
-		Block.spawnDrops(state, worldIn, pos, tileentity);
+	protected void beforeDestroyingBlock(IWorld worldIn, BlockPos pos, BlockState state) {
+		TileEntity tileentity = state.hasTileEntity() ? worldIn.getBlockEntity(pos) : null;
+		Block.dropResources(state, worldIn, pos, tileentity);
 	}
 	
 	@Override
@@ -128,33 +128,33 @@ public abstract class DecayFluid extends FlowingFluid {
 	}
 	
 	@Override
-	public BlockState getBlockState(FluidState state) {
-		Boolean value = state.get(IS_FULL_DECAY);
+	public BlockState createLegacyBlock(FluidState state) {
+		Boolean value = state.getValue(IS_FULL_DECAY);
 		if (value == null) {
 			value = Boolean.TRUE;
 		}
-		return BlockRegistry.DECAY_POISON.get().getDefaultState()
-				.with(IS_FULL_DECAY, value);
+		return BlockRegistry.DECAY_POISON.get().defaultBlockState()
+				.setValue(IS_FULL_DECAY, value);
 	}
 	
 	@Override
-	public boolean isEquivalentTo(Fluid fluidIn) {
+	public boolean isSame(Fluid fluidIn) {
 		return fluidIn == DECAY || fluidIn == DECAY_FLOWING;
 	}
 	
 	@Override
-	public int getLevelDecreasePerBlock(IWorldReader worldIn) {
+	public int getDropOff(IWorldReader worldIn) {
 		return 2;
 	}
 	
 	@Override
-	public int getTickRate(IWorldReader p_205569_1_) {
+	public int getTickDelay(IWorldReader p_205569_1_) {
 		return 12;
 	}
 	
 	@Override
-	public boolean canDisplace(FluidState otherFluidState, IBlockReader blockReader, BlockPos at, Fluid otherFluid, Direction inDirection) {
-		return inDirection == Direction.DOWN && !otherFluid.isIn(DecayFluidTags.DECAY);
+	public boolean canBeReplacedWith(FluidState otherFluidState, IBlockReader blockReader, BlockPos at, Fluid otherFluid, Direction inDirection) {
+		return inDirection == Direction.DOWN && !otherFluid.is(DecayFluidTags.DECAY);
 	}
 	
 	@Override
@@ -163,7 +163,7 @@ public abstract class DecayFluid extends FlowingFluid {
 	}
 	
 	@Override
-	protected boolean ticksRandomly() {
+	protected boolean isRandomlyTicking() {
 		return true;
 	}
 	
@@ -189,14 +189,14 @@ public abstract class DecayFluid extends FlowingFluid {
 		}
 		
 		@Override
-		protected void fillStateContainer(StateContainer.Builder<Fluid, FluidState> builder) {
-			super.fillStateContainer(builder); // adds full decay state
-			builder.add(LEVEL_1_8);
+		protected void createFluidStateDefinition(StateContainer.Builder<Fluid, FluidState> builder) {
+			super.createFluidStateDefinition(builder); // adds full decay state
+			builder.add(LEVEL);
 		}
 		
 		@Override
-		public int getLevel(FluidState state) {
-			return state.get(LEVEL_1_8);
+		public int getAmount(FluidState state) {
+			return state.getValue(LEVEL);
 		}
 	
 		@Override
@@ -222,7 +222,7 @@ public abstract class DecayFluid extends FlowingFluid {
 		}
 		
 		@Override
-		public int getLevel(FluidState p_207192_1_) {
+		public int getAmount(FluidState p_207192_1_) {
 			return 8;
 		}
 		

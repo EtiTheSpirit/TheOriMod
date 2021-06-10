@@ -13,10 +13,12 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class BlockLightCapacitor extends Block implements ILightBlockIdentifier {
 	
 	public BlockLightCapacitor() {
-		this(Properties.create(Material.ROCK)
+		this(Properties.of(Material.STONE)
 			.harvestTool(ToolType.PICKAXE) // but don't require a tool
 			.sound(SoundType.STONE)
 		);
@@ -33,7 +35,7 @@ public class BlockLightCapacitor extends Block implements ILightBlockIdentifier 
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
 		
 	}
 	

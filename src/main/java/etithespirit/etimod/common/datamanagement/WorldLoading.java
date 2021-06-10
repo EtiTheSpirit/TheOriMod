@@ -19,22 +19,20 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public class WorldLoading {
 	
 	@SubscribeEvent
-	@OnlyIn(Dist.DEDICATED_SERVER)
 	public static void onLoggedInServer(PlayerLoggedInEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		boolean isSpirit = player.getPersistentData().getBoolean("isSpirit") || PlayerToSpiritBinding.get(player);
-		ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(player.getUniqueID(), isSpirit);
-		player.recalculateSize(); // This one is crazy in mojmap: refreshDimensions
+		ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(player.getUUID(), isSpirit);
+		player.refreshDimensions(); // This one is crazy in mojmap: refreshDimensions
 	}
 	
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT) 
 	public static void onLoggedInClient(PlayerLoggedInEvent evt) {
 		PlayerEntity player = evt.getPlayer();
-		if (Minecraft.getInstance().isSingleplayer()) {		
+		if (Minecraft.getInstance().hasSingleplayerServer()) {		
 			boolean isSpirit = player.getPersistentData().getBoolean("isSpirit");
 			PlayerToSpiritBinding.put(player, isSpirit);
-			player.recalculateSize();
+			player.refreshDimensions();
 		} else {
 			// NEW BEHAVIOR: We need to ask the server who is a spirit so that we see it once we join.
 			ReplicateMorphStatus.askWhoIsASpiritAsync(); // The server will reply to this on its own accord.
@@ -49,18 +47,16 @@ public class WorldLoading {
 	}
 	
 	@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public static void onRespawnedClient(PlayerRespawnEvent evt) {
 		PlayerEntity player = evt.getPlayer();
-		player.recalculateSize();
+		player.refreshDimensions();
 		SpiritSoundPlayer.playSoundAtPlayer(player, SoundRegistry.get("entity.spirit.respawn"), SoundCategory.PLAYERS, 0.2f, 1f);
 	}
 	
 	@SubscribeEvent
-	@OnlyIn(Dist.DEDICATED_SERVER)
 	public static void onRespawnedServer(PlayerRespawnEvent evt) {
 		PlayerEntity player = evt.getPlayer();
-		player.recalculateSize();
+		player.refreshDimensions();
 	}
 	
 }

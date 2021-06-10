@@ -56,7 +56,7 @@ public final class SpiritSoundPlayer {
 		PlayerEntity passIn = null;
 		if (EtiUtils.isClient(player)) passIn = player;
 		
-		player.getEntityWorld().playSound(passIn, player.getPosX(), player.getPosY(), player.getPosZ(), sound, category, volume, pitch);
+		player.getCommandSenderWorld().playSound(passIn, player.getX(), player.getY(), player.getZ(), sound, category, volume, pitch);
 	}
 	
 	/**
@@ -138,12 +138,12 @@ public final class SpiritSoundPlayer {
 		if (block == null) throw new ArgumentNullException("block");
 		
     	if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
-	        SoundEvent fromSpiritProvider = SpiritSoundProvider.getSpiritStepSound(player, block, block.up(), null);
+	        SoundEvent fromSpiritProvider = SpiritSoundProvider.getSpiritStepSound(player, block, block.above(), null);
 	        if (fromSpiritProvider != null) {
 	        	player.playSound(fromSpiritProvider, 0.025f, 1f);
 	        } else {
-	        	BlockState state = player.world.getBlockState(block);
-	        	SoundType soundtype = state.getBlock().getSoundType(state, player.getEntityWorld(), null, player);
+	        	BlockState state = player.level.getBlockState(block);
+	        	SoundType soundtype = state.getBlock().getSoundType(state, player.getCommandSenderWorld(), null, player);
 	        	SoundEvent hit = soundtype.getHitSound();
 	        	if (hit != null) playSoundAtPlayer(player, hit, SoundCategory.PLAYERS, soundtype.getVolume() * 0.25f, soundtype.getPitch());
 	        }

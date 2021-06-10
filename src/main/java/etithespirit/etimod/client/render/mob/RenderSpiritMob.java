@@ -24,7 +24,6 @@ import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerModelPart;
 
-@OnlyIn(Dist.CLIENT)
 public class RenderSpiritMob extends LivingRenderer<SpiritEntity, ModelSpirit> implements IEntityRenderer<SpiritEntity, ModelSpirit> {
    	public static final ResourceLocation SPIRIT_TEXTURE = new ResourceLocation(EtiMod.MODID, "textures/entity/spirit.png");
    	
@@ -37,17 +36,17 @@ public class RenderSpiritMob extends LivingRenderer<SpiritEntity, ModelSpirit> i
 	}
    	
 	@Override
-	public ResourceLocation getEntityTexture(SpiritEntity entity) {
+	public ResourceLocation getTextureLocation(SpiritEntity entity) {
 		return SPIRIT_TEXTURE;
 	}
 	
-	protected void preRenderCallback(SpiritEntity spirit, MatrixStack matrixStackIn, float partialTickTime) {
+	protected void scale(SpiritEntity spirit, MatrixStack matrixStackIn, float partialTickTime) {
 		matrixStackIn.scale(ModelSpirit.WIDTH_MOD, ModelSpirit.HEIGHT_MOD, ModelSpirit.WIDTH_MOD);
 	}
 	
 	@Override
 	public void render(SpiritEntity p_225623_1_, float p_225623_2_, float p_225623_3_, MatrixStack p_225623_4_, IRenderTypeBuffer p_225623_5_, int p_225623_6_) {
-		preRenderCallback(p_225623_1_, p_225623_4_, 0);
+		scale(p_225623_1_, p_225623_4_, 0);
 		super.render(p_225623_1_, p_225623_2_, p_225623_3_, p_225623_4_, p_225623_5_, p_225623_6_);
 	}
 	
@@ -88,21 +87,21 @@ public class RenderSpiritMob extends LivingRenderer<SpiritEntity, ModelSpirit> i
 	            f = 1.0F;
 	         }
 
-	         matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(f * 90F));
-	      } else if (entityLiving.isSpinAttacking()) {
-	         matrixStackIn.rotate(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.rotationPitch));
-	         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(((float)entityLiving.ticksExisted + partialTicks) * -75.0F));
+	         matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(f * 90F));
+	      } else if (entityLiving.isAutoSpinAttack()) {
+	         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(-90.0F - entityLiving.xRot));
+	         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(((float)entityLiving.tickCount + partialTicks) * -75.0F));
 	      } else if (pose == Pose.SLEEPING) {
-	         Direction direction = entityLiving.getBedDirection();
+	         Direction direction = entityLiving.getBedOrientation();
 	         float f1 = direction != null ? getFacingAngle(direction) : rotationYaw;
-	         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(f1));
-	         matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(90F));
-	         matrixStackIn.rotate(Vector3f.YP.rotationDegrees(270.0F));
+	         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(f1));
+	         matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(90F));
+	         matrixStackIn.mulPose(Vector3f.YP.rotationDegrees(270.0F));
 	      } else if (entityLiving.hasCustomName() || entityLiving instanceof PlayerEntity) {
-	         String s = TextFormatting.getTextWithoutFormattingCodes(entityLiving.getName().getString());
-	         if (("Dinnerbone".equals(s) || "Grumm".equals(s)) && (!(entityLiving instanceof PlayerEntity) || ((PlayerEntity)entityLiving).isWearing(PlayerModelPart.CAPE))) {
-	            matrixStackIn.translate(0.0D, (double)(entityLiving.getHeight() + 0.1F), 0.0D);
-	            matrixStackIn.rotate(Vector3f.ZP.rotationDegrees(180.0F));
+	         String s = TextFormatting.stripFormatting(entityLiving.getName().getString());
+	         if (("Dinnerbone".equals(s) || "Grumm".equals(s)) && (!(entityLiving instanceof PlayerEntity) || ((PlayerEntity)entityLiving).isModelPartShown(PlayerModelPart.CAPE))) {
+	            matrixStackIn.translate(0.0D, (double)(entityLiving.getBbHeight() + 0.1F), 0.0D);
+	            matrixStackIn.mulPose(Vector3f.ZP.rotationDegrees(180.0F));
 	         }
 	      }
 
@@ -110,29 +109,29 @@ public class RenderSpiritMob extends LivingRenderer<SpiritEntity, ModelSpirit> i
 	
 	
 	public void applyRotationsPlayer(LivingEntity entityLiving, MatrixStack matrixStackIn, float ageInTicks, float rotationYaw, float partialTicks) {
-      float f = entityLiving.getSwimAnimation(partialTicks);
-      if (entityLiving.isElytraFlying()) {
+      float f = entityLiving.getSwimAmount(partialTicks);
+      if (entityLiving.isFallFlying()) {
          superApplyRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
-         float f1 = (float)entityLiving.getTicksElytraFlying() + partialTicks;
+         float f1 = (float)entityLiving.getFallFlyingTicks() + partialTicks;
          float f2 = MathHelper.clamp(f1 * f1 / 100.0F, 0.0F, 1.0F);
-         if (!entityLiving.isSpinAttacking()) {
-            matrixStackIn.rotate(Vector3f.XP.rotationDegrees(f2 * (-90.0F - entityLiving.rotationPitch)));
+         if (!entityLiving.isAutoSpinAttack()) {
+            matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(f2 * (-90.0F - entityLiving.xRot)));
          }
          
-         Vector3d vector3d = entityLiving.getLookVec();
-         Vector3d vector3d1 = entityLiving.getMotion();
-         double d0 = Entity.horizontalMag(vector3d1);
-         double d1 = Entity.horizontalMag(vector3d);
+         Vector3d vector3d = entityLiving.getLookAngle();
+         Vector3d vector3d1 = entityLiving.getDeltaMovement();
+         double d0 = Entity.getHorizontalDistanceSqr(vector3d1);
+         double d1 = Entity.getHorizontalDistanceSqr(vector3d);
          if (d0 > 0.0D && d1 > 0.0D) {
             double d2 = (vector3d1.x * vector3d.x + vector3d1.z * vector3d.z) / Math.sqrt(d0 * d1);
             double d3 = vector3d1.x * vector3d.z - vector3d1.z * vector3d.x;
-            matrixStackIn.rotate(Vector3f.YP.rotation((float)(Math.signum(d3) * Math.acos(d2))));
+            matrixStackIn.mulPose(Vector3f.YP.rotation((float)(Math.signum(d3) * Math.acos(d2))));
          }
       } else if (f > 0.0F) {
          superApplyRotations(entityLiving, matrixStackIn, ageInTicks, rotationYaw, partialTicks);
-         float f3 = entityLiving.isInWater() ? -90.0F - entityLiving.rotationPitch : -90.0F;
+         float f3 = entityLiving.isInWater() ? -90.0F - entityLiving.xRot : -90.0F;
          float f4 = MathHelper.lerp(f, 0.0F, f3);
-         matrixStackIn.rotate(Vector3f.XP.rotationDegrees(f4));
+         matrixStackIn.mulPose(Vector3f.XP.rotationDegrees(f4));
          //if (entityLiving.isActualySwimming()) {
          //   matrixStackIn.translate(0.0D, -1.0D, (double)0.3F);
          //}
@@ -143,7 +142,7 @@ public class RenderSpiritMob extends LivingRenderer<SpiritEntity, ModelSpirit> i
    }
 	
 	@Override
-	public void applyRotations(SpiritEntity spirit, MatrixStack stack, float age, float yaw, float partial) {
+	public void setupRotations(SpiritEntity spirit, MatrixStack stack, float age, float yaw, float partial) {
 		applyRotationsPlayer(spirit, stack, age, yaw, partial);
 	}
 	

@@ -9,17 +9,19 @@ import static etithespirit.etimod.common.block.StaticData.TRUE_POSITION_PREDICAT
 
 import etithespirit.etimod.common.block.ExtendedMaterial;
 
+import net.minecraft.block.AbstractBlock.Properties;
+
 public class BlockHardLight extends Block implements ILightBlockIdentifier {
 	
 	public BlockHardLight() {
 		this(
-			Properties.create(ExtendedMaterial.LIGHT)
-			.setBlocksVision(FALSE_POSITION_PREDICATE)
-			.setEmmisiveRendering(TRUE_POSITION_PREDICATE)
-			.setSuffocates(FALSE_POSITION_PREDICATE)
+			Properties.of(ExtendedMaterial.LIGHT)
+			.isViewBlocking(FALSE_POSITION_PREDICATE)
+			.emissiveRendering(TRUE_POSITION_PREDICATE)
+			.isSuffocating(FALSE_POSITION_PREDICATE)
 			.harvestTool(ToolType.PICKAXE) // but don't require a tool
-			.hardnessAndResistance(10, 1000) // Make it absurdly blast resistant.
-			.setLightLevel((state) -> { return 15; })
+			.strength(10, 1000) // Make it absurdly blast resistant.
+			.lightLevel((state) -> { return 15; })
 			.sound(SoundType.GLASS)
 		);
 	}

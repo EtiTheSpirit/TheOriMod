@@ -45,11 +45,10 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @SuppressWarnings("unused")
-@OnlyIn(Dist.CLIENT)
 public final class SpiritJump {
 	
 	//public static final KeyBinding CLIMB_BIND = new KeyBinding("input.etimod.climb", 340, "key.categories.movement"); // Bind climb to l-shift
-	@OnlyIn(Dist.CLIENT) public static final KeyBinding CLING_BIND = new KeyBinding("input.etimod.cling", 340, "key.categories.movement"); // Bind cling to l-shift
+	public static final KeyBinding CLING_BIND = new KeyBinding("input.etimod.cling", 340, "key.categories.movement"); // Bind cling to l-shift
 	
 	/* Whether or not the player is currently clinging to a wall. */
     private static boolean IsClingingToWall = false;
@@ -88,7 +87,7 @@ public final class SpiritJump {
 	 * @return
 	 */
 	private static boolean CollidesWithBlock(World world, AxisAlignedBB box) {
-		return !world.hasNoCollisions(box);
+		return !world.noCollision(box);
     }
 	
 	/**
@@ -97,7 +96,7 @@ public final class SpiritJump {
 	 * @return
 	 */
     private static float getDeltaMovementY(ClientPlayerEntity player) {
-    	return (float)player.getMotion().y;
+    	return (float)player.getDeltaMovement().y;
     }
     
     /**
@@ -106,7 +105,7 @@ public final class SpiritJump {
      * @param y
      */
     private static void setDeltaMovementY(ClientPlayerEntity player, float y) {
-    	player.setMotion(player.getMotion().x, y, player.getMotion().z);
+    	player.setDeltaMovement(player.getDeltaMovement().x, y, player.getDeltaMovement().z);
     }
 
     /**
@@ -169,10 +168,10 @@ public final class SpiritJump {
 	 * @return
 	 */
     private static boolean IsWalkingTowards(ClientPlayerEntity pl, BlockPos pos) {
-    	Vector3d moveDir = pl.getMotion();//pl.movementInput.getMoveVector();
+    	Vector3d moveDir = pl.getDeltaMovement();//pl.movementInput.getMoveVector();
     	if (moveDir.x == 0 && moveDir.z == 0) return false; // Not moving.
     	
-    	Vector3d plPos = pl.getPositionVec();
+    	Vector3d plPos = pl.position();
     	if (pos.getX() == plPos.x && pos.getY() == plPos.y && pos.getZ() == plPos.z) return false; // Position is identical.
     	Vector3d moveDir3D = new Vector3d(moveDir.x, 0, moveDir.z);
     	moveDir3D.normalize();
@@ -182,7 +181,7 @@ public final class SpiritJump {
     	Vector3d dirToBlock = (new Vector3d(pos.getX(), plPos.y, pos.getZ())).subtract(plPos);
     	dirToBlock.normalize();
     	
-    	return (moveDir3D.dotProduct(dirToBlock) > 0.2);
+    	return (moveDir3D.dot(dirToBlock) > 0.2);
     }
     
     /**
@@ -191,9 +190,9 @@ public final class SpiritJump {
      * @return
      */
     private static boolean CanWallCling(ClientPlayerEntity pl) {
-    	if (pl.isOnLadder() || getDeltaMovementY(pl) > 0.8) return false; // On a ladder or moving up super fast upward
-    	if (pl.isInWaterOrBubbleColumn() || pl.isInLava()) return false; // In water, lava, or a bubble column
-        if (CollidesWithBlock(pl.getEntityWorld(), pl.getBoundingBox().offset(0, -0.8, 0))) return false; // Too close to the ground.
+    	if (pl.onClimbable() || getDeltaMovementY(pl) > 0.8) return false; // On a ladder or moving up super fast upward
+    	if (pl.isInWaterOrBubble() || pl.isInLava()) return false; // In water, lava, or a bubble column
+        if (CollidesWithBlock(pl.getCommandSenderWorld(), pl.getBoundingBox().move(0, -0.8, 0))) return false; // Too close to the ground.
         return true;
     }
 
@@ -202,19 +201,19 @@ public final class SpiritJump {
      * @param pl
      */
     private static void UpdateWalls(ClientPlayerEntity pl) {
-        AxisAlignedBB box = new AxisAlignedBB(pl.getPosX() - 0.001, pl.getPosY(), pl.getPosZ() - 0.001, pl.getPosX() + 0.001, pl.getPosY() + pl.getEyeHeight(), pl.getPosZ() + 0.001);
+        AxisAlignedBB box = new AxisAlignedBB(pl.getX() - 0.001, pl.getY(), pl.getZ() - 0.001, pl.getX() + 0.001, pl.getY() + pl.getEyeHeight(), pl.getZ() + 0.001);
 
-        double dist = (pl.getWidth() / 2) + (IsClingingToWall ? 0.2 : 0.06);
-        AxisAlignedBB[] axes = {box.expand(0, 0, dist), box.expand(-dist, 0, 0), box.expand(0, 0, -dist), box.expand(dist, 0, 0)};
+        double dist = (pl.getBbWidth() / 2) + (IsClingingToWall ? 0.2 : 0.06);
+        AxisAlignedBB[] axes = {box.expandTowards(0, 0, dist), box.expandTowards(-dist, 0, 0), box.expandTowards(0, 0, -dist), box.expandTowards(dist, 0, 0)};
 
         int i = 0;
         Direction direction;
         WALLS.clear();
         for (AxisAlignedBB axis : axes) {
-            direction = Direction.byHorizontalIndex(i++);
-            if (CollidesWithBlock(pl.getEntityWorld(), axis)) {
+            direction = Direction.from2DDataValue(i++);
+            if (CollidesWithBlock(pl.getCommandSenderWorld(), axis)) {
             	WALLS.add(direction);
-                pl.collidedHorizontally = true;
+                pl.horizontalCollision = true;
             }
         }
 
@@ -234,8 +233,8 @@ public final class SpiritJump {
      * @return
      */
     private static BlockPos GetWallPos(ClientPlayerEntity player, Direction clingDir) {
-        BlockPos pos = new BlockPos(player.getPositionVec()).add(clingDir.getDirectionVec());
-        return player.getEntityWorld().getBlockState(pos).getMaterial().isSolid() ? pos : pos.add(Direction.UP.getDirectionVec());
+        BlockPos pos = new BlockPos(player.position()).offset(clingDir.getNormal());
+        return player.getCommandSenderWorld().getBlockState(pos).getMaterial().isSolid() ? pos : pos.offset(Direction.UP.getNormal());
     }
     
     /**
@@ -244,8 +243,8 @@ public final class SpiritJump {
      * @return
      */
     private static BlockState GetWallBlock(ClientPlayerEntity player, Direction clingDir) {
-        BlockPos pos = new BlockPos(player.getPositionVec()).add(clingDir.getDirectionVec());
-        return player.getEntityWorld().getBlockState(pos);
+        BlockPos pos = new BlockPos(player.position()).offset(clingDir.getNormal());
+        return player.getCommandSenderWorld().getBlockState(pos);
     }
 
     /**
@@ -256,25 +255,25 @@ public final class SpiritJump {
      * @param isWallJump Whether or not this jump was prompted by a wall jump.
      */
     public static void PerformJump(ClientPlayerEntity pl, float up, @Nullable BlockState wallBlock, @Nullable BlockPos wallPos, boolean isWallJump) {
-        float strafe = (float)Math.signum(pl.movementInput.moveStrafe) * up * up;
-        float forward = (float)(Math.signum(pl.movementInput.moveForward) * up * up);
+        float strafe = (float)Math.signum(pl.input.leftImpulse) * up * up;
+        float forward = (float)(Math.signum(pl.input.forwardImpulse) * up * up);
 
         float f = 1.0F / MathHelper.sqrt(strafe * strafe + up * up + forward * forward);
         
         strafe = strafe * f;
         forward = forward * f;
         
-        float f1 = MathHelper.sin(pl.rotationYawHead * 0.017453292F) * 0.45f;
-        float f2 = MathHelper.cos(pl.rotationYawHead * 0.017453292F) * 0.45f;
+        float f1 = MathHelper.sin(pl.yHeadRot * 0.017453292F) * 0.45f;
+        float f2 = MathHelper.cos(pl.yHeadRot * 0.017453292F) * 0.45f;
 
         int jumpBoostLevel = 0;
-        EffectInstance jumpBoostEffect = pl.getActivePotionEffect(Effect.get(8));
+        EffectInstance jumpBoostEffect = pl.getEffect(Effect.byId(8));
         if (jumpBoostEffect != null) jumpBoostLevel = jumpBoostEffect.getAmplifier() + 1;
 
         float newMotionY = up + (jumpBoostLevel * .125f);
-        float newMotionX = (float) (pl.getMotion().x + strafe * f2 - forward * f1) / LATERAL_DECAY_JUMP;
-        float newMotionZ = (float) (pl.getMotion().z + forward * f2 + strafe * f1) / LATERAL_DECAY_JUMP;
-        pl.setMotion(newMotionX, newMotionY, newMotionZ);
+        float newMotionX = (float) (pl.getDeltaMovement().x + strafe * f2 - forward * f1) / LATERAL_DECAY_JUMP;
+        float newMotionZ = (float) (pl.getDeltaMovement().z + forward * f2 + strafe * f1) / LATERAL_DECAY_JUMP;
+        pl.setDeltaMovement(newMotionX, newMotionY, newMotionZ);
         
         if (isWallJump) {
         	SpiritSoundPlayer.playWallJumpSound(pl, wallPos);
@@ -284,7 +283,6 @@ public final class SpiritJump {
         }
     }
     
-    @OnlyIn(Dist.CLIENT)
 	public static void onKeyPressed(InputUpdateEvent evt) {
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientPlayerEntity player = minecraft.player;
@@ -293,26 +291,25 @@ public final class SpiritJump {
 		
 		//if (minecraft.gameSettings.keyBindJump.isPressed()) {
 		//if (evt.getKey() == minecraft.gameSettings.keyBindJump.getKey().getKeyCode()) {
-		if (evt.getMovementInput().jump && !WaitingOnSpaceRelease) {
+		if (evt.getMovementInput().jumping && !WaitingOnSpaceRelease) {
 			WaitingOnSpaceRelease = true;
-			if (player.isOnGround() || player.isInWaterOrBubbleColumn() || player.isInLava()) {
+			if (player.isOnGround() || player.isInWaterOrBubble() || player.isInLava()) {
 	    		IsClingingToWall = false;
 		    	return;
 	    	}
 			if (!SpiritJump.PerformWallJump(player)) PerformMultiJump(player);
-		} else if (!evt.getMovementInput().jump) {
+		} else if (!evt.getMovementInput().jumping) {
 			WaitingOnSpaceRelease = false;
 		}
 	}
     
-    @OnlyIn(Dist.CLIENT) 
     public static void onPlayerTicked(PlayerTickEvent evt) {
     	Minecraft minecraft = Minecraft.getInstance();
     	if (evt.player != minecraft.player) return;
     	
-    	if (CLING_BIND.isKeyDown()) {
-    		if (minecraft.currentScreen != null) return;
-    		if (evt.player.isOnGround() || evt.player.isInWaterOrBubbleColumn() || evt.player.isInLava()) {
+    	if (CLING_BIND.isDown()) {
+    		if (minecraft.screen != null) return;
+    		if (evt.player.isOnGround() || evt.player.isInWaterOrBubble() || evt.player.isInLava()) {
 	    		IsClingingToWall = false;
 		    	return;
 	    	}
@@ -334,7 +331,7 @@ public final class SpiritJump {
 			if (SpiritIdentifier.isSpirit(entity, SpiritIdentificationType.FROM_PLAYER_MODEL) && CurrentJumps == 0) {
 				CurrentJumps++;
 				PlayerEntity player = (PlayerEntity)entity;
-				player.addVelocity(0, 0.2, 0);
+				player.push(0, 0.2, 0);
 				SpiritSoundPlayer.playJumpSound(player, CurrentJumps);
 			}
 		}

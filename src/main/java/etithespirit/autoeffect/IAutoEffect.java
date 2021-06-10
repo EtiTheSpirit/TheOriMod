@@ -43,7 +43,7 @@ public interface IAutoEffect extends IForgeEffect {
 	@OnlyIn(Dist.CLIENT)
 	public default @Nonnull String getCustomDurationString(EffectInstance effect) {
 		// Don't use the long duration system here by default because that will have negative effects on default infinite potions, and that code was designed for edge cases anyway.
-		return EffectUtils.getPotionDurationString(effect, 1f);
+		return EffectUtils.formatDuration(effect, 1f);
 	}
 	
 	/**
@@ -132,32 +132,32 @@ public interface IAutoEffect extends IForgeEffect {
 		EffectTextDisplayType type = getInfoDisplayType();
 		if (type == EffectTextDisplayType.NO_TEXT) return;
 		
-		String displayName = I18n.format(effect.getPotion().getDisplayName().getString());
+		String displayName = I18n.get(effect.getEffect().getDisplayName().getString());
 		if (effect.getAmplifier() > 0) {
 			int effectiveAmp = Math.min(effect.getAmplifier() + 1, getMaxDisplayAmplifier());
 			if (useBigRomanNumerals) {
 				displayName += " " + NumericUtilities.toRomanNumerals(effectiveAmp);
 			} else {
-				displayName += I18n.format("enchantment.level." + effectiveAmp);
+				displayName += I18n.get("enchantment.level." + effectiveAmp);
 			}
 		}
 		
 		Minecraft mc = Minecraft.getInstance();
 		if (type == EffectTextDisplayType.STOCK) {
 			// Render just like MC does, albeit with our custom colors.
-			mc.fontRenderer.drawStringWithShadow(mStack, displayName, (float)(x + 10 + 18), (float)(y + 6), getNameColor());
+			mc.font.drawShadow(mStack, displayName, (float)(x + 10 + 18), (float)(y + 6), getNameColor());
 	        String durationString = getCustomDurationString(effect);
-	        mc.fontRenderer.drawStringWithShadow(mStack, durationString, (float)(x + 10 + 18), (float)(y + 6 + 10), getTimeColor());
+	        mc.font.drawShadow(mStack, durationString, (float)(x + 10 + 18), (float)(y + 6 + 10), getTimeColor());
 	        
 		} else if (type == EffectTextDisplayType.NAME_ONLY) {
 			// Render only the potion's name. Omit the time.
-			mc.fontRenderer.drawStringWithShadow(mStack, displayName, (float)(x + 10 + 18), (float)(y + 12), getNameColor());
+			mc.font.drawShadow(mStack, displayName, (float)(x + 10 + 18), (float)(y + 12), getNameColor());
 			// For the record: y + 12 is done so that the text is vertically centered.
 			
 		} else if (type == EffectTextDisplayType.TIME_ONLY) {
 			// Render only the potion's time. Omit the name.
 			String durationString = getCustomDurationString(effect);
-		    mc.fontRenderer.drawStringWithShadow(mStack, durationString, (float)(x + 10 + 18), (float)(y + 12), getTimeColor());
+		    mc.font.drawShadow(mStack, durationString, (float)(x + 10 + 18), (float)(y + 12), getTimeColor());
 		    // For the record: y + 12 is done so that the text is vertically centered.
 		    
 		} // else {
@@ -186,7 +186,7 @@ public interface IAutoEffect extends IForgeEffect {
     	if (rsrc == null) return;
         Minecraft mc = Minecraft.getInstance();
 		TextureManager texMgr = mc.getTextureManager();
-		texMgr.bindTexture(rsrc);
+		texMgr.bind(rsrc);
 		AbstractGui.fill(mStack, x + 6, y + 6, 18, 18, 0xFFFFFF);
     }
     
@@ -212,7 +212,7 @@ public interface IAutoEffect extends IForgeEffect {
     	
 		Minecraft mc = Minecraft.getInstance();
 		TextureManager texMgr = mc.getTextureManager();
-		texMgr.bindTexture(rsrc);
+		texMgr.bind(rsrc);
 		AbstractGui.fill(mStack, x + 3, y + 3, 18, 18, assembleTransparentWhiteColor(alpha));
 		//Gui.drawModalRectWithCustomSizedTexture(x + 3, y + 3, 0, 0, 18, 18, 18, 18);
     }

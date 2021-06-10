@@ -23,7 +23,6 @@ public class ReplicateEffect {
 	private static final Function<PacketBuffer, StatusEffectPacket> BUFFER_TO_PACKET = StatusEffectPacket::BufferToPacket;
 	private static final BiConsumer<StatusEffectPacket, PacketBuffer> PACKET_TO_BUFFER = StatusEffectPacket::PacketToBuffer;
 	
-	@OnlyIn(Dist.CLIENT)
 	private static BiConsumer<StatusEffectPacket, Supplier<NetworkEvent.Context>> ON_CLIENT_EVENT;
 	
 	private static BiConsumer<StatusEffectPacket, Supplier<NetworkEvent.Context>> ON_SERVER_EVENT;
@@ -63,29 +62,26 @@ public class ReplicateEffect {
 		if (msg.shouldBeAdding) {
 			ctx.get().enqueueWork(() -> {
 				ServerPlayerEntity player = ctx.get().getSender();
-				player.addPotionEffect(msg.CreateNewEffectInstance());
+				player.addEffect(msg.CreateNewEffectInstance());
 			});
 		} else {
 			ctx.get().enqueueWork(() -> {
 				ServerPlayerEntity player = ctx.get().getSender();
-				player.removePotionEffect(msg.GetPotion());
+				player.removeEffect(msg.GetPotion());
 			});
 		}
 		ctx.get().setPacketHandled(true);
 	}
 	
 	
-	@OnlyIn(Dist.CLIENT)
 	protected static void onClientEvent(StatusEffectPacket msg, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().setPacketHandled(true);
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	public static void applyPotionEffectOnServer(EffectInstance effect) {
 		INSTANCE.sendToServer(new StatusEffectPacket(effect, true));
 	}
 	
-	@OnlyIn(Dist.CLIENT)
 	public static void removePotionEffectOnServer(Effect effect) {
 		StatusEffectPacket packet = new StatusEffectPacket();
 		packet.statusEffect = effect.getRegistryName();
