@@ -9,14 +9,12 @@ issueTrackerURL="https://github.com/EtiTheSpirit/The-Ori-Minecraft-Mod/issues/ne
 updateJSONURL="https://etithespir.it/minecraft/version.json"
 
 [[mods]]
-  modId="etimod"
-  version="ALPHA-8.0"
-  displayName="Eti's Mod"
-  authors="Eti"
+  modId="${mod_id}"
+  version="${mod_version}"
+  displayName="${mod_name}"
+  authors="${mod_author}"
   license="GNU GENERAL PUBLIC LICENSE VERSION 3 // https://etithespir.it/"
-  description='''
-  Appends data used for the official Ori server modpack. https://etithespir.it/minecraft
-  '''
+  description="${mod_desc}"
 
   [[dependencies.etimod]]
     modId="forge"

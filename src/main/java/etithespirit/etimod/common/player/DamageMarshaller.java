@@ -1,7 +1,7 @@
 package etithespirit.etimod.common.player;
 
-import etithespirit.etimod.util.spirit.SpiritIdentificationType;
-import etithespirit.etimod.util.spirit.SpiritIdentifier;
+import etithespirit.etimod.info.spirit.SpiritIdentificationType;
+import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.DamageSource;

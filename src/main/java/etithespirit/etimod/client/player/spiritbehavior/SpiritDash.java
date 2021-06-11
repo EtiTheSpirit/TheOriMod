@@ -1,8 +1,8 @@
 package etithespirit.etimod.client.player.spiritbehavior;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
-import etithespirit.etimod.util.spirit.SpiritIdentificationType;
-import etithespirit.etimod.util.spirit.SpiritIdentifier;
+import etithespirit.etimod.info.spirit.SpiritIdentificationType;
+import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;

@@ -5,9 +5,9 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import etithespirit.etimod.exception.ArgumentNullException;
+import etithespirit.etimod.info.spirit.SpiritIdentificationType;
+import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.etimod.util.EtiUtils;
-import etithespirit.etimod.util.spirit.SpiritIdentificationType;
-import etithespirit.etimod.util.spirit.SpiritIdentifier;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.entity.player.PlayerEntity;

@@ -10,6 +10,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import etithespirit.etimod.client.audio.SpiritSoundProvider;
 import etithespirit.etimod.client.audio.variation.DamageLevel;
 import etithespirit.etimod.client.audio.variation.SpecialAttackType;
+import etithespirit.etimod.info.spirit.SpiritIdentificationType;
+import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.mixininterfaces.ISelfProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -18,8 +20,6 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
-import etithespirit.etimod.util.spirit.SpiritIdentifier;
-import etithespirit.etimod.util.spirit.SpiritIdentificationType;
 
 /**
  * Hooks into {@link net.minecraft.entity.player.PlayerEntity.attackTargetEntityWithCurrentItem} and intercepts all calls to 
@@ -28,9 +28,9 @@ import etithespirit.etimod.util.spirit.SpiritIdentificationType;
  *
  */
 @Mixin(PlayerEntity.class)
-public abstract class OverridePlayerEntityAttackTarget extends LivingEntity implements ISelfProvider {
+public abstract class InjectPlayerEntityAttackTarget extends LivingEntity implements ISelfProvider {
 
-	protected OverridePlayerEntityAttackTarget(EntityType<? extends LivingEntity> type, World worldIn) { super(type, worldIn); }
+	protected InjectPlayerEntityAttackTarget(EntityType<? extends LivingEntity> type, World worldIn) { super(type, worldIn); }
 	
 	/**
 	 * Intercepts calls to world.playSound in PlayerEntity.attackTargetEntityWithCurrentItem

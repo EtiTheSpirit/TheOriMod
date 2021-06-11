@@ -255,6 +255,12 @@
 			"etimod:spirit/attack/sweep/sweep2"
 		]
 	},
+	"entity.spirit.attack.swing" : {
+		"category" : "player",
+		"sounds" : [
+			
+		]
+	},
 	
 	
 	"entity.spirit.step.ash" : {

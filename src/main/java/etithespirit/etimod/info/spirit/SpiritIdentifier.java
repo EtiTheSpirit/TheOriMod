@@ -1,4 +1,4 @@
-package etithespirit.etimod.util.spirit;
+package etithespirit.etimod.info.spirit;
 
 import java.util.UUID;
 
@@ -15,7 +15,7 @@ public class SpiritIdentifier {
 	/**
 	 * Determines whether or not the given entity should classify as a Spirit Guardian.
 	 * @param livingEntity The entity to test.
-	 * @param identificationMethod See {@link etithespirit.etimod.util.spirit.SpiritIdentificationType} for more information on this value.
+	 * @param identificationMethod See {@link etithespirit.etimod.info.spirit.SpiritIdentificationType} for more information on this value.
 	 * @return
 	 */
 	public static boolean isSpirit(LivingEntity livingEntity, int identificationMethod) {

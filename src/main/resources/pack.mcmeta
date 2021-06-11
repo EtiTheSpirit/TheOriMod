@@ -1,6 +1,6 @@
 {
     "pack": {
-        "description": "EtiMod Rsrc",
+        "description": "Resource Bank: ${mod_id}",
         "pack_format": 6
     }
 }

@@ -23,9 +23,9 @@ import net.minecraft.util.SoundEvent;
  *
  */
 @Mixin(ClientPlayerEntity.class)
-public abstract class OverrideClientPlayerEntityPlaySound extends AbstractClientPlayerEntity {
+public abstract class InjectClientPlayerEntityPlaySound extends AbstractClientPlayerEntity {
 
-	public OverrideClientPlayerEntityPlaySound(ClientWorld world, GameProfile profile) { super(world, profile); }
+	public InjectClientPlayerEntityPlaySound(ClientWorld world, GameProfile profile) { super(world, profile); }
 	
 	@Inject(method = "playSound(Lnet/minecraft/util/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {

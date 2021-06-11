@@ -5,16 +5,14 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import etithespirit.etimod.util.spirit.SpiritIdentificationType;
-import etithespirit.etimod.util.spirit.SpiritIdentifier;
+import etithespirit.etimod.info.spirit.SpiritIdentificationType;
+import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.etimod.valuetypes.MutableEntitySize;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
@@ -171,7 +169,6 @@ public class SpiritSize {
 	
 	@SuppressWarnings("resource")
 	//@SubscribeEvent
-	@OnlyIn(Dist.CLIENT)
 	public static void onPlayerTicked(PlayerTickEvent evt) {
 		if (evt.player == null) return;
 		if (evt.player != net.minecraft.client.Minecraft.getInstance().player) return;

@@ -7,8 +7,8 @@ import javax.annotation.Nullable;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
 import etithespirit.etimod.client.audio.SpiritSoundProvider;
-import etithespirit.etimod.util.spirit.SpiritIdentificationType;
-import etithespirit.etimod.util.spirit.SpiritIdentifier;
+import etithespirit.etimod.info.spirit.SpiritIdentificationType;
+import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;

@@ -2,9 +2,9 @@ package etithespirit.etimod.common.player;
 
 import java.util.ArrayList;
 import etithespirit.etimod.common.potion.SpiritEffect;
+import etithespirit.etimod.info.spirit.SpiritIdentificationType;
+import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.etimod.registry.PotionRegistry;
-import etithespirit.etimod.util.spirit.SpiritIdentificationType;
-import etithespirit.etimod.util.spirit.SpiritIdentifier;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;

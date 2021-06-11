@@ -1,5 +1,6 @@
 package etithespirit.mixininterfaces;
 
+import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
@@ -33,6 +34,14 @@ public interface ISelfProvider {
 	 */
 	public default ServerPlayerEntity serverPlayer() {
 		return (ServerPlayerEntity)this;
+	}
+	
+	/**
+	 * Identical to "this", but treats the implementer like a ClientPlayerEntity.
+	 * @return
+	 */
+	public default ClientPlayerEntity clientPlayer() {
+		return (ClientPlayerEntity)this;
 	}
 
 }

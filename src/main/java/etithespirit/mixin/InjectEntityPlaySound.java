@@ -20,8 +20,8 @@ import net.minecraft.util.SoundEvent;
  *
  */
 @Mixin(Entity.class)
-public abstract class OverrideEntityPlaySound extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements ISelfProvider {
-	protected OverrideEntityPlaySound(Class<Entity> baseClass) { super(baseClass); }
+public abstract class InjectEntityPlaySound extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements ISelfProvider {
+	protected InjectEntityPlaySound(Class<Entity> baseClass) { super(baseClass); }
 	
 	@Shadow
 	public abstract boolean isSilent();

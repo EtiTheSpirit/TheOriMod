@@ -21,9 +21,9 @@ import net.minecraft.world.World;
  *
  */
 @Mixin(PlayerEntity.class)
-public abstract class OverridePlayerEntityPlaySound extends LivingEntity implements ISelfProvider {
+public abstract class InjectPlayerEntityPlaySound extends LivingEntity implements ISelfProvider {
 
-	protected OverridePlayerEntityPlaySound(EntityType<? extends LivingEntity> type, World worldIn) { super(type, worldIn); }
+	protected InjectPlayerEntityPlaySound(EntityType<? extends LivingEntity> type, World worldIn) { super(type, worldIn); }
 	
 	@Inject(method = "playSound(Lnet/minecraft/util/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {

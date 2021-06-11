@@ -1,4 +1,4 @@
-package etithespirit.etimod.util.spirit;
+package etithespirit.etimod.info.spirit;
 
 /**
  * Contains three identifying values:
