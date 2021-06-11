@@ -1,5 +1,6 @@
 package etithespirit.datagen;
 
+import net.minecraftforge.client.model.generators.*;
 import org.apache.logging.log4j.Level;
 
 import etithespirit.etimod.EtiMod;
@@ -13,13 +14,7 @@ import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Direction.Axis;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
-import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
 import net.minecraftforge.client.model.generators.ModelBuilder.ElementBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.client.model.generators.VariantBlockStateBuilder.PartialBlockstate;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
@@ -52,6 +47,8 @@ public class GenerateBlockModels extends BlockStateProvider {
 		registerInsideOutBlockAndItem(BlockRegistry.DECAY_SURFACE_MYCELIUM);
 		
 		registerBlockAndItem(BlockRegistry.DECAY_POISON);
+		
+		registerConduitBlock(BlockRegistry.LIGHT_CONDUIT);
 		registerBlockAndItem(BlockRegistry.LIGHT_CAPACITOR);
 		
 		EtiMod.LOG.printf(Level.INFO, "Block models registered!");
@@ -59,7 +56,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 	
 	/**
 	 * Registers a block and an item for that block.
-	 * @param block
+	 * @param blockReg
 	 */
 	protected void registerBlockAndItem(RegistryObject<Block> blockReg) {
 		Block block = blockReg.get();
@@ -77,7 +74,6 @@ public class GenerateBlockModels extends BlockStateProvider {
 	 * Creates a block that's "inside out", or, the space it occupies renders on adjacent faces rather than as a full cube.<br/>
 	 * This is mostly used for decay mycelium, which coats the surfaces of blocks. The best vanilla block to compare this to is vines.
 	 * @param block
-	 * @param rsrc
 	 */
 	private void registerInsideOutBlockAndItem(RegistryObject<Block> block) {
 		MultiPartBlockStateBuilder multiPart = this.getMultipartBuilder(block.get());
@@ -89,11 +85,28 @@ public class GenerateBlockModels extends BlockStateProvider {
 		.part().modelFile(model).rotationX( 90).rotationY(270).addModel().condition(BlockStateProperties.WEST, true).end()
 		.part().modelFile(model).rotationX( 90).rotationY( 90).addModel().condition(BlockStateProperties.EAST, true).end()
 		.part().modelFile(model).rotationX(180).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).end()
-		.part().modelFile(model).rotationX(  0).rotationX(  0).addModel().condition(BlockStateProperties.DOWN, true).end();
+		.part().modelFile(model).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).end();
 		
 		ModelFile fullCube = this.cubeAll(block.get());
 		this.simpleBlockItem(block.get(), fullCube);
 		EtiMod.LOG.printf(Level.INFO, "Generated inside out block at %s", model.getLocation().toString());
+	}
+	
+	private void registerConduitBlock(RegistryObject<Block> block) {
+		MultiPartBlockStateBuilder multiPart = this.getMultipartBuilder(block.get());
+		ModelFile core = get8Core(block);
+		ModelFile connector = get8CoreConnector(block);
+		multiPart
+		.part().modelFile(core).addModel().end()
+		.part().modelFile(connector).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.NORTH, true).end()
+		.part().modelFile(connector).rotationX(  0).rotationY(180).addModel().condition(BlockStateProperties.SOUTH, true).end()
+		.part().modelFile(connector).rotationX(  0).rotationY(270).addModel().condition(BlockStateProperties.WEST, true).end()
+		.part().modelFile(connector).rotationX(  0).rotationY( 90).addModel().condition(BlockStateProperties.EAST, true).end()
+		.part().modelFile(connector).rotationX(270).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).end()
+		.part().modelFile(connector).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).end();
+		
+		this.simpleBlockItem(block.get(), core);
+		EtiMod.LOG.printf(Level.INFO, "Generated conduit out block at %s and %s", core.getLocation().toString(), connector.getLocation().toString());
 	}
 	
 	protected void registerLogBlockAndItem(RegistryObject<Block> block) {
@@ -144,7 +157,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 	 */
 	@SuppressWarnings("rawtypes")
 	private ModelFile getInsideOutBlockModel(RegistryObject<Block> block, float surfaceOffset, float thickness) {
-		String path = "block/" + block.getId().getPath();
+		String path = ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath();
 		BlockModelBuilder blockBuilder = models().cubeAll(path, blockTexture(block.get()));
 		blockBuilder.ao(false).texture("all", modLoc(path));
 		ElementBuilder element = blockBuilder.element()
@@ -181,5 +194,93 @@ public class GenerateBlockModels extends BlockStateProvider {
 			}
 		element.end();
 		return blockBuilder;
+	}
+	
+	private ModelFile get8Core(RegistryObject<Block> block) {
+		String pathBase = ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath();
+		ResourceLocation texture = localTexture(block.getId(), pathBase, "core");
+		BlockModelBuilder blockBuilder = models().cubeAll(texture.getPath(), texture);
+		blockBuilder.element()
+			.texture("#all")
+			.from(4f, 4f, 4f)
+			.to(12f, 12f, 12f)
+			.face(Direction.NORTH)
+				.uvs(0, 0, 16, 16)
+				.texture("#all")
+			.end()
+			.face(Direction.SOUTH)
+				.uvs(0, 0, 16, 16)
+				.texture("#all")
+			.end()
+			.face(Direction.EAST)
+				.uvs(0, 0, 16, 16)
+				.texture("#all")
+			.end()
+			.face(Direction.WEST)
+				.uvs(0, 0, 16, 16)
+				.texture("#all")
+			.end()
+			.face(Direction.UP)
+				.uvs(0, 0, 16, 16)
+				.texture("#all")
+			.end()
+			.face(Direction.DOWN)
+				.uvs(0, 0, 16, 16)
+				.texture("#all")
+			.end()
+		.end();
+		return blockBuilder;
+	}
+	
+	private ModelFile get8CoreConnector(RegistryObject<Block> block) {
+		String pathBase = ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath();
+		String pathConnector = pathBase + "-connector";
+		ResourceLocation id = block.getId();
+		ResourceLocation sides = localTexture(id, pathConnector, "side");
+		ResourceLocation back = localTexture(id, pathBase, "core"); // Share with the core
+		ResourceLocation front = localTexture(id, pathConnector, "connection");
+		BlockModelBuilder blockBuilder = models().cube(pathConnector, sides, sides, front, back, sides, sides);
+		blockBuilder.element()
+			.from(4f, 4f, 0f)
+			.to(12f, 12f, 4f)
+			.face(Direction.NORTH)
+				.uvs(0, 0, 16, 16)
+				.texture("#north")
+			.end()
+			.face(Direction.SOUTH)
+				.uvs(0, 0, 16, 16)
+				.texture("#south")
+			.end()
+			.face(Direction.EAST)
+				.uvs(0, 0, 16, 16)
+				.texture("#east")
+			.end()
+			.face(Direction.WEST)
+				.uvs(0, 0, 16, 16)
+				.texture("#west")
+			.end()
+			.face(Direction.UP)
+				.rotation(ModelBuilder.FaceRotation.CLOCKWISE_90)
+				.uvs(0, 0, 16, 16)
+				.texture("#up")
+			.end()
+			.face(Direction.DOWN)
+			.rotation(ModelBuilder.FaceRotation.CLOCKWISE_90)
+				.uvs(0, 0, 16, 16)
+				.texture("#down")
+			.end()
+		.end();
+		return blockBuilder;
+	}
+	
+	/**
+	 * Creates a texture named "namespace:path-suffix".
+	 * @param block
+	 * @param path
+	 * @param suffix
+	 * @return
+	 */
+	private ResourceLocation localTexture(ResourceLocation block, String path, String suffix) {
+		return new ResourceLocation(block.getNamespace(), path + '-' + suffix);
 	}
 }

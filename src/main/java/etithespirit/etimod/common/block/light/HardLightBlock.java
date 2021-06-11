@@ -9,9 +9,9 @@ import static etithespirit.etimod.common.block.StaticData.TRUE_POSITION_PREDICAT
 
 import etithespirit.etimod.common.block.ExtendedMaterial;
 
-public class BlockHardLight extends Block implements ILightBlockIdentifier {
+public class HardLightBlock extends Block implements ILightBlockIdentifier {
 	
-	public BlockHardLight() {
+	public HardLightBlock() {
 		this(
 			Properties.of(ExtendedMaterial.LIGHT)
 			.isViewBlocking(FALSE_POSITION_PREDICATE)
@@ -24,7 +24,7 @@ public class BlockHardLight extends Block implements ILightBlockIdentifier {
 		);
 	}
 
-	public BlockHardLight(Properties properties) {
+	public HardLightBlock(Properties properties) {
 		super(properties);
 		// TODO Auto-generated constructor stub
 	}

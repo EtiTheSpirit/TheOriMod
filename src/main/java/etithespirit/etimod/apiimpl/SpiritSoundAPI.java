@@ -1,4 +1,4 @@
-package etithespirit.etimod.api.impl;
+package etithespirit.etimod.apiimpl;
 
 import etithespirit.etimod.EtiMod;
 import etithespirit.etimod.api.ISpiritSoundAPI;

@@ -49,7 +49,7 @@ final class Storage {
 	static final ISpiritSoundAPI getSpiritSoundAPI() {
 		if (spiritSoundAPI == null) {
 			try {
-				Class<?> apiClass = Class.forName("etithespirit.etimod.api.impl.SpiritSoundAPI");
+				Class<?> apiClass = Class.forName("etithespirit.etimod.apiimpl.SpiritSoundAPI");
 				@SuppressWarnings("deprecation") Object instance = apiClass.newInstance();
 				spiritSoundAPI = (ISpiritSoundAPI)instance;
 			} catch (Exception exc) {

@@ -1,0 +1,83 @@
+{
+  "parent": "minecraft:block/cube",
+  "textures": {
+    "down": "etimod:block/light_conduit-connector-side",
+    "up": "etimod:block/light_conduit-connector-side",
+    "north": "etimod:block/light_conduit-connector-connection",
+    "south": "etimod:block/light_conduit-core",
+    "east": "etimod:block/light_conduit-connector-side",
+    "west": "etimod:block/light_conduit-connector-side"
+  },
+  "elements": [
+    {
+      "from": [
+        4,
+        4,
+        0
+      ],
+      "to": [
+        12,
+        12,
+        4
+      ],
+      "faces": {
+        "down": {
+          "texture": "#down",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ],
+          "rotation": 90
+        },
+        "up": {
+          "texture": "#up",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ],
+          "rotation": 90
+        },
+        "north": {
+          "texture": "#north",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#south",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#west",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#east",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      }
+    }
+  ]
+}

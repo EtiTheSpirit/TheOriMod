@@ -11,15 +11,15 @@ public interface ISpiritRechargeable {
 	 * Returns the amount of experience required to restore one durability point on this item relative to the % of one level.
 	 * @return
 	 */
-	public default int getExperienceCostToRepair() {
-		return 10;
+	default int getExperienceCostToRepair() {
+		return 30;
 	}
 	
 	/**
-	 * For every time that the given amount of experience points (from {@link getExperienceCostToRepair}) is spent, up to this many durability points are restored.
+	 * For every time that the given amount of experience points (from {@link #getExperienceCostToRepair}) is spent, up to this many durability points are restored.
 	 */
-	public default int getDurabilityPerRestoreOp() {
-		return 10;
+	default int getDurabilityPerRestoreOp() {
+		return 30;
 	}
 	
 }

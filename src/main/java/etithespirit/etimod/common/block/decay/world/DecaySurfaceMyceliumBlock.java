@@ -1,6 +1,5 @@
 package etithespirit.etimod.common.block.decay.world;
 
-import static etithespirit.etimod.common.block.decay.DecayCommon.ADJACENTS_IN_ORDER;
 import static etithespirit.etimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 
@@ -13,6 +12,8 @@ import static net.minecraft.state.properties.BlockStateProperties.SOUTH;
 
 import static etithespirit.etimod.common.block.StaticData.FALSE_POSITION_PREDICATE;
 
+import static etithespirit.etimod.util.EtiUtils.hasFlag;
+
 import java.util.List;
 import java.util.Random;
 
@@ -20,19 +21,17 @@ import javax.annotation.Nullable;
 
 import etithespirit.etimod.common.block.decay.DecayCommon;
 import etithespirit.etimod.common.block.decay.IDecayBlock;
+import etithespirit.etimod.util.blockstates.SixSidedCollider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.fluid.Fluids;
 import net.minecraft.state.StateContainer;
-import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -57,17 +56,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	/// COLLISION CONSTRUCTION ///
 	/** Every possible combination of occupied surfaces. **/
-	protected static final VoxelShape[] COLLISION_SHAPES = new VoxelShape[64];
-	static {
-		// Generate collision shapes
-		// The bit order is:
-		// right, left, up, down, front, back
-		// Reverse bit order (that is, the above line is listed backwards. b000001 is right, and b100000 is back)
-		// Using these combos, I basically create a combination of up to six panels at once for a VoxelShape.
-		for (int idx = 0; idx < 64; idx++) {
-			COLLISION_SHAPES[idx] = getShapeFor(idx);
-		}
-	}
+	protected static final VoxelShape[] COLLISION_SHAPES = SixSidedCollider.getBitwiseColliderArrayFor(DecaySurfaceMyceliumBlock::getShapeFor);
 	
 	
 	/**
@@ -132,60 +121,6 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	}
 	
 	
-	///////////////////////////////////////////////////////////
-	/// POSITION FLAGS ///
-	
-	/**
-	 * Returns whether or not the given number has the given flag(s), determined by {@code flag} 
-	 * @param num A numeric value presumably with one or more bits set.
-	 * @param flag A value containing all bits that must be 1.
-	 * @return {@code num & flag == flag} 
-	 */
-	private static boolean hasFlag(int num, int flag) {
-		return (num & flag) == flag;
-	}
-	
-	/**
-	 * Given six boolean values, each representing a face's occupied state, this returns a numeric value with the appropriate bit flags set.
-	 * @param west Whether or not the west (X+) face is occupied. (Note that west is right because this is relative to Z-, where south is forward.)
-	 * @param east Whether or not the east (X-) face is occupied. (Note that east is left because this is relative to Z-, where south is forward.)
-	 * @param up Whether or not the top face (Y+) is occupied.
-	 * @param down Whether or not the bottom (Y-) face is occupied.
-	 * @param north Whether or not the back face (Z+) is occupied.
-	 * @param south Whether or not the front face (Z-) is occupied.
-	 * @return
-	 */
-	private static int getNumberFromSurfaces(boolean west, boolean east, boolean up, boolean down, boolean north, boolean south) {
-		int n = 0;
-		n |= west ?  0b000001 : 0;
-		n |= east ?  0b000010 : 0;
-		
-		n |= up ?    0b000100 : 0;
-		n |= down ?  0b001000 : 0;
-		
-		n |= north ? 0b010000 : 0;
-		n |= south ? 0b100000 : 0;
-		
-		return n;
-	}
-	
-	/**
-	 * Calls {@code getNumberFromSurfaces(boolean, boolean, boolean, boolean, boolean, boolean)} from the given {@link BlockState}'s data, which should contain six booleans representing each face's occupied state.
-	 * @param state
-	 * @return
-	 */
-	private static int getNumberFromSurfaces(BlockState state) {
-		return getNumberFromSurfaces(
-			state.getValue(WEST), 
-			state.getValue(EAST),
-			state.getValue(UP),
-			state.getValue(DOWN),
-			state.getValue(NORTH),
-			state.getValue(SOUTH)
-		);
-	}
-	
-	
 	//////////////////////////////////////////////////////////////////////////////////////////////////
 	/// STATE MODIFICATION ///
 	private static BlockState modifyStateForNeighbors(IWorldReader worldIn, BlockPos pos, BlockState state) {
@@ -193,7 +128,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	}
 	
 	private static BlockState modifyStateForNeighbors(IWorldReader worldIn, BlockPos pos, BlockState state, @Nullable BlockPos forcedActive) {
-		int f = getNeighborFlags(worldIn, pos, forcedActive);
+		int f = SixSidedCollider.getNonAirNonFluidFullNeighbors(worldIn, pos, forcedActive);
 		BlockState retn = state.getBlock().defaultBlockState();
 		if (hasFlag(f, 0b000001)) {
 			retn = retn.setValue(WEST, true);
@@ -221,7 +156,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return COLLISION_SHAPES[getNumberFromSurfaces(state)];
+		return COLLISION_SHAPES[SixSidedCollider.getNumberFromSurfaces(state)];
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -234,66 +169,6 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	@Override
 	public boolean hasDecayReplacementFor(World worldIn, BlockPos at, BlockState existingBlock) {
 		return canSpreadTo(worldIn, at, existingBlock);
-	}
-	
-	//////////////////////////////////////////////////////////////////
-	/// NEIGHBOR ACQUISITION ///
-	private static int getNeighborFlags(IWorldReader worldIn, BlockPos at) {
-		return getNeighborFlags(worldIn, at, new BlockPos[0]);
-	}
-	
-	/**
-	 * Returns a value with up to 6 bits set representing the adjacents in order. 0b000001 represents the first adjacent in the array ADJACENTS_IN_ORDER, and 0b100000 represents the last.<br>
-	 * The adjacent block must have a solid, full surface facing this block to set the surface flag to 1.<br>
-	 * This is for localized testing, not spreading. This is so that it knows what surface to render.
-	 * @param worldIn
-	 * @param at
-	 * @return
-	 */
-	@SuppressWarnings("deprecation")
-	private static int getNeighborFlags(IWorldReader worldIn, BlockPos at, BlockPos... forcedNeighbors) {
-		if (forcedNeighbors == null) forcedNeighbors = new BlockPos[0];
-		int flags = 0;
-		
-		// ADJACENTS_IN_ORDER is an ordered array of six Vector3is representing a direction to an adjacent block.
-		for (int o = 0; o < ADJACENTS_IN_ORDER.length; o++) {
-			Vector3i offset = ADJACENTS_IN_ORDER[o];
-			BlockPos targetPos = at.offset(offset);
-			BlockState neighbor = worldIn.getBlockState(targetPos);
-			if (!(neighbor.isAir(worldIn, at)) && (neighbor.getFluidState().getType() == Fluids.EMPTY)) {
-				// if the neighbor isn't air, and if it's not occupied by a fluid...
-				
-				// isFaceSturdy
-				if (neighbor.isFaceSturdy(worldIn, at, Direction.getNearest(-offset.getX(), -offset.getY(), -offset.getZ())) || isLeafBlock(neighbor.getBlock()))
-					// and if the surface that I'm connecting to is solid or the block is a leaf block...
-					flags |= (1 << o); // add the flag
-					
-			}
-			
-			// If the position is in the array of forced active neighbors, set the flag.
-			for (BlockPos pos : forcedNeighbors) {
-				if (pos == targetPos) {
-					flags |= (1 << o);
-					break;
-				}
-			}
-		}
-		return flags;
-	}
-	
-	private static boolean isLeafBlock(Block b) {
-		return b == Blocks.OAK_LEAVES || b == Blocks.BIRCH_LEAVES || b == Blocks.SPRUCE_LEAVES || b == Blocks.JUNGLE_LEAVES || b == Blocks.ACACIA_LEAVES || b == Blocks.DARK_OAK_LEAVES;
-	}
-	
-	/**
-	 * This returns true if at least one adjacent block can have its surface coated by mycelium - the surface facing the given block, specifically.<br>
-	 * It is only useful for checking if spreading is possible by looking for at least one surface to latch onto in a neighboring block.
-	 * @param worldIn
-	 * @param at
-	 * @return
-	 */
-	private static boolean hasAnyNeighbor(IWorldReader worldIn, BlockPos at) {
-		return getNeighborFlags(worldIn, at) != 0;
 	}
 	
 	@Override
@@ -320,7 +195,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (!hasAnyNeighbor(worldIn, pos)) {
+		if (!SixSidedCollider.hasNonAirNonFluidFullNeighbor(worldIn, pos)) {
 			// No neighbors around this block now? Delete it.
 			worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			return;
@@ -356,7 +231,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	@SuppressWarnings("deprecation")
 	public static boolean canSpreadTo(World worldIn, BlockPos at, BlockState existingBlock) {
 		boolean willBeReplacedByThis = existingBlock.isAir(worldIn, at); //BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock) && BLOCK_REPLACEMENT_TARGETS.get(existingBlock).getBlock() instanceof DecaySurfaceMyceliumBlock;
-		boolean neighbor = hasAnyNeighbor(worldIn, at);
+		boolean neighbor = SixSidedCollider.hasNonAirNonFluidFullNeighbor(worldIn, at);
 		return neighbor && willBeReplacedByThis;
 	}
 }

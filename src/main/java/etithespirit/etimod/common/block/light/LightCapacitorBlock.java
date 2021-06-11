@@ -13,16 +13,16 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-public class BlockLightCapacitor extends Block implements ILightBlockIdentifier {
+public class LightCapacitorBlock extends Block implements ILightBlockIdentifier {
 	
-	public BlockLightCapacitor() {
+	public LightCapacitorBlock() {
 		this(Properties.of(Material.STONE)
 			.harvestTool(ToolType.PICKAXE) // but don't require a tool
 			.sound(SoundType.STONE)
 		);
 	}
 
-	public BlockLightCapacitor(Properties properties) {
+	public LightCapacitorBlock(Properties properties) {
 		super(properties);
 		
 	}

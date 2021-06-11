@@ -9,7 +9,8 @@ import etithespirit.etimod.common.block.decay.flora.DecayStrippedLogBlock;
 import etithespirit.etimod.common.block.decay.world.DecayMyceliumBlock;
 import etithespirit.etimod.common.block.decay.world.DecayPoisonBlock;
 import etithespirit.etimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
-import etithespirit.etimod.common.block.light.BlockLightCapacitor;
+import etithespirit.etimod.common.block.light.LightCapacitorBlock;
+import etithespirit.etimod.common.block.light.LightConduitBlock;
 import etithespirit.etimod.fluid.DecayFluid;
 import etithespirit.etimod.fluid.tags.DecayFluidTags;
 import net.minecraft.block.Block;
@@ -36,9 +37,11 @@ public class BlockRegistry {
 	public static final RegistryObject<Block> DECAY_STRIPPED_LOG = BLOCKS.register("stripped_decay_log", DecayStrippedLogBlock::new);
 	public static final RegistryObject<Block> DECAY_SURFACE_MYCELIUM = BLOCKS.register("decay_surface_mycelium", DecaySurfaceMyceliumBlock::new);
 	
+	public static final RegistryObject<Block> LIGHT_CONDUIT = BLOCKS.register("light_conduit", LightConduitBlock::new);
+	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// TILE ENTITY BLOCKS
-	public static final RegistryObject<Block> LIGHT_CAPACITOR = BLOCKS.register("light_capacitor", BlockLightCapacitor::new);
+	public static final RegistryObject<Block> LIGHT_CAPACITOR = BLOCKS.register("light_capacitor", LightCapacitorBlock::new);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS WRAPPING FLUIDS
@@ -54,6 +57,8 @@ public class BlockRegistry {
 		BLOCKS_TO_REGISTER.add(DECAY_LOG);
 		BLOCKS_TO_REGISTER.add(DECAY_STRIPPED_LOG);
 		BLOCKS_TO_REGISTER.add(DECAY_SURFACE_MYCELIUM);
+		
+		BLOCKS_TO_REGISTER.add(LIGHT_CONDUIT);
 		
 		BLOCKS_TO_REGISTER.add(LIGHT_CAPACITOR);
 	}

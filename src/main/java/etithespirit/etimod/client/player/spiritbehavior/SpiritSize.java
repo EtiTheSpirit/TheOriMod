@@ -126,7 +126,7 @@ public class SpiritSize {
 	/**
 	 * Returns true if the world does not collide with the given entity size located at the given player.
 	 * @param player
-	 * @param forGivenSize
+	 * @param entSize
 	 * @return
 	 */
 	public static boolean isPoseClear(PlayerEntity player, EntitySize entSize) {

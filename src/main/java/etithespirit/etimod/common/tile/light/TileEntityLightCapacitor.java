@@ -18,17 +18,18 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
 	
 	@Override
 	public void tick() {
-		// TODO: Energy transfer from neighbors? Custom wiring system? Redstone 2?
+		// Redstone 2!
 	}
 	
 	@Override
 	public CompoundNBT save(CompoundNBT nbt) {
-		return storage.writeToNBT(super.save(nbt)); 
+		return storage.writeToNBT(super.save(nbt));
 	}
 	
 	@Override
 	public void load(BlockState state, CompoundNBT nbt) {
-		storage.readFromNBT(nbt);
+		super.load(state, nbt); // Explicitly call load here.
+		storage.readFromNBT(nbt); // THEN let the storage do its thing.
 	}
 	
 	@Override

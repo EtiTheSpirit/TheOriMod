@@ -12,6 +12,7 @@ import com.google.common.collect.Sets;
 import com.google.common.collect.ImmutableMultimap.Builder;
 
 import etithespirit.etimod.common.block.decay.IDecayBlockIdentifier;
+import etithespirit.etimod.item.SpiritItemTier;
 import etithespirit.etimod.item.repair.ISpiritRechargeable;
 import etithespirit.etimod.item.repair.ItemRecharger;
 import net.minecraft.block.Block;
@@ -24,10 +25,7 @@ import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.IItemTier;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ToolItem;
-import net.minecraft.item.UseAction;
+import net.minecraft.item.*;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
@@ -45,6 +43,17 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	
 	private static final Set<Block> NO_BLOCKS = Sets.newHashSet();
 	
+	public SpiritOmniTool() {
+		this(
+			2f,
+			-1.6f,
+			SpiritItemTier.LIGHT,
+			new Item.Properties().rarity(Rarity.RARE).tab(ItemGroup.TAB_TOOLS),
+			() -> { return 10; },
+			() -> { return 15; }
+		);
+	}
+	
 	public SpiritOmniTool(float attackDamageIn, float attackSpeedIn, IItemTier tier, Properties builderIn, Supplier<Integer> expPerRepair, Supplier<Integer> repairIncrement) {
 		super(attackDamageIn, attackSpeedIn, tier, NO_BLOCKS, builderIn);
 		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
@@ -56,6 +65,10 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	}
 
 	public float getDestroySpeed(ItemStack stack, BlockState state) {
+		if (state.getBlock() instanceof IDecayBlockIdentifier) {
+			// The tool is made of Light. This will tear the shit out of Decay blocks.
+			return this.speed * 3;
+		}
 		return this.speed;
 	}
 
@@ -88,6 +101,7 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	*/
 	public boolean isCorrectToolForDrops(BlockState blockIn) {
 		if (blockIn.getBlock() instanceof IDecayBlockIdentifier) {
+			// Did I mention this tool is made of Light? There's no way this will cause a decay block to drop. It'll destroy it.
 			return false;
 		}
 		return true;
@@ -161,12 +175,10 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	
 	@Override
 	public int getExperienceCostToRepair() {
-		return expPerRepair.get().intValue();
+		return expPerRepair.get();
 	}
 	
 	@Override
-	public int getDurabilityPerRestoreOp() {
-		return repairIncrement.get().intValue();
-	}
+	public int getDurabilityPerRestoreOp() { return repairIncrement.get(); }
 
 }

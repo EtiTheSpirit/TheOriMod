@@ -24,25 +24,8 @@ public class ItemRegistry {
 	public static final RegistryObject<Item> DECAY_SURFACE_MYCELIUM = ITEMS.register("decay_surface_mycelium", () -> new BlockItem(BlockRegistry.DECAY_SURFACE_MYCELIUM.get(), new Item.Properties()));
 	 */
 
-	public static final RegistryObject<Item> LIGHT_TOOL = ITEMS.register("light_omnitool", () -> new SpiritOmniTool
-		(
-			2f, 
-			-1.6f, 
-			SpiritItemTier.LIGHT, 
-			new Item.Properties().rarity(Rarity.RARE),
-			() -> { return 10; },
-			() -> { return 15; }
-		)
-	);
-	public static final RegistryObject<Item> LIGHT_SHIELD = ITEMS.register("light_shield", () -> new SpiritShield
-		(
-			new Item.Properties()
-			.rarity(Rarity.RARE)
-			.setISTER(() -> {
-				return SpiritShield.SpiritShieldRenderer::new;
-			})
-		)
-	);
+	public static final RegistryObject<Item> LIGHT_TOOL = ITEMS.register("light_omnitool", SpiritOmniTool::new);
+	public static final RegistryObject<Item> LIGHT_SHIELD = ITEMS.register("light_shield", SpiritShield::new);
 	
 	public static void registerAll() {
 		

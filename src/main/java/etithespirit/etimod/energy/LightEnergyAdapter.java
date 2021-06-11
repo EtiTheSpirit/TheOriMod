@@ -20,7 +20,7 @@ public final class LightEnergyAdapter {
 	 * @param simulate If true, the transaction will only be simulated and not actually affect the containers.
 	 * @return An {@link LightEnergyAdapter.EnergyTransactionResult EnergyTransactionResult} describing the amount of energy transferred in both units, the direction in which the energy was transferred, at what ratio, and whether or not it was simulated.
 	 */
-	public static final EnergyTransactionResult performTransfer(ILightEnergyStorage lightContainer, IEnergyStorage rfContainer, EnergyTransactionDirection direction, double amount, boolean simulate) {
+	public static EnergyTransactionResult performTransfer(ILightEnergyStorage lightContainer, IEnergyStorage rfContainer, EnergyTransactionDirection direction, double amount, boolean simulate) {
 		if (!lightContainer.acceptsConversion()) {
 			return new EnergyTransactionResult(0, 0, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 		}
@@ -29,11 +29,9 @@ public final class LightEnergyAdapter {
 				return new EnergyTransactionResult(0, 0, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 			}
 			
-			final double lightToTransfer = amount;
-			
 			// The amount of Light we initially extracted from our Light container. This might not necessarily be the amount we can use.
 			// Because of this, we ALWAYS simulate this action.
-			final double lightInitiallyExtracted = lightContainer.extractLight(lightToTransfer, true);
+			final double lightInitiallyExtracted = lightContainer.extractLight(amount, true);
 			
 			// Now, let's try to see how much RF we can receive. There's a good chance that while we were able to get a given amount of Light, we were
 			// NOT able to translate all of it into RF for this container (maybe this container is too full?)
@@ -54,11 +52,9 @@ public final class LightEnergyAdapter {
 				return new EnergyTransactionResult(0, 0, lightContainer.getLightToRFConversionRatio(), direction, simulate);
 			}
 			
-			final int rfToTransfer = (int)amount;
-			
 			// The amount of RF we initially extracted from our RF container. This might not necessarily be the amount we can use.
 			// Because of this, we ALWAYS simulate this action.
-			final int rfInitiallyExtracted = rfContainer.extractEnergy(rfToTransfer, true);
+			final int rfInitiallyExtracted = rfContainer.extractEnergy((int)amount, true);
 			
 			// Now, let's try to see how much Light we can receive. There's a good chance that while we were able to get a given amount of RF, we were
 			// NOT able to translate all of it into Light for this container (maybe this container is too full?)
@@ -123,7 +119,7 @@ public final class LightEnergyAdapter {
 	 * @author Eti
 	 *
 	 */
-	public static enum EnergyTransactionDirection {
+	public enum EnergyTransactionDirection {
 		
 		/**
 		 * This energy transfer is being done from a container of light to a container of RF.
@@ -133,7 +129,7 @@ public final class LightEnergyAdapter {
 		/**
 		 * This energy transfer is being done from a container of RF to a container of Light.
 		 */
-		FROM_RF_TO_LIGHT;
+		FROM_RF_TO_LIGHT
 		
 	}
 }

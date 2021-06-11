@@ -20,15 +20,17 @@ public class TileEntityRegistry {
 		LIGHT_CAPACITOR = TILE_ENTITIES.register("light_capacitor", getBuilderFor(TileEntityLightCapacitor::new, BlockRegistry.LIGHT_CAPACITOR));
 	
 	/**
-	 * An alias method that quickly constructs a supplier for the given tile entity class, only requiring that said tile entity has a parameterless constructor and that only one block is bound to it.
+	 * An alias method that quickly constructs a supplier for the given tile entity class,
+	 * only requiring that said tile entity has a public parameterless constructor and that only one block
+	 * is bound to it.
 	 * @param <T> The TileEntity type.
-	 * @param cls The class of said TileEntity type.
-	 * @param blockRegistries The block (as a RegistryObject) that can be used for this TileEntity
+	 * @param ctor The public parameterless constructor of said TileEntity type.
+	 * @param block The block that can be used for this TileEntity
 	 * @return
 	 */
 	private static <T extends TileEntity> Supplier<TileEntityType<T>> getBuilderFor(Supplier<T> ctor, RegistryObject<Block> block) {
-		// TODO: This is a bit "grotesque" in general, feels a bit wrong to use. I wrote it so that it was shorter up top.
-		// Shall I keep it? It's kinda stanky ngl
+		// TODO: This feels like a bit of a strange alias and I'm not sure if I like having it around 100%.
+		// TODO: Probably keep this.
 		return () -> TileEntityType.Builder.of(ctor, block.get()).build(null);
 	}
 	

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.PlayerEntity;
 
 public final class PlayerDataUtils {
 	
+	private PlayerDataUtils() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
 	/**
 	 * Unintrusively removes experience points from the player, leaving other stats like their score unmodified.

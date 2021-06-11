@@ -1,4 +1,4 @@
-package etithespirit.etimod.api.impl;
+package etithespirit.etimod.apiimpl;
 
 import java.util.UUID;
 import java.util.function.Function;

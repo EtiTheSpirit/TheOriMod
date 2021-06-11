@@ -15,16 +15,24 @@ import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.tileentity.ItemStackTileEntityRenderer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ShieldItem;
+import net.minecraft.item.*;
+import net.minecraft.util.Hand;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 
 public class SpiritShield extends ShieldItem {
+	
+	public SpiritShield() {
+		this(
+			new Item.Properties()
+			.rarity(Rarity.RARE)
+			.setISTER(() -> SpiritShield.SpiritShieldRenderer::new)
+			.tab(ItemGroup.TAB_COMBAT)
+		);
+	}
 
 	public SpiritShield(Properties builder) {
 		super(builder);
-		// TODO Auto-generated constructor stub
 	}
 	
 	static {
@@ -33,8 +41,10 @@ public class SpiritShield extends ShieldItem {
 			if (ent instanceof PlayerEntity) {
 				PlayerEntity player = (PlayerEntity)ent;
 				if (player.isUsingItem()) {
-					ItemStack potentialShield = player.getItemInHand(player.getUsedItemHand());
-					if (potentialShield.equals(new ItemStack(ItemRegistry.LIGHT_SHIELD.get()), false)) {
+					ItemStack mainHand = player.getItemInHand(Hand.MAIN_HAND);
+					ItemStack offHand = player.getItemInHand(Hand.OFF_HAND);
+					ItemStack lightShield = new ItemStack(ItemRegistry.LIGHT_SHIELD.get());
+					if (mainHand.equals(lightShield,false) || offHand.equals(lightShield, false)) {
 						if (event.getSound().equals(SoundEvents.SHIELD_BLOCK)) {
 							// Player is holding a light shield and just blocked. Override the sound!
 							event.setSound(SpiritSoundProvider.getSpiritShieldImpactSound(false));

@@ -99,7 +99,7 @@ public class SpiritSounds {
 					// more than 5.5 bubbles: small
 					targetSound = SpiritSoundProvider.getSpiritBreathSound(BreathLevel.LITTLE);
 				}
-				SpiritSoundPlayer.playSoundAtPlayer(evt.player, targetSound, SoundCategory.PLAYERS, 0.175f);
+				SpiritSoundPlayer.playSoundAtPlayer(evt.player, targetSound, SoundCategory.PLAYERS, 0.35f);
 			}
 		} else if (bubbles < prevBubbles) {
 			// Air is being drained.

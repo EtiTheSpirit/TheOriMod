@@ -19,7 +19,8 @@ import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_
 import static etithespirit.etimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
 
 /**
- * This base class represents a block associated with The Decay. It provides a crude implementation of spreading and "infecting" (replacing) other blocks as defined by IDecayBlock.
+ * This base class represents a block associated with The Decay. It provides a crude implementation of spreading and "infecting"
+ * (replacing) other blocks as defined by {@link IDecayBlock}.
  * @author Eti
  *
  */

@@ -101,11 +101,14 @@ repositories {
 }
 
 dependencies {
+    implementation 'org.jetbrains:annotations:20.1.0'
     minecraft 'net.minecraftforge:forge:1.16.5-36.0.60'
 	annotationProcessor 'org.spongepowered:mixin:0.8.2:processor'
 	
 	// Deps:
 	compile fg.deobf("curse.maven:hwyla-253449:3033593")
+    //compile fg.deobf("curse.maven:mantle-74924:2713386")
+    //compile fg.deobf("curse.maven:tconstruct-74072:2902483")
 }
 
 

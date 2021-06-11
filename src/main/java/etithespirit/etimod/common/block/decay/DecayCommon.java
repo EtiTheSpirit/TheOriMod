@@ -40,7 +40,7 @@ public final class DecayCommon {
 	public static final IntegerProperty EDGE_DETECTION_RARITY = IntegerProperty.create("edge_test_rarity", 0, EDGE_TEST_MINIMUM_CHANCE);
 	
 	/**
-	 * All adjacent directions sorted by test order.
+	 * All adjacent directions sorted by test order. The test order is: EAST, WEST, UP, DOWN, NORTH, SOUTH
 	 */
 	public static final Vector3i[] ADJACENTS_IN_ORDER = new Vector3i[] {
 		new Vector3i(1, 0, 0),
