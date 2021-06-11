@@ -1,4 +1,4 @@
-package etithespirit.etimod.util.blockmtl;
+package etithespirit.etimod.spiritmaterial;
 
 import javax.annotation.Nullable;
 

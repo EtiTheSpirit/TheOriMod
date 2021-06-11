@@ -9,7 +9,7 @@ public final class PlayerDataUtils {
 	
 	
 	/**
-	 * Non-intrusively removes experience points from the player, leaving other stats like their score unmodified.
+	 * Unintrusively removes experience points from the player, leaving other stats like their score unmodified.
 	 * @param fromPlayer The player to remove experience from.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */

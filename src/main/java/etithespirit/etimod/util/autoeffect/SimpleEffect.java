@@ -1,4 +1,4 @@
-package etithespirit.autoeffect;
+package etithespirit.etimod.util.autoeffect;
 
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
@@ -34,7 +34,7 @@ public abstract class SimpleEffect extends Effect {
 	@Override
 	public int getColor() {
 		if (!hasGottenColor) {
-			storedColor = getColor();
+			storedColor = getCustomColor();
 			this.liquidColor = storedColor;
 			hasGottenColor = true;
 		}

@@ -1,4 +1,4 @@
-package etithespirit.etimod.srwailaasfsgdi;
+package etithespirit.etimod.modinterop.waila;
 
 import mcp.mobius.waila.api.IRegistrar;
 import mcp.mobius.waila.api.IWailaPlugin;

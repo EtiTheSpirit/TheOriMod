@@ -1,6 +1,6 @@
-package etithespirit.etimod.util.blockmtl.defaultimpl;
+package etithespirit.etimod.spiritmaterial.defaultimpl;
 
-import etithespirit.etimod.util.blockmtl.SpiritMaterial;
+import etithespirit.etimod.spiritmaterial.SpiritMaterial;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
 import net.minecraft.entity.Entity;

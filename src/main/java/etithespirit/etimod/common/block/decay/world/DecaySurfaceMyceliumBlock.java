@@ -38,8 +38,6 @@ import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 /**
  * A unique block that represents a thin film of Decay mycelium. It grows over the surface of blocks.
  * @author Eti

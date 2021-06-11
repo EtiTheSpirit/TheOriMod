@@ -1,4 +1,4 @@
-package etithespirit.etimod.client.render;
+package etithespirit.etimod.client.player;
 
 import javax.annotation.Nullable;
 
@@ -36,8 +36,6 @@ import net.minecraft.util.math.vector.Quaternion;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
 public class RenderPlayerAsSpirit {

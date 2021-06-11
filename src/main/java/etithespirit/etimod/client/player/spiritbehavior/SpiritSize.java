@@ -5,9 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
-import etithespirit.etimod.util.spirit.MutableEntitySize;
 import etithespirit.etimod.util.spirit.SpiritIdentificationType;
 import etithespirit.etimod.util.spirit.SpiritIdentifier;
+import etithespirit.etimod.valuetypes.MutableEntitySize;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;

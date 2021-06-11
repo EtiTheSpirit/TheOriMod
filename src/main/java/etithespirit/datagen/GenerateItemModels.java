@@ -1,4 +1,4 @@
-package etithespirit.etimod.datagen;
+package etithespirit.datagen;
 
 import org.apache.logging.log4j.Level;
 

@@ -37,8 +37,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 
-import net.minecraft.item.Item.Properties;
-
 public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	/** Modifiers applied when the item is in the mainhand of a user. */
 	private final Multimap<Attribute, AttributeModifier> attributeModifiers;

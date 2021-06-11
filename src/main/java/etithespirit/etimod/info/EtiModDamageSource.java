@@ -1,4 +1,4 @@
-package etithespirit.etimod.data;
+package etithespirit.etimod.info;
 
 import net.minecraft.util.DamageSource;
 

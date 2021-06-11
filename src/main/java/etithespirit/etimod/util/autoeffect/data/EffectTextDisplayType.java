@@ -1,4 +1,4 @@
-package etithespirit.autoeffect.data;
+package etithespirit.etimod.util.autoeffect.data;
 
 /**
  * A preset inventory display type for potion effects. This dictates how the banner on the left side of the screen is rendered while the player's inventory is open,

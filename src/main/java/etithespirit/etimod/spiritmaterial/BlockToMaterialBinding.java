@@ -1,4 +1,4 @@
-package etithespirit.etimod.util.blockmtl;
+package etithespirit.etimod.spiritmaterial;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
@@ -9,8 +9,8 @@ import java.util.Map;
 import etithespirit.etimod.api.delegate.ISpiritMaterialAquisitionFunction;
 import etithespirit.etimod.common.block.ExtendedMaterial;
 import etithespirit.etimod.registry.BlockRegistry;
+import etithespirit.etimod.spiritmaterial.defaultimpl.DefaultImplementations;
 import etithespirit.etimod.util.EtiUtils;
-import etithespirit.etimod.util.blockmtl.defaultimpl.DefaultImplementations;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;

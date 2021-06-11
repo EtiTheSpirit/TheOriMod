@@ -13,7 +13,7 @@ public class ConcurrentBag<T> extends ConcurrentHashMap<T, T> implements Iterabl
 
 	@Override
 	public Iterator<T> iterator() {
-		return this.keys().asIterator();
+		return keySet().iterator();
 	}
 
 

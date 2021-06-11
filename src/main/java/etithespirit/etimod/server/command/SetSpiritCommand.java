@@ -1,4 +1,4 @@
-package etithespirit.etimod.common.command;
+package etithespirit.etimod.server.command;
 
 import java.util.UUID;
 

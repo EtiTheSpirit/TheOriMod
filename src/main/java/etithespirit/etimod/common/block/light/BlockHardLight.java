@@ -9,8 +9,6 @@ import static etithespirit.etimod.common.block.StaticData.TRUE_POSITION_PREDICAT
 
 import etithespirit.etimod.common.block.ExtendedMaterial;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 public class BlockHardLight extends Block implements ILightBlockIdentifier {
 	
 	public BlockHardLight() {

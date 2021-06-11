@@ -1,8 +1,24 @@
-package etithespirit.etimod.data;
+package etithespirit.etimod.valuetypes;
 
 import java.util.Random;
 
-public final class MutableNumberRange {
+/**
+ * A value representing a range between two numbers [min, max]
+ * @author Eti
+ *
+ */
+public final class NumberRange {
+	
+	/**
+	 * A NumberRange whose min and max are both zero.
+	 */
+	public static final NumberRange ZERO = new NumberRange(0, 0);
+	
+	/**
+	 * Whether or not this has a range of zero.
+	 */
+	public final boolean isZero = this.equals(ZERO);
+	
 	/**
 	 * A randomizer used for {@link #random()}
 	 */
@@ -11,19 +27,25 @@ public final class MutableNumberRange {
 	/**
 	 * The minimum possible value this will return.
 	 */
-	private double min;
+	public final double min;
 	
 	/**
 	 * The maximum possible value this will return.
 	 */
-	private double max;
+	public final double max;
 	
-	public MutableNumberRange(double min, double max) {
+	/**
+	 * Whether or not min and max are equal.
+	 */
+	private final boolean equal;
+	
+	public NumberRange(double min, double max) {
 		this(min, max, new Random());
 	}
 	
-	public MutableNumberRange(double min, double max, Random rng) {
+	public NumberRange(double min, double max, Random rng) {
 		this.rng = rng;
+		this.equal = min == max;
 		if (min > max) {
 			// Just to handle it.
 			this.max = min;
@@ -40,7 +62,7 @@ public final class MutableNumberRange {
 	 * @return
 	 */
 	public double lerp(double alpha) {
-		if (min == max) return min;
+		if (equal) return min;
 		return ((max - min) * alpha) + min;
 	}
 	
@@ -49,7 +71,7 @@ public final class MutableNumberRange {
 	 * @return
 	 */
 	public double random() {
-		if (min == max) return min;
+		if (equal) return min;
 		return lerp(rng.nextDouble());
 	}
 	
@@ -58,27 +80,12 @@ public final class MutableNumberRange {
 	 * @param newRandomzier
 	 * @return
 	 */
-	public NumberRange immutable() {
-		return new NumberRange(min, max, rng);
+	public NumberRange withRandomizer(Random newRandomizer) {
+		return new NumberRange(min, max, newRandomizer);
 	}
 	
-	public double min() {
-		return min;
-	}
-	
-	public double max() {
-		return max;
-	}
-	
-	public void setRange(double min, double max) {
-		if (min > max) {
-			// Just to handle it.
-			this.max = min;
-			this.min = max;
-		} else {
-			this.min = min;
-			this.max = max;
-		}
+	public MutableNumberRange mutable() {
+		return new MutableNumberRange(min, max, rng);
 	}
 	
 	@Override

@@ -2,7 +2,7 @@ package etithespirit.etimod.api;
 
 import etithespirit.etimod.api.delegate.ISpiritMaterialAquisitionFunction;
 import etithespirit.etimod.exception.ArgumentNullException;
-import etithespirit.etimod.util.blockmtl.SpiritMaterial;
+import etithespirit.etimod.spiritmaterial.SpiritMaterial;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;

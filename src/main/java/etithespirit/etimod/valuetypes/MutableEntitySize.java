@@ -1,4 +1,4 @@
-package etithespirit.etimod.util.spirit;
+package etithespirit.etimod.valuetypes;
 
 import net.minecraft.entity.EntitySize;
 import static etithespirit.etimod.util.ReflectionUtils.modifyFinalField;

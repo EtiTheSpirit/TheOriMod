@@ -18,8 +18,6 @@ import static etithespirit.etimod.common.block.decay.DecayCommon.ALL_ADJACENT_AR
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 /**
  * A decayed tree log.
  * @author Eti

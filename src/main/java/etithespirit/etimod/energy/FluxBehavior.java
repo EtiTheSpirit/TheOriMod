@@ -2,7 +2,7 @@ package etithespirit.etimod.energy;
 
 import java.util.Random;
 
-import etithespirit.etimod.data.MutableNumberRange;
+import etithespirit.etimod.valuetypes.MutableNumberRange;
 
 /**
  * Represents "flux behavior" in Light equipment.

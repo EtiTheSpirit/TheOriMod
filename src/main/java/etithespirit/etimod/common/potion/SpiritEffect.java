@@ -1,10 +1,10 @@
 package etithespirit.etimod.common.potion;
 
 
-import etithespirit.autoeffect.IAutoEffect;
-import etithespirit.autoeffect.SimpleEffect;
-import etithespirit.autoeffect.data.EffectTextDisplayType;
 import etithespirit.etimod.EtiMod;
+import etithespirit.etimod.util.autoeffect.IAutoEffect;
+import etithespirit.etimod.util.autoeffect.SimpleEffect;
+import etithespirit.etimod.util.autoeffect.data.EffectTextDisplayType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.Attributes;

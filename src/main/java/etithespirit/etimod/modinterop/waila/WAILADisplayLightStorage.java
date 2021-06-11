@@ -1,4 +1,4 @@
-package etithespirit.etimod.srwailaasfsgdi;
+package etithespirit.etimod.modinterop.waila;
 
 import java.util.List;
 

@@ -5,10 +5,8 @@ import org.apache.logging.log4j.Logger;
 
 import com.mojang.brigadier.CommandDispatcher;
 
-import etithespirit.etimod.common.command.SetSpiritCommand;
-//import etithespirit.etimod.config.Configuration;
-import etithespirit.etimod.datagen.GenerateBlockModels;
-import etithespirit.etimod.datagen.GenerateItemModels;
+import etithespirit.datagen.GenerateBlockModels;
+import etithespirit.datagen.GenerateItemModels;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
 import etithespirit.etimod.networking.status.ReplicateEffect;
 import etithespirit.etimod.registry.BiomeRegistry;
@@ -20,6 +18,7 @@ import etithespirit.etimod.registry.PotionRegistry;
 import etithespirit.etimod.registry.RenderRegistry;
 import etithespirit.etimod.registry.SoundRegistry;
 import etithespirit.etimod.registry.TileEntityRegistry;
+import etithespirit.etimod.server.command.SetSpiritCommand;
 import etithespirit.etimod.world.dimension.LightForestBiomeProvider;
 import etithespirit.etimod.world.dimension.LightForestChunkGenerator;
 import net.minecraft.command.CommandSource;
@@ -102,7 +101,7 @@ public class EtiMod {
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onPlayerTicked);
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onGetEntitySize);
     	
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.render.RenderPlayerAsSpirit::whenRenderingPlayer);
+    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.RenderPlayerAsSpirit::whenRenderingPlayer);
 		MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.gui.CustomHealthForEffects::onElementDrawn);
     	
     	RenderRegistry.registerAll();    	

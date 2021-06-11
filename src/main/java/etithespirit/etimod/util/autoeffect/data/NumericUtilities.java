@@ -1,4 +1,4 @@
-package etithespirit.autoeffect.data;
+package etithespirit.etimod.util.autoeffect.data;
 
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.math.MathHelper;

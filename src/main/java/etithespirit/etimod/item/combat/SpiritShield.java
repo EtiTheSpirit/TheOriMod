@@ -20,8 +20,6 @@ import net.minecraft.item.ShieldItem;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.SoundEvents;
 
-import net.minecraft.item.Item.Properties;
-
 public class SpiritShield extends ShieldItem {
 
 	public SpiritShield(Properties builder) {

@@ -1,8 +1,8 @@
 package etithespirit.etimod.common.potion;
 
-import etithespirit.autoeffect.IAutoEffect;
-import etithespirit.autoeffect.SimpleEffect;
 import etithespirit.etimod.EtiMod;
+import etithespirit.etimod.util.autoeffect.IAutoEffect;
+import etithespirit.etimod.util.autoeffect.SimpleEffect;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.ResourceLocation;

@@ -13,8 +13,6 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ToolType;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 public class BlockLightCapacitor extends Block implements ILightBlockIdentifier {
 	
 	public BlockLightCapacitor() {

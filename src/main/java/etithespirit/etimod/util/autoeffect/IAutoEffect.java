@@ -1,12 +1,12 @@
-package etithespirit.autoeffect;
+package etithespirit.etimod.util.autoeffect;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 
-import etithespirit.autoeffect.data.EffectTextDisplayType;
-import etithespirit.autoeffect.data.NumericUtilities;
+import etithespirit.etimod.util.autoeffect.data.EffectTextDisplayType;
+import etithespirit.etimod.util.autoeffect.data.NumericUtilities;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.AbstractGui;
 import net.minecraft.client.gui.DisplayEffectsScreen;
@@ -116,7 +116,7 @@ public interface IAutoEffect extends IForgeEffect {
 	}
 	
 	/**
-	 * Renders the text in the GUI element for a potion in the player's inventory. By default, this will use {@link etithespirit.autoeffect.data.NumericUtilities.ToRomanNumerals} to display effect level.<br/>
+	 * Renders the text in the GUI element for a potion in the player's inventory. By default, this will use {@link etithespirit.etimod.util.autoeffect.data.NumericUtilities.ToRomanNumerals} to display effect level.<br/>
 	 * <br/>
 	 * If you wish to not use this method of displaying potion amplifier (in favor of localized entries), override this method, and set it to just run {@code super.renderPotionText(effect, gui, mStack, x, y, z, false);}
 	 * @param effect The associated potion effect that should have its details rendered.

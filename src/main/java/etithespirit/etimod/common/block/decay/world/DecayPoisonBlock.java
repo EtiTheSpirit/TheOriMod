@@ -8,8 +8,6 @@ import net.minecraft.block.material.Material;
 import net.minecraft.fluid.FlowingFluid;
 import net.minecraft.state.StateContainer;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 public class DecayPoisonBlock extends FlowingFluidBlock {
 	
 	public DecayPoisonBlock() {

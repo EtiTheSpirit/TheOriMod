@@ -18,8 +18,6 @@ import static etithespirit.etimod.common.block.decay.DecayCommon.ALL_ADJACENT_AR
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
 
-import net.minecraft.block.AbstractBlock.Properties;
-
 /**
  * This base class represents a block associated with The Decay. It provides a crude implementation of spreading and "infecting" (replacing) other blocks as defined by IDecayBlock.
  * @author Eti

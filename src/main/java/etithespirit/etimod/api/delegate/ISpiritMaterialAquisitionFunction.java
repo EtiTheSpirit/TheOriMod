@@ -3,7 +3,7 @@ package etithespirit.etimod.api.delegate;
 import javax.annotation.Nonnull;
 
 import etithespirit.etimod.exception.ArgumentNullException;
-import etithespirit.etimod.util.blockmtl.SpiritMaterial;
+import etithespirit.etimod.spiritmaterial.SpiritMaterial;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 
