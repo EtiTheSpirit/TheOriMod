@@ -20,6 +20,7 @@ public abstract class InjectForSpiritPose extends net.minecraftforge.common.capa
 		super(baseClass);
 	}
 	
+	/** Shadow the original method as a fallback. */
 	@Shadow
 	public abstract AxisAlignedBB getBoundingBoxForPose(Pose pose);
 	
