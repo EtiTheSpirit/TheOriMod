@@ -1,4 +1,4 @@
-package etithespirit.etimod.item.combat;
+package etithespirit.etimod.common.item.combat;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;

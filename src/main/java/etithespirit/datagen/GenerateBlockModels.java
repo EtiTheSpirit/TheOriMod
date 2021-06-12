@@ -1,5 +1,6 @@
 package etithespirit.datagen;
 
+import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
 import net.minecraftforge.client.model.generators.*;
 import org.apache.logging.log4j.Level;
 
@@ -94,17 +95,27 @@ public class GenerateBlockModels extends BlockStateProvider {
 	
 	private void registerConduitBlock(RegistryObject<Block> block) {
 		MultiPartBlockStateBuilder multiPart = this.getMultipartBuilder(block.get());
-		ModelFile core = get8Core(block);
-		ModelFile connector = get8CoreConnector(block);
+		ModelFile core = get8Core(block, false);
+		ModelFile connector = get8CoreConnector(block, false);
+		ModelFile coreGlowing = get8Core(block, true);
+		ModelFile connectorGlowing = get8CoreConnector(block, true);
 		multiPart
-		.part().modelFile(core).addModel().end()
-		.part().modelFile(connector).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.NORTH, true).end()
-		.part().modelFile(connector).rotationX(  0).rotationY(180).addModel().condition(BlockStateProperties.SOUTH, true).end()
-		.part().modelFile(connector).rotationX(  0).rotationY(270).addModel().condition(BlockStateProperties.WEST, true).end()
-		.part().modelFile(connector).rotationX(  0).rotationY( 90).addModel().condition(BlockStateProperties.EAST, true).end()
-		.part().modelFile(connector).rotationX(270).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).end()
-		.part().modelFile(connector).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).end();
-		
+		.part().modelFile(core).addModel().condition(ConnectableLightTechBlock.ENERGIZED, false).end()
+		.part().modelFile(connector).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.NORTH, true).condition(ConnectableLightTechBlock.ENERGIZED, false).end()
+		.part().modelFile(connector).rotationX(  0).rotationY(180).addModel().condition(BlockStateProperties.SOUTH, true).condition(ConnectableLightTechBlock.ENERGIZED, false).end()
+		.part().modelFile(connector).rotationX(  0).rotationY(270).addModel().condition(BlockStateProperties.WEST, true).condition(ConnectableLightTechBlock.ENERGIZED, false).end()
+		.part().modelFile(connector).rotationX(  0).rotationY( 90).addModel().condition(BlockStateProperties.EAST, true).condition(ConnectableLightTechBlock.ENERGIZED, false).end()
+		.part().modelFile(connector).rotationX(270).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).condition(ConnectableLightTechBlock.ENERGIZED, false).end()
+		.part().modelFile(connector).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).condition(ConnectableLightTechBlock.ENERGIZED, false).end();
+		multiPart
+		.part().modelFile(coreGlowing).addModel().condition(ConnectableLightTechBlock.ENERGIZED, true).end()
+		.part().modelFile(connectorGlowing).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.NORTH, true).condition(ConnectableLightTechBlock.ENERGIZED, true).end()
+		.part().modelFile(connectorGlowing).rotationX(  0).rotationY(180).addModel().condition(BlockStateProperties.SOUTH, true).condition(ConnectableLightTechBlock.ENERGIZED, true).end()
+		.part().modelFile(connectorGlowing).rotationX(  0).rotationY(270).addModel().condition(BlockStateProperties.WEST, true).condition(ConnectableLightTechBlock.ENERGIZED, true).end()
+		.part().modelFile(connectorGlowing).rotationX(  0).rotationY( 90).addModel().condition(BlockStateProperties.EAST, true).condition(ConnectableLightTechBlock.ENERGIZED, true).end()
+		.part().modelFile(connectorGlowing).rotationX(270).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).condition(ConnectableLightTechBlock.ENERGIZED, true).end()
+		.part().modelFile(connectorGlowing).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).condition(ConnectableLightTechBlock.ENERGIZED, true).end();
+	
 		this.simpleBlockItem(block.get(), core);
 		EtiMod.LOG.printf(Level.INFO, "Generated conduit block at %s and %s", core.getLocation().toString(), connector.getLocation().toString());
 	}
@@ -196,9 +207,10 @@ public class GenerateBlockModels extends BlockStateProvider {
 		return blockBuilder;
 	}
 	
-	private ModelFile get8Core(RegistryObject<Block> block) {
+	private ModelFile get8Core(RegistryObject<Block> block, boolean glow) {
+		String glowSuffix = glow ? "-energized" : "";
 		String pathBase = ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath();
-		ResourceLocation texture = localTexture(block.getId(), pathBase, "core");
+		ResourceLocation texture = localTexture(block.getId(), pathBase, "core" + glowSuffix);
 		BlockModelBuilder blockBuilder = models().cubeAll(texture.getPath(), texture);
 		blockBuilder.element()
 			.texture("#all")
@@ -232,14 +244,15 @@ public class GenerateBlockModels extends BlockStateProvider {
 		return blockBuilder;
 	}
 	
-	private ModelFile get8CoreConnector(RegistryObject<Block> block) {
+	private ModelFile get8CoreConnector(RegistryObject<Block> block, boolean glow) {
+		String glowSuffix = glow ? "-energized" : "";
 		String pathBase = ModelProvider.BLOCK_FOLDER + "/" + block.getId().getPath();
 		String pathConnector = pathBase + "-connector";
 		ResourceLocation id = block.getId();
-		ResourceLocation sides = localTexture(id, pathConnector, "side");
-		ResourceLocation back = localTexture(id, pathBase, "core"); // Share with the core
-		ResourceLocation front = localTexture(id, pathConnector, "connection");
-		BlockModelBuilder blockBuilder = models().cube(pathConnector, sides, sides, front, back, sides, sides);
+		ResourceLocation sides = localTexture(id, pathConnector, "side" + glowSuffix);
+		ResourceLocation back = localTexture(id, pathBase, "core" + glowSuffix); // Share with the core
+		ResourceLocation front = localTexture(id, pathConnector, "connection" + glowSuffix);
+		BlockModelBuilder blockBuilder = models().cube(pathConnector + glowSuffix, sides, sides, front, back, sides, sides);
 		blockBuilder.element()
 			.from(4f, 4f, 0f)
 			.to(12f, 12f, 4f)

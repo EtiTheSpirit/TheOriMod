@@ -1,4 +1,4 @@
-package etithespirit.etimod.item.repair;
+package etithespirit.etimod.common.item.repair;
 
 import java.util.HashMap;
 

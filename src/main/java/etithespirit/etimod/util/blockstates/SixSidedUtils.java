@@ -45,7 +45,7 @@ public final class SixSidedUtils {
 	/**
 	 * A mapping from single set bits (six values) that map flags to cardinal {@link BooleanProperty} instances.
 	 */
-	public static final ImmutableMap<Integer, BooleanProperty> BITWISE_ASSOCIATIONS;
+	private static final ImmutableMap<Integer, BooleanProperty> BITWISE_ASSOCIATIONS;
 	
 	static {
 		HashMap<Integer, BooleanProperty> map = new HashMap<>();
@@ -57,6 +57,10 @@ public final class SixSidedUtils {
 		map.put(0b100000, BlockStateProperties.SOUTH);
 		
 		BITWISE_ASSOCIATIONS = ImmutableMap.copyOf(map);
+	}
+	
+	public static BooleanProperty getBlockStateForSingleFlagValue(int flag) {
+		return BITWISE_ASSOCIATIONS.get(flag);
 	}
 	
 	/**
@@ -117,15 +121,17 @@ public final class SixSidedUtils {
 	
 	/**
 	 * Given two given block positions, this will return a value with a single flag set
-	 * that represents the direction from {@code at} -&gt; {@code otherAt}.<br/>
-	 * <br/>
-	 * This does not require the two positions to be adjacent, only axis-aligned.
+	 * that represents the direction from {@code at} -&gt; {@code otherAt}.
 	 * @param at The origin block; the "from" component of this direction.
 	 * @param otherAt The destination block; the "to" component of this direction.
 	 * @return
 	 */
 	public static int neighborFlagForBlockDirection(BlockPos at, BlockPos otherAt) {
 		Vector3i diff = otherAt.subtract(at);
+		
+		// Below: MUST be adjacent blocks.
+		if ((Math.abs(diff.getX()) + Math.abs(diff.getY()) + Math.abs(diff.getZ())) != 1) return 0;
+		
 		diff = new Vector3i(Math.signum(diff.getX()), Math.signum(diff.getY()), Math.signum(diff.getZ()));
 		for (int i = 0; i < ADJACENTS_IN_ORDER.length; i++) {
 			Vector3i adj = ADJACENTS_IN_ORDER[i];

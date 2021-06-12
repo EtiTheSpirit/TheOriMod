@@ -1,24 +1,37 @@
 package etithespirit.etimod.common.tile.light;
 
 import etithespirit.etimod.common.tile.AbstractLightEnergyTileEntity;
+import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.energy.FluxBehavior;
 import etithespirit.etimod.registry.TileEntityRegistry;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
+public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity implements IWorldUpdateListener {
+	
+	public static final int MAX_BRANCH_RANGE = 64;
+	public static final int MAX_RECURSION_DEPTH = 16;
 
 	public TileEntityLightCapacitor() {
 		super(TileEntityRegistry.LIGHT_CAPACITOR.get());
 		this.storage = new PersistentLightEnergyStorage(this::setChanged, 10000, 20, 20, FluxBehavior.DISABLED, false, 10000);
+		
+		
 	}
 	
 	@Override
 	public void tick() {
-		// Redstone 2!
+	}
+	
+	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+	
 	}
 	
 	@Override
@@ -100,5 +113,4 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity {
 		}
 		return amount;
 	}
-
 }

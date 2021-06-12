@@ -1,4 +1,4 @@
-package etithespirit.etimod.item;
+package etithespirit.etimod.common.item;
 
 import com.google.common.base.Supplier;
 

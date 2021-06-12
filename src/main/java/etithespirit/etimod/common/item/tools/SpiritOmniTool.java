@@ -1,4 +1,4 @@
-package etithespirit.etimod.item.tools;
+package etithespirit.etimod.common.item.tools;
 
 import java.util.List;
 import java.util.Set;
@@ -12,9 +12,9 @@ import com.google.common.collect.Sets;
 import com.google.common.collect.ImmutableMultimap.Builder;
 
 import etithespirit.etimod.common.block.decay.IDecayBlockIdentifier;
-import etithespirit.etimod.item.SpiritItemTier;
-import etithespirit.etimod.item.repair.ISpiritRechargeable;
-import etithespirit.etimod.item.repair.ItemRecharger;
+import etithespirit.etimod.common.item.SpiritItemTier;
+import etithespirit.etimod.common.item.repair.ISpiritRechargeable;
+import etithespirit.etimod.common.item.repair.ItemRecharger;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;

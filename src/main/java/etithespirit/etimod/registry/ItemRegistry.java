@@ -1,14 +1,12 @@
 package etithespirit.etimod.registry;
 
 import etithespirit.etimod.EtiMod;
-import etithespirit.etimod.item.SpiritItemTier;
-import etithespirit.etimod.item.combat.SpiritShield;
-import etithespirit.etimod.item.tools.LumoWand;
-import etithespirit.etimod.item.tools.SpiritOmniTool;
+import etithespirit.etimod.common.item.combat.SpiritShield;
+import etithespirit.etimod.common.item.tools.LumoWand;
+import etithespirit.etimod.common.item.tools.SpiritOmniTool;
 import net.minecraft.block.Block;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
-import net.minecraft.item.Rarity;
 import net.minecraftforge.fml.RegistryObject;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;

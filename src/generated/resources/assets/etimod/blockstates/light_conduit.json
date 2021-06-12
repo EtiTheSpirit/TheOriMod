@@ -1,13 +1,17 @@
 {
   "multipart": [
     {
+      "when": {
+        "in_use": "false"
+      },
       "apply": {
         "model": "etimod:block/light_conduit-core"
       }
     },
     {
       "when": {
-        "north": "true"
+        "north": "true",
+        "in_use": "false"
       },
       "apply": {
         "model": "etimod:block/light_conduit-connector"
@@ -15,7 +19,8 @@
     },
     {
       "when": {
-        "south": "true"
+        "south": "true",
+        "in_use": "false"
       },
       "apply": {
         "model": "etimod:block/light_conduit-connector",
@@ -24,7 +29,8 @@
     },
     {
       "when": {
-        "west": "true"
+        "west": "true",
+        "in_use": "false"
       },
       "apply": {
         "model": "etimod:block/light_conduit-connector",
@@ -33,7 +39,8 @@
     },
     {
       "when": {
-        "east": "true"
+        "east": "true",
+        "in_use": "false"
       },
       "apply": {
         "model": "etimod:block/light_conduit-connector",
@@ -42,7 +49,8 @@
     },
     {
       "when": {
-        "up": "true"
+        "up": "true",
+        "in_use": "false"
       },
       "apply": {
         "model": "etimod:block/light_conduit-connector",
@@ -51,10 +59,78 @@
     },
     {
       "when": {
-        "down": "true"
+        "down": "true",
+        "in_use": "false"
       },
       "apply": {
         "model": "etimod:block/light_conduit-connector",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "etimod:block/light_conduit-core-energized"
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "etimod:block/light_conduit-connector-energized"
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "etimod:block/light_conduit-connector-energized",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "etimod:block/light_conduit-connector-energized",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "etimod:block/light_conduit-connector-energized",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "etimod:block/light_conduit-connector-energized",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "etimod:block/light_conduit-connector-energized",
         "x": 90
       }
     }

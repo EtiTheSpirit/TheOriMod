@@ -6,9 +6,11 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
-import net.minecraftforge.fml.common.thread.SidedThreadGroups;
 import net.minecraftforge.fml.loading.FMLEnvironment;
 
+import java.util.NoSuchElementException;
+
+@SuppressWarnings("unused")
 public class EtiUtils {
 	
 	/**
@@ -18,70 +20,42 @@ public class EtiUtils {
 	
 	/**
 	 * Given a mod's ID, this will attempt to locate the mod's user-friendly display name through Forge's mod list. Throws an exception if the mod couldn't be found.
-	 * @param modid
-	 * @return
+	 * @param modid The ID of the mod to locate, or "minecraft"
+	 * @return The user-friendly display name associated with the mod ID.
+	 * @throws NoSuchElementException If no mod was found with that ID.
 	 */
 	public static String getModName(String modid) {
-		if (modid == "minecraft") return "Minecraft";
-		return ModList.get().getModContainerById(modid).get().getModInfo().getDisplayName();
+		if (modid.equals("minecraft")) return "Minecraft";
+		return ModList.get().getModContainerById(modid).get().getModInfo().getDisplayName(); // Let the exception through.
 	}
 	
 	/**
 	 * Client only. Alias method to get the instance of the local player.
-	 * @return
+	 * @return A reference to the local player.
 	 */
 	public static PlayerEntity getLocalPlayer() {
 		return Minecraft.getInstance().player;
 	}
 	
 	/**
-	 * Returns {@code true} if this is running on a physical game client (the game you play on).<br/>
-	 * This is identical to calling {@code IsClient(SideType.Physical)}
-	 * @return
+	 * <strong>This will still return true on an integrated server or LAN server.</strong>
+	 * @return {@code true} if this build of the game is the playable client.<br/>
 	 */
-	@Deprecated
-	public static boolean isClient() {
+	public static boolean isGameClient() {
 		return FMLEnvironment.dist == Dist.CLIENT;
 	}
 	
 	/**
-	 * Returns {@code true} if this is running on a literal server app of Minecraft (the server jar).<br/>
-	 * This is identical to calling {@code IsServer(SideType.Physical)}
-	 * @return
+	 * @return {@code true} if this build of the game is the dedicated server build.
 	 */
-	@Deprecated
-	public static boolean isServer() {
+	public static boolean isDedicatedServer() {
 		return FMLEnvironment.dist == Dist.DEDICATED_SERVER;
 	}
 	
 	/**
-	 * Returns {@code true} if this is running on the client side (determined by the input {@code SideType}.)<br/>
-	 * This method is not ideal in that it attempts to guess from the current thread if type is Logical
-	 * @param type
-	 * @return
-	 */
-	@Deprecated
-	public static boolean isClient(SideType type) {
-		if (type == SideType.PHYSICAL) return isClient();
-		return Thread.currentThread().getThreadGroup() == SidedThreadGroups.CLIENT;
-	}
-	
-	/**
-	 * Returns {@code true} if this is running on the server side (determined by the input {@code SideType}.)<br/>
-	 * This method is not ideal in that it attempts to guess from the current thread if type is Logical
-	 * @param type
-	 * @return
-	 */
-	@Deprecated
-	public static boolean isServer(SideType type) {
-		if (type == SideType.PHYSICAL) return isServer();
-		return Thread.currentThread().getThreadGroup() == SidedThreadGroups.SERVER;
-	}
-	
-	/**
 	 * The most reliable and the best way to acquire the side, this checks the isRemote status of the input world.
-	 * @param worldIn
-	 * @return
+	 * @param worldIn The world to test.
+	 * @return True if the world is clientside, false if it is not.
 	 */
 	public static boolean isClient(World worldIn) {
 		return worldIn.isClientSide;
@@ -89,8 +63,8 @@ public class EtiUtils {
 	
 	/**
 	 * The most reliable and the best way to acquire the side, this checks the isRemote status of the input world.
-	 * @param worldIn
-	 * @return
+	 * @param worldIn The world to test.
+	 * @return True if the world is serverside, false if it is not.
 	 */
 	public static boolean isServer(World worldIn) {
 		return !worldIn.isClientSide;
@@ -98,8 +72,8 @@ public class EtiUtils {
 	
 	/**
 	 * Returns whether or not this entity exists on the client side by checking its world.
-	 * @param entityIn
-	 * @return
+	 * @param entityIn The entity to use to acquire the side.
+	 * @return True if the given entity exists on the server.
 	 */
 	public static boolean isClient(Entity entityIn) {
 		return isClient(entityIn.getCommandSenderWorld());
@@ -107,8 +81,8 @@ public class EtiUtils {
 
 	/**
 	 * Returns whether or not this entity exists on the server side by checking its world.
-	 * @param entityIn
-	 * @return
+	 * @param entityIn The entity to use to acquire the side.
+	 * @return True if the given entity exists on the server.
 	 */
 	public static boolean isServer(Entity entityIn) {
 		return isServer(entityIn.getCommandSenderWorld());
@@ -116,9 +90,9 @@ public class EtiUtils {
 	
 	/**
 	 * Returns true if {@code (value & flag) == flag} (or, {@code value} has the bits defined by {@code flag} all set to 1). 
-	 * @param value
-	 * @param flag
-	 * @return
+	 * @param value The value to test.
+	 * @param flag The bits of value that should be equal to 1.
+	 * @return Whether or not the given value has the given bits set (as defined in flag)
 	 */
 	public static boolean hasFlag(int value, int flag) {
 		return (value & flag) == flag;

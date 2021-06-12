@@ -1,4 +1,4 @@
-package etithespirit.etimod.item.tools;
+package etithespirit.etimod.common.item.tools;
 
 import etithespirit.etimod.common.block.light.LightConduitBlock;
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
@@ -57,7 +57,9 @@ public class LumoWand extends Item {
 			} else {
 				
 				// The block connects no matter what, so toggling a side isn't possible.
-				if (ConnectableLightTechBlock.connectsFromAnySideAlways(block)) return ActionResultType.FAIL;
+				if (ConnectableLightTechBlock.connectsFromAnySideAlways(block)) {
+					return ActionResultType.FAIL;
+				}
 				
 				Vector3d clickPos = ctx.getClickLocation();
 				BooleanProperty blockFaceState = SixSidedUtils.getBlockStateFromEvidentFace(at, clickPos);

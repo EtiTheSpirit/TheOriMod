@@ -7,8 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.state.BooleanProperty;
-import net.minecraft.state.StateContainer;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -38,7 +36,7 @@ public class LightConduitBlock extends ConnectableLightTechBlock {
 	
 	public LightConduitBlock(Properties props) {
 		super(props);
-		ConnectableLightTechBlock.registerDefaultState(this::registerDefaultState, this.stateDefinition);
+		ConnectableLightTechBlock.autoRegisterDefaultState(this::registerDefaultState, this.stateDefinition);
 	}
 	
 	/**
@@ -87,6 +85,7 @@ public class LightConduitBlock extends ConnectableLightTechBlock {
 		});
 		if (neighborFlags != 0) {
 			// Auto-connection was made.
+			// TODO: Only play this if the wires are live when connected.
 			ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundCategory.BLOCKS, 0.2f, 1f);
 		}
 		return SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), neighborFlags);

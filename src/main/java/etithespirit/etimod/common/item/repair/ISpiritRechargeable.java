@@ -1,4 +1,4 @@
-package etithespirit.etimod.item.repair;
+package etithespirit.etimod.common.item.repair;
 
 /**
  * Denotes an item that can be "recharged" by a spirit player to repair it. This enforces the implementation of a number of methods present on Item.

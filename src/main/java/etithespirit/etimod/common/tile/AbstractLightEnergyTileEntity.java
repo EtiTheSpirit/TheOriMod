@@ -15,10 +15,10 @@ import java.util.ArrayList;
  */
 public abstract class AbstractLightEnergyTileEntity extends TileEntity implements ILightEnergyStorage, ITickableTileEntity {
 	
-	protected PersistentLightEnergyStorage storage = null;
+	protected PersistentLightEnergyStorage storage;
 	
 	public AbstractLightEnergyTileEntity(TileEntityType<?> tileEntityTypeIn) {
-		super(tileEntityTypeIn);
+		this(tileEntityTypeIn, null);
 	}
 	
 	public AbstractLightEnergyTileEntity(TileEntityType<?> tileEntityTypeIn, PersistentLightEnergyStorage storage) {
