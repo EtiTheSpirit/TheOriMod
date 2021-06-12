@@ -17,6 +17,7 @@ import net.minecraft.world.server.ServerWorld;
 import static etithespirit.etimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
+import static etithespirit.etimod.info.coordinate.Cardinals.ADJACENTS_IN_ORDER;
 
 /**
  * This base class represents a block associated with The Decay. It provides a crude implementation of spreading and "infecting"
@@ -78,7 +79,7 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		// When the block is added, automatically set all neighbors to mycelium where applicable
 		for (int i = 0; i < 6; i++) {		
-			Vector3i adj = DecayCommon.ADJACENTS_IN_ORDER[i];
+			Vector3i adj = ADJACENTS_IN_ORDER[i];
 			BlockPos myceliumSpreadPos = pos.offset(adj);
 			if (DecaySurfaceMyceliumBlock.canSpreadTo(worldIn, myceliumSpreadPos, worldIn.getBlockState(myceliumSpreadPos))) {
 				worldIn.setBlockAndUpdate(myceliumSpreadPos, BlockRegistry.DECAY_SURFACE_MYCELIUM.get().defaultBlockState()); // It'll update its own state.

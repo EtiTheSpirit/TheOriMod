@@ -21,7 +21,7 @@ import javax.annotation.Nullable;
 
 import etithespirit.etimod.common.block.decay.DecayCommon;
 import etithespirit.etimod.common.block.decay.IDecayBlock;
-import etithespirit.etimod.util.blockstates.SixSidedCollider;
+import etithespirit.etimod.util.blockstates.SixSidedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
@@ -56,7 +56,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	/// COLLISION CONSTRUCTION ///
 	/** Every possible combination of occupied surfaces. **/
-	protected static final VoxelShape[] COLLISION_SHAPES = SixSidedCollider.getBitwiseColliderArrayFor(DecaySurfaceMyceliumBlock::getShapeFor);
+	protected static final VoxelShape[] COLLISION_SHAPES = SixSidedUtils.getBitwiseColliderArrayFor(DecaySurfaceMyceliumBlock::getShapeFor);
 	
 	
 	/**
@@ -128,7 +128,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	}
 	
 	private static BlockState modifyStateForNeighbors(IWorldReader worldIn, BlockPos pos, BlockState state, @Nullable BlockPos forcedActive) {
-		int f = SixSidedCollider.getNonAirNonFluidFullNeighbors(worldIn, pos, forcedActive);
+		int f = SixSidedUtils.getNonAirNonFluidFullNeighbors(worldIn, pos, forcedActive);
 		BlockState retn = state.getBlock().defaultBlockState();
 		if (hasFlag(f, 0b000001)) {
 			retn = retn.setValue(WEST, true);
@@ -156,7 +156,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 */
 	@Override
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-		return COLLISION_SHAPES[SixSidedCollider.getNumberFromSurfaces(state)];
+		return COLLISION_SHAPES[SixSidedUtils.getNumberFromSurfaces(state)];
 	}
 	
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -195,7 +195,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	@Override
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
-		if (!SixSidedCollider.hasNonAirNonFluidFullNeighbor(worldIn, pos)) {
+		if (!SixSidedUtils.hasNonAirNonFluidFullNeighbor(worldIn, pos)) {
 			// No neighbors around this block now? Delete it.
 			worldIn.setBlockAndUpdate(pos, Blocks.AIR.defaultBlockState());
 			return;
@@ -231,7 +231,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	@SuppressWarnings("deprecation")
 	public static boolean canSpreadTo(World worldIn, BlockPos at, BlockState existingBlock) {
 		boolean willBeReplacedByThis = existingBlock.isAir(worldIn, at); //BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock) && BLOCK_REPLACEMENT_TARGETS.get(existingBlock).getBlock() instanceof DecaySurfaceMyceliumBlock;
-		boolean neighbor = SixSidedCollider.hasNonAirNonFluidFullNeighbor(worldIn, at);
+		boolean neighbor = SixSidedUtils.hasNonAirNonFluidFullNeighbor(worldIn, at);
 		return neighbor && willBeReplacedByThis;
 	}
 }

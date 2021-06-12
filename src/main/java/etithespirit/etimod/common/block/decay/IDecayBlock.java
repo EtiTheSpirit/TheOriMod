@@ -1,9 +1,9 @@
 package etithespirit.etimod.common.block.decay;
 
-import static etithespirit.etimod.common.block.decay.DecayCommon.ADJACENTS_IN_ORDER;
+import static etithespirit.etimod.info.coordinate.Cardinals.ADJACENTS_IN_ORDER;
 import static etithespirit.etimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
-import static etithespirit.etimod.common.block.decay.DecayCommon.DIAGONALS_IN_ORDER;
+import static etithespirit.etimod.info.coordinate.Cardinals.DIAGONALS_IN_ORDER;
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.etimod.common.block.decay.DecayCommon.EDGE_TEST_MINIMUM_CHANCE;
 import static etithespirit.etimod.common.block.decay.DecayCommon.MAX_DIAGONAL_TESTS;

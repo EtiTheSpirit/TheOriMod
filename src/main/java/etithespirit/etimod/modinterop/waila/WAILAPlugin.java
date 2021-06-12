@@ -8,7 +8,7 @@ import mcp.mobius.waila.api.WailaPlugin;
 public class WAILAPlugin implements IWailaPlugin {
 	
 	private WAILADisplayLightStorage storage = new WAILADisplayLightStorage();
-	private WAILADisplayLightConduit conduit = new WAILADisplayLightConduit();
+	private WAILADisplayConnectableLightTechBlock conduit = new WAILADisplayConnectableLightTechBlock();
 
 	@Override
 	public void register(IRegistrar registrar) {

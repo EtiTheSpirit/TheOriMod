@@ -1,9 +1,9 @@
 package etithespirit.etimod.item.tools;
 
-import etithespirit.etimod.EtiMod;
 import etithespirit.etimod.common.block.light.LightConduitBlock;
+import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.etimod.registry.SoundRegistry;
-import etithespirit.etimod.util.blockstates.SixSidedCollider;
+import etithespirit.etimod.util.blockstates.SixSidedUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.util.ITooltipFlag;
 import net.minecraft.entity.player.PlayerEntity;
@@ -45,7 +45,7 @@ public class LumoWand extends Item {
 		World world = ctx.getLevel();
 		BlockPos at = ctx.getClickedPos();
 		BlockState block = world.getBlockState(at);
-		if (block.getBlock() instanceof LightConduitBlock){
+		if (ConnectableLightTechBlock.isInstance(block)){
 			boolean targetState = false;
 			if (ctx.isSecondaryUseActive()) {
 				targetState = !block.getValue(LightConduitBlock.AUTO);
@@ -55,18 +55,22 @@ public class LumoWand extends Item {
 					message(ctx.getPlayer(), "info.etimod.lumowand.auto" + (targetState ? "on" : "off"));
 				}
 			} else {
+				
+				// The block connects no matter what, so toggling a side isn't possible.
+				if (ConnectableLightTechBlock.connectsFromAnySideAlways(block)) return ActionResultType.FAIL;
+				
 				Vector3d clickPos = ctx.getClickLocation();
-				BooleanProperty blockFaceState = SixSidedCollider.getBlockStateFromEvidentFace(at, clickPos);
-				Direction dir = SixSidedCollider.getNearestForBlock(at, clickPos);
+				BooleanProperty blockFaceState = SixSidedUtils.getBlockStateFromEvidentFace(at, clickPos);
+				Direction dir = SixSidedUtils.getNearestDirectionForBlock(at, clickPos);
 				BlockState other = world.getBlockState(at.offset(dir.getNormal()));
 				targetState = !block.getValue(blockFaceState);
 				
 				// Important that this is run FIRST so that it triggers a block update if needed.
 				world.setBlockAndUpdate(at, block.setValue(blockFaceState, targetState));
 				
-				if (other.getBlock() instanceof LightConduitBlock && targetState) {
+				if (ConnectableLightTechBlock.isInstance(other) && targetState) {
 					// we want to connect, the other is already facing us can connect in that direction
-					BooleanProperty isConnectedToMeProp = SixSidedCollider.oppositeState(blockFaceState);
+					BooleanProperty isConnectedToMeProp = SixSidedUtils.oppositeState(blockFaceState);
 					boolean isConnectedToMe = other.getValue(isConnectedToMeProp);
 					boolean willBeConnectedToMe = !isConnectedToMe && other.getValue(LightConduitBlock.AUTO);
 					if (isConnectedToMe || willBeConnectedToMe) {
