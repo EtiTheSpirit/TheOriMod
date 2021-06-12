@@ -1,8 +1,25 @@
 package etithespirit.etimod.item.tools;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.Rarity;
+import etithespirit.etimod.EtiMod;
+import etithespirit.etimod.common.block.light.LightConduitBlock;
+import etithespirit.etimod.registry.SoundRegistry;
+import etithespirit.etimod.util.blockstates.SixSidedCollider;
+import net.minecraft.block.BlockState;
+import net.minecraft.client.util.ITooltipFlag;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.ServerPlayerEntity;
+import net.minecraft.item.*;
+import net.minecraft.state.BooleanProperty;
+import net.minecraft.util.*;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.text.ChatType;
+import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.World;
+
+import javax.annotation.Nullable;
+import java.util.List;
 
 /**
  * The Lumo-Wand, a tool designed for Light-based circuitry.
@@ -21,5 +38,59 @@ public class LumoWand extends Item {
 	
 	public LumoWand(Properties props) {
 		super(props);
+	}
+	
+	@Override
+	public ActionResultType useOn(ItemUseContext ctx) {
+		World world = ctx.getLevel();
+		BlockPos at = ctx.getClickedPos();
+		BlockState block = world.getBlockState(at);
+		if (block.getBlock() instanceof LightConduitBlock){
+			boolean targetState = false;
+			if (ctx.isSecondaryUseActive()) {
+				targetState = !block.getValue(LightConduitBlock.AUTO);
+				BlockState oppositeAuto = block.setValue(LightConduitBlock.AUTO, targetState);
+				world.setBlockAndUpdate(ctx.getClickedPos(), oppositeAuto);
+				if (!world.isClientSide()) {
+					message(ctx.getPlayer(), "info.etimod.lumowand.auto" + (targetState ? "on" : "off"));
+				}
+			} else {
+				Vector3d clickPos = ctx.getClickLocation();
+				BooleanProperty blockFaceState = SixSidedCollider.getBlockStateFromEvidentFace(at, clickPos);
+				Direction dir = SixSidedCollider.getNearestForBlock(at, clickPos);
+				BlockState other = world.getBlockState(at.offset(dir.getNormal()));
+				targetState = !block.getValue(blockFaceState);
+				
+				// Important that this is run FIRST so that it triggers a block update if needed.
+				world.setBlockAndUpdate(at, block.setValue(blockFaceState, targetState));
+				
+				if (other.getBlock() instanceof LightConduitBlock && targetState) {
+					// we want to connect, the other is already facing us can connect in that direction
+					BooleanProperty isConnectedToMeProp = SixSidedCollider.oppositeState(blockFaceState);
+					boolean isConnectedToMe = other.getValue(isConnectedToMeProp);
+					boolean willBeConnectedToMe = !isConnectedToMe && other.getValue(LightConduitBlock.AUTO);
+					if (isConnectedToMe || willBeConnectedToMe) {
+						world.playSound(null, at, SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundCategory.BLOCKS, 0.2f, 1f);
+					}
+				}
+			}
+			
+			world.playSound(null, at, SoundEvents.LEVER_CLICK, SoundCategory.BLOCKS, 0.2f, targetState ? 0.6f : 0.5f);
+			return ActionResultType.SUCCESS;
+		}
+		return ActionResultType.PASS;
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
+		tooltip.add(new TranslationTextComponent("tooltip.etimod.lumowand.1"));
+		tooltip.add(new TranslationTextComponent("tooltip.etimod.lumowand.2"));
+		tooltip.add(new TranslationTextComponent("tooltip.etimod.lumowand.3"));
+		tooltip.add(new TranslationTextComponent("tooltip.etimod.lumowand.4"));
+		tooltip.add(new TranslationTextComponent("tooltip.etimod.lumowand.5"));
+	}
+	
+	private static void message(PlayerEntity player, String message) {
+		((ServerPlayerEntity)player).sendMessage(new TranslationTextComponent(message), ChatType.GAME_INFO, Util.NIL_UUID);
 	}
 }

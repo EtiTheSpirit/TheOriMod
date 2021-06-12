@@ -1,6 +1,8 @@
 package etithespirit.etimod.util;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
@@ -22,6 +24,14 @@ public class EtiUtils {
 	public static String getModName(String modid) {
 		if (modid == "minecraft") return "Minecraft";
 		return ModList.get().getModContainerById(modid).get().getModInfo().getDisplayName();
+	}
+	
+	/**
+	 * Client only. Alias method to get the instance of the local player.
+	 * @return
+	 */
+	public static PlayerEntity getLocalPlayer() {
+		return Minecraft.getInstance().player;
 	}
 	
 	/**

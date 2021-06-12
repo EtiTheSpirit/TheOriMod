@@ -102,11 +102,18 @@ public final class SoundRegistry {
 		registerSound("entity.light_vessel.drop");
 		registerSound("entity.light_vessel.scrape");
 		
-		registerSound("tile.light_tech.activate");
+		registerSound("tile.light_tech.generic.activate");
+		registerSound("tile.light_tech.generic.deactivate");
+		registerSound("tile.light_tech.generic.active_loop");
+		
+		registerSound("tile.light_tech.ambientfield.activate");
+		registerSound("tile.light_tech.ambientfield.deactivate");
+		registerSound("tile.light_tech.ambientfield.loop_magic");
+		
 		registerSound("tile.light_tech.activate_large_a");
 		registerSound("tile.light_tech.activate_large_b");
-		registerSound("tile.light_tech.deactivate");
-		registerSound("tile.light_tech.active_loop");
+		
+		registerSound("item.lumo_wand.swapconduitauto");
 		
 		registerSound("nullsound");
 		

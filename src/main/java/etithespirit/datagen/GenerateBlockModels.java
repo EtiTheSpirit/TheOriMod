@@ -106,7 +106,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 		.part().modelFile(connector).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).end();
 		
 		this.simpleBlockItem(block.get(), core);
-		EtiMod.LOG.printf(Level.INFO, "Generated conduit out block at %s and %s", core.getLocation().toString(), connector.getLocation().toString());
+		EtiMod.LOG.printf(Level.INFO, "Generated conduit block at %s and %s", core.getLocation().toString(), connector.getLocation().toString());
 	}
 	
 	protected void registerLogBlockAndItem(RegistryObject<Block> block) {

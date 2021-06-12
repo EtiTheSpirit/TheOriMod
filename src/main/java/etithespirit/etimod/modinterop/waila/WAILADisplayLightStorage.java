@@ -19,7 +19,7 @@ import net.minecraft.util.text.TranslationTextComponent;
  * @author Eti
  *
  */
-public class WAILADisplayLightStorage implements IComponentProvider {
+public final class WAILADisplayLightStorage implements IComponentProvider {
 	
 	private static final ResourceLocation SHOW_ENERGY = new ResourceLocation(EtiMod.MODID, "show_energy");
 	private static final ResourceLocation SHOW_FLUX = new ResourceLocation(EtiMod.MODID, "show_flux");

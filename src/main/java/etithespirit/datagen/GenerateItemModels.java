@@ -24,6 +24,7 @@ public final class GenerateItemModels extends ItemModelProvider {
 	protected void registerModels() {
 		EtiMod.LOG.printf(Level.INFO, "Starting item model generation.");
 		generateToolItem(ItemRegistry.LIGHT_TOOL);
+		generateToolItem(ItemRegistry.LUMO_WAND);
 		generateShieldItem(ItemRegistry.LIGHT_SHIELD);
 		EtiMod.LOG.printf(Level.INFO, "Item models registered!");
 	}

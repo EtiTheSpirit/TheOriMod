@@ -659,12 +659,55 @@
 	},
 	
 	
-	"tile.light_tech.activate" : {
+	"tile.light_tech.generic.activate" : {
 		"category" : "block",
 		"sounds" : [
-			"etimod:light_equipment/activate"
+			"etimod:light_equipment/generic/activate"
 		]
 	},
+	"tile.light_tech.generic.deactivate" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/generic/deactivate"
+		]
+	},
+	"tile.light_tech.generic.active_loop" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/generic/ambient"
+		]
+	},
+	
+	"tile.light_tech.ambientfield.activate" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/generic/ambientfield/activate/activate0",
+			"etimod:light_equipment/generic/ambientfield/activate/activate1",
+			"etimod:light_equipment/generic/ambientfield/activate/activate2",
+			"etimod:light_equipment/generic/ambientfield/activate/activate3",
+			"etimod:light_equipment/generic/ambientfield/activate/activate4",
+			"etimod:light_equipment/generic/ambientfield/activate/activate5"
+		]
+	},
+	"tile.light_tech.ambientfield.deactivate" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate0",
+			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate1",
+			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate2",
+			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate3",
+			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate4",
+			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate5"
+		]
+	},
+	"tile.light_tech.ambientfield.loop_magic" : {
+		"category" : "block",
+		"sounds" : [
+			"etimod:light_equipment/generic/ambientfield/loop/loop_magic"
+		]
+	},
+	
+	
 	"tile.light_tech.activate_large_a" : {
 		"category" : "block",
 		"sounds" : [
@@ -677,16 +720,16 @@
 			"etimod:light_equipment/activate_large_b"
 		]
 	},
-	"tile.light_tech.deactivate" : {
+	
+	"item.lumo_wand.swapconduitauto" : {
 		"category" : "block",
 		"sounds" : [
-			"etimod:light_equipment/deactivate"
-		]
-	},
-	"tile.light_tech.active_loop" : {
-		"category" : "ambient",
-		"sounds" : [
-			"etimod:light_equipment/ambient"
+			"etimod:light_tools/lumo_wand/swapauto0",
+			"etimod:light_tools/lumo_wand/swapauto1",
+			"etimod:light_tools/lumo_wand/swapauto2",
+			"etimod:light_tools/lumo_wand/swapauto3",
+			"etimod:light_tools/lumo_wand/swapauto4",
+			"etimod:light_tools/lumo_wand/swapauto5"
 		]
 	},
 	

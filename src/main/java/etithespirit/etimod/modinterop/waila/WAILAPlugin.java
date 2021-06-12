@@ -7,11 +7,13 @@ import mcp.mobius.waila.api.WailaPlugin;
 @WailaPlugin
 public class WAILAPlugin implements IWailaPlugin {
 	
-	private WAILADisplayLightStorage hook = new WAILADisplayLightStorage();
+	private WAILADisplayLightStorage storage = new WAILADisplayLightStorage();
+	private WAILADisplayLightConduit conduit = new WAILADisplayLightConduit();
 
 	@Override
 	public void register(IRegistrar registrar) {
-		hook.initialize(registrar);
+		storage.initialize(registrar);
+		conduit.initialize(registrar);
 	}
 
 }

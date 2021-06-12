@@ -8,6 +8,15 @@
 	"tooltip.etimod.focuslight.1" : "§3Sneak and hold RMB",
 	"tooltip.etimod.focuslight.2" : "§3to focus your §bLight",
 	"tooltip.etimod.focuslight.3" : "§3and repair this item!",
+	
+	"tooltip.etimod.lumowand.1" : "§3Press Sneak+Use to set",
+	"tooltip.etimod.lumowand.2" : "§3the auto-connect mode",
+	"tooltip.etimod.lumowand.3" : "§3of a conduit, or press",
+	"tooltip.etimod.lumowand.4" : "§3Use to set if a side",
+	"tooltip.etimod.lumowand.5" : "§3has an output on it.",
+	
+	"info.etimod.lumowand.autoon" : "Automatic Mode: On",
+	"info.etimod.lumowand.autooff" : "Automatic Mode: Off",
 
 	"input.etimod.dash" : "Dash",
 	"input.etimod.climb" : "Climb",
@@ -20,6 +29,9 @@
 	"block.etimod.stripped_decay_log" : "§5Stripped Petrified Log",
 	"block.etimod.decay_surface_mycelium" : "§5Decay Mycelium Coating",
 	"block.etimod.light_capacitor" : "Light Capacitor",
+	"block.etimod.light_conduit" : "Light Conduit",
+	
+	"item.etimod.lumo_wand" : "Lumo Wand",
 
 	"effect.etimod.spirit" : "Spirit Guardian",
 	"effect.etimod.decay" : "Decay",
@@ -33,10 +45,12 @@
 	"config.etimod.spirit" : "Spirit Configuration",
 	"config.etimod.spirit.air_jumps" : "Air Jump Count",
 	"config.etimod.spirit.air_jumps.description" : "The amount of jumps a spirit can perform in the air. 1 is double jump, and 2 is triple jump.",
-
+	
 	"waila.etimod.energy" : "Storage: §b%1$s Luxen",
 	"waila.etimod.energy_rf" : "Storage: §b%1$s Luxen (%2$s RF)",
 	"waila.etimod.env_flux" : "§3Affected by Environmental Flux",
+	"waila.etimod.isautoconduit" : "Automatic: ",
+	// above: this uses some special handling to mix with vanilla gui.yes and gui.no for easier localization:tm:
 
 	"config.etimod.world" : "World Configuration"
 }

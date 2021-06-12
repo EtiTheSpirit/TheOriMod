@@ -1,6 +1,8 @@
 package etithespirit.etimod.common.block.light;
 
-import etithespirit.etimod.common.block.decay.DecayCommon;
+import etithespirit.etimod.EtiMod;
+import etithespirit.etimod.registry.SoundRegistry;
+import etithespirit.etimod.util.EtiUtils;
 import etithespirit.etimod.util.blockstates.SixSidedCollider;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -10,19 +12,15 @@ import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
-import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
-import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 import java.util.List;
 
@@ -31,12 +29,14 @@ import static etithespirit.etimod.util.EtiUtils.hasFlag;
 
 public class LightConduitBlock extends Block {
 	
+	public static final BooleanProperty AUTO = BooleanProperty.create("autoconnect");
+	
 	private static final VoxelShape CORE = Block.box(4, 4, 4, 12, 12, 12);
 	
 	private static final VoxelShape V_UP = Block.box(4, 12, 4, 12, 16, 12);
 	private static final VoxelShape V_DOWN = Block.box(4, 0, 4, 12, 4, 12);
-	private static final VoxelShape V_EAST = Block.box(0, 4, 4, 4, 12, 12);
-	private static final VoxelShape V_WEST = Block.box(12, 4, 4, 16, 12, 12);
+	private static final VoxelShape V_EAST = Block.box(12, 4, 4, 16, 12, 12);
+	private static final VoxelShape V_WEST = Block.box(0, 4, 4, 4, 12, 12);
 	private static final VoxelShape V_NORTH = Block.box(4, 4, 0, 12, 12, 4);
 	private static final VoxelShape V_SOUTH = Block.box(4, 4, 12, 12, 12, 16);
 	
@@ -56,6 +56,7 @@ public class LightConduitBlock extends Block {
 				.setValue(DOWN, false)
 				.setValue(NORTH, false)
 				.setValue(SOUTH, false)
+				.setValue(AUTO, true)
 		);
 	}
 	
@@ -68,6 +69,7 @@ public class LightConduitBlock extends Block {
 		builder.add(DOWN);
 		builder.add(NORTH);
 		builder.add(SOUTH);
+		builder.add(AUTO);
 	}
 	
 	
@@ -111,29 +113,59 @@ public class LightConduitBlock extends Block {
 	@Override
 	public BlockState getStateForPlacement(BlockItemUseContext ctx) {
 		BlockPos pos = ctx.getClickedPos();
-		int neighborFlags = SixSidedCollider.getNeighborsWhere(ctx.getLevel(), pos, state -> state.getBlock() instanceof LightConduitBlock);
+		int neighborFlags = SixSidedCollider.getNeighborsWhere(ctx.getLevel(), pos, state -> {
+			boolean isLightConduit = state.getBlock() instanceof LightConduitBlock;
+			if (isLightConduit) return state.getValue(AUTO);
+			return false;
+		});
+		if (neighborFlags != 0) {
+			// Auto-connection was made.
+			ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundCategory.BLOCKS, 0.2f, 1f);
+		}
 		return SixSidedCollider.withSurfaceFlags(this.defaultBlockState(), neighborFlags);
 		
 	}
 	
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos at, Block unk0, BlockPos changedAt, boolean isMoving) {
+	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+		
 		if (state.getBlock() instanceof LightConduitBlock) {
-			BooleanProperty prop = SixSidedCollider.BITWISE_ASSOCIATIONS.get(SixSidedCollider.neighborFlagForBlock(world, at, changedAt));
-			world.setBlock(at, state.setValue(prop, true), 0);
+			// ^ This is a conduit
+			BlockState other = world.getBlockState(changedAt);
+			if (other.getBlock() instanceof LightConduitBlock) {
+				// ^ The changed block is a conduit
+				// Something replaced with conduit block.
+				
+				BooleanProperty prop = SixSidedCollider.BITWISE_ASSOCIATIONS.get(SixSidedCollider.neighborFlagForBlock(world, at, changedAt));
+				BooleanProperty othersProp = SixSidedCollider.oppositeState(prop);
+				// prop is my property connecting to other.
+				// othersprop is the other block connecting to this.
+				
+				// Connect to other if other wants to connect to us.
+				boolean isOtherConnected = other.getValue(othersProp);
+				boolean isConnected = state.getValue(prop);
+				if (isConnected == isOtherConnected) return;
+				
+				if (state.getValue(AUTO)) {
+					world.setBlockAndUpdate(at, state.setValue(prop, isOtherConnected));
+				}
+			} else {
+				if (!state.getValue(AUTO)) return;
+				if (replacedBlock instanceof LightConduitBlock) {
+					// Something destroyed the conduit
+					int inverseFlag = ~SixSidedCollider.neighborFlagForBlock(world, at, changedAt);
+					world.setBlockAndUpdate(at, SixSidedCollider.withSurfaceFlags(this.defaultBlockState(), SixSidedCollider.getNumberFromSurfaces(state) & inverseFlag));
+				}
+			}
 		}
 	}
 	
-	@Override
-	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
-		super.onPlace(state, worldIn, pos, oldState, isMoving);
-		// TODO: Also make the neighbors update lol
-	}
-	
+	/*
 	@Override
 	public ActionResultType use(BlockState state, World world, BlockPos at, PlayerEntity player, Hand hand, BlockRayTraceResult rt) {
 		BooleanProperty blockFaceState = SixSidedCollider.getBlockStateFromEvidentFace(rt);
 		world.setBlockAndUpdate(at, state.setValue(blockFaceState, !state.getValue(blockFaceState)));
 		return ActionResultType.SUCCESS;
 	}
+	*/
 }

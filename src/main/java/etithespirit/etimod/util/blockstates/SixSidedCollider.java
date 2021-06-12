@@ -103,11 +103,11 @@ public final class SixSidedCollider {
 	}
 	
 	public static int neighborFlagForBlock(IWorldReader worldIn, BlockPos at, BlockPos otherAt) {
-		Vector3i diff = at.subtract(otherAt);
+		Vector3i diff = otherAt.subtract(at);
 		for (int i = 0; i < ADJACENTS_IN_ORDER.length; i++) {
 			Vector3i adj = ADJACENTS_IN_ORDER[i];
 			if (adj.equals(diff)) {
-				return i;
+				return 1 << i;
 			}
 		}
 		return 0;
@@ -209,7 +209,7 @@ public final class SixSidedCollider {
 			
 		} else if (direction == Direction.NORTH) {
 			return BlockStateProperties.NORTH;
-		
+			
 		} else if (direction == Direction.SOUTH) {
 			return BlockStateProperties.SOUTH;
 		}
@@ -222,7 +222,7 @@ public final class SixSidedCollider {
 	 * @param cardinalBlockstateProp
 	 * @return
 	 */
-	public static BooleanProperty opposite(BooleanProperty cardinalBlockstateProp) {
+	public static BooleanProperty oppositeState(BooleanProperty cardinalBlockstateProp) {
 		if (cardinalBlockstateProp == BlockStateProperties.DOWN) {
 			return BlockStateProperties.UP;
 			
@@ -256,6 +256,23 @@ public final class SixSidedCollider {
 		Vector3d hit = ray.getLocation();
 		Vector3d dir = hit.subtract(center).normalize();
 		return getBlockStateFromDirection(Direction.getNearest(dir.x, dir.y, dir.z));
+	}
+	
+	/**
+	 * Given a block raytrace, this returns the closest face direction when comparing the ray's precise 3D location to the center of the block.<br/>
+	 * This is strictly useful if the block is NOT a cube. Otherwise just use {@link BlockRayTraceResult#getDirection()} and pass it into {@link #getBlockStateFromDirection(Direction)}.
+	 * @param blockPos
+	 * @param preciseClickPos
+	 * @return
+	 */
+	public static BooleanProperty getBlockStateFromEvidentFace(BlockPos blockPos, Vector3d preciseClickPos) {
+		Vector3d dir = preciseClickPos.subtract(Vector3d.atCenterOf(blockPos)).normalize();
+		return getBlockStateFromDirection(Direction.getNearest(dir.x, dir.y, dir.z));
+	}
+	
+	public static Direction getNearestForBlock(BlockPos blockPos, Vector3d preciseClickPos) {
+		Vector3d dir = preciseClickPos.subtract(Vector3d.atCenterOf(blockPos)).normalize();
+		return Direction.getNearest(dir.x, dir.y, dir.z);
 	}
 	
 	/**
