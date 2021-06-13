@@ -17,7 +17,6 @@ public class DecayLogBlock extends DecayLogBase {
 
 	@Override
 	public void registerReplacements(List<BlockState> blocksToReplaceWithSelf) {
-		// TODO Auto-generated method stub
 		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.OAK_LOG);
 		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.BIRCH_LOG);
 		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.SPRUCE_LOG);

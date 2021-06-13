@@ -10,6 +10,8 @@ import net.minecraft.block.material.MaterialColor;
  */
 public final class ExtendedMaterial {
 	
+	private ExtendedMaterial() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
+	
 	/**
 	 * A material representing all light-composed blocks, for instance, any variant of a hard-light block.
 	 */

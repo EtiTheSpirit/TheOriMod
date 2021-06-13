@@ -99,7 +99,7 @@ public class SpiritDash {
 		}
 		
 		
-		// TODO: Detect close walls.
+		// TODO: Detect close walls and swap sounds based on whether or not the player will hit it.
 		final boolean willImmediatelyImpactWall = false;
 		
 		if (!isInFluid) {

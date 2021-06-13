@@ -12,13 +12,8 @@ import net.minecraft.util.SoundEvent;
  */
 public class DuplicateSoundEvent extends SoundEvent {
 	
-	// TODO: Remove this? Do / will I ever use it?
-	public final SoundEvent original;
-	
-	// Basically just wrap the SoundEvent. Expose "original" for future-proofing for now, but it's kinda useless.
 	public DuplicateSoundEvent(SoundEvent base) {
 		super(base.location);
-		original = base;
 	}
 
 }

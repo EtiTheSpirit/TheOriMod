@@ -18,6 +18,7 @@ import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
+@SuppressWarnings("unused")
 public class SpiritSize {
 
 	public static final float X_SCALE = 0.79F;
@@ -35,8 +36,8 @@ public class SpiritSize {
 	public static final MutableEntitySize SPIRIT_SPIN_ATTACK_SIZE = PLAYER_SPIN_ATTACK_SIZE.scale(X_SCALE, Y_SCALE);
 	public static final MutableEntitySize SPIRIT_CROUCHING_SIZE = PLAYER_CROUCHING_SIZE.scale(X_SCALE, Y_SCALE);
 	
-	public static final Map<Pose, MutableEntitySize> SPIRIT_SIZE_BY_POSE = new HashMap<Pose, MutableEntitySize>();
-	public static final Map<Pose, MutableEntitySize> PLAYER_SIZE_BY_POSE = new HashMap<Pose, MutableEntitySize>();
+	public static final Map<Pose, MutableEntitySize> SPIRIT_SIZE_BY_POSE = new HashMap<>();
+	public static final Map<Pose, MutableEntitySize> PLAYER_SIZE_BY_POSE = new HashMap<>();
 	
 	private static boolean wasSpiritOnLastTick = false;
 	
@@ -46,7 +47,6 @@ public class SpiritSize {
 		PlayerEntity player = (PlayerEntity)event.getEntity();
 		if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
 			Pose targetPose = updatePose(player);
-			//Pose targetPose = event.getPose();
 			EntitySize newSize = getSpiritSizeFrom(targetPose);
 			
 			if (targetPose == Pose.STANDING) {
@@ -65,8 +65,8 @@ public class SpiritSize {
 	
 	/**
 	 * Updates the forced pose of the player. Returns the desired pose.
-	 * @param player
-	 * @return
+	 * @param player The player to alter.
+	 * @return Their desired pose.
 	 */
 	private static Pose updatePose(PlayerEntity player) {
 		Pose targetPose = getDesiredForcedPose(player);
@@ -78,8 +78,8 @@ public class SpiritSize {
 	
 	/**
 	 * Based on a number of conditions, this returns a pose most relevant to the player as a spirit.
-	 * @param player
-	 * @return
+	 * @param player The player to test for.
+	 * @return The proper pose given the context of the player.
 	 */
 	private static Pose getDesiredForcedPose(PlayerEntity player) {
 		boolean isSwimming = player.isSwimming() && player.isInWaterOrBubble();
@@ -110,9 +110,9 @@ public class SpiritSize {
 	
 	/**
 	 * Returns a new AABB at the given location centered within the given size.
-	 * @param at
-	 * @param size
-	 * @return
+	 * @param at The location of the center of the axis-aligned bounding box.
+	 * @param size The size of this bounding box.
+	 * @return An {@link AxisAlignedBB} located around {@code at} with size {@code size}.
 	 */
 	public static AxisAlignedBB atWithSize(Vector3d at, EntitySize size) {
 		float widthDiv2 = size.width / 2;
@@ -125,20 +125,19 @@ public class SpiritSize {
 	
 	/**
 	 * Returns true if the world does not collide with the given entity size located at the given player.
-	 * @param player
-	 * @param entSize
-	 * @return
+	 * @param player The player to test.
+	 * @param entSize The size of the player.
+	 * @return Whether or not that player is intersecting any blocks in the world.
 	 */
+	@SuppressWarnings ("BooleanMethodIsAlwaysInverted")
 	public static boolean isPoseClear(PlayerEntity player, EntitySize entSize) {
-		// NEW TEST: Null entity changes anything?
-		// TODO: Why shrink by 0.0000001? What effect or benefit does this have?
-		return player.getCommandSenderWorld().noCollision(null, atWithSize(player.position(), entSize).deflate(1.0E-7D));
+		return player.getCommandSenderWorld().noCollision(null, atWithSize(player.position(), entSize));
 	}
 	
 	/**
 	 * Returns whether or not there is a block above the player (based on if the default playermodel standing size clips with the world)
-	 * @param player
-	 * @return
+	 * @param player The player to test.
+	 * @return Whether or not there is a block above the player that prevents standing.
 	 */
 	public static boolean isBlockAbove(PlayerEntity player) {
 		return !isPoseClear(player, PLAYER_STANDING_SIZE);
@@ -146,13 +145,18 @@ public class SpiritSize {
 	
 	/**
 	 * Returns true if the block above the player would make a full-size player crouch. Used to fix an edge case where a top half-slab above the spirit would cause a false crouching state. 
-	 * @param player
-	 * @return
+	 * @param player The player to test.
+	 * @return Whether or not the block above the player, who is assumed to be a Spirit right now, would cause a full-size player to be unable to stand.
 	 */
 	public static boolean wouldBlockAboveMakeFullPlayerCrouch(PlayerEntity player) {
 		return !isPoseClear(player, PLAYER_CROUCHING_SIZE);
 	}
 	
+	/**
+	 * Given a pose, this returns the Spirit playermodel size associated with it.
+	 * @param pose The pose to use for reference.
+	 * @return An {@link EntitySize} suited for this pose.
+	 */
 	public static @Nullable EntitySize getSpiritSizeFrom(Pose pose) {
 		if (SPIRIT_SIZE_BY_POSE.containsKey(pose)) {
 			return SPIRIT_SIZE_BY_POSE.get(pose);
@@ -160,6 +164,11 @@ public class SpiritSize {
 		return null;
 	}
 	
+	/**
+	 * Given a pose, this returns the vanilla playermodel size associated with it.
+	 * @param pose The pose to use for reference.
+	 * @return An {@link EntitySize} suited for this pose.
+	 */
 	public static @Nullable EntitySize getPlayerSizeFrom(Pose pose) {
 		if (PLAYER_SIZE_BY_POSE.containsKey(pose)) {
 			return PLAYER_SIZE_BY_POSE.get(pose);
@@ -167,9 +176,7 @@ public class SpiritSize {
 		return null;
 	}
 	
-	@SuppressWarnings("resource")
-	//@SubscribeEvent
-	public static void onPlayerTicked(PlayerTickEvent evt) {
+	public static void onPlayerTickedClient(PlayerTickEvent evt) {
 		if (evt.player == null) return;
 		if (evt.player != net.minecraft.client.Minecraft.getInstance().player) return;
 		if (evt.phase == TickEvent.Phase.END) return;
@@ -182,6 +189,22 @@ public class SpiritSize {
 		} else {
 			if (wasSpiritOnLastTick) {
 				evt.player.setForcedPose(null);
+				evt.player.refreshDimensions();
+				wasSpiritOnLastTick = false;
+			}
+		}
+	}
+	
+	public static void onPlayerTickedServer(PlayerTickEvent evt) {
+		if (evt.player == null) return;
+		if (evt.phase == TickEvent.Phase.END) return;
+		if (SpiritIdentifier.isSpirit(evt.player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+			if (!wasSpiritOnLastTick) {
+				evt.player.refreshDimensions();
+				wasSpiritOnLastTick = true;
+			}
+		} else {
+			if (wasSpiritOnLastTick) {
 				evt.player.refreshDimensions();
 				wasSpiritOnLastTick = false;
 			}

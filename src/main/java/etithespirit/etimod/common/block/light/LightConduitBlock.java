@@ -1,12 +1,16 @@
 package etithespirit.etimod.common.block.light;
 
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
+import etithespirit.etimod.common.tile.IWorldUpdateListener;
+import etithespirit.etimod.common.tile.light.TileEntityLightCapacitor;
+import etithespirit.etimod.common.tile.light.TileEntityLightEnergyConduit;
 import etithespirit.etimod.registry.SoundRegistry;
 import etithespirit.etimod.util.blockstates.SixSidedUtils;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.shapes.ISelectionContext;
@@ -43,8 +47,8 @@ public class LightConduitBlock extends ConnectableLightTechBlock {
 	 * Given a numeric value with any of the right-most six bits set (0b00XXXXXX), this will return a collision box with a panel over the corresponding face.<br/>
 	 * In order from left to right, the bits are: back, front, bottom, top, left, right<br/>
 	 * For example, inputting {@code 0b100001} will return a collision box with a panel on the front and right surfaces of <em>this</em> block (so, that is, on the neighboring blocks it will be on the left face of the block to the right of this one, and on the back face of the block in front of this one.)
-	 * @param flags
-	 * @return
+	 * @param flags The flags representing which surfaces are enabled.
+	 * @return A {@link VoxelShape} constructed from these flags.
 	 */
 	private static VoxelShape getShapeFor(int flags) {
 		if (flags == 0) return CORE;
@@ -85,10 +89,30 @@ public class LightConduitBlock extends ConnectableLightTechBlock {
 		});
 		if (neighborFlags != 0) {
 			// Auto-connection was made.
-			// TODO: Only play this if the wires are live when connected.
+			// TODO: Only play this if the wires are live when connected, otherwise it just sounds really annoying.
 			ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundCategory.BLOCKS, 0.2f, 1f);
 		}
 		return SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), neighborFlags);
 		
+	}
+	
+	@Override
+	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+		super.neighborChanged(state, world, at, replacedBlock, changedAt, isMoving);
+		TileEntity tile = world.getBlockEntity(at);
+		IWorldUpdateListener listener = IWorldUpdateListener.from(tile);
+		if (listener != null) {
+			listener.neighborChanged(state, world, at, replacedBlock, changedAt, isMoving);
+		}
+	}
+	
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
+	}
+	
+	@Override
+	public TileEntity createTileEntity(BlockState state, IBlockReader world) {
+		return new TileEntityLightEnergyConduit();
 	}
 }

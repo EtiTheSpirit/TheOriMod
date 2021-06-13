@@ -3,7 +3,6 @@ package etithespirit.etimod.common.block.light;
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.common.tile.light.TileEntityLightCapacitor;
-import etithespirit.etimod.routine.LightConduitRecursor;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -20,8 +19,8 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 	
 	public LightCapacitorBlock() {
 		this(Properties.of(Material.STONE)
-			.harvestTool(ToolType.PICKAXE) // but don't require a tool
-			.sound(SoundType.STONE)
+			 .harvestTool(ToolType.PICKAXE) // but don't require a tool
+		     .sound(SoundType.STONE)
 		);
 	}
 
@@ -43,21 +42,7 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 	@Override
 	@SuppressWarnings("deprecation")
 	public void onPlace(BlockState state, World world, BlockPos at, BlockState old, boolean isMoving) {
-		LightConduitRecursor rec = new LightConduitRecursor(world, at, 1024);
-		rec.execute();
-		
-		// TESTING ONLY
-		for (BlockPos resultPos : rec.results) {
-			BlockState altState = world.getBlockState(resultPos);
-			if (altState.getBlock() instanceof LightConduitBlock) {
-				world.setBlockAndUpdate(resultPos, altState.setValue(ConnectableLightTechBlock.ENERGIZED, true));
-			}
-		}
-	}
 	
-	@Override
-	public boolean hasTileEntity(BlockState state) {
-		return true;
 	}
 	
 	@Override
@@ -68,6 +53,11 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 		if (listener != null) {
 			listener.neighborChanged(state, world, at, replacedBlock, changedAt, isMoving);
 		}
+	}
+	
+	@Override
+	public boolean hasTileEntity(BlockState state) {
+		return true;
 	}
 	
 	@Override

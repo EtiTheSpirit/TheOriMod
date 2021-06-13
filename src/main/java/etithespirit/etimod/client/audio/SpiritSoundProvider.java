@@ -87,7 +87,7 @@ public class SpiritSoundProvider {
 		
     	SpiritMaterial spiritMtl = BlockToMaterialBinding.getMaterialFor(entity, getBlockOnPos(entity), getBlockInPos(entity));
     	if (spiritMtl.useVanillaInstead) return vanilla;
-    	SoundEvent spiritSound = spiritMtl.getSound(true);
+    	SoundEvent spiritSound = getSound(spiritMtl,true);
     	return spiritSound != null ? spiritSound : vanilla;
     }
     
@@ -112,7 +112,7 @@ public class SpiritSoundProvider {
     	
     	SpiritMaterial spiritMtl = BlockToMaterialBinding.getMaterialFor(entity, on, in);
     	if (spiritMtl.useVanillaInstead) return vanilla;
-    	SoundEvent spiritSound = spiritMtl.getSound(false);
+    	SoundEvent spiritSound = getSound(spiritMtl, false);
     	return spiritSound != null ? spiritSound : vanilla;
     }
     
@@ -255,5 +255,14 @@ public class SpiritSoundProvider {
     		return SoundRegistry.get("entity.spirit.aquatic.breath.medium");
     	}
     	return SoundRegistry.get("entity.spirit.aquatic.breath.little");
+    }
+    
+    private static SoundEvent getSound(SpiritMaterial mtl, boolean isFallingOn) {
+	    String key = null;
+	    if (isFallingOn && mtl.fallSoundKey != null && mtl.fallSoundKey != "nullsound") key = mtl.fallSoundKey;
+	    else key = mtl.stepSoundKey;
+	
+	    if (key == null) key = "nullsound";
+	    return SoundRegistry.get(key);
     }
 }

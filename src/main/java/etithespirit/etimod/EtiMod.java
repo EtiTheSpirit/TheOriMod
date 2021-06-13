@@ -97,8 +97,8 @@ public class EtiMod {
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritJump::onEntityJumped);
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritJump::onKeyPressed);
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritJump::onPlayerTicked);
-    	
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onPlayerTicked);
+	
+	    MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onPlayerTickedClient);
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onGetEntitySize);
     	
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.RenderPlayerAsSpirit::whenRenderingPlayer);
@@ -115,6 +115,7 @@ public class EtiMod {
     
     public void serverInit(final FMLDedicatedServerSetupEvent event) {
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onGetEntitySize);
+	    MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onPlayerTickedServer);
     	
     	ReplicateMorphStatus.registerPackets(Dist.DEDICATED_SERVER);
     	ReplicateEffect.registerPackets(Dist.DEDICATED_SERVER);

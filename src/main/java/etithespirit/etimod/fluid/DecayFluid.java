@@ -63,8 +63,8 @@ public abstract class DecayFluid extends FlowingFluid {
 	
 	/**
 	 * Returns whether or not this flowing decay fluid is fully decayed (true) or partially decayed (false).
-	 * @param state
-	 * @return
+	 * @param state The state to test.
+	 * @return Whether or not this state has its {@link #IS_FULL_DECAY} value set.
 	 */
 	public boolean isFullyDecayed(FluidState state) {
 		return state.getValue(IS_FULL_DECAY);
@@ -80,8 +80,7 @@ public abstract class DecayFluid extends FlowingFluid {
 		if (random.nextInt(3) == 0) {
 			if (isFullyDecayed(state)) {
 				BlockPos[] adj = getAdjacentsTo(pos);
-				for (int i = 0; i < adj.length; i++) {
-					BlockPos neighbor = adj[i];
+				for (BlockPos neighbor : adj) {
 					BlockState bstate = worldIn.getBlockState(neighbor);
 					FluidState fstate = bstate.getFluidState();
 					if (fstate == null) continue;
@@ -207,7 +206,6 @@ public abstract class DecayFluid extends FlowingFluid {
 		/*
 		@Override
 		public boolean canDisplace(FluidState thisFluidState, IBlockReader blockReader, BlockPos at, Fluid thisFluid, Direction inDirection) {
-			// TODO Auto-generated method stub
 			return false;
 		}*/
 	}
@@ -234,7 +232,6 @@ public abstract class DecayFluid extends FlowingFluid {
 		/*
 		@Override
 		public boolean canDisplace(FluidState thisFluidState, IBlockReader blockReader, BlockPos at, Fluid thisFluid, Direction inDirection) {
-			// TODO Auto-generated method stub
 			return false;
 		}*/
 	}

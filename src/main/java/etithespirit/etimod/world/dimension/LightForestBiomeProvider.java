@@ -42,7 +42,7 @@ public class LightForestBiomeProvider extends BiomeProvider {
 	
 	private static List<Biome> getStartBiomes(Registry<Biome> registry) {
 		return SPAWN_BIOMES.stream().map(s -> registry.get(s.location())).collect(Collectors.toList());
-	};
+	}
 	
 	public Registry<Biome> getBiomeRegistry() {
 		return biomeRegistry;

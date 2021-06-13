@@ -1,6 +1,7 @@
 package etithespirit.etimod.common.tile.light;
 
-import etithespirit.etimod.common.tile.AbstractLightEnergyTileEntity;
+import etithespirit.etimod.common.tile.AbstractLightEnergyStorageTileEntity;
+import etithespirit.etimod.common.tile.ILightEnergyConduit;
 import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.energy.FluxBehavior;
 import etithespirit.etimod.registry.TileEntityRegistry;
@@ -13,25 +14,43 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity implements IWorldUpdateListener {
+public class TileEntityLightCapacitor extends AbstractLightEnergyStorageTileEntity implements IWorldUpdateListener {
 	
-	public static final int MAX_BRANCH_RANGE = 64;
-	public static final int MAX_RECURSION_DEPTH = 16;
+	private boolean hasZeroEnergy;
 
+	private boolean TEMP_hasTicked = false;
+	
 	public TileEntityLightCapacitor() {
 		super(TileEntityRegistry.LIGHT_CAPACITOR.get());
 		this.storage = new PersistentLightEnergyStorage(this::setChanged, 10000, 20, 20, FluxBehavior.DISABLED, false, 10000);
-		
-		
+		hasZeroEnergy = storage.getLightStored() == 0;
+	}
+	
+	/**
+	 * Executes when energy changes from nonzero to zero, or zero to nonzero.
+	 */
+	private void energyZeroStateChanged() {
+		for (ILightEnergyConduit conduit : connected) {
+			conduit.refresh(); // lol
+		}
 	}
 	
 	@Override
 	public void tick() {
+		super.tick();
+		if (!TEMP_hasTicked) {
+			// To help visualize connections
+			for (ILightEnergyConduit conduit : connected) {
+				conduit.refresh();
+			}
+			TEMP_hasTicked = true;
+		}
 	}
 	
 	@Override
 	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
-	
+		// Since the capacitor is a storage block, it will also store all of the connected wires and other elements.
+		
 	}
 	
 	@Override
@@ -63,6 +82,12 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity impl
 		if (amount != 0) {
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 		}
+		if (!simulate) {
+			if (hasZeroEnergy && getLightStored() != 0) {
+				hasZeroEnergy = false;
+				energyZeroStateChanged();
+			}
+		}
 		return amount;
 	}
 
@@ -71,6 +96,12 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyTileEntity impl
 		double amount = storage.extractLight(maxExtract, simulate);
 		if (amount != 0) {
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
+		}
+		if (!simulate) {
+			if (!hasZeroEnergy && getLightStored() == 0) {
+				hasZeroEnergy = true;
+				energyZeroStateChanged();
+			}
 		}
 		return amount;
 	}

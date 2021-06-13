@@ -1,14 +1,10 @@
 package etithespirit.etimod.modinterop.waila;
 
 import etithespirit.etimod.EtiMod;
-import etithespirit.etimod.common.block.light.LightConduitBlock;
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
-import etithespirit.etimod.common.tile.AbstractLightEnergyTileEntity;
-import etithespirit.etimod.util.TruncateNumber;
 import mcp.mobius.waila.api.*;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;

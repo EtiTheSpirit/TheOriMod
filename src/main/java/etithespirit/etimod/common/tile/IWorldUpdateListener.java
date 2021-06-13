@@ -7,15 +7,17 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
 /**
- * Allows TileEntities to see block updates in the world. Must be set up by a Block.
+ * Allows TileEntities to see block updates in the world.
+ * <strong>For this to work, the block associated with this TE must set it up.</strong>
  */
+@SuppressWarnings("deprecation")
 public interface IWorldUpdateListener {
 	
 	/**
 	 * If the given {@link TileEntity} is an instance of {@link IWorldUpdateListener}, this will return it cast to an instance of this class.
 	 * Otherwise, this will return null.
 	 * @param tile The {@link TileEntity} that might be (and ideally is) an {@link IWorldUpdateListener}
-	 * @return
+	 * @return An instance of {@link IWorldUpdateListener}, or null if {@code tile} could not be cast.
 	 */
 	static IWorldUpdateListener from(TileEntity tile) {
 		if (tile instanceof IWorldUpdateListener) {

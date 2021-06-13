@@ -26,7 +26,6 @@ public class HardLightBlock extends Block implements ILightBlockIdentifier {
 
 	public HardLightBlock(Properties properties) {
 		super(properties);
-		// TODO Auto-generated constructor stub
 	}
 
 }

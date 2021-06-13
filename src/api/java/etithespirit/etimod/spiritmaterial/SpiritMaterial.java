@@ -2,7 +2,6 @@ package etithespirit.etimod.spiritmaterial;
 
 import javax.annotation.Nullable;
 
-import etithespirit.etimod.registry.SoundRegistry;
 import net.minecraft.util.SoundEvent;
 
 public enum SpiritMaterial {
@@ -97,27 +96,18 @@ public enum SpiritMaterial {
 	/** The sound used when falling onto this material, or null if the step sound should be used. */
 	public final @Nullable String fallSoundKey;
 	
-	/** The sound used when stepping on this material. Only null in {@link #INHERIT}. */
+	/** The sound used when stepping on this material. Only null in {@link #INHERITED}. */
 	public final @Nullable String stepSoundKey;
 	
-	public SoundEvent getSound(boolean isFallingOn) {
-		String key = null;
-		if (isFallingOn && fallSoundKey != null && fallSoundKey != "nullsound") key = fallSoundKey;
-		else key = stepSoundKey;
-		
-		if (key == null) key = "nullsound";
-		return SoundRegistry.get(key);
-	}
-	
-	private SpiritMaterial() {
+	SpiritMaterial() {
 		this(false, null);
 	}
 	
-	private SpiritMaterial(String nameOverride) {
+	SpiritMaterial(String nameOverride) {
 		this(false, nameOverride);
 	}
 	
-	private SpiritMaterial(boolean hasUniqueFall, @Nullable String nameOverride) {
+	SpiritMaterial(boolean hasUniqueFall, @Nullable String nameOverride) {
 		if (nameOverride == null) nameOverride = name().toLowerCase();
 		useVanillaInstead = false;
 		stepSoundKey = "entity.spirit.step." + nameOverride;
@@ -130,9 +120,9 @@ public enum SpiritMaterial {
 	
 	/**
 	 * Only for use in NULL (false) and INHERITED (true).
-	 * @param useVanillaInstead
+	 * @param useVanillaInstead The sounds should use vanilla sounds instead.
 	 */
-	private SpiritMaterial(boolean useVanillaInstead) {
+	SpiritMaterial(boolean useVanillaInstead) {
 		this.useVanillaInstead = useVanillaInstead;
 		fallSoundKey = useVanillaInstead ? null : "nullsound";
 		stepSoundKey = useVanillaInstead ? null : "nullsound";

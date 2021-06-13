@@ -8,7 +8,7 @@ package etithespirit.etimod.exception;
  * @author Eti (for the Java implementation)
  *
  */
-public class ArgumentNullException extends IllegalArgumentException {
+public class ArgumentNullException extends NullPointerException {
 	private static final long serialVersionUID = 148904892384923213L;
 	
 	private final String detailMessage;
@@ -18,6 +18,18 @@ public class ArgumentNullException extends IllegalArgumentException {
 	private static final String DEFAULT_MESSAGE = "Value cannot be null.";
 	
 	private static final String PARAM_NAME_COMPONENT = "Parameter name: %s";
+	
+	/**
+	 * Alias method to ensure that a parameter is non-null.
+	 * @param obj The value of the parameter.
+	 * @param parameterName The name of the parameter.
+	 * @throws ArgumentNullException If the value is equal to null.
+	 */
+	public static void assertNotNull(Object obj, String parameterName) throws ArgumentNullException {
+		if (obj == null) {
+			throw new ArgumentNullException(parameterName);
+		}
+	}
 	
 	/**
 	 * The exception that is thrown when a null reference is passed to a method that does not accept it as a valid argument.<br/>
