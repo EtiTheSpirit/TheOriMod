@@ -80,8 +80,8 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 		boolean back = hasFlag(flags, 0b100000);
 		
 		VoxelShape def = VoxelShapes.empty();
-		if (right) def = VoxelShapes.or(def, DecayCommon.PANELS[0]);
-		if (left) def = VoxelShapes.or(def, DecayCommon.PANELS[1]);
+		if (left) def = VoxelShapes.or(def, DecayCommon.PANELS[0]);
+		if (right) def = VoxelShapes.or(def, DecayCommon.PANELS[1]);
 		if (top) def = VoxelShapes.or(def, DecayCommon.PANELS[2]);
 		if (bottom) def = VoxelShapes.or(def, DecayCommon.PANELS[3]);
 		if (front) def = VoxelShapes.or(def, DecayCommon.PANELS[4]);

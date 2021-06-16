@@ -28,7 +28,7 @@ import net.minecraftforge.fml.RegistryObject;
  * @author Eti
  *
  */
-public class BlockToMaterialBinding {
+public final class BlockToMaterialBinding {
 	
 	private BlockToMaterialBinding() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	

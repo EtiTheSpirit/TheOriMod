@@ -90,20 +90,15 @@ public class LightConduitBlock extends ConnectableLightTechBlock {
 		if (neighborFlags != 0) {
 			// Auto-connection was made.
 			// TODO: Only play this if the wires are live when connected, otherwise it just sounds really annoying.
-			ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundCategory.BLOCKS, 0.2f, 1f);
+			ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundCategory.BLOCKS, 0.1f, 1f);
 		}
 		return SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), neighborFlags);
 		
 	}
 	
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
-		super.neighborChanged(state, world, at, replacedBlock, changedAt, isMoving);
-		TileEntity tile = world.getBlockEntity(at);
-		IWorldUpdateListener listener = IWorldUpdateListener.from(tile);
-		if (listener != null) {
-			listener.neighborChanged(state, world, at, replacedBlock, changedAt, isMoving);
-		}
+	public void connectionStateChanged(BlockState originalState, BlockState newState) {
+	
 	}
 	
 	@Override

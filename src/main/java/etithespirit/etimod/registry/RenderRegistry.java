@@ -1,15 +1,18 @@
 package etithespirit.etimod.registry;
 
 import etithespirit.etimod.client.render.mob.RenderSpiritMob;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
+import etithespirit.etimod.client.render.debug.LightTileDebugRenderer;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
-@OnlyIn(Dist.CLIENT)
-public class RenderRegistry {
+public final class RenderRegistry {
 
 	public static void registerAll() {
 		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.SPIRIT.get(), new RenderSpiritMob.RenderFactory());
+		
+		ClientRegistry.bindTileEntityRenderer(TileEntityRegistry.LIGHT_CAPACITOR.get(), LightTileDebugRenderer::new);
+		
+		//MinecraftForge.EVENT_BUS.addListener(AssemblyRenderer::onRender);
 	}
 	
 }

@@ -192,6 +192,12 @@ task apiJar(type: Jar) {
     afterEvaluate { finalizedBy('reobfJar') }
 }
 
+task apiJarSrc(type: Jar) {
+    archiveClassifier = "sources"
+    from sourceSets.api.java
+    afterEvaluate { finalizedBy('reobfJar') }
+}
+
 // Example configuration to allow publishing using the maven-publish task
 // This is the preferred method to reobfuscate your jar file
 jar.finalizedBy('reobfJar') 
@@ -212,3 +218,4 @@ publishing {
 }
 
 build.dependsOn tasks.apiJar
+build.dependsOn tasks.apiJarSrc

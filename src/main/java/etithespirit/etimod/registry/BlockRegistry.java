@@ -20,7 +20,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BlockRegistry {
+public final class BlockRegistry {
 	
 	/** Used in the item registry to generate BlockItems. */
 	public static final List<RegistryObject<Block>> BLOCKS_TO_REGISTER = new ArrayList<RegistryObject<Block>>();

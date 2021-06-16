@@ -1,5 +1,12 @@
 package etithespirit.etimod;
 
+import etithespirit.etimod.client.player.spiritbehavior.SpiritSounds;
+import etithespirit.etimod.common.block.UpdateHelper;
+import etithespirit.etimod.registry.*;
+import etithespirit.etimod.util.profiling.UniProfiler;
+import net.minecraft.client.Minecraft;
+import net.minecraft.server.dedicated.DedicatedServer;
+import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,15 +16,6 @@ import etithespirit.datagen.GenerateBlockModels;
 import etithespirit.datagen.GenerateItemModels;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
 import etithespirit.etimod.networking.status.ReplicateEffect;
-import etithespirit.etimod.registry.BiomeRegistry;
-import etithespirit.etimod.registry.BlockRegistry;
-import etithespirit.etimod.registry.DimensionRegistry;
-import etithespirit.etimod.registry.EntityRegistry;
-import etithespirit.etimod.registry.ItemRegistry;
-import etithespirit.etimod.registry.PotionRegistry;
-import etithespirit.etimod.registry.RenderRegistry;
-import etithespirit.etimod.registry.SoundRegistry;
-import etithespirit.etimod.registry.TileEntityRegistry;
 import etithespirit.etimod.server.command.SetSpiritCommand;
 import etithespirit.etimod.world.dimension.LightForestBiomeProvider;
 import etithespirit.etimod.world.dimension.LightForestChunkGenerator;
@@ -38,7 +36,7 @@ import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 @Mod(value=EtiMod.MODID)
-public class EtiMod {
+public final class EtiMod {
 		
     public static final String MODID = "etimod";
     public static final ResourceLocation RSRC = new ResourceLocation(MODID);
@@ -53,15 +51,13 @@ public class EtiMod {
     	INSTANCE = this;
     	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonInit);
     	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientInit);
-    	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::serverInit);
-    	// FMLJavaModLoadingContext.get().getModEventBus().addListener(this::enqueueIMC);
-    	// FMLJavaModLoadingContext.get().getModEventBus().addListener(this::processIMC);
+    	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::dedicatedServerInit);
     	FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onDataGenerated);
     	
     	MinecraftForge.EVENT_BUS.addListener(this::commandInit);
+	    MinecraftForge.EVENT_BUS.addListener(this::anyServerInit);
+	    
     	MinecraftForge.EVENT_BUS.register(this);
-    	//MinecraftForge.EVENT_BUS.register(Configuration.class);
-    	//MinecraftForge.EVENT_BUS.register(SpiritMarshaller.class);
     	
     	EntityRegistry.registerAll();
     	SoundRegistry.registerAll();
@@ -71,8 +67,6 @@ public class EtiMod {
     	ItemRegistry.registerAll();
     	BiomeRegistry.registerAll();
     	DimensionRegistry.registerAll();
-    	
-    	
     }
     
     /**
@@ -83,7 +77,9 @@ public class EtiMod {
     }
     
 	public void commonInit(final FMLCommonSetupEvent event) {
-    	MinecraftForge.EVENT_BUS.register(etithespirit.etimod.client.player.spiritbehavior.SpiritSounds.class);
+    	MinecraftForge.EVENT_BUS.register(SpiritSounds.class);
+    	MinecraftForge.EVENT_BUS.addListener(EntityAttributeMarshaller::onAttributesRegistered);
+    	MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
     	
 		event.enqueueWork(() -> {
 			Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation(EtiMod.MODID, "light_forest_chunkgen"), LightForestChunkGenerator.CORE_CODEC);
@@ -92,6 +88,8 @@ public class EtiMod {
 	}
     
     public void clientInit(final FMLClientSetupEvent event) {
+    	UniProfiler.setProfiler(Minecraft.getInstance().getProfiler(), Dist.CLIENT);
+    	
     	MinecraftForge.EVENT_BUS.register(etithespirit.etimod.client.player.spiritbehavior.SpiritDash.class);
     	
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritJump::onEntityJumped);
@@ -110,15 +108,20 @@ public class EtiMod {
     	ReplicateEffect.registerPackets(Dist.CLIENT);
     	ClientRegistry.registerKeyBinding(etithespirit.etimod.client.player.spiritbehavior.SpiritDash.DASH_BIND);
     	ClientRegistry.registerKeyBinding(etithespirit.etimod.client.player.spiritbehavior.SpiritJump.CLING_BIND);
-    	
     }
     
-    public void serverInit(final FMLDedicatedServerSetupEvent event) {
+    public void dedicatedServerInit(final FMLDedicatedServerSetupEvent event) {
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onGetEntitySize);
 	    MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onPlayerTickedServer);
     	
     	ReplicateMorphStatus.registerPackets(Dist.DEDICATED_SERVER);
     	ReplicateEffect.registerPackets(Dist.DEDICATED_SERVER);
+    }
+    
+    public void anyServerInit(final FMLServerStartedEvent event) {
+    	if (event.getServer() instanceof DedicatedServer) {
+		    UniProfiler.setProfiler(event.getServer().getProfiler(), Dist.DEDICATED_SERVER);
+	    }
     }
     
     public void commandInit(final RegisterCommandsEvent event) {

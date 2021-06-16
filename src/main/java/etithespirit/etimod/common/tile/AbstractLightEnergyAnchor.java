@@ -1,28 +1,35 @@
 package etithespirit.etimod.common.tile;
 
-import com.google.common.collect.ImmutableSet;
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
-import etithespirit.etimod.common.block.light.connection.ConnectionHelper;
+import etithespirit.etimod.connection.Assembly;
+import etithespirit.etimod.connection.ConnectionHelper;
+import etithespirit.etimod.common.tile.light.ILightEnergyConduit;
 import etithespirit.etimod.common.tile.light.PersistentLightEnergyStorage;
 import etithespirit.etimod.energy.ILightEnergyStorage;
 import etithespirit.etimod.info.coordinate.Cardinals;
-import etithespirit.etimod.util.collection.CachedImmutableSetProvider;
+import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
+import etithespirit.etimod.util.collection.IReadOnlyList;
+import etithespirit.etimod.util.profiling.UniProfiler;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
+import net.minecraft.world.IWorld;
 import net.minecraft.world.World;
 
 import java.util.ArrayList;
 
-/** A superclass representing all Light-based energy blocks' TEs.
+/**
+ * A superclass representing all Light-based energy blocks' TEs (granted they directly handle energy numbers, so conduits don't count).<br/>
+ * Alternatively referred to as an "anchor" for conduits.
  *  @author Eti
  */
 @SuppressWarnings("unused")
-public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity implements ILightEnergyStorage, ITickableTileEntity {
+public abstract class AbstractLightEnergyAnchor extends TileEntity implements IWorldUpdateListener, ILightEnergyStorage, ITickableTileEntity {
 	
 	/**
 	 * The maximum amount of successful neighbors that will be scanned. Failing neighbors do not count to this limit.<br/>
@@ -37,24 +44,30 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 	protected PersistentLightEnergyStorage storage;
 	
 	/**
-	 * Every connected instance of {@link ILightEnergyConduit}. This has no particular order to it.
+	 * The assembly associated with this instance (a collection of conduits and instances of {@link AbstractLightEnergyAnchor})
 	 */
-	protected final CachedImmutableSetProvider<ILightEnergyConduit> connected = new CachedImmutableSetProvider<>(MAX_SUCCESSFUL_TILE_COUNT, true);
-	private final CachedImmutableSetProvider<AbstractLightEnergyStorageTileEntity> connectedAnchors = new CachedImmutableSetProvider<>(true);
+	private Assembly assembly;
+	
+	/** Every connected instance of {@link ILightEnergyConduit}. This is ordered in the pattern that recursion follows. */
+	protected final CachedImmutableSetWrapper<ILightEnergyConduit> connected = new CachedImmutableSetWrapper<>(MAX_SUCCESSFUL_TILE_COUNT, true);
+	private final CachedImmutableSetWrapper<AbstractLightEnergyAnchor> connectedAnchors = new CachedImmutableSetWrapper<>(true);
 	private boolean hasPopulatedAnchorArrayFromRecursion = false;
 	
-	private final ArrayList<BlockPos> tested = new ArrayList<>();
+	private final ArrayList<BlockPos> skipPos = new ArrayList<>();
 	private boolean hasPopulatedConnectedArray = false;
+	
+	/** True if something has been manually added to {@link #connected} which may break the order of the connection array. */
+	private boolean arrayMayBeOutOfOrder = false;
+	
 	private int numTestedSuccessfully = 0;
 	
-	public AbstractLightEnergyStorageTileEntity(TileEntityType<?> tileEntityTypeIn) {
+	public AbstractLightEnergyAnchor(TileEntityType<?> tileEntityTypeIn) {
 		this(tileEntityTypeIn, null);
 	}
 	
-	public AbstractLightEnergyStorageTileEntity(TileEntityType<?> tileEntityTypeIn, PersistentLightEnergyStorage storage) {
+	public AbstractLightEnergyAnchor(TileEntityType<?> tileEntityTypeIn, PersistentLightEnergyStorage storage) {
 		super(tileEntityTypeIn);
 		this.storage = storage;
-		
 	}
 	
 	@Override
@@ -63,7 +76,26 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 		// ^ Assuming it even SHOULD be avoided.
 		if (!hasPopulatedConnectedArray) {
 			repopulateConnectedArray();
+			assembly = Assembly.getAssemblyFor(this);
 		}
+	}
+	
+	@Override
+	public void setRemoved() {
+		TileEntity replacement = level.getBlockEntity(worldPosition);
+		this.tellAllNeighborsAddedOrRemoved(getBlockState(), level, worldPosition, replacement, false);
+		
+		for (ILightEnergyConduit conduit : connected) {
+			if (conduit.connectedToAnchor(this)) {
+				conduit.unregisterAnchor(this);
+			}
+		}
+		for (ILightEnergyConduit conduit : connected) {
+			conduit.refresh();
+		}
+		assembly.tileEntityRemoved(this);
+		
+		super.setRemoved();
 	}
 	
 	@Override
@@ -78,18 +110,31 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 		hasPopulatedConnectedArray = false;
 	}
 	
+	@Override
+	public void neighborAddedOrRemoved(BlockState state, World world, BlockPos at, BlockPos changedAt, TileEntity replacedTile, boolean isMoving) {
+		// Since the capacitor is a storage block, it will also store all of the connected wires and other elements.
+		
+	}
+	
+	@Override
+	public void changed(IWorld world, BlockPos at) {
+	
+	}
+	
 	/**
 	 * Intended to be called by an instance of {@link ILightEnergyConduit}, it registers that instance as connected to this storage entity.<br/>
 	 * <strong>This should be called AFTER the conduit registers this instance as an anchor, otherwise a desynchronization can occur.</strong>
 	 * @param conduit The {@link ILightEnergyConduit} to register as connected.
+	 * @param andRegisterAnchorToConduit If true, and if the array has been populated via recursion, the given conduit will be told to add this as one of its anchors.
 	 * @throws IllegalArgumentException If the given {@link ILightEnergyConduit} is already connected.
 	 */
-	public final void registerConnectedElement(ILightEnergyConduit conduit) throws IllegalArgumentException {
+	public final void registerConnectedElement(ILightEnergyConduit conduit, boolean andRegisterAnchorToConduit) throws IllegalArgumentException {
+		arrayMayBeOutOfOrder = true;
 		connected.add(conduit);
 		
-		if (hasPopulatedAnchorArrayFromRecursion) {
+		if (hasPopulatedAnchorArrayFromRecursion && andRegisterAnchorToConduit) {
 			// Only add it to the array if we've done the big build first.
-			for (AbstractLightEnergyStorageTileEntity anchor : conduit.getAnchors()) {
+			for (AbstractLightEnergyAnchor anchor : conduit.getAnchors()) {
 				if (!connectedAnchors.contains(anchor)) {
 					connectedAnchors.add(anchor);
 				}
@@ -101,14 +146,16 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 	 * Intended to be called by an instance of {@link ILightEnergyConduit}, it registers that instance as no longer connected to this storage entity.<br/>
 	 * <strong>This should be called AFTER the conduit registers this instance as an anchor, otherwise a desynchronization can occur.</strong>
 	 * @param conduit The {@link ILightEnergyConduit} to register as no longer connected.
+	 * @param andRemoveAnchorFromConduit If true, and if the array has been populated via recursion, the given conduit will be told to remove this anchor.
 	 * @throws IllegalArgumentException If the given {@link ILightEnergyConduit} is not connected.
 	 */
-	public final void unregisterConnectedElement(ILightEnergyConduit conduit) throws IllegalArgumentException {
+	public final void unregisterConnectedElement(ILightEnergyConduit conduit, boolean andRemoveAnchorFromConduit) throws IllegalArgumentException {
+		arrayMayBeOutOfOrder = true;
 		connected.remove(conduit);
 		
-		if (hasPopulatedAnchorArrayFromRecursion) {
+		if (hasPopulatedAnchorArrayFromRecursion && andRemoveAnchorFromConduit) {
 			// Only remove it from the array if we've done the big build first.
-			for (AbstractLightEnergyStorageTileEntity anchor : conduit.getAnchors()) {
+			for (AbstractLightEnergyAnchor anchor : conduit.getAnchors()) {
 				if (connectedAnchors.contains(anchor)) {
 					connectedAnchors.remove(anchor);
 				}
@@ -117,13 +164,27 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 	}
 	
 	/**
-	 * Returns a read-only set of the connected elements.
-	 * Use {@link #registerConnectedElement(ILightEnergyConduit)} and {@link #unregisterConnectedElement(ILightEnergyConduit)}
+	 * Returns a read-only set of the connected elements, which may not be up to date if this is called before populating the connection array.
+	 * Use {@link #registerConnectedElement(ILightEnergyConduit, boolean)} and {@link #unregisterConnectedElement(ILightEnergyConduit, boolean)}
 	 * to modify this set.
 	 * @return A read-only set of the connected elements.
 	 */
-	public final ImmutableSet<ILightEnergyConduit> getConnectedConduits() {
-		return connected.immutable();
+	public final IReadOnlyList<ILightEnergyConduit> getConnectedConduits() {
+		return connected.asReadOnly();
+	}
+	
+	/**
+	 * Returns a read-only set of the connected elements.
+	 * Use {@link #registerConnectedElement(ILightEnergyConduit, boolean)} and {@link #unregisterConnectedElement(ILightEnergyConduit, boolean)}
+	 * to modify this set.
+	 * @param updateIfNeeded If true, the connected conduits will be acquired if necessary.
+	 * @return A read-only set of the connected elements.
+	 */
+	public final IReadOnlyList<ILightEnergyConduit> getConnectedConduits(boolean updateIfNeeded) {
+		if (updateIfNeeded && (!hasPopulatedConnectedArray || arrayMayBeOutOfOrder)) {
+			repopulateConnectedArray();
+		}
+		return connected.asReadOnly();
 	}
 	
 	/**
@@ -131,17 +192,17 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 	 * @param conduit The {@link ILightEnergyConduit} to check.
 	 * @return Whether or not the given {@link ILightEnergyConduit} is connected.
 	 */
-	public final boolean isConduitConnected(ILightEnergyConduit conduit) {
+	public final boolean isConduitPartOfAnchor(ILightEnergyConduit conduit) {
 		return connected.contains(conduit);
 	}
 	
 	/**
-	 * @return a read-only set of all connected instances of {@link AbstractLightEnergyStorageTileEntity} that are connected
+	 * @return a read-only set of all connected instances of {@link AbstractLightEnergyAnchor} that are connected
 	 * to this in some way via {@link ILightEnergyConduit} instances.
 	 */
-	public final ImmutableSet<AbstractLightEnergyStorageTileEntity> getAllConnectedStorage() {
+	public final IReadOnlyList<AbstractLightEnergyAnchor> getAllConnectedStorage() {
 		if (hasPopulatedAnchorArrayFromRecursion) {
-			return connectedAnchors.immutable();
+			return connectedAnchors.asReadOnly();
 		}
 		
 		// TODO: Cluster all conduits into up to six clusters representing branches off of a given surface of this block.
@@ -150,7 +211,7 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 		// ^^^ For now, just cache this result. It'll help but it's not perfect.
 		
 		for (ILightEnergyConduit conduit : connected) {
-			for (AbstractLightEnergyStorageTileEntity anchor : conduit.getAnchors()) {
+			for (AbstractLightEnergyAnchor anchor : conduit.getAnchors()) {
 				if (!connectedAnchors.contains(anchor)) {
 					connectedAnchors.add(anchor);
 				}
@@ -158,7 +219,7 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 		}
 		
 		hasPopulatedAnchorArrayFromRecursion = true;
-		return connectedAnchors.immutable();
+		return connectedAnchors.asReadOnly();
 	}
 	
 	/**
@@ -174,14 +235,21 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 	 */
 	public final void repopulateConnectedArray() {
 		if (!hasLevel()) throw new NullPointerException("This TileEntity does not have an associated world!");
+		
+		UniProfiler.push(this.getClass(), "repopulateConnectedArray", "recurse");
+		
 		connected.clear();
-		tested.clear();
+		skipPos.clear();
 		recurse(getBlockPos(), getAllNeighbors(getBlockPos()), true);
+		
+		UniProfiler.push(this.getClass(), "repopulateConnectedArray", "registerToConduits");
 		for (ILightEnergyConduit conduit : connected) {
-			if (!conduit.isAnchor(this)) {
+			if (!conduit.connectedToAnchor(this)) {
 				conduit.registerAnchor(this);
 			}
 		}
+		
+		UniProfiler.pop();
 		hasPopulatedConnectedArray = true;
 	}
 	
@@ -203,24 +271,32 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 			if (ConnectionHelper.hasMutualConnectionInDirection(level, origin, dir, isDepth1)) {
 				TileEntity tile = level.getBlockEntity(validNeighbor);
 				if (tile instanceof ILightEnergyConduit) {
-					connected.add((ILightEnergyConduit)tile);
-					numTestedSuccessfully++;
+					ILightEnergyConduit conduit = (ILightEnergyConduit) tile;
+					if (!connected.contains(conduit)) {
+						connected.add(conduit);
+						numTestedSuccessfully++;
+					} else {
+						neighbors[idx] = null; // ahhnn yes lööp
+						validNeighbor = null;
+					}
 				} else {
 					neighbors[idx] = null; // This is a storage point, not a conduit. Stop this one.
+					validNeighbor = null;
 				}
 			} else {
 				neighbors[idx] = null;
+				validNeighbor = null;
 				// This neighbor is not valid because it is not actually connected to this.
 				// Skip it.
 			}
 			
-			if (numTestedSuccessfully >= MAX_SUCCESSFUL_TILE_COUNT) return false;
-		}
-		
-		for (BlockPos validNeighbor : neighbors) {
-			if (validNeighbor == null) continue;
+			if (numTestedSuccessfully >= MAX_SUCCESSFUL_TILE_COUNT) {
+				return false;
+			}
 			
-			if (!recurse(validNeighbor, getAllNeighbors(validNeighbor), false)) return false;
+			if (validNeighbor != null) {
+				if (!recurse(validNeighbor, getAllNeighbors(validNeighbor), false)) return false;
+			}
 		}
 		
 		return true;
@@ -234,13 +310,13 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 	 */
 	private BlockPos[] getAllNeighbors(BlockPos around) {
 		BlockPos[] validAdjacent = new BlockPos[6];
-		if (!tested.contains(around)) tested.add(around);
+		if (!skipPos.contains(around)) skipPos.add(around); // Adding the local block is sufficient.
 		
 		for (int idx = 0; idx < Cardinals.ADJACENTS_IN_ORDER.length; idx++) {
 			Vector3i adj = Cardinals.ADJACENTS_IN_ORDER[idx];
 			
 			BlockPos toTest = around.offset(adj);
-			if (tested.contains(toTest)) {
+			if (skipPos.contains(toTest)) {
 				validAdjacent[idx] = null;
 				continue;
 			}
@@ -248,27 +324,27 @@ public abstract class AbstractLightEnergyStorageTileEntity extends TileEntity im
 			BlockState state = level.getBlockState(toTest);
 			if (!state.hasTileEntity()) {
 				validAdjacent[idx] = null;
-				tested.add(toTest);
+				skipPos.add(toTest);
 				continue;
 			}
 			
-			/*
-			TileEntity neighbor = this.level.getBlockEntity(toTest);
-			if (neighbor instanceof ILightEnergyConduit && !(neighbor instanceof AbstractLightEnergyStorageTileEntity)) {
-				validAdjacent[idx] = toTest;
-			} else {
-				validAdjacent[idx] = null;
-			}
-			*/
-			
-			// Fallback: Just test the block itself, don't bother with TEs quite yet.
+			// Just test the block itself, don't bother with TEs quite yet.
 			if (state.getBlock() instanceof ConnectableLightTechBlock) {
 				validAdjacent[idx] = toTest;
 			} else {
 				validAdjacent[idx] = null;
 			}
-			tested.add(toTest);
 		}
 		return validAdjacent;
+	}
+	
+	@Override
+	public double getViewDistance() {
+		return 32D;
+	}
+	
+	@Override
+	public AxisAlignedBB getRenderBoundingBox() {
+		return INFINITE_EXTENT_AABB;
 	}
 }

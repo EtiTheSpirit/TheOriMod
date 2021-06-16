@@ -1,20 +1,16 @@
 package etithespirit.etimod.common.tile.light;
 
-import etithespirit.etimod.common.tile.AbstractLightEnergyStorageTileEntity;
-import etithespirit.etimod.common.tile.ILightEnergyConduit;
+import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
 import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.energy.FluxBehavior;
 import etithespirit.etimod.registry.TileEntityRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.World;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntityLightCapacitor extends AbstractLightEnergyStorageTileEntity implements IWorldUpdateListener {
+public class TileEntityLightCapacitor extends AbstractLightEnergyAnchor implements IWorldUpdateListener {
 	
 	private boolean hasZeroEnergy;
 
@@ -38,19 +34,6 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyStorageTileEnti
 	@Override
 	public void tick() {
 		super.tick();
-		if (!TEMP_hasTicked) {
-			// To help visualize connections
-			for (ILightEnergyConduit conduit : connected) {
-				conduit.refresh();
-			}
-			TEMP_hasTicked = true;
-		}
-	}
-	
-	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
-		// Since the capacitor is a storage block, it will also store all of the connected wires and other elements.
-		
 	}
 	
 	@Override

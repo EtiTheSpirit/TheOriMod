@@ -13,9 +13,9 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 
-final class Storage {
+final class APIProvider {
 
-	private Storage() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
+	private APIProvider() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
 	private static ISpiritStateAPI spiritStateAPI = null;
 	

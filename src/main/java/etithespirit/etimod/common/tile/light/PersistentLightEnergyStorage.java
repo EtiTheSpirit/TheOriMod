@@ -74,7 +74,6 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	
 	/**
 	 * Should be called from the TileEntity that instantiated this instance, this appends the energy data to the entity.
-	 * @param state
 	 * @param nbt
 	 */
 	public void readFromNBT(CompoundNBT nbt) {

@@ -681,29 +681,29 @@
 	"tile.light_tech.ambientfield.activate" : {
 		"category" : "block",
 		"sounds" : [
-			"etimod:light_equipment/generic/ambientfield/activate/activate0",
-			"etimod:light_equipment/generic/ambientfield/activate/activate1",
-			"etimod:light_equipment/generic/ambientfield/activate/activate2",
-			"etimod:light_equipment/generic/ambientfield/activate/activate3",
-			"etimod:light_equipment/generic/ambientfield/activate/activate4",
-			"etimod:light_equipment/generic/ambientfield/activate/activate5"
+			"etimod:light_equipment/ambientfield/activate/activate0",
+			"etimod:light_equipment/ambientfield/activate/activate1",
+			"etimod:light_equipment/ambientfield/activate/activate2",
+			"etimod:light_equipment/ambientfield/activate/activate3",
+			"etimod:light_equipment/ambientfield/activate/activate4",
+			"etimod:light_equipment/ambientfield/activate/activate5"
 		]
 	},
 	"tile.light_tech.ambientfield.deactivate" : {
 		"category" : "block",
 		"sounds" : [
-			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate0",
-			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate1",
-			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate2",
-			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate3",
-			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate4",
-			"etimod:light_equipment/generic/ambientfield/deactivate/deactivate5"
+			"etimod:light_equipment/ambientfield/deactivate/deactivate0",
+			"etimod:light_equipment/ambientfield/deactivate/deactivate1",
+			"etimod:light_equipment/ambientfield/deactivate/deactivate2",
+			"etimod:light_equipment/ambientfield/deactivate/deactivate3",
+			"etimod:light_equipment/ambientfield/deactivate/deactivate4",
+			"etimod:light_equipment/ambientfield/deactivate/deactivate5"
 		]
 	},
 	"tile.light_tech.ambientfield.loop_magic" : {
 		"category" : "block",
 		"sounds" : [
-			"etimod:light_equipment/generic/ambientfield/loop/loop_magic"
+			"etimod:light_equipment/ambientfield/loop/loopcrystal"
 		]
 	},
 	

@@ -11,12 +11,14 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 import java.util.NoSuchElementException;
 
 @SuppressWarnings("unused")
-public class EtiUtils {
+public final class EtiUtils {
+	
+	private EtiUtils() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
 	/**
 	 * True if this is the development environment and false if this is the live game.
 	 */
-	public static final boolean IS_DEV_ENV = FMLEnvironment.production;
+	public static final boolean IS_DEV_ENV = !FMLEnvironment.production;
 	
 	/**
 	 * Given a mod's ID, this will attempt to locate the mod's user-friendly display name through Forge's mod list. Throws an exception if the mod couldn't be found.
@@ -27,6 +29,14 @@ public class EtiUtils {
 	public static String getModName(String modid) {
 		if (modid.equals("minecraft")) return "Minecraft";
 		return ModList.get().getModContainerById(modid).get().getModInfo().getDisplayName(); // Let the exception through.
+	}
+	
+	/**
+	 * Client only. Whether or not the local player is showing the debug menu (F3)
+	 * @return Whether or not the local player is showing the debug menu (F3)
+	 */
+	public static boolean isPlayerViewingDebugMenu() {
+		return Minecraft.getInstance().options.renderDebug;
 	}
 	
 	/**

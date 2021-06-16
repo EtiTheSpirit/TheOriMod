@@ -126,8 +126,10 @@ public abstract class ConnectableLightTechBlock extends Block {
 				if (isOtherAnyConnect) {
 					if (!state.getValue(AUTO)) return; // Unless we aren't automatic.
 					int flag = SixSidedUtils.neighborFlagForBlockDirection(at, changedAt);
-					world.setBlockAndUpdate(at, SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), SixSidedUtils.getNumberFromSurfaces(state) | flag));
 					
+					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), SixSidedUtils.getNumberFromSurfaces(state) | flag);
+					world.setBlockAndUpdate(at, newState);
+					connectionStateChanged(state, newState);
 				} else {
 					BooleanProperty prop = SixSidedUtils.getBlockStateForSingleFlagValue(SixSidedUtils.neighborFlagForBlockDirection(at, changedAt));
 					BooleanProperty othersProp = SixSidedUtils.oppositeState(prop);
@@ -140,7 +142,9 @@ public abstract class ConnectableLightTechBlock extends Block {
 					if (isConnected == isOtherConnected) return;
 					
 					if (state.getValue(AUTO)) {
-						world.setBlockAndUpdate(at, state.setValue(prop, isOtherConnected));
+						BlockState newState = state.setValue(prop, isOtherConnected);
+						world.setBlockAndUpdate(at, newState);
+						connectionStateChanged(state, newState);
 					}
 				}
 			} else if (!ConnectableLightTechBlock.isInstance(other)) {
@@ -153,11 +157,20 @@ public abstract class ConnectableLightTechBlock extends Block {
 					int newFlags = SixSidedUtils.getNumberFromSurfaces(state) & inverseFlag;
 					// ^ And take that away from the current flags to disable that side.
 					
-					world.setBlockAndUpdate(at, SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), newFlags));
+					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), newFlags);
+					world.setBlockAndUpdate(at, newState);
+					connectionStateChanged(state, newState);
 				}
 			}
 		}
 	}
+	
+	/**
+	 * Executes when the connection state of this block changes, like when connecting to or disconnecting from a neighboring {@link ConnectableLightTechBlock}.
+	 * @param originalState The original state of this block prior to the connection changing.
+	 * @param newState The new state of this block after the connection changed.
+	 */
+	public abstract void connectionStateChanged(BlockState originalState, BlockState newState);
 	
 	/**
 	 * Tests if this block is set to always connect to its neighbors. If this is true, then not only are the cardinal

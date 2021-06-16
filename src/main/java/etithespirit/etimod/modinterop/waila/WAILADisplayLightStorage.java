@@ -3,7 +3,7 @@ package etithespirit.etimod.modinterop.waila;
 import java.util.List;
 
 import etithespirit.etimod.EtiMod;
-import etithespirit.etimod.common.tile.AbstractLightEnergyStorageTileEntity;
+import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
 import etithespirit.etimod.util.TruncateNumber;
 import mcp.mobius.waila.api.IComponentProvider;
 import mcp.mobius.waila.api.IDataAccessor;
@@ -27,13 +27,13 @@ public final class WAILADisplayLightStorage implements IComponentProvider {
 	public void initialize(IRegistrar hwyla) {
 		hwyla.addConfig(SHOW_ENERGY, true);
 		hwyla.addConfig(SHOW_FLUX, true);
-		hwyla.registerComponentProvider(this, TooltipPosition.BODY, AbstractLightEnergyStorageTileEntity.class);
+		hwyla.registerComponentProvider(this, TooltipPosition.BODY, AbstractLightEnergyAnchor.class);
 	}
 	
 	@Override
 	public void appendBody(List<ITextComponent> info, IDataAccessor accessor, IPluginConfig config) {
-		if (accessor.getTileEntity() instanceof AbstractLightEnergyStorageTileEntity) {
-			final AbstractLightEnergyStorageTileEntity container = (AbstractLightEnergyStorageTileEntity)accessor.getTileEntity();
+		if (accessor.getTileEntity() instanceof AbstractLightEnergyAnchor) {
+			final AbstractLightEnergyAnchor container = (AbstractLightEnergyAnchor)accessor.getTileEntity();
 			final double stored = container.getLightStored();
 			// Every other parameter (conversion, conv ratio, flux) is constant.
 			

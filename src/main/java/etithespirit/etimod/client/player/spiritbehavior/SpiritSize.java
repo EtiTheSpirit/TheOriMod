@@ -19,7 +19,7 @@ import net.minecraftforge.event.entity.EntityEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 @SuppressWarnings("unused")
-public class SpiritSize {
+public final class SpiritSize {
 
 	public static final float X_SCALE = 0.79F;
 	public static final float Y_SCALE = 0.53F;

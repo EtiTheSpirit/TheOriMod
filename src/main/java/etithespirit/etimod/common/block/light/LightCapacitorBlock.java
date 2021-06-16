@@ -35,25 +35,13 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 	}
 	
 	@Override
-	public void setPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-	
-	}
-	
-	@Override
 	@SuppressWarnings("deprecation")
 	public void onPlace(BlockState state, World world, BlockPos at, BlockState old, boolean isMoving) {
 	
 	}
 	
 	@Override
-	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
-		super.neighborChanged(state, world, at, replacedBlock, changedAt, isMoving);
-		TileEntity tile = world.getBlockEntity(at);
-		IWorldUpdateListener listener = IWorldUpdateListener.from(tile);
-		if (listener != null) {
-			listener.neighborChanged(state, world, at, replacedBlock, changedAt, isMoving);
-		}
-	}
+	public void connectionStateChanged(BlockState originalState, BlockState newState) { }
 	
 	@Override
 	public boolean hasTileEntity(BlockState state) {

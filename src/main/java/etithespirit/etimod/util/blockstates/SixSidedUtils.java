@@ -173,7 +173,7 @@ public final class SixSidedUtils {
 				// if the neighbor isn't air, and if it's not occupied by a fluid...
 				
 				// isFaceSturdy
-				if (Block.isFaceFull(neighbor.getShape(worldIn, at), Direction.getNearest(-offset.getX(), -offset.getY(), -offset.getZ())) || IdentifierHelper.isLeafBlock(neighbor.getBlock()))
+				if (neighbor.isFaceSturdy(worldIn, targetPos, Direction.getNearest(-offset.getX(), -offset.getY(), -offset.getZ())) || IdentifierHelper.isLeafBlock(neighbor.getBlock()))
 					// and if the surface that I'm connecting to is solid or the block is a leaf block...
 					flags |= (1 << o); // add the flag
 				

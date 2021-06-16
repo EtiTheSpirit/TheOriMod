@@ -48,7 +48,7 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 public final class SpiritJump {
 	
 	//public static final KeyBinding CLIMB_BIND = new KeyBinding("input.etimod.climb", 340, "key.categories.movement"); // Bind climb to l-shift
-	public static final KeyBinding CLING_BIND = new KeyBinding("input.etimod.cling", 340, "key.categories.movement"); // Bind cling to l-shift
+	public static final KeyBinding CLING_BIND = new KeyBinding("input.etimod.cling", 32, "key.categories.movement"); // Bind cling to space
 	
 	/* Whether or not the player is currently clinging to a wall. */
     private static boolean IsClingingToWall = false;

@@ -29,7 +29,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  *
  */
 
-public class SpiritSounds {
+public final class SpiritSounds {
 	
 	static {
 		EntityEmittedSoundEventProvider.registerHandler(evt -> onSoundPlayedMixin(evt));

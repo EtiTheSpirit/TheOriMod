@@ -40,7 +40,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * @param blocksToReplaceWithSelf This is a list storing all block states that can be replaced by this Decay block.
 	 * @param from All states of this block will be registered as replacable by this Decay block.
 	 */
-	public static void registerAllStatesForBlock(List<BlockState> blocksToReplaceWithSelf, Block from) {
+	static void registerAllStatesForBlock(List<BlockState> blocksToReplaceWithSelf, Block from) {
 		StateContainer<Block, BlockState> container = from.getStateDefinition();
 		blocksToReplaceWithSelf.addAll(container.getPossibleStates());
 	}
@@ -209,7 +209,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		}
 	}
 	
-	public abstract void registerReplacements(List<BlockState> blocksToReplaceWithSelf);
+	void registerReplacements(List<BlockState> blocksToReplaceWithSelf);
 	
 	default void defaultNeighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(fromPos));

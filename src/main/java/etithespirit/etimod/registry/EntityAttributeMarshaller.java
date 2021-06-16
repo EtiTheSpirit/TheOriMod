@@ -11,12 +11,12 @@ import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber
-public class EntityAttributeMarshaller {
 
-	@SubscribeEvent
+public final class EntityAttributeMarshaller {
+
+	
 	public static void onAttributesRegistered(final EntityAttributeCreationEvent attrCreation) {
-		Map<Attribute, ModifiableAttributeInstance> attrMap = new HashMap<Attribute, ModifiableAttributeInstance>();
+		Map<Attribute, ModifiableAttributeInstance> attrMap = new HashMap<>();
 		attrMap.put(Attributes.MAX_HEALTH, new ModifiableAttributeInstance(Attributes.MAX_HEALTH, inst -> inst.setBaseValue(10.0)));
 		attrMap.put(Attributes.ATTACK_DAMAGE, new ModifiableAttributeInstance(Attributes.ATTACK_DAMAGE, inst -> inst.setBaseValue(2)));
 		attrMap.put(Attributes.MOVEMENT_SPEED, new ModifiableAttributeInstance(Attributes.MOVEMENT_SPEED, inst -> inst.setBaseValue(0.185)));

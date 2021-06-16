@@ -16,7 +16,7 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
-public class BiomeRegistry {
+public final class BiomeRegistry {
 	
 	//////////////////////////////////////////////////////////////////////////////
 	/// BIOME KEYS

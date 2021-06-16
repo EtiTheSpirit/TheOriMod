@@ -32,8 +32,8 @@ public interface ISpiritSoundAPI {
 	 * If none of these yield a result, the vanilla sound will be passed through.
 	 * @return The instance of the sound API. If EtiMod is not installed (and only the API is), then a dummy API will be returned. Use {@link #isInstalled()} to determine whether or not the returned API is usable.
 	 */
-	public static ISpiritSoundAPI getAPI() {
-		return Storage.getSpiritSoundAPI();
+	static ISpiritSoundAPI getAPI() {
+		return APIProvider.getSpiritSoundAPI();
 	}
 	
 	/** <strong>MUST BE CHECKED BEFORE OTHER METHODS ARE USED.</strong> This returns whether or not the API is installed. */
@@ -45,11 +45,11 @@ public interface ISpiritSoundAPI {
 	 * the sound associated with the given SpiritMaterial will play instead of the vanilla sound.<br/><br/>
 	 * 
 	 * Note that setting a block will <em>not</em> override definitions for any of its child states (if they have been defined). This means that setting the
-	 * entire block to a given material with this method, and then calling {@link #registerSpiritStepSound(BlockState, APISpiritMaterial)}
+	 * entire block to a given material with this method, and then calling {@link #registerSpiritStepSound(BlockState, SpiritMaterial)}
 	 * for a number of specific states of this block, is a perfectly valid method of providing a general default with deviations
 	 * for special cases.
 	 * 
-	 * @param block The block that will have its sounds replaced for Spirits
+	 * @param entireBlockType The block that will have its sounds replaced for Spirits
 	 * @param material The material dictating the unique sound played.
 	 * @throws IllegalArgumentException If the input block or material is null.
 	 * @throws IllegalStateException If mod initialization has completed, or if {@link #isInstalled()} returns false. This MUST be called before mod loading is complete.
@@ -72,7 +72,7 @@ public interface ISpiritSoundAPI {
 	 * If called, then all states of the given block will play their custom step sound if the 
 	 * player is walking <em>in</em> the same BlockPos rather than on top of it.
 	 * 
-	 * @param block The block from which all states will be tested for occupancy rather than being stepped on.
+	 * @param entireBlockType The block from which all states will be tested for occupancy rather than being stepped on.
 	 * @throws IllegalArgumentException If the input block is null.
 	 * @throws IllegalStateException If mod initialization has completed, or if {@link #isInstalled()} returns false. This MUST be called before mod loading is complete.
 	 */
@@ -99,7 +99,7 @@ public interface ISpiritSoundAPI {
 	void associateMaterialWith(Material material, SpiritMaterial spiritMaterial) throws ArgumentNullException, IllegalArgumentException, IllegalStateException;
 	
 	/**
-	 * Associates the entire block type with the given {@link ISpiritMaterialAquisitionFunction} which can be used to conditionally return an {@link APISpiritMaterial} best suited for the block the entity is standing on and/or within.<br/>
+	 * Associates the entire block type with the given {@link ISpiritMaterialAquisitionFunction} which can be used to conditionally return an {@link SpiritMaterial} best suited for the block the entity is standing on and/or within.<br/>
 	 * Note that this does not have a variant for a specific BlockState. Registering for an entire Block will cause it to only be run when that block is either under the player or occupying the same space as that player. This means it is possible to get its state from the world.
 	 * @param entireBlockType The type of the block that this function will run on.
 	 * @param getter The {@link ISpiritMaterialAquisitionFunction} used to determine the appropriate material.
@@ -109,8 +109,8 @@ public interface ISpiritSoundAPI {
 	void setSpecialMaterialPredicate(Block entireBlockType, ISpiritMaterialAquisitionFunction getter) throws ArgumentNullException, IllegalStateException;
 	
 	/**
-	 * Associated the entire material with the given {@link ISpiritMaterialAquisitionFunction} which can be used to conditionally return an {@link APISpiritMaterial} best suited for the material of the block the entity is standing on and/or within.
-	 * @param entireBlockType The type of the block that this function will run on.
+	 * Associated the entire material with the given {@link ISpiritMaterialAquisitionFunction} which can be used to conditionally return an {@link SpiritMaterial} best suited for the material of the block the entity is standing on and/or within.
+	 * @param material The type of the material that this function will run on.
 	 * @param getter The {@link ISpiritMaterialAquisitionFunction} used to determine the appropriate material.
 	 * 
 	 * @throws ArgumentNullException If the input material or getter is null.

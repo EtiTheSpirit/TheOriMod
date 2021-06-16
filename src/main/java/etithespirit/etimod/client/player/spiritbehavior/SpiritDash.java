@@ -18,7 +18,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
  * @author Eti
  *
  */
-public class SpiritDash {
+public final class SpiritDash {
 
 	public static final KeyBinding DASH_BIND = new KeyBinding("input.etimod.dash", 341, "key.categories.movement"); // Bind dash to l-ctrl
 	

@@ -16,8 +16,8 @@ public interface ISpiritStateAPI {
 	/**
 	 * @return A supplier that provides the instance of the API. If EtiMod is not installed (and only the API is), then a dummy API will be returned. Use {@link #isInstalled()} to determine whether or not the returned API is usable.
 	 */
-	public static ISpiritStateAPI getAPI() {
-		return Storage.getSpiritStateAPI();
+	static ISpiritStateAPI getAPI() {
+		return APIProvider.getSpiritStateAPI();
 	}
 	
 	/** <strong>MUST BE CHECKED BEFORE OTHER METHODS ARE USED.</strong> This returns whether or not the API is installed. */
@@ -32,10 +32,10 @@ public interface ISpiritStateAPI {
 	 * <li>If this is called from the client, but the client is on multiplayer, and the {@code forceSkipLocal} parameter is FALSE, the return value will be instantly populated from the client's cached value.</li>
 	 * <li>If this is called from the client, the client is on multiplayer, and the {@code forceSkipLocal} parameter is TRUE, the return value will not be populated until the server replies with the value, requiring special asynchronous handling.</li>
 	 * </ul>
-	 * @param playerId The ID of the player to check. This must be defined on a dedicated server.
+	 * @param playerId The ID of the player to check. This must be defined on a dedicated server, but can be null on the client.
 	 * @param forceSkipLocal Skip checking the local cache, and ask the server for  value instead.
 	 * @return A Promise that will eventually contain whether or not the player is a spirit.
-	 * @throws IllegalStateException If {@link isInstalled()} returns false.
+	 * @throws IllegalStateException If {@link #isInstalled()} returns false.
 	 * @throws ArgumentNullException If the player ID is null and this is being called from a dedicated server.
 	 */
 	SimplePromise<Boolean> isPlayerSpirit(@Nonnull(when=When.MAYBE) UUID playerId, boolean forceSkipLocal) throws ArgumentNullException, IllegalStateException;
