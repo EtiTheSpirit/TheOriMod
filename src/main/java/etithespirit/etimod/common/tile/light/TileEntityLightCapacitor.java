@@ -13,8 +13,6 @@ import net.minecraftforge.common.util.Constants;
 public class TileEntityLightCapacitor extends AbstractLightEnergyAnchor implements IWorldUpdateListener {
 	
 	private boolean hasZeroEnergy;
-
-	private boolean TEMP_hasTicked = false;
 	
 	public TileEntityLightCapacitor() {
 		super(TileEntityRegistry.LIGHT_CAPACITOR.get());

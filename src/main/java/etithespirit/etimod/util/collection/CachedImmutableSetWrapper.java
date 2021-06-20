@@ -247,9 +247,6 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 		elements.clear();
 	}
 	
-	
-	
-	
 	@Override
 	public int indexOf(Object o) {
 		return elements.indexOf(o);

@@ -1,6 +1,7 @@
 package etithespirit.etimod.common.tile.light;
 
 import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
+import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.connection.ConnectionHelper;
 import etithespirit.etimod.info.coordinate.Cardinals;
 import etithespirit.etimod.util.collection.IReadOnlyList;
@@ -43,9 +44,15 @@ public interface ILightEnergyConduit {
 	boolean connectedToAnchor(AbstractLightEnergyAnchor anchor);
 	
 	/**
-	 * @return An array of all registered anchors.
+	 * @return An array of all registered {@link AbstractLightEnergyAnchor}.
 	 */
 	IReadOnlyList<AbstractLightEnergyAnchor> getAnchors();
+	
+	/**
+	 * This may be a more fruitful alternative to {@link #getAnchors()} as assemblies provide connectivity functionality.
+	 * @return The {@link Assembly} that this conduit is a part of (and by extension, that all of its anchors are a part of). This will return null if the conduit is not connected to any assemblies (from which {@link #getAnchors()} will also return a list of 0 elements).
+	 */
+	Assembly getAssembly();
 	
 	/**
 	 * @return Whether or not at least one of the given connected storage points has energy in it, and can output energy.
@@ -79,7 +86,7 @@ public interface ILightEnergyConduit {
 	
 	/**
 	 * Exposes {@link net.minecraft.tileentity.TileEntity#getBlockState()}, which returns the {@link BlockState} at the location of this tile.
-	 * @return The {@link BlockState} located at this tile.
+	 * @return The {@link BlockState} at the same location as this tile.
 	 */
 	BlockState getBlockState();
 	

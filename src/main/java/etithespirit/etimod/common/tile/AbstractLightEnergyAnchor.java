@@ -36,7 +36,7 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	 * <br/>
 	 * A successful neighbor counts as a neighbor that is an instance of {@link ILightEnergyConduit}
 	 */
-	public static final int MAX_SUCCESSFUL_TILE_COUNT = 512;
+	public static final int MAX_SUCCESSFUL_TILE_COUNT = 16384;
 	
 	/**
 	 * A container used to store energy.
@@ -49,7 +49,7 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	private Assembly assembly;
 	
 	/** Every connected instance of {@link ILightEnergyConduit}. This is ordered in the pattern that recursion follows. */
-	protected final CachedImmutableSetWrapper<ILightEnergyConduit> connected = new CachedImmutableSetWrapper<>(MAX_SUCCESSFUL_TILE_COUNT, true);
+	protected final CachedImmutableSetWrapper<ILightEnergyConduit> connected = new CachedImmutableSetWrapper<>(true);
 	private final CachedImmutableSetWrapper<AbstractLightEnergyAnchor> connectedAnchors = new CachedImmutableSetWrapper<>(true);
 	private boolean hasPopulatedAnchorArrayFromRecursion = false;
 	
@@ -59,6 +59,7 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	/** True if something has been manually added to {@link #connected} which may break the order of the connection array. */
 	private boolean arrayMayBeOutOfOrder = false;
 	
+	/** Used for limiting the size of assemblies in conjunction with {@link #MAX_SUCCESSFUL_TILE_COUNT}. */
 	private int numTestedSuccessfully = 0;
 	
 	public AbstractLightEnergyAnchor(TileEntityType<?> tileEntityTypeIn) {
@@ -74,6 +75,8 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	public void tick() {
 		// TODO: Figure out how to avoid this.
 		// ^ Assuming it even SHOULD be avoided.
+		// Note: onLoad does not work, and setLevelAndPosition does not work.
+		// Both of these cause deadlocks if I try to exec this.
 		if (!hasPopulatedConnectedArray) {
 			repopulateConnectedArray();
 			assembly = Assembly.getAssemblyFor(this);
@@ -85,12 +88,12 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 		TileEntity replacement = level.getBlockEntity(worldPosition);
 		this.tellAllNeighborsAddedOrRemoved(getBlockState(), level, worldPosition, replacement, false);
 		
-		for (ILightEnergyConduit conduit : connected) {
+		for (ILightEnergyConduit conduit : getConnectedConduits(true)) {
 			if (conduit.connectedToAnchor(this)) {
 				conduit.unregisterAnchor(this);
 			}
 		}
-		for (ILightEnergyConduit conduit : connected) {
+		for (ILightEnergyConduit conduit : getConnectedConduits(true)) {
 			conduit.refresh();
 		}
 		assembly.tileEntityRemoved(this);
@@ -125,14 +128,13 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	 * Intended to be called by an instance of {@link ILightEnergyConduit}, it registers that instance as connected to this storage entity.<br/>
 	 * <strong>This should be called AFTER the conduit registers this instance as an anchor, otherwise a desynchronization can occur.</strong>
 	 * @param conduit The {@link ILightEnergyConduit} to register as connected.
-	 * @param andRegisterAnchorToConduit If true, and if the array has been populated via recursion, the given conduit will be told to add this as one of its anchors.
 	 * @throws IllegalArgumentException If the given {@link ILightEnergyConduit} is already connected.
 	 */
-	public final void registerConnectedElement(ILightEnergyConduit conduit, boolean andRegisterAnchorToConduit) throws IllegalArgumentException {
+	public final void registerConnectedElement(ILightEnergyConduit conduit) throws IllegalArgumentException {
 		arrayMayBeOutOfOrder = true;
 		connected.add(conduit);
 		
-		if (hasPopulatedAnchorArrayFromRecursion && andRegisterAnchorToConduit) {
+		if (hasPopulatedAnchorArrayFromRecursion) {
 			// Only add it to the array if we've done the big build first.
 			for (AbstractLightEnergyAnchor anchor : conduit.getAnchors()) {
 				if (!connectedAnchors.contains(anchor)) {
@@ -146,14 +148,13 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	 * Intended to be called by an instance of {@link ILightEnergyConduit}, it registers that instance as no longer connected to this storage entity.<br/>
 	 * <strong>This should be called AFTER the conduit registers this instance as an anchor, otherwise a desynchronization can occur.</strong>
 	 * @param conduit The {@link ILightEnergyConduit} to register as no longer connected.
-	 * @param andRemoveAnchorFromConduit If true, and if the array has been populated via recursion, the given conduit will be told to remove this anchor.
 	 * @throws IllegalArgumentException If the given {@link ILightEnergyConduit} is not connected.
 	 */
-	public final void unregisterConnectedElement(ILightEnergyConduit conduit, boolean andRemoveAnchorFromConduit) throws IllegalArgumentException {
+	public final void unregisterConnectedElement(ILightEnergyConduit conduit) throws IllegalArgumentException {
 		arrayMayBeOutOfOrder = true;
 		connected.remove(conduit);
 		
-		if (hasPopulatedAnchorArrayFromRecursion && andRemoveAnchorFromConduit) {
+		if (hasPopulatedAnchorArrayFromRecursion) {
 			// Only remove it from the array if we've done the big build first.
 			for (AbstractLightEnergyAnchor anchor : conduit.getAnchors()) {
 				if (connectedAnchors.contains(anchor)) {
@@ -164,21 +165,11 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	}
 	
 	/**
-	 * Returns a read-only set of the connected elements, which may not be up to date if this is called before populating the connection array.
-	 * Use {@link #registerConnectedElement(ILightEnergyConduit, boolean)} and {@link #unregisterConnectedElement(ILightEnergyConduit, boolean)}
-	 * to modify this set.
-	 * @return A read-only set of the connected elements.
-	 */
-	public final IReadOnlyList<ILightEnergyConduit> getConnectedConduits() {
-		return connected.asReadOnly();
-	}
-	
-	/**
-	 * Returns a read-only set of the connected elements.
-	 * Use {@link #registerConnectedElement(ILightEnergyConduit, boolean)} and {@link #unregisterConnectedElement(ILightEnergyConduit, boolean)}
+	 * Returns a read-only set of all connected {@link ILightEnergyConduit} instances recursively..
+	 * Use {@link #registerConnectedElement(ILightEnergyConduit)} and {@link #unregisterConnectedElement(ILightEnergyConduit)}
 	 * to modify this set.
 	 * @param updateIfNeeded If true, the connected conduits will be acquired if necessary.
-	 * @return A read-only set of the connected elements.
+	 * @return A read-only set of the connected {@link ILightEnergyConduit} instances recursively..
 	 */
 	public final IReadOnlyList<ILightEnergyConduit> getConnectedConduits(boolean updateIfNeeded) {
 		if (updateIfNeeded && (!hasPopulatedConnectedArray || arrayMayBeOutOfOrder)) {
@@ -188,11 +179,11 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	}
 	
 	/**
-	 * Returns whether or not the given {@link ILightEnergyConduit} is connected to this at the time of calling.
 	 * @param conduit The {@link ILightEnergyConduit} to check.
-	 * @return Whether or not the given {@link ILightEnergyConduit} is connected.
+	 * @param updateIfNeeded If true, then the connected conduit list is updated if it needs an update.
+	 * @return Whether or not the given {@link ILightEnergyConduit} is connected to this at the time of calling.
 	 */
-	public final boolean isConduitPartOfAnchor(ILightEnergyConduit conduit) {
+	public final boolean isConduitPartOfAnchor(ILightEnergyConduit conduit, boolean updateIfNeeded) {
 		return connected.contains(conduit);
 	}
 	
@@ -231,7 +222,7 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	
 	/**
 	 * <strong>Note: This method may be expensive to call.</strong><br/>
-	 * Recalculate all connected instances of {@link ILightEnergyConduit}.
+	 * Forcefully recalculate all connected instances of {@link ILightEnergyConduit}.
 	 */
 	public final void repopulateConnectedArray() {
 		if (!hasLevel()) throw new NullPointerException("This TileEntity does not have an associated world!");
@@ -347,4 +338,5 @@ public abstract class AbstractLightEnergyAnchor extends TileEntity implements IW
 	public AxisAlignedBB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
 	}
+	
 }

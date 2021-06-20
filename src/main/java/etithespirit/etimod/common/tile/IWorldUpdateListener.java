@@ -38,7 +38,7 @@ public interface IWorldUpdateListener {
 	void neighborAddedOrRemoved(BlockState state, World world, BlockPos at, BlockPos changedAt, TileEntity replacedTile, boolean isMoving);
 	
 	/**
-	 * Occurs when this block changes.
+	 * Occurs when <strong>this</strong> block changes (as opposed to the typical setup where neighbors have changed).
 	 * @param world The world the change occurred in.
 	 * @param at The location the change occurred in.
 	 */

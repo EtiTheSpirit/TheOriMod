@@ -21,6 +21,11 @@ public final class EtiUtils {
 	public static final boolean IS_DEV_ENV = !FMLEnvironment.production;
 	
 	/**
+	 * A value that can be passed into packed light parameters to indicate full brightness.
+	 */
+	public static final int FULL_BRIGHT_LIGHT = 0xF000F0;
+	
+	/**
 	 * Given a mod's ID, this will attempt to locate the mod's user-friendly display name through Forge's mod list. Throws an exception if the mod couldn't be found.
 	 * @param modid The ID of the mod to locate, or "minecraft"
 	 * @return The user-friendly display name associated with the mod ID.

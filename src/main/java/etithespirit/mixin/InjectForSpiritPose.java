@@ -40,7 +40,7 @@ public abstract class InjectForSpiritPose extends net.minecraftforge.common.capa
 			target="Lnet/minecraft/entity/Entity;getBoundingBoxForPose(Lnet/minecraft/entity/Pose;)Lnet/minecraft/util/math/AxisAlignedBB;"
 		)
 	)
-	public AxisAlignedBB canEnterPose_getBoundingBoxForPose(Entity self, Pose pose) {
+	public AxisAlignedBB canEnterPose$getBoundingBoxForSpiritPose(Entity self, Pose pose) {
 		if (SpiritIdentifier.isIDSpirit(self.getUUID())) {
 			// We are a spirit. This calls for some special handling.
 			EntitySize entitysize = SpiritSize.SPIRIT_SIZE_BY_POSE.get(pose);

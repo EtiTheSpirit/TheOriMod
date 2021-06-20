@@ -102,6 +102,7 @@ public final class EtiMod {
     	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.RenderPlayerAsSpirit::whenRenderingPlayer);
 		MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.gui.CustomHealthForEffects::onElementDrawn);
 	    // MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.routine.Recursor::onRenderTick);
+	    MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.render.debug.LightTileDebugRenderer::onWorldFinishedRendering);
     	
     	RenderRegistry.registerAll();    	
     	ReplicateMorphStatus.registerPackets(Dist.CLIENT);

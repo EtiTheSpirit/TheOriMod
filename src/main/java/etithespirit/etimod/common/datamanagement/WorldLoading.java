@@ -1,7 +1,6 @@
 package etithespirit.etimod.common.datamanagement;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
-import etithespirit.etimod.client.render.debug.AssemblyRenderer;
 import etithespirit.etimod.common.morph.PlayerToSpiritBinding;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
 import etithespirit.etimod.registry.SoundRegistry;
@@ -43,7 +42,6 @@ public class WorldLoading {
 	public static void onLoggedOut(PlayerLoggedOutEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		player.getPersistentData().putBoolean("isSpirit", PlayerToSpiritBinding.get(player));
-		AssemblyRenderer.clearAll();
 	}
 	
 	@SubscribeEvent

@@ -1,10 +1,16 @@
 package etithespirit.etimod.connection;
 
+import etithespirit.etimod.client.render.debug.RenderUtil;
 import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
 import etithespirit.etimod.common.tile.light.ILightEnergyConduit;
 import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
 import etithespirit.etimod.util.collection.IReadOnlyList;
 import etithespirit.etimod.util.profiling.UniProfiler;
+import javafx.scene.chart.Axis;
+import net.minecraft.util.math.AxisAlignedBB;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Vector3d;
+import net.minecraft.util.math.vector.Vector3i;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,6 +29,8 @@ public final class Line {
 	/** Every conduit that makes up this line. */
 	private final CachedImmutableSetWrapper<ILightEnergyConduit> segments = new CachedImmutableSetWrapper<>();
 	
+	private AxisAlignedBB bounds = null;
+	
 	private Line(Assembly parent) {
 		this.parent = parent;
 	}
@@ -33,7 +41,8 @@ public final class Line {
 	 * @param multiConnectedConduit The conduit that has a branch of three or more possible directions.
 	 * @throws IllegalArgumentException If the given conduit does not have more than two connections associated with it.
 	 */
-	public IReadOnlyList<Line> spliceAndRebranch(ILightEnergyConduit multiConnectedConduit) {
+	@Deprecated // Not yet functional.
+	public void spliceAndRebranch(ILightEnergyConduit multiConnectedConduit) {
 		ILightEnergyConduit[] neighbors = multiConnectedConduit.getNeighboringConduits(true);
 		if (neighbors.length <= 2) {
 			throw new IllegalArgumentException("This conduit does not have more than two connections! Splitting is useless.");
@@ -48,7 +57,9 @@ public final class Line {
 			
 			newNeighbors.addAll(constructFrom(conduit, parent));
 		}
-		return newNeighbors.asReadOnly();
+		//return newNeighbors.asReadOnly();
+		//parent.lines.remove(this);
+		parent.lines.addAll(newNeighbors);
 	}
 	
 	/**
@@ -57,6 +68,45 @@ public final class Line {
 	 */
 	public void splice(ILightEnergyConduit at) {
 	
+	}
+	
+	/**
+	 * Returns the center of this line via its bounding box.
+	 * @return The center of this line via its bounding box.
+	 */
+	public Vector3d getCenter() {
+		return getBounds().getCenter();
+	}
+	
+	public AxisAlignedBB getBounds() {
+		if (bounds == null) {
+			Vector3d min = new Vector3d(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
+			Vector3d max = new Vector3d(-Double.MAX_VALUE, -Double.MAX_VALUE, -Double.MAX_VALUE);
+			for (ILightEnergyConduit conduit : segments) {
+				BlockPos pos = conduit.getBlockPos();
+				if (pos.getX() < min.x) {
+					min = new Vector3d(pos.getX(), min.y, min.z);
+				}
+				if (pos.getY() < min.y) {
+					min = new Vector3d(min.x, pos.getY(), min.z);
+				}
+				if (pos.getZ() < min.z) {
+					min = new Vector3d(min.x, min.y, pos.getZ());
+				}
+				
+				if (pos.getX() > max.x) {
+					max = new Vector3d(pos.getX(), max.y, max.z);
+				}
+				if (pos.getY() > max.y) {
+					max = new Vector3d(max.x, pos.getY(), max.z);
+				}
+				if (pos.getZ() > max.z) {
+					max = new Vector3d(max.x, max.y, pos.getZ());
+				}
+			}
+			bounds = new AxisAlignedBB(min, max.add(1, 1, 1)); // Add 1 because it's a BlockPos
+		}
+		return bounds;
 	}
 	
 	/**
@@ -82,6 +132,7 @@ public final class Line {
 		for (ILightEnergyConduit conduit : root.getConnectedConduits(true)) {
 			if (alreadyCovered.contains(conduit)) continue;
 			Line currentLine = new Line(parent);
+			lines.add(currentLine);
 			populate(lines, currentLine, alreadyCovered, null, conduit, parent);
 		}
 		
@@ -105,6 +156,7 @@ public final class Line {
 		for (ILightEnergyConduit neighbor : conduit.getNeighboringConduits(true)) {
 			if (alreadyCovered.contains(neighbor)) continue;
 			Line currentLine = new Line(parent);
+			lines.add(currentLine);
 			populate(lines, currentLine, alreadyCovered, null, neighbor, parent);
 		}
 		
@@ -129,7 +181,7 @@ public final class Line {
 			} else {
 				// 2 neighbors, mid or end
 				ILightEnergyConduit target = neighbors[0];
-				if (previous == target) {
+				if (previous == target || alreadyCovered.contains(target)) {
 					target = neighbors[1];
 				}
 				

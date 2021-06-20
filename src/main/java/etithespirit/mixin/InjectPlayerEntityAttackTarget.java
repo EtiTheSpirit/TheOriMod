@@ -3,6 +3,7 @@ package etithespirit.mixin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,8 +23,8 @@ import net.minecraft.util.SoundEvents;
 import net.minecraft.world.World;
 
 /**
- * Hooks into {@link net.minecraft.entity.player.PlayerEntity.attackTargetEntityWithCurrentItem} and intercepts all calls to 
- * {@link net.minecraft.world.World.playSound} to see if it needs to swap the sound out.
+ * Hooks into {@link net.minecraft.entity.player.PlayerEntity#attack(Entity)} and intercepts all calls to
+ * {@link net.minecraft.world.World#playSound(PlayerEntity, Entity, SoundEvent, SoundCategory, float, float)} playSound} to see if it needs to swap the sound out.
  * @author Eti
  *
  */

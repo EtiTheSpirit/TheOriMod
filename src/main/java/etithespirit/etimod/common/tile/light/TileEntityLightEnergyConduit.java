@@ -5,6 +5,7 @@ import etithespirit.etimod.common.block.light.LightConduitBlock;
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
 import etithespirit.etimod.common.tile.IWorldUpdateListener;
+import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.registry.TileEntityRegistry;
 import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
 import etithespirit.etimod.util.collection.IReadOnlyList;
@@ -31,43 +32,34 @@ public class TileEntityLightEnergyConduit extends TileEntity implements IWorldUp
 	
 	@Override
 	public void neighborAddedOrRemoved(BlockState state, World world, BlockPos at, BlockPos changedAt, TileEntity replacedTile, boolean isMoving) {
-		/*
-		TileEntity newTile = world.getBlockEntity(changedAt);
-		
-		if (newTile instanceof ILightEnergyConduit) {
-			// The neighbor is a conduit.
-			// We need to add it as a neighbor to all anchors connected to THIS conduit, and tell that
-			// conduit that it has a new anchor.
-			
-			ILightEnergyConduit conduit = (ILightEnergyConduit)newTile;
-			for (AbstractLightEnergyAnchor anchor : anchors) {
-				
-				if (!anchor.isConduitConnected(conduit)) {
-					anchor.registerConnectedElement(conduit, true);
-				}
-				
-				
-			}
-		}
-		// Note to future self: Don't need to do anything if the tile is AbstractLightEnergyStorageTileEntity
-		// because that already handles being placed / moved by a piston.
-		*/
+	
 	}
 	
 	@Override
 	public void changed(IWorld world, BlockPos at) {
 		ILightEnergyConduit[] allNeighbors = getNeighboringConduits(false);
+		ILightEnergyConduit[] connectedNeighbors = getNeighboringConduits(true);
 		for (AbstractLightEnergyAnchor anchor : anchors) {
+			anchor.getConnectedConduits(true);
+			
 			for (ILightEnergyConduit neighbor : allNeighbors) {
-				if (anchor.isConduitPartOfAnchor(neighbor)) {
+				if (anchor.isConduitPartOfAnchor(neighbor, true)) {
 					if (!neighbor.isConnectedTo(this, true)) {
-						// Disconnection occurred via a BlockState change.
-						
+						// Neighbor disconnection occurred via a BlockState change.
+						Assembly asm = getAssembly();
+						if (asm != null) {
+							LOG.trace("A neighbor ILightEnergyConduit connected to an ILightEnergyConduit instance with an assembly.");
+							asm.handleRemoval(neighbor);
+						}
 					}
 				} else {
 					if (neighbor.isConnectedTo(this, true)) {
-						// Connection occurred via a BlockState change.
-						
+						// Neighbor connection occurred via a BlockState change.
+						Assembly asm = getAssembly();
+						if (asm != null) {
+							LOG.trace("A neighbor ILightEnergyConduit disconnected to an ILightEnergyConduit instance with an assembly.");
+							asm.handleAddition(neighbor);
+						}
 					}
 				}
 			}
@@ -85,9 +77,9 @@ public class TileEntityLightEnergyConduit extends TileEntity implements IWorldUp
 		// UPDATE: Anchors now recognize a hierarchy change and demand a rebranch so this should strictly be used to find stragglers
 		for (AbstractLightEnergyAnchor anchor : anchors) {
 			// Don't unregister the anchor here unless you love ConcurrentModificationExceptions
-			if (anchor.isConduitPartOfAnchor(this)) {
+			if (anchor.isConduitPartOfAnchor(this, true)) {
 				LOG.warn("WARNING: Anchor at {} did not dispose of conduit at {} when repopulating neighbors!", anchor.getBlockPos(), getBlockPos());
-				anchor.unregisterConnectedElement(this, false);
+				anchor.unregisterConnectedElement(this);
 			}
 		}
 		anchors.clear();
@@ -113,6 +105,14 @@ public class TileEntityLightEnergyConduit extends TileEntity implements IWorldUp
 	@Override
 	public IReadOnlyList<AbstractLightEnergyAnchor> getAnchors() {
 		return anchors.asReadOnly();
+	}
+	
+	@Override
+	public Assembly getAssembly() {
+		if (anchors.size() == 0) {
+			return null;
+		}
+		return Assembly.getAssemblyFor(anchors.get(0));
 	}
 	
 	@Override
