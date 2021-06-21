@@ -2,8 +2,8 @@ package etithespirit.etimod.client.render.debug;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
-import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
-import etithespirit.etimod.common.tile.light.ILightEnergyConduit;
+import etithespirit.etimod.common.tile.light.AbstractLightEnergyHub;
+import etithespirit.etimod.common.tile.light.AbstractLightEnergyLink;
 import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.connection.ConnectionHelper;
 import etithespirit.etimod.connection.Line;
@@ -24,9 +24,9 @@ import static etithespirit.etimod.client.render.debug.RenderUtil.TOP_LINES;
 // import static etithespirit.etimod.client.render.debug.RenderUtil.TRANSLUCENT_QUADS;
 
 /**
- * A utility for {@link AbstractLightEnergyAnchor} that visualizes all connections.
+ * A utility for {@link AbstractLightEnergyHub} that visualizes all connections.
  */
-public class LightTileDebugRenderer extends TileEntityRenderer<AbstractLightEnergyAnchor> {
+public class LightTileDebugRenderer extends TileEntityRenderer<AbstractLightEnergyHub> {
 	public LightTileDebugRenderer(TileEntityRendererDispatcher dispatcher) {
 		super(dispatcher);
 	}
@@ -34,7 +34,7 @@ public class LightTileDebugRenderer extends TileEntityRenderer<AbstractLightEner
 	private static final ArrayList<Assembly> alreadyRendered = new ArrayList<>();
 	
 	@Override
-	public void render(AbstractLightEnergyAnchor tile, float partialTicks, MatrixStack mtx, IRenderTypeBuffer bufferProvider, int p_225616_5_, int p_225616_6_) {
+	public void render(AbstractLightEnergyHub tile, float partialTicks, MatrixStack mtx, IRenderTypeBuffer bufferProvider, int p_225616_5_, int p_225616_6_) {
 		if (!EtiUtils.isPlayerViewingDebugMenu()) return;
 		
 		
@@ -62,18 +62,18 @@ public class LightTileDebugRenderer extends TileEntityRenderer<AbstractLightEner
 		IVertexBuilder vtxBuilder = bufferProvider.getBuffer(TOP_LINES);
 		int idx = 0;
 		for (Line line : asm.getLines()) {
-			ILightEnergyConduit previous = null;
-			for (ILightEnergyConduit conduit : line.getSegments()) {
+			AbstractLightEnergyLink previous = null;
+			for (AbstractLightEnergyLink link : line.getSegments()) {
 				BlockPos start = previous != null ? previous.getBlockPos() : tile.getBlockPos();
 				//int color = 0xFF_FF00FF;
 				int color = 0xFF_FF0000;
-				if (!ConnectionHelper.areNeighbors(start, conduit.getBlockPos())) {
-					previous = conduit;
+				if (!ConnectionHelper.areNeighbors(start, link.getBlockPos())) {
+					previous = link;
 					continue;
 					//color = 0xFF_FF0000;
 				}
-				RenderUtil.drawLine(vtxBuilder, mtx, color, start, conduit.getBlockPos());
-				previous = conduit;
+				RenderUtil.drawLine(vtxBuilder, mtx, color, start, link.getBlockPos());
+				previous = link;
 			}
 			
 			RenderUtil.drawCubeFrame(line.getBounds(), mtx, vtxBuilder, RenderUtil.randomIndexedRGB(idx), 48);
@@ -82,7 +82,7 @@ public class LightTileDebugRenderer extends TileEntityRenderer<AbstractLightEner
 	}
 	
 	@Override
-	public boolean shouldRenderOffScreen(AbstractLightEnergyAnchor tile) {
+	public boolean shouldRenderOffScreen(AbstractLightEnergyHub tile) {
 		return true;
 	}
 	

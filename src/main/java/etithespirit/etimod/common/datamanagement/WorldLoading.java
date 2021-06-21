@@ -2,6 +2,7 @@ package etithespirit.etimod.common.datamanagement;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
 import etithespirit.etimod.common.morph.PlayerToSpiritBinding;
+import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
 import etithespirit.etimod.registry.SoundRegistry;
 import net.minecraft.client.Minecraft;
@@ -13,10 +14,8 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerRespawnEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber
-public class WorldLoading {
+public final class WorldLoading {
 	
-	@SubscribeEvent
 	public static void onLoggedInServer(PlayerLoggedInEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		boolean isSpirit = player.getPersistentData().getBoolean("isSpirit") || PlayerToSpiritBinding.get(player);
@@ -24,7 +23,6 @@ public class WorldLoading {
 		player.refreshDimensions(); // This one is crazy in mojmap: refreshDimensions
 	}
 	
-	@SubscribeEvent
 	public static void onLoggedInClient(PlayerLoggedInEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		if (Minecraft.getInstance().hasSingleplayerServer()) {		
@@ -37,21 +35,22 @@ public class WorldLoading {
 		}
 	}
 	
-	
-	@SubscribeEvent
-	public static void onLoggedOut(PlayerLoggedOutEvent evt) {
+	public static void onLoggedOutServer(PlayerLoggedOutEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		player.getPersistentData().putBoolean("isSpirit", PlayerToSpiritBinding.get(player));
+		Assembly.clearAllKnownAssemblies(false);
 	}
 	
-	@SubscribeEvent
+	public static void onLoggedOutClient(PlayerLoggedOutEvent evt) {
+		Assembly.clearAllKnownAssemblies(true);
+	}
+	
 	public static void onRespawnedClient(PlayerRespawnEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		player.refreshDimensions();
 		SpiritSoundPlayer.playSoundAtPlayer(player, SoundRegistry.get("entity.spirit.respawn"), SoundCategory.PLAYERS, 0.2f, 1f);
 	}
 	
-	@SubscribeEvent
 	public static void onRespawnedServer(PlayerRespawnEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		player.refreshDimensions();

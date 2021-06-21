@@ -22,7 +22,7 @@
 	"input.etimod.climb" : "Climb",
 	"input.etimod.cling" : "Wall Cling",
 
-	"entity.etimod.spiritguardian.name" : "Spirit Guardian",
+	"entity.etimod.spirit.name" : "Spirit",
 	
 	"block.etimod.decay_log" : "§5Petrified Log",
 	"block.etimod.decay_mycelium" : "§5Decay Mycelium",
@@ -33,7 +33,7 @@
 	
 	"item.etimod.lumo_wand" : "Lumo Wand",
 
-	"effect.etimod.spirit" : "Spirit Guardian",
+	"effect.etimod.spirit" : "Spirit",
 	"effect.etimod.decay" : "Decay",
 	"effect.etimod.radiant" : "Radiant",
 

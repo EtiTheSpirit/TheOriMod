@@ -17,8 +17,11 @@ import static net.minecraft.state.properties.BlockStateProperties.*;
  * Defines a block that serves as a non-complex means of handling Light energy. This should strictly be
  * used when energy numbers are not a part of this block's function. It should instead be used when
  * this block provides a means of allowing {@link ILightEnergyStorage} implementors
- * to communicate with one-another, for instance, by allowing two storage devices to transfer power through a pipeline.
- *
+ * to communicate with one-another, for instance, by allowing two storage devices to transfer power through a pipeline.<br/>
+ * <br/>
+ * Blocks extending this class should always have a {@link net.minecraft.tileentity.TileEntity TileEntity} associated with them, where
+ * said tile extends {@link etithespirit.etimod.common.tile.light.AbstractLightEnergyLink AbstractLightEnergyLink} or
+ * {@link etithespirit.etimod.common.tile.light.AbstractLightEnergyHub AbstractLightEnergyHub}
  * @author Eti
  */
 @SuppressWarnings("unused")

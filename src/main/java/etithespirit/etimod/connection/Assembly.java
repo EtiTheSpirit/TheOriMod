@@ -1,10 +1,15 @@
 package etithespirit.etimod.connection;
 
 import etithespirit.etimod.EtiMod;
-import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
-import etithespirit.etimod.common.tile.light.ILightEnergyConduit;
+import etithespirit.etimod.common.tile.light.AbstractLightEnergyHub;
+import etithespirit.etimod.common.tile.light.AbstractLightEnergyLink;
 import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
 import etithespirit.etimod.util.collection.IReadOnlyList;
+import etithespirit.etimod.util.collection.SidedListProvider;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -23,13 +28,17 @@ public final class Assembly {
 	
 	private static final Logger LOG = LogManager.getLogger(EtiMod.MODID + "::Assembly");
 	
-	private static final CachedImmutableSetWrapper<Assembly> ALL_ASSEMBLIES = new CachedImmutableSetWrapper<>(true);
+	/** Every instantiated assembly on this distribution of the game. */
+	private static final SidedListProvider<Assembly> ALL_ASM_CACHE = new SidedListProvider<>(true);
 	
 	/** All lines that form this assembly. */
-	protected final CachedImmutableSetWrapper<Line> lines;
+	private final CachedImmutableSetWrapper<Line> lines = new CachedImmutableSetWrapper<>(true);
 	
-	/** All entry/end points of this assembly. */
-	protected final CachedImmutableSetWrapper<AbstractLightEnergyAnchor> roots = new CachedImmutableSetWrapper<>(true);
+	/** The {@link AssemblyHelper} that figures out what all connected bits of this assembly exist. */
+	private final AssemblyHelper helper;
+	
+	/** The {@link World} this {@link Assembly} exists in. */
+	public final World world;
 	
 	/**
 	 * An ID <strong>EXCLUSIVELY</strong> used for debugging. This ID is not synchronized over the client/server boundary and should <strong>never</strong> be used for network references.
@@ -37,77 +46,103 @@ public final class Assembly {
 	public final int debugId;
 	
 	/**
-	 * Returns a new assembly for the given {@link AbstractLightEnergyAnchor}, or if another assembly already
+	 * Returns a new assembly for the given {@link AbstractLightEnergyHub}, or if another assembly already
 	 * has this as one of its roots, returns that other assembly.
-	 * @param tile The {@link AbstractLightEnergyAnchor} to create or get an assembly for.
-	 * @return A new instance of {@link Assembly}, or an existing instance of one already knows about this {@link AbstractLightEnergyAnchor}.
+	 * @param hub The {@link AbstractLightEnergyHub} to create or get an assembly for.
+	 * @return A new instance of {@link Assembly}, or an existing instance of one already knows about this {@link AbstractLightEnergyHub}.
 	 */
-	public static Assembly getAssemblyFor(AbstractLightEnergyAnchor tile) {
-		// Look for assemblies whose roots contain this tile.
-		for (Assembly assembly : ALL_ASSEMBLIES) {
-			if (assembly.roots.contains(tile)) {
+	public static Assembly getAssemblyFor(AbstractLightEnergyHub hub) {
+		CachedImmutableSetWrapper<Assembly> assemblies = ALL_ASM_CACHE.getListForSide(hub.getLevel().isClientSide);
+		
+		for (Assembly assembly : assemblies) {
+			IReadOnlyList<AbstractLightEnergyHub> hubs = assembly.getHubs();
+			if (assembly.helper.getHubs().contains(hub)) {
 				return assembly;
 			}
 		}
 		
-		// The above probably won't return.
-		// The other thing is to try to see if this was placed next to a conduit.
-		// And (more importantly) if that conduit was connected to an existing assembly.
-		IReadOnlyList<ILightEnergyConduit> conduits = tile.getConnectedConduits(true);
-		
-		// SUPER IMPORTANT NOTE: Do NOT use the getAssembly method of the conduits in the loop below!
-		// That will just cause an infinite recursion loop, because at this point in time, the given conduits won't have
-		// realized that they are in this assembly. It's this block right here that actually tells them they are in
-		// this assembly in the first place. So naturally, we can't rely on it quite yet.
-		
-		for (ILightEnergyConduit conduit : conduits) {
-			for (AbstractLightEnergyAnchor anchor : conduit.getAnchors()) {
-				if (anchor == tile) continue; // Note to self, yes use == because this is by reference.
-				//if (anchor.getAllConnectedStorage().contains(tile)) {
-				// This anchor that is not this tile is connected to this tile.
-				// Get the assembly that this is a part of.
-				Assembly result = getAssemblyFor(anchor);
-				// We know roots won't contain the current tile (the first block up above didn't return)
-				result.roots.add(tile);
-				return result;
-				//}
+		// Note to self: anticipateWithAuto should be true in this one, because if it makes it to this point in the code,
+		// then the TE will have been freshly placed (or moved) and thus would have new automatic connections being made.
+		IBlockReader reader = hub.getLevel();
+		BlockPos origin = hub.getBlockPos();
+		for (BlockPos validNeighborPos : ConnectionHelper.getDirectionsWithMutualConnections(reader, origin, true)) {
+			TileEntity neighborTE = reader.getBlockEntity(validNeighborPos);
+			if (neighborTE instanceof AbstractLightEnergyLink) {
+				AbstractLightEnergyLink link = (AbstractLightEnergyLink)neighborTE;
+				Assembly other = link.getAssembly();
+				if (other != null) {
+					other.connectHub(hub);
+					other.helper.manuallyRegisterHub(hub);
+					return other;
+				}
 			}
 		}
 		
-		// And now, if all else fails, return this.
-		Assembly instance = new Assembly(tile);
-		for (Line line : instance.lines) {
-			IReadOnlyList<ILightEnergyConduit> segments = line.getSegments();
-			ILightEnergyConduit last = segments.get(segments.size() - 1);
-			for (AbstractLightEnergyAnchor anchor : last.getAnchors()) {
-				if (!instance.roots.contains(anchor)) {
-					instance.roots.add(anchor);
-				}
-			}
+		// At this point, the only remaining option is that there is no assembly for this hub, and so we need a new one.
+		Assembly instance = new Assembly(hub);
+		for (AbstractLightEnergyHub otherHub : instance.helper.getHubs()) {
+			if (instance.isHubConnected(otherHub)) continue;
+			instance.connectHub(otherHub);
+		}
+		for (AbstractLightEnergyLink link : instance.helper.getLinks()) {
+			link.setAssembly(instance);
 		}
 		return instance;
 	}
 	
-	private Assembly(AbstractLightEnergyAnchor origin) {
-		ALL_ASSEMBLIES.add(this);
-		roots.add(origin);
-		lines = new CachedImmutableSetWrapper<>(Line.constructFrom(origin, this), true);
+	private Assembly(AbstractLightEnergyHub hub) {
+		world = hub.getLevel(); // Important that this is done BEFORE the AssemblyHelper is instantiated. It uses this.
+		helper = new AssemblyHelper(this, hub);
+		
 		debugId = currentid++;
-		// Wondering why this is going up by two? It's because the value is static.
+		// Wondering why this is going up by two? It's because the value is static and this might exist on both the client and server.
+		
+		getAllInstances().add(this);
+		
+		lines.addAll(Line.constructFrom(this, helper));
 	}
 	
+	/**
+	 * Should <strong>only</strong> be executed when a world is unloading. This sets {@link #currentid} to 0 (to reset debug IDs) and clears the list of every instantiated assembly for this side.
+	 * @param client If true, the client list should be cleared. If false, the server (both dedicated and integrated apply) should be.
+	 */
+	public static void clearAllKnownAssemblies(boolean client) {
+		currentid = 0;
+		ALL_ASM_CACHE.getListForSide(client).clear();
+	}
+	
+	/**
+	 * @return The static list of every instantiated {@link Assembly} for this side (client/server). <strong>Note that this relies on {@link #world} being set.</strong>
+	 */
+	private CachedImmutableSetWrapper<Assembly> getAllInstances() {
+		return ALL_ASM_CACHE.getListForSide(world.isClientSide);
+	}
+	
+	@Deprecated
 	public void forceRefreshAllLines() {
-		lines.clear();
-		lines.addAll(Line.constructFrom(getCore(), this));
+	
 	}
 	
+	/**
+	 * Assuming this assembly has just connected with the given other assembly, this merges the other assembly into this.
+	 * @param other The other assembly that will be merged into this.
+	 */
+	public void mergeWith(Assembly other) {
+		// In a merge, whatever conduit made the merge has three possibilities
+		// #1: It was a new block added to the end of a line, extending its length (for at least one of both sides)
+			// If this is the case, then that block goes to that line, and then every line is copied over because they are valid.
+		// #2: It was a new block added to the side of a line, causing a T joint and a line fragment (for both sides at once)
+			// That block should be added as a new line instance containing only that block.
+		// #3: It was two lines that were next to eachother in some way, and their connection state was changed, causing a connection to form.
+			// The lines should remain completely unchanged, with the exception of the lines that it is connected to.
+	}
 	
 	/**
 	 * Returns the {@link Line} that contains the given conduit, or null if no such line exists.
 	 * @param conduit The conduit that is presumably a part of one of the lines in this assembly.
 	 * @return The {@link Line} containing the given conduit, or null if no line in this assembly contains it.
 	 */
-	public @Nullable Line getLineContaining(ILightEnergyConduit conduit) {
+	public @Nullable Line getLineContaining(AbstractLightEnergyLink conduit) {
 		for (Line line : lines) {
 			if (line.getSegments().contains(conduit)) {
 				return line;
@@ -118,55 +153,83 @@ public final class Assembly {
 	
 	/**
 	 * Handles a new conduit being added to this {@link Assembly}.
-	 * @param conduit The conduit that was just added.
+	 * @param link The conduit that was just added.
 	 */
-	public void handleAddition(ILightEnergyConduit conduit) {
-		//getLineContaining(conduit).spliceAndRebranch(conduit);
-		getCore().repopulateConnectedArray();
-		forceRefreshAllLines(); // Lazy method.
+	public void handleLinkAddition(AbstractLightEnergyLink link) {
+	
 	}
 	
 	/**
 	 * Handles an existing conduit being removed from this {@link Assembly}.
-	 * @param conduit The conduit that was just removed.
+	 * @param link The conduit that was just removed.
 	 */
-	public void handleRemoval(ILightEnergyConduit conduit) {
-		getCore().repopulateConnectedArray();
-		forceRefreshAllLines(); // Lazy method.
+	public void handleLinkRemoval(AbstractLightEnergyLink link) {
+	
 	}
 	
 	/**
 	 * Handles whenever the outgoing connections associated with this conduit change.
-	 * @param conduit
+	 * @param link The conduit whose connection state changed.
 	 */
-	public void handleConnectionStateChanged(ILightEnergyConduit conduit) {
+	public void handleLinkConnectionStateChanged(AbstractLightEnergyLink link) {
 	
 	}
 	
-	public void tileEntityRemoved(AbstractLightEnergyAnchor tile) {
-		roots.remove(tile); // Let the exception go through if this is called incorrectly.
-		if (roots.size() == 0) {
+	/**
+	 * Returns whether or not this assembly has no hubs. In intended cases, this should always return true, and if it is returning false, then
+	 * the reference to this assembly should be dropped immediately as it needs to be scheduled for GC.
+	 * @return Whether or not this assembly has no hubs.
+	 */
+	public boolean isEmpty() {
+		return helper.getHubs().isEmpty();
+	}
+	
+	/**
+	 * Disconnects the given {@link AbstractLightEnergyHub hub} from this {@link Assembly}, and disposes of this assembly if it has no more hubs after this is called.
+	 * @param hub The hub to remove.
+	 */
+	public void disconnectHub(AbstractLightEnergyHub hub) {
+		helper.manuallyUnregisterHub(hub); // Let the exception go through if this is called incorrectly.
+		if (isEmpty()) {
 			LOG.debug("Disposed of Assembly on this thread as all roots have been destroyed.");
 			this.dispose();
 		}
 	}
 	
 	/**
-	 * Returns the first anchor point for this assembly. It is identical to the first entry in {@link #roots}.
+	 * Connects the given {@link AbstractLightEnergyHub hub} to this {@link Assembly}.
+	 * @param hub The hub to add.
+	 */
+	public void connectHub(AbstractLightEnergyHub hub) {
+		helper.manuallyRegisterHub(hub);
+	}
+	
+	/**
+	 * Returns whether or not the given {@link AbstractLightEnergyHub} is part of this {@link Assembly}.
+	 * @param hub The hub to check.
+	 * @return Whether or not the given hub is part of this assembly.
+	 */
+	public boolean isHubConnected(AbstractLightEnergyHub hub) {
+		return helper.getHubs().contains(hub);
+	}
+	
+	/**
+	 * Returns the first anchor point for this assembly. This does not necessarily mean first sequentially, as it references the internal connected hub array and returns the first element.
 	 * @return The first anchor point in this assembly, or null if this assembly does not have any roots (in which case this assembly should technically not even exist)
 	 */
-	public AbstractLightEnergyAnchor getCore() {
-		if (roots.size() > 0) {
-			return roots.get(0);
+	public @Nullable AbstractLightEnergyHub getCore() {
+		IReadOnlyList<AbstractLightEnergyHub> hubs = getHubs();
+		if (hubs.size() > 0) {
+			return hubs.get(0);
 		}
 		return null;
 	}
 	
 	/**
-	 * @return All anchor points in this assembly.
+	 * @return All anchor points in this assembly. Directly references the internal helper to acquire this list.
 	 */
-	public IReadOnlyList<AbstractLightEnergyAnchor> getRoots() {
-		return roots.asReadOnly();
+	public IReadOnlyList<AbstractLightEnergyHub> getHubs() {
+		return helper.getHubs();
 	}
 	
 	/**
@@ -177,8 +240,12 @@ public final class Assembly {
 	}
 	
 	public void dispose() {
+		for (AbstractLightEnergyLink link : helper.getLinks()) {
+			link.setAssembly(null);
+		}
+		
 		lines.clear();
-		roots.clear();
-		ALL_ASSEMBLIES.remove(this);
+		helper.dispose();
+		getAllInstances().remove(this);
 	}
 }

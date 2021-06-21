@@ -1,6 +1,5 @@
 package etithespirit.etimod.common.tile.light;
 
-import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
 import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.energy.FluxBehavior;
 import etithespirit.etimod.registry.TileEntityRegistry;
@@ -10,7 +9,7 @@ import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraftforge.common.util.Constants;
 
-public class TileEntityLightCapacitor extends AbstractLightEnergyAnchor implements IWorldUpdateListener {
+public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements IWorldUpdateListener {
 	
 	private boolean hasZeroEnergy;
 	
@@ -20,17 +19,9 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyAnchor implemen
 		hasZeroEnergy = storage.getLightStored() == 0;
 	}
 	
-	/**
-	 * Executes when energy changes from nonzero to zero, or zero to nonzero.
-	 */
-	private void energyZeroStateChanged() {
-		for (ILightEnergyConduit conduit : connected) {
-			conduit.refresh(); // lol
-		}
-	}
-	
 	@Override
 	public void tick() {
+		
 		super.tick();
 	}
 	
@@ -63,12 +54,6 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyAnchor implemen
 		if (amount != 0) {
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
 		}
-		if (!simulate) {
-			if (hasZeroEnergy && getLightStored() != 0) {
-				hasZeroEnergy = false;
-				energyZeroStateChanged();
-			}
-		}
 		return amount;
 	}
 
@@ -77,12 +62,6 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyAnchor implemen
 		double amount = storage.extractLight(maxExtract, simulate);
 		if (amount != 0) {
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Constants.BlockFlags.BLOCK_UPDATE);
-		}
-		if (!simulate) {
-			if (!hasZeroEnergy && getLightStored() == 0) {
-				hasZeroEnergy = true;
-				energyZeroStateChanged();
-			}
 		}
 		return amount;
 	}

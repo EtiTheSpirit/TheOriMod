@@ -8,7 +8,7 @@ package etithespirit.etimod.util;
 public enum SideType {
 	
 	/** A literal Minecraft game client app or server app. */
-	@Deprecated PHYSICAL,
+	PHYSICAL,
 	
 	/** A virtual representation of a side, which is not guaranteed to be the same as what program is running (for instance, singleplayer worlds have a logical server in them) */
 	LOGICAL

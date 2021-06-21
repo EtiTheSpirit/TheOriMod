@@ -15,13 +15,11 @@ public final class EntityRegistry {
 	public static final DeferredRegister<EntityType<?>> ENTITIES = DeferredRegister.create(ForgeRegistries.ENTITIES, EtiMod.MODID);
 	
 	public static final ResourceLocation SPIRIT_ID = new ResourceLocation(EtiMod.MODID, "spirit");
-	public static final RegistryObject<EntityType<SpiritEntity>> SPIRIT = ENTITIES.register(SPIRIT_ID.getPath(), () -> { 
-		return EntityType.Builder
-			.of(SpiritEntity::new, EntityClassification.CREATURE)
-			.sized(0.475f, 0.5f)
-			.noSave()
-		.build(SPIRIT_ID.toString()); 
-	});
+	public static final RegistryObject<EntityType<SpiritEntity>> SPIRIT = ENTITIES.register(SPIRIT_ID.getPath(), () -> EntityType.Builder
+		.of(SpiritEntity::new, EntityClassification.CREATURE)
+		.sized(0.495f, 0.5f)
+		.noSave()
+	.build(SPIRIT_ID.toString()));
 	
 	public static void registerAll() {
 		ENTITIES.register(FMLJavaModLoadingContext.get().getModEventBus());

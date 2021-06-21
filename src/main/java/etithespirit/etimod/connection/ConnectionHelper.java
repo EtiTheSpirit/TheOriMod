@@ -2,6 +2,7 @@ package etithespirit.etimod.connection;
 
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.etimod.exception.ArgumentNullException;
+import etithespirit.etimod.info.coordinate.Cardinals;
 import etithespirit.etimod.util.blockstates.SixSidedUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.state.BooleanProperty;
@@ -9,6 +10,8 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.IBlockReader;
+
+import java.util.ArrayList;
 
 import static net.minecraft.state.properties.BlockStateProperties.*;
 import static etithespirit.etimod.exception.ArgumentNullException.assertNotNull;
@@ -71,7 +74,8 @@ public final class ConnectionHelper {
 	}
 	
 	/**
-	 * Similar to {@link #hasOutgoingConnectionInDirection(IBlockReader, BlockPos, Direction, boolean)} but this also checks the neighbor to this block.
+	 * Similar to {@link #hasOutgoingConnectionInDirection(IBlockReader, BlockPos, Direction, boolean)} but this also checks the neighbor to this block.<br/>
+	 * Consider using {@link #hasMutualConnectionToOther(IBlockReader, BlockPos, BlockPos, boolean)} if you wish to pass in a second {@link BlockPos} instead of a {@link Direction}.
 	 * @param reader Something to access the blocks in the world.
 	 * @param at The location of the block to test.
 	 * @param dir The face to test.
@@ -96,7 +100,7 @@ public final class ConnectionHelper {
 	 * @throws ArgumentNullException If any of the three parameters are null.
 	 * @throws IllegalArgumentException if the given {@link BlockPos} or its neighbor do not correspond to an instance of {@link ConnectableLightTechBlock}, or if the two {@link BlockPos} instances are not adjacent.
 	 */
-	public static boolean hasMutualConnectionInDirection(IBlockReader reader, BlockPos at, BlockPos other, boolean anticipateWithAuto) throws ArgumentNullException, IllegalArgumentException {
+	public static boolean hasMutualConnectionToOther(IBlockReader reader, BlockPos at, BlockPos other, boolean anticipateWithAuto) throws ArgumentNullException, IllegalArgumentException {
 		Direction dir = fromBlockPos(at, other, true);
 		boolean fromAt = hasOutgoingConnectionInDirection(reader, at, dir, anticipateWithAuto);
 		boolean toAt = hasOutgoingConnectionInDirection(reader, at.offset(dir.getNormal()), dir.getOpposite(), anticipateWithAuto);
@@ -132,6 +136,27 @@ public final class ConnectionHelper {
 	public static boolean areNeighbors(BlockPos alpha, BlockPos bravo) {
 		Vector3i diff = alpha.subtract(bravo);
 		return (Math.abs(diff.getX()) + Math.abs(diff.getY()) + Math.abs(diff.getZ())) == 1;
+	}
+	
+	/**
+	 * Returns all adjacent {@link BlockPos} instances that represent neighboring {@link ConnectableLightTechBlock}s with mutual connections to this block.
+	 * @param reader The {@link IBlockReader} used to access the neighboring blocks.
+	 * @param around The location of this block.
+	 * @param anticipateWithAuto Whether or not to anticipate connections that will be made on the next block update for neighbors with automatic connections enabled.
+	 * @return A list of up to six {@link BlockPos} instances representing directions where a mutual connection is made.
+	 */
+	public static BlockPos[] getDirectionsWithMutualConnections(IBlockReader reader, BlockPos around, boolean anticipateWithAuto) {
+		ArrayList<BlockPos> result = new ArrayList<BlockPos>();
+		for (Vector3i adj : Cardinals.ADJACENTS_IN_ORDER) {
+			BlockPos neighbor = around.offset(adj);
+			BlockState neighborState = reader.getBlockState(neighbor);
+			if (neighborState.getBlock() instanceof ConnectableLightTechBlock) {
+				if (hasMutualConnectionToOther(reader, around, neighbor, anticipateWithAuto)) {
+					result.add(neighbor);
+				}
+			}
+		}
+		return result.toArray(new BlockPos[result.size()]);
 	}
 	
 }

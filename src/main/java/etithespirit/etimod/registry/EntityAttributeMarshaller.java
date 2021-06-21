@@ -7,15 +7,12 @@ import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifierMap;
 import net.minecraft.entity.ai.attributes.Attributes;
 import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
-
 
 public final class EntityAttributeMarshaller {
-
 	
-	public static void onAttributesRegistered(final EntityAttributeCreationEvent attrCreation) {
+	private static void onAttributesRegistered(final EntityAttributeCreationEvent attrCreation) {
 		Map<Attribute, ModifiableAttributeInstance> attrMap = new HashMap<>();
 		attrMap.put(Attributes.MAX_HEALTH, new ModifiableAttributeInstance(Attributes.MAX_HEALTH, inst -> inst.setBaseValue(10.0)));
 		attrMap.put(Attributes.ATTACK_DAMAGE, new ModifiableAttributeInstance(Attributes.ATTACK_DAMAGE, inst -> inst.setBaseValue(2)));
@@ -26,6 +23,10 @@ public final class EntityAttributeMarshaller {
 		attrMap.put(Attributes.KNOCKBACK_RESISTANCE, new ModifiableAttributeInstance(Attributes.KNOCKBACK_RESISTANCE, inst -> inst.setBaseValue(0.8)));
 		
 		attrCreation.put(EntityRegistry.SPIRIT.get(), new AttributeModifierMap(attrMap));
+	}
+	
+	public static void registerAll() {
+		MinecraftForge.EVENT_BUS.addListener(EntityAttributeMarshaller::onAttributesRegistered);
 	}
 	
 }

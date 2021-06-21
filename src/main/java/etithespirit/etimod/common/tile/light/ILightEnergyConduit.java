@@ -1,6 +1,5 @@
 package etithespirit.etimod.common.tile.light;
 
-import etithespirit.etimod.common.tile.AbstractLightEnergyAnchor;
 import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.connection.ConnectionHelper;
 import etithespirit.etimod.info.coordinate.Cardinals;
@@ -17,36 +16,41 @@ import java.util.ArrayList;
 /**
  * An identifier that signfies any attached instances of {@link net.minecraft.tileentity.TileEntity TileEntity} as a means of transferring power.
  */
+@Deprecated
 public interface ILightEnergyConduit {
 	
 	/**
 	 * Adds an "anchor" to this assembly. An assembly describes a circuit, and an anchor represents something that manages
 	 * iterating through all parts of a circuit.
-	 * @param anchor The instance of {@link AbstractLightEnergyAnchor} that was responsible for locating this conduit through recursion.
-	 * @throws IllegalArgumentException If the given {@link AbstractLightEnergyAnchor} is already registered.
+	 * @param anchor The instance of {@link AbstractLightEnergyHub} that was responsible for locating this conduit through recursion.
+	 * @throws IllegalArgumentException If the given {@link AbstractLightEnergyHub} is already registered.
 	 */
-	void registerAnchor(AbstractLightEnergyAnchor anchor) throws IllegalArgumentException;
+	@Deprecated
+	void registerAnchor(AbstractLightEnergyHub anchor) throws IllegalArgumentException;
 	
 	/**
 	 * Removes an "anchor" from this assembly. An assembly describes a circuit, and an anchor represents something that manages
 	 * iterating through all parts of a circuit.
-	 * @param anchor The instance of {@link AbstractLightEnergyAnchor} that was responsible for locating this conduit through recursion.
-	 * @throws IllegalArgumentException If the given {@link AbstractLightEnergyAnchor} is not already registered.
+	 * @param anchor The instance of {@link AbstractLightEnergyHub} that was responsible for locating this conduit through recursion.
+	 * @throws IllegalArgumentException If the given {@link AbstractLightEnergyHub} is not already registered.
 	 */
-	void unregisterAnchor(AbstractLightEnergyAnchor anchor) throws IllegalArgumentException;
+	@Deprecated
+	void unregisterAnchor(AbstractLightEnergyHub anchor) throws IllegalArgumentException;
 	
 	/**
 	 * Returns whether or not the given "anchor" is registered to this assembly.
 	 * An assembly describes a circuit, and an anchor represents something that manages iterating through all parts of a circuit.
-	 * @param anchor The instance of {@link AbstractLightEnergyAnchor} to test for.
-	 * @return Whether or not the given {@link AbstractLightEnergyAnchor} is registered as an anchor to this conduit.
+	 * @param anchor The instance of {@link AbstractLightEnergyHub} to test for.
+	 * @return Whether or not the given {@link AbstractLightEnergyHub} is registered as an anchor to this conduit.
 	 */
-	boolean connectedToAnchor(AbstractLightEnergyAnchor anchor);
+	@Deprecated
+	boolean connectedToAnchor(AbstractLightEnergyHub anchor);
 	
 	/**
-	 * @return An array of all registered {@link AbstractLightEnergyAnchor}.
+	 * @return An array of all registered {@link AbstractLightEnergyHub}.
 	 */
-	IReadOnlyList<AbstractLightEnergyAnchor> getAnchors();
+	@Deprecated
+	IReadOnlyList<AbstractLightEnergyHub> getAnchors();
 	
 	/**
 	 * This may be a more fruitful alternative to {@link #getAnchors()} as assemblies provide connectivity functionality.
@@ -127,14 +131,14 @@ public interface ILightEnergyConduit {
 	}
 	
 	/**
-	 * Returns whether or not this conduit is connected to the other conduit.
+	 * Returns whether or not this conduit is connected to the other conduit via a direct connection. This does <strong>not</strong> return true for conduits connected implicitly by being in the same {@link Assembly}.
 	 * @param other The other conduit to test.
 	 * @param anticipateWithAuto Whether or not to use this and {@code other}'s {@link etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock#AUTO AUTO} property to determine if these two will connect after a block update occurs.
 	 * @return Whether or not this conduit is connected to the given other conduit.
 	 */
 	default boolean isConnectedTo(ILightEnergyConduit other, boolean anticipateWithAuto) {
 		if (!isAdjacentTo(other)) return false;
-		return ConnectionHelper.hasMutualConnectionInDirection(getLevel(), getBlockPos(), other.getBlockPos(), anticipateWithAuto);
+		return ConnectionHelper.hasMutualConnectionToOther(getLevel(), getBlockPos(), other.getBlockPos(), anticipateWithAuto);
 	}
 	
 	/**
