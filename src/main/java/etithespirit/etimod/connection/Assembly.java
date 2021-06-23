@@ -5,7 +5,6 @@ import etithespirit.etimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.etimod.common.tile.light.AbstractLightEnergyLink;
 import etithespirit.etimod.exception.NotImplementedException;
 import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
-import etithespirit.etimod.util.collection.IReadOnlyList;
 import etithespirit.etimod.util.collection.SidedListProvider;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
@@ -15,6 +14,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -62,7 +62,7 @@ public final class Assembly {
 		CachedImmutableSetWrapper<Assembly> assemblies = ALL_ASM_CACHE.getListForSide(hub.getLevel().isClientSide);
 		
 		for (Assembly assembly : assemblies) {
-			IReadOnlyList<AbstractLightEnergyHub> hubs = assembly.getHubs();
+			List<AbstractLightEnergyHub> hubs = assembly.getHubs();
 			if (hubs.contains(hub)) {
 				return assembly;
 			}
@@ -231,7 +231,7 @@ public final class Assembly {
 	 * @return The first anchor point in this assembly, or null if this assembly does not have any roots (in which case this assembly should technically not even exist)
 	 */
 	public @Nullable AbstractLightEnergyHub getCore() {
-		IReadOnlyList<AbstractLightEnergyHub> hubs = getHubs();
+		List<AbstractLightEnergyHub> hubs = getHubs();
 		if (hubs.size() > 0) {
 			return hubs.get(0);
 		}
@@ -241,14 +241,14 @@ public final class Assembly {
 	/**
 	 * @return All anchor points in this assembly. Directly references the internal helper to acquire this list.
 	 */
-	public IReadOnlyList<AbstractLightEnergyHub> getHubs() {
+	public List<AbstractLightEnergyHub> getHubs() {
 		return helper.getHubs();
 	}
 	
 	/**
 	 * @return All lines that this assembly is composed of.
 	 */
-	public IReadOnlyList<Line> getLines() {
+	public List<Line> getLines() {
 		return lines.asReadOnly();
 	}
 	

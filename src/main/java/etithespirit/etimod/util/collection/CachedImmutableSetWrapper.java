@@ -1,5 +1,6 @@
 package etithespirit.etimod.util.collection;
 
+import java.util.Collections;
 import java.util.Set;
 import java.util.List;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 	public final boolean strictElementTracking;
 	
 	private final ArrayList<T> elements;
-	private final ReadOnlyList<T> immutableElements;
+	private final List<T> immutableElements;
 	// This should improve speed (as opposed to using ImmutableSet<T>)
 	// Mainly because I don't need to copy every time. What a waste.
 	
@@ -49,7 +50,7 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 	 * Construct a new {@link CachedImmutableSetWrapper} that allows duplicate elements / soft removals with the default initial capacity.
 	 */
 	public CachedImmutableSetWrapper() {
-		this(true);
+		this(0, false);
 	}
 	
 	/**
@@ -57,9 +58,7 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 	 * @param strictElementTracking If true, then attempting to add duplicate a element or remove an element that is not part of this will throw {@link IllegalArgumentException}
 	 */
 	public CachedImmutableSetWrapper(boolean strictElementTracking) {
-		elements = new ArrayList<>();
-		immutableElements = new ReadOnlyList<>(elements);
-		this.strictElementTracking = strictElementTracking;
+		this(0, strictElementTracking);
 	}
 	
 	/**
@@ -67,7 +66,7 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 	 * @param initialCapacity The initial capcity of the internal {@link ArrayList}.
 	 */
 	public CachedImmutableSetWrapper(int initialCapacity) {
-		this(initialCapacity, true);
+		this(initialCapacity, false);
 	}
 	
 	/**
@@ -77,7 +76,7 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 	 */
 	public CachedImmutableSetWrapper(int initialCapacity, boolean strictElementTracking) {
 		elements = new ArrayList<>(initialCapacity);
-		immutableElements = new ReadOnlyList<>(elements);
+		immutableElements = Collections.unmodifiableList(elements);
 		this.strictElementTracking = strictElementTracking;
 	}
 	
@@ -96,7 +95,7 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 	 */
 	public CachedImmutableSetWrapper(Iterable<T> enumerable, boolean strictElementTracking) {
 		elements = new ArrayList<>();
-		immutableElements = new ReadOnlyList<>(elements);
+		immutableElements = Collections.unmodifiableList(elements);
 		this.strictElementTracking = strictElementTracking;
 		
 		for (T item : enumerable) {
@@ -275,7 +274,7 @@ public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {
 	/**
 	 * @return This as a read-only list.
 	 */
-	public IReadOnlyList<T> asReadOnly() {
+	public List<T> asReadOnly() {
 		return immutableElements;
 	}
 	

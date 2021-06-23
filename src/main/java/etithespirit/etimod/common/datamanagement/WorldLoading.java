@@ -25,7 +25,7 @@ public final class WorldLoading {
 		PlayerEntity player = evt.getPlayer();
 		if (Minecraft.getInstance().hasSingleplayerServer()) {		
 			boolean isSpirit = player.getPersistentData().getBoolean("isSpirit");
-			PlayerToSpiritBinding.put(player, isSpirit);
+			PlayerToSpiritBinding.put(player.getUUID(), isSpirit);
 			player.refreshDimensions();
 		} else {
 			// NEW BEHAVIOR: We need to ask the server who is a spirit so that we see it once we join.

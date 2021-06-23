@@ -4,10 +4,8 @@ import etithespirit.etimod.EtiMod;
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.etimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.etimod.common.tile.light.AbstractLightEnergyLink;
-import etithespirit.etimod.common.tile.light.ILightEnergyConduit;
 import etithespirit.etimod.info.coordinate.Cardinals;
 import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
-import etithespirit.etimod.util.collection.IReadOnlyList;
 import etithespirit.etimod.util.profiling.UniProfiler;
 import net.minecraft.block.BlockState;
 import net.minecraft.tileentity.TileEntity;
@@ -17,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A close cousin to {@link ConnectionHelper} that specializes in {@link Assembly Assemblies} rather than direct neighbor connections.
@@ -66,12 +65,12 @@ public final class AssemblyHelper {
 	}
 	
 	/** Returns all hubs that are part of the assembly this works alongside. */
-	public IReadOnlyList<AbstractLightEnergyHub> getHubs() {
+	public List<AbstractLightEnergyHub> getHubs() {
 		return connectedHubs.asReadOnly();
 	}
 	
 	/** Returns all links that are part of the assembly this works alongside. */
-	public IReadOnlyList<AbstractLightEnergyLink> getLinks() {
+	public List<AbstractLightEnergyLink> getLinks() {
 		return connectedLinks.asReadOnly();
 	}
 	
@@ -186,7 +185,7 @@ public final class AssemblyHelper {
 	
 	/**
 	 * Returns all six neighbors around the given BlockPos.<br/>
-	 * <strong>SOME INDICES MAY BE NULL.</strong> Any instances of {@link BlockPos} that have already been tested or are not {@link ILightEnergyConduit} instances will be skipped.
+	 * <strong>SOME INDICES MAY BE NULL.</strong> Any instances of {@link BlockPos} that have already been tested or are not {@link AbstractLightEnergyLink} instances will be skipped.
 	 * @param around The block to get all adjacent blocks to.
 	 * @return An array of six {@link BlockPos} instances that are situated around the given position.
 	 */

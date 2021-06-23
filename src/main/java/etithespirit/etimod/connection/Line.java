@@ -3,7 +3,6 @@ package etithespirit.etimod.connection;
 import etithespirit.etimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.etimod.common.tile.light.AbstractLightEnergyLink;
 import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
-import etithespirit.etimod.util.collection.IReadOnlyList;
 import etithespirit.etimod.util.profiling.UniProfiler;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.AxisAlignedBB;
@@ -96,7 +95,7 @@ public final class Line {
 	/**
 	 * @return Every segment in this line in order such that index 0 will return the start of the line and index [length-1] will return the end.
 	 */
-	public IReadOnlyList<AbstractLightEnergyLink> getSegments() {
+	public List<AbstractLightEnergyLink> getSegments() {
 		return segments.asReadOnly();
 	}
 	

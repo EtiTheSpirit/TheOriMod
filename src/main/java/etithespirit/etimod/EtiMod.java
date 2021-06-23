@@ -6,6 +6,7 @@ import etithespirit.etimod.common.datamanagement.WorldLoading;
 import etithespirit.etimod.registry.*;
 import etithespirit.etimod.util.profiling.UniProfiler;
 import net.minecraft.client.Minecraft;
+import net.minecraft.entity.Entity;
 import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraftforge.fml.event.server.FMLServerStartedEvent;
 import org.apache.logging.log4j.LogManager;
@@ -61,10 +62,8 @@ public final class EtiMod {
 	
 	    BiomeRegistry.registerAll();
 	    BlockRegistry.registerAll();
-	    CapabilityRegistry.registerAll();
+	    // CapabilityRegistry.registerAll();
 	    DimensionRegistry.registerAll();
-    	// EntityRegistry.registerAll();
-	    // EntityAttributeMarshaller.registerAll();
 	    ItemRegistry.registerAll();
 	    PotionRegistry.registerAll();
     	SoundRegistry.registerAll();
@@ -87,13 +86,15 @@ public final class EtiMod {
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutServer);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onRespawnedServer);
 		
-		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::attachCapabilities);
+		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityRegistry::attachCapabilities);
 		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::persistCapabilities);
     	
 		event.enqueueWork(() -> {
 			Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation(EtiMod.MODID, "light_forest_chunkgen"), LightForestChunkGenerator.CORE_CODEC);
 			Registry.register(Registry.BIOME_SOURCE, new ResourceLocation(EtiMod.MODID, "light_forest"), LightForestBiomeProvider.BIOME_CODEC);
 		});
+		
+		CapabilityRegistry.registerAll();
 	}
     
     public void clientGameBuildInit(final FMLClientSetupEvent event) {
