@@ -1,5 +1,7 @@
 package etithespirit.etimod.info.spirit.capabilities;
 
+import net.minecraft.nbt.CompoundNBT;
+
 public final class SpiritCapabilities implements ISpiritCapabilities {
 	
 	private boolean isSpirit;
@@ -27,4 +29,17 @@ public final class SpiritCapabilities implements ISpiritCapabilities {
 		abilities.copyTo(other.getSpiritAbilities());
 	}
 	
+	@Override
+	public CompoundNBT serializeNBT() {
+		CompoundNBT tag = new CompoundNBT();
+		tag.putBoolean("isSpirit", isSpirit);
+		abilities.writeToNBT(tag);
+		return tag;
+	}
+	
+	@Override
+	public void deserializeNBT(CompoundNBT nbt) {
+		isSpirit = nbt.getBoolean("isSpirit");
+		abilities.readFromNBT(nbt);
+	}
 }

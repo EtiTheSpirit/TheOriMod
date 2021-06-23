@@ -5,8 +5,8 @@ import java.util.Map;
 
 import javax.annotation.Nullable;
 
+import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
@@ -44,7 +44,7 @@ public final class SpiritSize {
 	public static void onGetEntitySize(EntityEvent.Size event) {
 		if (!(event.getEntity() instanceof PlayerEntity)) return;
 		PlayerEntity player = (PlayerEntity)event.getEntity();
-		if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+		if (SpiritData.isSpirit(player)) {
 			Pose targetPose = updatePose(player);
 			EntitySize newSize = getSpiritSizeFrom(targetPose);
 			
@@ -179,7 +179,7 @@ public final class SpiritSize {
 		if (evt.player == null) return;
 		if (evt.player != net.minecraft.client.Minecraft.getInstance().player) return;
 		if (evt.phase == TickEvent.Phase.END) return;
-		if (SpiritIdentifier.isSpirit(evt.player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+		if (SpiritData.isSpirit(evt.player)) {
 			updatePose(evt.player);
 			if (!wasSpiritOnLastTick) {
 				evt.player.refreshDimensions();
@@ -197,7 +197,7 @@ public final class SpiritSize {
 	public static void onPlayerTickedServer(PlayerTickEvent evt) {
 		if (evt.player == null) return;
 		if (evt.phase == TickEvent.Phase.END) return;
-		if (SpiritIdentifier.isSpirit(evt.player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+		if (SpiritData.isSpirit(evt.player)) {
 			if (!wasSpiritOnLastTick) {
 				evt.player.refreshDimensions();
 				wasSpiritOnLastTick = true;

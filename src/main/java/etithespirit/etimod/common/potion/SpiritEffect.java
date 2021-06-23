@@ -34,6 +34,9 @@ public class SpiritEffect extends SimpleEffect implements IAutoEffect {
 	public boolean shouldRenderHUD(EffectInstance effectIn) { return false; }
 	
 	@Override
+	public boolean shouldRenderInvText(EffectInstance effect) { return false; }
+	
+	@Override
 	public ResourceLocation getCustomIcon() {
 		return SPIRIT_ICON;
 	}

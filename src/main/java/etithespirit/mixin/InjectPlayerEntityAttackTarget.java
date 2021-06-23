@@ -3,6 +3,7 @@ package etithespirit.mixin;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+import etithespirit.etimod.info.spirit.SpiritData;
 import net.minecraft.entity.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -12,7 +13,6 @@ import etithespirit.etimod.client.audio.SpiritSoundProvider;
 import etithespirit.etimod.client.audio.variation.DamageLevel;
 import etithespirit.etimod.client.audio.variation.SpecialAttackType;
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.mixininterfaces.ISelfProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -54,7 +54,7 @@ public abstract class InjectPlayerEntityAttackTarget extends LivingEntity implem
 	)
 	public void interceptWorldPlaySound(World world, @Nullable PlayerEntity player, double x, double y, double z, SoundEvent soundIn, SoundCategory category, float volume, float pitch) {
 		PlayerEntity localPlayer = player();
-		if (soundIn != null && SpiritIdentifier.isSpirit(localPlayer, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+		if (soundIn != null && SpiritData.isSpirit(localPlayer)) {
 			DamageLevel dLevel = damageLevelFromVanillaSoundEvent(soundIn);
 			if (dLevel != null) {
 				world.playSound(player, x, y, z, SpiritSoundProvider.getSpiritAttackSound(dLevel), category, volume / 5f, pitch);

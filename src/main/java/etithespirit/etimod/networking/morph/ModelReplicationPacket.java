@@ -1,9 +1,7 @@
 package etithespirit.etimod.networking.morph;
 
 import java.util.Map;
-import java.util.UUID;
 
-import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
@@ -17,29 +15,29 @@ public class ModelReplicationPacket {
 	public EventType type;
 	
 	/** The ID of the player this event pertains to. */
-	public @Nonnull UUID playerID;
+	public int playerID;
 	
 	/** Whether or not this player wants to be a spirit. For event types AllowDecay and DenyDecay, the meaning of this is changed. If this is false, the setting only applies to mushroom biomes. If this is true, the setting only applies to mycelium blocks. Two packets must be sent to change both. */
 	public boolean wantsToBeSpirit;
 	
-	/** Only exists for {@link EventType#TellEveryPlayerModel} and will be null otherwise. */
-	public @Nullable Map<UUID, Boolean> playersWhoAreSpirits;
+	/** Only exists for {@link EventType#TELL_EVERY_PLAYER_MODEL} and will be null otherwise. */
+	public @Nullable Map<Integer, Boolean> playersWhoAreSpirits;
 	
 	public ModelReplicationPacket() { }
 	
-	public ModelReplicationPacket(@Nonnull UUID playerID) {
+	public ModelReplicationPacket(int playerID) {
 		this.playerID = playerID;
 	}
 	
 	/**
 	 * SERVER ONLY<br/>
 	 * An alias method that constructs a ModelReplicationPacket with the data necessary to respond to EventType.GetPlayerModel
-	 * @param model
+	 * @param beSpirit
 	 * @return
 	 */
-	public static ModelReplicationPacket AsResponseToGetPlayerModel(UUID refPlayerID, boolean beSpirit) {
+	public static ModelReplicationPacket asResponseToGetPlayerModel(int refPlayerID, boolean beSpirit) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(refPlayerID);
-		pack.type = EventType.IsPlayerModel;
+		pack.type = EventType.IS_SPIRIT;
 		pack.wantsToBeSpirit = beSpirit;
 		return pack;
 	}
@@ -49,9 +47,9 @@ public class ModelReplicationPacket {
 	 * An alias method used to tell all clients that the given player is using the given model.
 	 * @return
 	 */
-	public static ModelReplicationPacket ToTellAllClientsSomeoneIsA(UUID refPlayerID, boolean beSpirit) {
+	public static ModelReplicationPacket toTellAllClientsSomeoneIsA(int refPlayerID, boolean beSpirit) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(refPlayerID);
-		pack.type = EventType.UpdatePlayerModel;
+		pack.type = EventType.UPDATE_PLAYER_MODEL;
 		pack.wantsToBeSpirit = beSpirit;
 		return pack;
 	}
@@ -62,9 +60,9 @@ public class ModelReplicationPacket {
 	 * @param refPlayerID
 	 * @return
 	 */
-	public static ModelReplicationPacket AsRequestGetPlayerModel(UUID refPlayerID) {
+	public static ModelReplicationPacket AsRequestGetPlayerModel(int refPlayerID) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(refPlayerID);
-		pack.type = EventType.GetPlayerModel;
+		pack.type = EventType.GET_PLAYER_MODEL;
 		return pack;
 	}
 	
@@ -74,9 +72,9 @@ public class ModelReplicationPacket {
 	 * @return
 	 */
 	@SuppressWarnings("resource")
-	public static ModelReplicationPacket AsRequestSetModel(boolean beSpirit) {
-		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUUID());
-		pack.type = EventType.RequestChangePlayerModel;
+	public static ModelReplicationPacket asRequestSetModel(boolean beSpirit) {
+		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getId());
+		pack.type = EventType.REQUEST_CHANGE_PLAYER_MODEL;
 		pack.wantsToBeSpirit = beSpirit;
 		return pack;
 	}
@@ -87,9 +85,9 @@ public class ModelReplicationPacket {
 	 * @return
 	 */
 	@SuppressWarnings("resource")
-	public static ModelReplicationPacket AsRequestSetModel(UUID playerId, boolean beSpirit) {
-		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUUID());
-		pack.type = EventType.RequestChangePlayerModel;
+	public static ModelReplicationPacket asRequestSetModel(int playerId, boolean beSpirit) {
+		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getId());
+		pack.type = EventType.REQUEST_CHANGE_PLAYER_MODEL;
 		pack.wantsToBeSpirit = beSpirit;
 		pack.playerID = playerId;
 		return pack;
@@ -102,9 +100,9 @@ public class ModelReplicationPacket {
 	 * @return
 	 */
 	@SuppressWarnings("resource")
-	public static ModelReplicationPacket AsRequestGetAllModels() {
-		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getUUID());
-		pack.type = EventType.GetEveryPlayerModel;
+	public static ModelReplicationPacket asRequestGetAllModels() {
+		ModelReplicationPacket pack = new ModelReplicationPacket(Minecraft.getInstance().player.getId());
+		pack.type = EventType.GET_EVERY_PLAYER_MODEL;
 		return pack;
 	}
 	
@@ -115,9 +113,9 @@ public class ModelReplicationPacket {
 	 * @param whoIsASpirit
 	 * @return
 	 */
-	public static ModelReplicationPacket ToTellClientWhatEveryoneIs(UUID playerSendingTo, Map<UUID, Boolean> whoIsASpirit) {
+	public static ModelReplicationPacket toTellClientWhatEveryoneIs(int playerSendingTo, Map<Integer, Boolean> whoIsASpirit) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(playerSendingTo);
-		pack.type = EventType.TellEveryPlayerModel;
+		pack.type = EventType.TELL_EVERY_PLAYER_MODEL;
 		pack.playersWhoAreSpirits = whoIsASpirit;
 		return pack;
 		

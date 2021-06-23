@@ -33,7 +33,9 @@ public class CapabilityRegistry {
 		if (!cloneEvent.isWasDeath()) return;
 		PlayerEntity oldPlayer = cloneEvent.getOriginal();
 		PlayerEntity newPlayer = cloneEvent.getPlayer();
-		oldPlayer.getCapability(SPIRIT_CAPABILITIES).ifPresent(originalData -> newPlayer.getCapability(SPIRIT_CAPABILITIES).ifPresent(originalData::copyTo));
+		oldPlayer.getCapability(SPIRIT_CAPABILITIES).ifPresent(
+			originalData -> newPlayer.getCapability(SPIRIT_CAPABILITIES).ifPresent(originalData::copyTo)
+		);
 	}
 	
 }

@@ -1,8 +1,8 @@
 package etithespirit.etimod.common.datamanagement;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
-import etithespirit.etimod.common.morph.PlayerToSpiritBinding;
 import etithespirit.etimod.connection.Assembly;
+import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
 import etithespirit.etimod.registry.SoundRegistry;
 import net.minecraft.client.Minecraft;
@@ -16,26 +16,17 @@ public final class WorldLoading {
 	
 	public static void onLoggedInServer(PlayerLoggedInEvent evt) {
 		PlayerEntity player = evt.getPlayer();
-		boolean isSpirit = player.getPersistentData().getBoolean("isSpirit") || PlayerToSpiritBinding.get(player);
-		ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(player.getUUID(), isSpirit);
-		player.refreshDimensions(); // This one is crazy in mojmap: refreshDimensions
+		ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(player, SpiritData.isSpirit(player));
+		player.refreshDimensions();
 	}
 	
 	public static void onLoggedInClient(PlayerLoggedInEvent evt) {
-		PlayerEntity player = evt.getPlayer();
-		if (Minecraft.getInstance().hasSingleplayerServer()) {		
-			boolean isSpirit = player.getPersistentData().getBoolean("isSpirit");
-			PlayerToSpiritBinding.put(player.getUUID(), isSpirit);
-			player.refreshDimensions();
-		} else {
-			// NEW BEHAVIOR: We need to ask the server who is a spirit so that we see it once we join.
+		if (!Minecraft.getInstance().hasSingleplayerServer()) {
 			ReplicateMorphStatus.askWhoIsASpiritAsync(); // The server will reply to this on its own accord.
 		}
 	}
 	
 	public static void onLoggedOutServer(PlayerLoggedOutEvent evt) {
-		PlayerEntity player = evt.getPlayer();
-		player.getPersistentData().putBoolean("isSpirit", PlayerToSpiritBinding.get(player));
 		Assembly.clearAllKnownAssemblies(false);
 	}
 	

@@ -64,6 +64,8 @@ public final class EtiMod {
 	    BlockRegistry.registerAll();
 	    // CapabilityRegistry.registerAll();
 	    DimensionRegistry.registerAll();
+	    EntityRegistry.registerAll();
+	    EntityAttributeMarshaller.registerAll();
 	    ItemRegistry.registerAll();
 	    PotionRegistry.registerAll();
     	SoundRegistry.registerAll();

@@ -1,6 +1,9 @@
 package etithespirit.etimod.info.spirit.capabilities;
 
-public interface ISpiritCapabilities {
+import net.minecraft.nbt.CompoundNBT;
+import net.minecraftforge.common.util.INBTSerializable;
+
+public interface ISpiritCapabilities extends INBTSerializable<CompoundNBT> {
 	
 	/**
 	 * Set whether or not the associated entity is a spirit.

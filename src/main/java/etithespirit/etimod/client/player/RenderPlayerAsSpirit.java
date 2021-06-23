@@ -8,8 +8,8 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 import etithespirit.etimod.client.render.mob.ModelSpirit;
 import etithespirit.etimod.client.render.mob.ModelSpiritArmor;
 import etithespirit.etimod.client.render.mob.RenderSpiritMob;
+import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.etimod.registry.EntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -63,7 +63,7 @@ public class RenderPlayerAsSpirit {
 		}
 		
 		PlayerEntity player = preRenderEvent.getPlayer();
-		if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+		if (SpiritData.isSpirit(player)) {
 			IRenderTypeBuffer buf = preRenderEvent.getBuffers();
 			IVertexBuilder solidEntityBuffer = buf.getBuffer(RenderType.entitySolid(RenderSpiritMob.SPIRIT_TEXTURE));
 			MatrixStack mtx = preRenderEvent.getMatrixStack();

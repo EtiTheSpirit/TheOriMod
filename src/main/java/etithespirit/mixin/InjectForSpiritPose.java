@@ -1,12 +1,13 @@
 package etithespirit.mixin;
 
+import etithespirit.etimod.info.spirit.SpiritData;
+import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 import etithespirit.etimod.client.player.spiritbehavior.SpiritSize;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
@@ -41,7 +42,7 @@ public abstract class InjectForSpiritPose extends net.minecraftforge.common.capa
 		)
 	)
 	public AxisAlignedBB canEnterPose$getBoundingBoxForSpiritPose(Entity self, Pose pose) {
-		if (SpiritIdentifier.isIDSpirit(self.getUUID())) {
+		if (SpiritData.isSpirit((PlayerEntity)self)) {
 			// We are a spirit. This calls for some special handling.
 			EntitySize entitysize = SpiritSize.SPIRIT_SIZE_BY_POSE.get(pose);
 			float f = entitysize.width / 2.0F;

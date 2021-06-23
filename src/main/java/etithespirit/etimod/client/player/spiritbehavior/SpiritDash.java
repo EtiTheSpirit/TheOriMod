@@ -1,8 +1,8 @@
 package etithespirit.etimod.client.player.spiritbehavior;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
+import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
@@ -41,7 +41,7 @@ public final class SpiritDash {
 		
 		boolean isInFluid = player.isInWaterOrBubble() || player.isInLava();
 		if (player.isOnGround() || isInFluid) hasAirDashed = false; // On the ground? Reset air dash.
-		if (!SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) return;
+		if (!SpiritData.isSpirit(player)) return;
 		
 		// isPressed doesn't get along very well.
 		if (DASH_BIND.isDown()) {

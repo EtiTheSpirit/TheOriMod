@@ -6,43 +6,25 @@ import java.util.Set;
 import javax.annotation.Nullable;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
-import etithespirit.etimod.client.audio.SpiritSoundProvider;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockRenderType;
+import etithespirit.etimod.info.spirit.SpiritData;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particles.IParticleData;
-import net.minecraft.particles.ParticleTypes;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectInstance;
 import net.minecraft.util.Direction;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.vector.Vector2f;
 import net.minecraft.util.math.vector.Vector3d;
-import net.minecraft.util.math.vector.Vector3f;
-import net.minecraft.util.math.vector.Vector3i;
 import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
-import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.event.entity.living.LivingFallEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
 @SuppressWarnings("unused")
 public final class SpiritJump {
@@ -51,13 +33,13 @@ public final class SpiritJump {
 	public static final KeyBinding CLING_BIND = new KeyBinding("input.etimod.cling", 32, "key.categories.movement"); // Bind cling to space
 	
 	/* Whether or not the player is currently clinging to a wall. */
-    private static boolean IsClingingToWall = false;
+    private static boolean isClingingToWall = false;
 	
 	/** The maximum amount of jumps that the player can perform, including the ground jump. */
 	private static final int MAX_JUMPS = 3;
 	
 	/** The amount of jumps the player has performed, counting their ground jump. */
-	private static int CurrentJumps = 0;
+	private static int currentJumps = 0;
 	
 	/** Speed on the Y axis will be divided by this every tick when clinging to a wall and sneaking. */
 	private static final float VERTICAL_SPEED_DECAY = 1.17f;
@@ -78,7 +60,7 @@ public final class SpiritJump {
 	private static final Set<Direction> WALLS = new HashSet<Direction>();
 	
 	/** Whether or not the system is waiting on space to be released. */
-	private static boolean WaitingOnSpaceRelease = false;
+	private static boolean waitingOnSpaceRelease = false;
 	
 	/**
 	 * Returns whether or not the given AxisAlignedBB collides with any blocks in the given world.
@@ -131,7 +113,7 @@ public final class SpiritJump {
     }
     
 	private static void PerformMultiJump(ClientPlayerEntity client) {
-		if (CurrentJumps >= MAX_JUMPS) return;
+		if (currentJumps >= MAX_JUMPS) return;
 		if (client.isOnGround()) return; // No special stuffs if we're on the ground.
 		if (getDeltaMovementY(client) > 0.25) return; // Prevent spam
 		PerformJump(client, UPWARD_FORCE, null, null, false);
@@ -143,16 +125,16 @@ public final class SpiritJump {
 	 */
 	public static void TryPerformWallCling(ClientPlayerEntity pl) {
 		if (!CanWallCling(pl)) {
-			IsClingingToWall = false;
+			isClingingToWall = false;
 			return;
 		}
 		UpdateWalls(pl);
 		if (WALLS.size() == 0) {
-			IsClingingToWall = false;
+			isClingingToWall = false;
 			return;
 		}
 		
-		IsClingingToWall = true;
+		isClingingToWall = true;
 		float y = getDeltaMovementY(pl);
 		if (y <= -0.1) {
 			setDeltaMovementY(pl, y / VERTICAL_SPEED_DECAY);
@@ -203,7 +185,7 @@ public final class SpiritJump {
     private static void UpdateWalls(ClientPlayerEntity pl) {
         AxisAlignedBB box = new AxisAlignedBB(pl.getX() - 0.001, pl.getY(), pl.getZ() - 0.001, pl.getX() + 0.001, pl.getY() + pl.getEyeHeight(), pl.getZ() + 0.001);
 
-        double dist = (pl.getBbWidth() / 2) + (IsClingingToWall ? 0.2 : 0.06);
+        double dist = (pl.getBbWidth() / 2) + (isClingingToWall ? 0.2 : 0.06);
         AxisAlignedBB[] axes = {box.expandTowards(0, 0, dist), box.expandTowards(-dist, 0, 0), box.expandTowards(0, 0, -dist), box.expandTowards(dist, 0, 0)};
 
         int i = 0;
@@ -278,8 +260,8 @@ public final class SpiritJump {
         if (isWallJump) {
         	SpiritSoundPlayer.playWallJumpSound(pl, wallPos);
         } else {
-        	CurrentJumps++;
-        	SpiritSoundPlayer.playJumpSound(pl, CurrentJumps);
+        	currentJumps++;
+        	SpiritSoundPlayer.playJumpSound(pl, currentJumps);
         }
     }
     
@@ -287,19 +269,17 @@ public final class SpiritJump {
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientPlayerEntity player = minecraft.player;
 		if (player == null) return;
-		if (!SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) return;
+		if (!SpiritData.isSpirit(player)) return;
 		
-		//if (minecraft.gameSettings.keyBindJump.isPressed()) {
-		//if (evt.getKey() == minecraft.gameSettings.keyBindJump.getKey().getKeyCode()) {
-		if (evt.getMovementInput().jumping && !WaitingOnSpaceRelease) {
-			WaitingOnSpaceRelease = true;
+		if (evt.getMovementInput().jumping && !waitingOnSpaceRelease) {
+			waitingOnSpaceRelease = true;
 			if (player.isOnGround() || player.isInWaterOrBubble() || player.isInLava()) {
-	    		IsClingingToWall = false;
+	    		isClingingToWall = false;
 		    	return;
 	    	}
 			if (!SpiritJump.PerformWallJump(player)) PerformMultiJump(player);
 		} else if (!evt.getMovementInput().jumping) {
-			WaitingOnSpaceRelease = false;
+			waitingOnSpaceRelease = false;
 		}
 	}
     
@@ -310,16 +290,16 @@ public final class SpiritJump {
     	if (CLING_BIND.isDown()) {
     		if (minecraft.screen != null) return;
     		if (evt.player.isOnGround() || evt.player.isInWaterOrBubble() || evt.player.isInLava()) {
-	    		IsClingingToWall = false;
+	    		isClingingToWall = false;
 		    	return;
 	    	}
     		TryPerformWallCling((ClientPlayerEntity)evt.player);
     	} else {
-    		IsClingingToWall = false;
+    		isClingingToWall = false;
     	}
     	
-    	if (evt.player.isOnGround() || IsClingingToWall) {
-    		CurrentJumps = 0;
+    	if (evt.player.isOnGround() || isClingingToWall) {
+    		currentJumps = 0;
     	}
     }
     
@@ -328,11 +308,11 @@ public final class SpiritJump {
 	public static void onEntityJumped(LivingJumpEvent event) {
 		LivingEntity entity = event.getEntityLiving();
 		if (entity instanceof PlayerEntity) {
-			if (SpiritIdentifier.isSpirit(entity, SpiritIdentificationType.FROM_PLAYER_MODEL) && CurrentJumps == 0) {
-				CurrentJumps++;
-				PlayerEntity player = (PlayerEntity)entity;
+			PlayerEntity player = (PlayerEntity)entity;
+			if (SpiritData.isSpirit(player) && currentJumps == 0) {
+				currentJumps++;
 				player.push(0, 0.2, 0);
-				SpiritSoundPlayer.playJumpSound(player, CurrentJumps);
+				SpiritSoundPlayer.playJumpSound(player, currentJumps);
 			}
 		}
 	}

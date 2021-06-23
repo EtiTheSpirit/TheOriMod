@@ -3,8 +3,8 @@ package etithespirit.etimod.server.command;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
+import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
@@ -15,12 +15,12 @@ public class SetSpiritCommand {
 	@SuppressWarnings("resource")
 	private static final LiteralArgumentBuilder<CommandSource> CommandInstance = Commands.literal("togglespirit")
 	.executes((src) -> {
-		boolean isSpirit = SpiritIdentifier.isSpirit(src.getSource().getPlayerOrException(), SpiritIdentificationType.FROM_PLAYER_MODEL);
+		boolean isSpirit = SpiritData.isSpirit(src.getSource().getPlayerOrException());
 		if (src.getSource().getPlayerOrException().getCommandSenderWorld().isClientSide) {
 			ReplicateMorphStatus.askToSetSpiritStatusAsync(!isSpirit);
 			src.getSource().sendSuccess(new StringTextComponent("Sent a request to set your spirit status to " + (!isSpirit) + " to the server."), false);
 		} else {
-			ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(src.getSource().getPlayerOrException().getUUID(), !isSpirit);
+			ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(src.getSource().getPlayerOrException(), !isSpirit);
 		}
 		return 0;
 	});

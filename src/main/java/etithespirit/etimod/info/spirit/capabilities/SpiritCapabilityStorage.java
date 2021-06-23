@@ -9,18 +9,13 @@ public final class SpiritCapabilityStorage implements Capability.IStorage<ISpiri
 	
 	@Override
 	public INBT writeNBT(Capability<ISpiritCapabilities> capability, ISpiritCapabilities instance, Direction side) {
-		CompoundNBT tag = new CompoundNBT();
-		tag.putBoolean("isSpirit", instance.getIsSpirit());
-		instance.getSpiritAbilities().writeToNBT(tag);
-		return tag;
+		return instance.serializeNBT();
 	}
 	
 	@Override
 	public void readNBT(Capability<ISpiritCapabilities> capability, ISpiritCapabilities instance, Direction side, INBT nbt) {
 		if (nbt instanceof CompoundNBT) {
-			CompoundNBT tag = (CompoundNBT)nbt;
-			instance.setIsSpirit(tag.getBoolean("isSpirit"));
-			instance.getSpiritAbilities().readFromNBT(tag);
+			instance.deserializeNBT((CompoundNBT)nbt);
 		}
 	}
 }

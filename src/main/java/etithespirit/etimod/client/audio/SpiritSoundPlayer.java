@@ -5,8 +5,8 @@ import java.util.Random;
 import javax.annotation.Nonnull;
 
 import etithespirit.etimod.exception.ArgumentNullException;
+import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import etithespirit.etimod.util.EtiUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -85,7 +85,7 @@ public final class SpiritSoundPlayer {
 		if (player == null) throw new ArgumentNullException("player");
 		
 		if (player instanceof PlayerEntity) {
-			if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+			if (SpiritData.isSpirit(player)) {
 				SoundEvent sound = SpiritSoundProvider.getSpiritDashSound(willImmediatelyImpactWall);
 				if (sound != null) playSoundAtPlayer(player, sound, SoundCategory.PLAYERS, 0.125f, getRandomPitch());
 			}
@@ -102,7 +102,7 @@ public final class SpiritSoundPlayer {
 		if (player == null) throw new ArgumentNullException("player");
 		
 		if (player instanceof PlayerEntity) {
-			if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+			if (SpiritData.isSpirit(player)) {
 				SoundEvent sound = SpiritSoundProvider.getSpiritJumpSound(jumps);
 				if (sound != null) playSoundAtPlayer(player, sound, SoundCategory.PLAYERS, 0.1f, getRandomPitch());
 			}
@@ -112,14 +112,13 @@ public final class SpiritSoundPlayer {
 	/**
 	 * Plays the sound associated with jumping against the given block.
 	 * @param player The player to play for. Whether or not they are a spirit is validated in this method.
-	 * @param The block being impacted.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playWallJumpSound(@Nonnull PlayerEntity player, @Nonnull BlockPos block) {
 		if (player == null) throw new ArgumentNullException("player");
 		if (block == null) throw new ArgumentNullException("block");
 		
-		if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+		if (SpiritData.isSpirit(player)) {
 			SoundEvent sound = SpiritSoundProvider.getSpiritWallJumpSound(block);
 			if (sound != null) playSoundAtPlayer(player, sound, SoundCategory.PLAYERS, 0.1f, getRandomPitch());
 			playStepSoundForWallJump(player, block);
@@ -137,7 +136,7 @@ public final class SpiritSoundPlayer {
     	if (player == null) throw new ArgumentNullException("player");
 		if (block == null) throw new ArgumentNullException("block");
 		
-    	if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+    	if (SpiritData.isSpirit(player)) {
 	        SoundEvent fromSpiritProvider = SpiritSoundProvider.getSpiritStepSound(player, block, block.above(), null);
 	        if (fromSpiritProvider != null) {
 	        	player.playSound(fromSpiritProvider, 0.025f, 1f);
@@ -158,7 +157,7 @@ public final class SpiritSoundPlayer {
      */
     @Deprecated
     public static void playFallSound(@Nonnull PlayerEntity player, float fallDistance) {
-    	if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+    	if (SpiritData.isSpirit(player)) {
 			SoundEvent sound = SpiritSoundProvider.getSpiritFallSound(fallDistance, player, null);
 			if (sound != null) playSoundAtPlayer(player, sound, SoundCategory.PLAYERS, 0.1f, getRandomPitch());
 		}
@@ -174,7 +173,7 @@ public final class SpiritSoundPlayer {
     	if (player == null) throw new ArgumentNullException("player");
     	if (source == null) throw new ArgumentNullException("source");
     	
-    	if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+    	if (SpiritData.isSpirit(player)) {
     		SoundEvent sound = SpiritSoundProvider.getSpiritHurtSound(source);
     		if (sound != null) playSoundAtPlayer(player, sound, SoundCategory.PLAYERS, 0.4f, getRandomPitch());
     	}
@@ -190,7 +189,7 @@ public final class SpiritSoundPlayer {
     	if (player == null) throw new ArgumentNullException("player");
     	if (source == null) throw new ArgumentNullException("source");
     	
-    	if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+    	if (SpiritData.isSpirit(player)) {
     		SoundEvent sound = SpiritSoundProvider.getSpiritDeathSound(source);
     		if (sound != null) playSoundAtPlayer(player, sound, SoundCategory.PLAYERS, 0.2f, getRandomPitch());
     	}

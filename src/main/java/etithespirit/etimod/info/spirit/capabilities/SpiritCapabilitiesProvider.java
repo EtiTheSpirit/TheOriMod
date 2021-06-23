@@ -10,13 +10,31 @@ import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-public final class SpiritCapabilitiesProvider implements ICapabilityProvider {
+public final class SpiritCapabilitiesProvider implements ICapabilitySerializable<CompoundNBT> {
+	
+	private final LazyOptional<ISpiritCapabilities> spiritCapabilities = LazyOptional.of(SpiritCapabilities::new);
 	
 	public <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
 		if (cap == CapabilityRegistry.SPIRIT_CAPABILITIES) {
-			return LazyOptional.of(cap::getDefaultInstance);
+			return spiritCapabilities.cast();
 		}
 		return LazyOptional.empty();
 	}
 	
+	@Override
+	public CompoundNBT serializeNBT() {
+		if (spiritCapabilities.isPresent()) {
+			ISpiritCapabilities caps = spiritCapabilities.resolve().get();
+			return caps.serializeNBT();
+		}
+		return new CompoundNBT();
+	}
+	
+	@Override
+	public void deserializeNBT(CompoundNBT nbt) {
+		if (spiritCapabilities.isPresent()) {
+			ISpiritCapabilities caps = spiritCapabilities.resolve().get();
+			caps.deserializeNBT(nbt);
+		}
+	}
 }

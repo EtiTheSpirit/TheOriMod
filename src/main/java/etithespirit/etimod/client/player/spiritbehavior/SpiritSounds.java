@@ -7,8 +7,8 @@ import etithespirit.etimod.client.audio.VanillaSoundIdentifier.CustomSoundType;
 import etithespirit.etimod.client.audio.variation.BreathLevel;
 import etithespirit.etimod.event.EntityEmittedSoundEvent;
 import etithespirit.etimod.event.EntityEmittedSoundEventProvider;
+import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
-import etithespirit.etimod.info.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -32,7 +32,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 public final class SpiritSounds {
 	
 	static {
-		EntityEmittedSoundEventProvider.registerHandler(evt -> onSoundPlayedMixin(evt));
+		EntityEmittedSoundEventProvider.registerHandler(SpiritSounds::onSoundPlayedMixin);
 	}
 
 	/**
@@ -60,7 +60,7 @@ public final class SpiritSounds {
 	public static void performAirSounds(PlayerTickEvent evt) {
 		if (evt.player == null) return;
 		if (evt.phase == TickEvent.Phase.END) return;
-		if (!SpiritIdentifier.isSpirit(evt.player, SpiritIdentificationType.FROM_PLAYER_MODEL)) return;
+		if (!SpiritData.isSpirit(evt.player)) return;
 		if (!evt.player.getCommandSenderWorld().isClientSide) return; // Never run on the server, even in sp
 		if (evt.player != Minecraft.getInstance().player) return; // Ignore other players in the world.
 		if (evt.player.canBreatheUnderwater()) {
@@ -129,7 +129,7 @@ public final class SpiritSounds {
 			// The replaced sounds are only from MC, so don't bother testing if it's a mod source.
 			// Also prevents a stack overflow.
 			
-			if (SpiritIdentifier.isSpirit(player, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+			if (SpiritData.isSpirit(player)) {
 				// Lookup to the HashMap<UUID, Boolean> to determine if this player is using the model.
 				String path = rsrc.getPath();
 				CustomSoundType type = VanillaSoundIdentifier.getTypeOf(path);
@@ -195,8 +195,8 @@ public final class SpiritSounds {
 	public static void onEntityHurt(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntityLiving();
 		if (entity instanceof PlayerEntity) {
-			if (SpiritIdentifier.isSpirit(entity, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
-				PlayerEntity player = (PlayerEntity)entity;
+			PlayerEntity player = (PlayerEntity)entity;
+			if (SpiritData.isSpirit(player)) {
 				if (entity.getHealth() > 0 && entity.getHealth() - event.getAmount() > 0 && event.getAmount() > 0.05) {
 					SpiritSoundPlayer.playHurtSound(player, event.getSource());
 				}
@@ -209,7 +209,7 @@ public final class SpiritSounds {
 		LivingEntity entity = event.getEntityLiving();
 		if (entity instanceof PlayerEntity) {
 			PlayerEntity player = (PlayerEntity)entity;
-			if (SpiritIdentifier.isSpirit(entity, SpiritIdentificationType.FROM_PLAYER_MODEL)) {
+			if (SpiritData.isSpirit(player)) {
 				SpiritSoundPlayer.playDeathSound(player, event.getSource());
 			}
 		}

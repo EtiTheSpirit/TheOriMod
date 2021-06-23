@@ -8,7 +8,7 @@ import net.minecraftforge.fml.client.registry.RenderingRegistry;
 public final class RenderRegistry {
 
 	public static void registerAll() {
-		// RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.SPIRIT.get(), new RenderSpiritMob.RenderFactory());
+		RenderingRegistry.registerEntityRenderingHandler(EntityRegistry.SPIRIT.get(), new RenderSpiritMob.RenderFactory());
 		
 		ClientRegistry.bindTileEntityRenderer(TileEntityRegistry.LIGHT_CAPACITOR.get(), LightTileDebugRenderer::new);
 		

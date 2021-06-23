@@ -17,7 +17,7 @@ public class SpiritSoundAPI implements ISpiritSoundAPI {
 		if (EtiMod.forgeLoadingComplete()) throw new IllegalStateException(ConstantErrorMessages.FORGE_LOADING_COMPLETED);
 	}
 
-	public SpiritSoundAPI() { }
+	SpiritSoundAPI() { }
 	
 	@Override
 	public boolean isInstalled() {
