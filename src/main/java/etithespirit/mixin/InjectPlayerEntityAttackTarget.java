@@ -12,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import etithespirit.etimod.client.audio.SpiritSoundProvider;
 import etithespirit.etimod.client.audio.variation.DamageLevel;
 import etithespirit.etimod.client.audio.variation.SpecialAttackType;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import etithespirit.mixininterfaces.ISelfProvider;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
