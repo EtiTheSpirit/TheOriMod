@@ -11,6 +11,7 @@ import net.minecraft.world.World;
 /**
  * Allows TileEntities to see block updates in the world.
  */
+@SuppressWarnings("unused")
 public interface IWorldUpdateListener {
 	
 	/**

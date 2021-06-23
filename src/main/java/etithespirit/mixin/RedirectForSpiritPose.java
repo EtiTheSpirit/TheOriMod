@@ -14,10 +14,19 @@ import net.minecraft.entity.Pose;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.vector.Vector3d;
 
+/**
+ * Modifies the bounding box checked for entities to determine which pose they can enter.
+ *
+ * This is closely coupled with SpiritSize, and fixes a number of issues, most notably,
+ * it fixes sneak speed not applying when under 1.5 block tall spaces (among other oddball quirks)
+ *
+ * @author Eti
+ */
 @Mixin(Entity.class)
-public abstract class InjectForSpiritPose extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> {
+@SuppressWarnings("unused")
+public abstract class RedirectForSpiritPose extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> {
 
-	protected InjectForSpiritPose(Class<Entity> baseClass) {
+	protected RedirectForSpiritPose(Class<Entity> baseClass) {
 		super(baseClass);
 	}
 	

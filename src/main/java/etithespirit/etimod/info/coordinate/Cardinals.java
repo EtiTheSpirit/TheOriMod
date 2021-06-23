@@ -4,7 +4,10 @@ import net.minecraft.util.math.vector.Vector3i;
 
 /**
  * A registry of various bits and pieces related to cardinal directions surrounding a block. Naturally, all coords are in local space.
+ *
+ * @author Eti
  */
+@SuppressWarnings("unused")
 public final class Cardinals {
 	
 	private Cardinals() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

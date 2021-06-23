@@ -146,7 +146,7 @@ public final class ConnectionHelper {
 	 * @return A list of up to six {@link BlockPos} instances representing directions where a mutual connection is made.
 	 */
 	public static BlockPos[] getDirectionsWithMutualConnections(IBlockReader reader, BlockPos around, boolean anticipateWithAuto) {
-		ArrayList<BlockPos> result = new ArrayList<BlockPos>();
+		ArrayList<BlockPos> result = new ArrayList<>();
 		for (Vector3i adj : Cardinals.ADJACENTS_IN_ORDER) {
 			BlockPos neighbor = around.offset(adj);
 			BlockState neighborState = reader.getBlockState(neighbor);

@@ -9,7 +9,10 @@ import javax.annotation.Nullable;
 
 /**
  * A provider of an instance of {@link IProfiler} appropriate for the current distribution of the game (client vs. dedicated server)
+ *
+ * @author Eti
  */
+@SuppressWarnings("unused")
 public final class UniProfiler {
 
 	private UniProfiler()  { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

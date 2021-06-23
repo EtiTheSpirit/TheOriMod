@@ -9,6 +9,11 @@ import net.minecraft.util.text.TranslationTextComponent;
 
 import java.util.List;
 
+/**
+ * Interopability for WAILA: Allows displaying the automatic connection behavior of light tech blocks.
+ *
+ * @author Eti
+ */
 public final class WAILADisplayConnectableLightTechBlock implements IComponentProvider {
 	
 	private static final ResourceLocation SHOW_AUTO = new ResourceLocation(EtiMod.MODID, "show_auto");

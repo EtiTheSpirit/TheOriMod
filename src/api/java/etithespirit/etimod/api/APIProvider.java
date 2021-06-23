@@ -9,6 +9,7 @@ import net.minecraft.block.material.Material;
 
 /**
  * If you are looking for a means of acquiring the API instance, go to the actual interfaces themselves, not this.
+ * @author Eti
  */
 final class APIProvider {
 
@@ -20,7 +21,7 @@ final class APIProvider {
 		if (spiritSoundAPI == null) {
 			try {
 				Class<?> apiClass = Class.forName("etithespirit.etimod.apiimpl.SpiritSoundAPI");
-				@SuppressWarnings("deprecation") Object instance = apiClass.newInstance();
+				Object instance = apiClass.newInstance();
 				spiritSoundAPI = (ISpiritSoundAPI)instance;
 			} catch (Exception exc) {
 				spiritSoundAPI = new ISpiritSoundAPI() {

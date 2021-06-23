@@ -4,12 +4,16 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.builder.LiteralArgumentBuilder;
 
 import etithespirit.etimod.info.spirit.SpiritData;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
 import net.minecraft.command.CommandSource;
 import net.minecraft.command.Commands;
 import net.minecraft.util.text.StringTextComponent;
 
+/**
+ * The command used to swap out whether or not a player is a spirit.
+ *
+ * @author Eti
+ */
 public class SetSpiritCommand {
 	
 	@SuppressWarnings("resource")

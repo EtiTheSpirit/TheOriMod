@@ -2,8 +2,12 @@ package etithespirit.etimod.spiritmaterial;
 
 import javax.annotation.Nullable;
 
-import net.minecraft.util.SoundEvent;
-
+/**
+ * All materials that are associated with Spirits walking on something. Their little hooves tend to make a wide array
+ * of unique sounds in the world around them.
+ *
+ * @author Eti.
+ */
 public enum SpiritMaterial {
 	
 	/** Corresponds to no material (or Air) */

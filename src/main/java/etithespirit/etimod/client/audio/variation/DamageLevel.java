@@ -7,7 +7,7 @@ package etithespirit.etimod.client.audio.variation;
  */
 public enum DamageLevel {
 	
-	/** Boy you aint doin shit fo nothin */
+	/** Boi you aint doin shit fo nothin */
 	INEFFECTIVE,
 	
 	/** The attack was not very effective at all, and did less damage than usual. */
@@ -19,6 +19,6 @@ public enum DamageLevel {
 	/** The attack had some grunt to it, and did a little more damage than usual. */
 	STRONG,
 	
-	/** KUHRITIKAL SHIT */
+	/** KUHRITIKAL SHIT SOLDIER_LAUGHLONG03.WAV */
 	CRITICAL
 }

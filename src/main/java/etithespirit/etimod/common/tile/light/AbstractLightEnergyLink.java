@@ -4,7 +4,6 @@ import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.connection.ConnectionHelper;
 import net.minecraft.block.BlockState;
-import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
 import etithespirit.etimod.connection.Line;

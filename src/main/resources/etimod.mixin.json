@@ -3,7 +3,7 @@
 	"package": "etithespirit.mixin",
 	"refmap": "etimod.refmap.json",
 	"minVersion": "0.8.2",
-	"mixins": ["InjectEntityPlaySound", "InjectPlayerEntityPlaySound", "InjectPlayerEntityAttackTarget"],
-	"client": ["InjectClientPlayerEntityPlaySound", "InjectForSpiritPose"],
+	"mixins": ["InjectEntityPlaySound", "InjectPlayerEntityPlaySound", "InjectForSpiritPose", "InjectPlayerEntityAttackTarget"],
+	"client": ["InjectClientPlayerEntityPlaySound", "InjectUsesInnerModel"],
 	"server": ["InjectServerPlayerEntityPlaySound"]
 }

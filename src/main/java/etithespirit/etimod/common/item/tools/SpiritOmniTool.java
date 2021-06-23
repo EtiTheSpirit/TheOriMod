@@ -47,16 +47,16 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 			-1.6f,
 			SpiritItemTier.LIGHT,
 			new Item.Properties().rarity(Rarity.RARE).tab(ItemGroup.TAB_TOOLS),
-			() -> { return 10; },
-			() -> { return 15; }
+			() -> 10,
+			() -> 15
 		);
 	}
 	
 	public SpiritOmniTool(float attackDamageIn, float attackSpeedIn, IItemTier tier, Properties builderIn, Supplier<Integer> expPerRepair, Supplier<Integer> repairIncrement) {
 		super(attackDamageIn, attackSpeedIn, tier, NO_BLOCKS, builderIn);
 		Builder<Attribute, AttributeModifier> builder = ImmutableMultimap.builder();
-		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", (double)this.getAttackDamage(), AttributeModifier.Operation.ADDITION));
-		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", (double)attackSpeedIn, AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_DAMAGE, new AttributeModifier(BASE_ATTACK_DAMAGE_UUID, "Weapon modifier", this.getAttackDamage(), AttributeModifier.Operation.ADDITION));
+		builder.put(Attributes.ATTACK_SPEED, new AttributeModifier(BASE_ATTACK_SPEED_UUID, "Weapon modifier", attackSpeedIn, AttributeModifier.Operation.ADDITION));
 		attributeModifiers = builder.build();
 		this.expPerRepair = expPerRepair;
 		this.repairIncrement = repairIncrement;
@@ -73,22 +73,23 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 	/**
 	* Current implementations of this method in child classes do not use the entry argument beside ev. They just raise
 	* the damage on the stack.
+	 * @param stack The item stack to use.
+	 * @param target The target that is being attacked.
+	 * @param attacker The holder of this item.
+	 * @return Whether or not to hurt the target.
 	*/
 	public boolean hurtEnemy(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-		stack.hurtAndBreak(1, attacker, (entity) -> {
-			entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-		});
+		stack.hurtAndBreak(1, attacker, (entity) -> entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
 		return true;
 	}
 
 	/**
 	* Called when a Block is destroyed using this Item. Return true to trigger the "Use Item" statistic.
+	 * @return Whether or not to count the mine operation.
 	*/
 	public boolean mineBlock(ItemStack stack, World worldIn, BlockState state, BlockPos pos, LivingEntity entityLiving) {
 		if (state.getDestroySpeed(worldIn, pos) != 0.0F) {
-			stack.hurtAndBreak(1, entityLiving, (entity) -> {
-				entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND);
-			});
+			stack.hurtAndBreak(1, entityLiving, (entity) -> entity.broadcastBreakEvent(EquipmentSlotType.MAINHAND));
 		}
 
 		return true;
@@ -96,13 +97,12 @@ public class SpiritOmniTool extends ToolItem implements ISpiritRechargeable {
 
 	/**
 	* Check whether this Item can harvest the given Block
+	 * @param blockIn The block to check.
+	 * @return Whether or not this tool works to harvest the given block.
 	*/
 	public boolean isCorrectToolForDrops(BlockState blockIn) {
-		if (blockIn.getBlock() instanceof IDecayBlockIdentifier) {
-			// Did I mention this tool is made of Light? There's no way this will cause a decay block to drop. It'll destroy it.
-			return false;
-		}
-		return true;
+		// Did I mention this tool is made of Light? There's no way this will cause a decay block to drop. It'll destroy it.
+		return !(blockIn.getBlock() instanceof IDecayBlockIdentifier);
 	}
 
 	/**

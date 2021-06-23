@@ -7,6 +7,12 @@ import etithespirit.etimod.world.dimension.config.LightForestSettings;
 import etithespirit.etimod.world.dimension.generation.IGeneratorRoutine;
 import net.minecraft.world.gen.SimplexNoiseGenerator;
 
+/**
+ * A style of world generation for the Light Forest dimension.
+ * @param <TGenSettings> The settings this uses to generate.
+ *
+ * @author Eti
+ */
 public abstract class GenerationStyle<TGenSettings extends LightForestSettings.GeneralSettings> implements IGeneratorRoutine {
 	
 	/**
@@ -37,9 +43,9 @@ public abstract class GenerationStyle<TGenSettings extends LightForestSettings.G
 	/**
 	 * Returns a noise percentage from -0.5 to +0.5 for the given world X/Z coordinates using the simplex noise generator.<br/>
 	 * <strong>This automatically factors in the current generator's settings noise stretch x/z factors.</strong> Do not apply these yourself beforehand.
-	 * @param worldX
-	 * @param worldZ
-	 * @return
+	 * @param worldX The location in the world on the X axis.
+	 * @param worldZ The location in the world on the Z axis.
+	 * @return A value ranging from -0.5 to +0.5 from simplex noise.
 	 */
 	protected double getNoise(double worldX, double worldZ) {
 		double x = worldX / getSettings().getNoiseStretchX();
@@ -50,9 +56,9 @@ public abstract class GenerationStyle<TGenSettings extends LightForestSettings.G
 	
 	/**
 	 * Returns a noise percentage from -0.5 to +0.5 for the given world X/Z coordinates using the simplex noise generator.<br/>
-	 * @param worldX
-	 * @param worldZ
-	 * @return
+	 * @param worldX The location in the world on the X axis.
+	 * @param worldZ The location in the world on the Z axis.
+	 * @return A value ranging from -0.5 to +0.5 from simplex noise.
 	 */
 	protected double getNoise(double worldX, double worldZ, double stretchX, double stretchZ) {
 		double x = worldX / stretchX;
@@ -63,10 +69,10 @@ public abstract class GenerationStyle<TGenSettings extends LightForestSettings.G
 	
 	/**
 	 * Calls {@code getNoise(worldX, worldZ)} and scales the return value to an integer (via Math.floor) based on the world height limit. Note that this is based on a range of -0.5 to +0.5.
-	 * @param worldX
-	 * @param worldZ
-	 * @param maxWorldHeight
-	 * @return
+	 * @param worldX The location in the world on the X axis.
+	 * @param worldZ The location in the world on the Z axis.
+	 * @param maxWorldHeight The maximum world height.
+	 * @return The block height at this location.
 	 */
 	protected long getNoiseBlock(double worldX, double worldZ, long maxWorldHeight) {
 		return (long)Math.floor(getNoise(worldX, worldZ) * maxWorldHeight);

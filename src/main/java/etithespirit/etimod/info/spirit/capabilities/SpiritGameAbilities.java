@@ -5,7 +5,10 @@ import net.minecraft.nbt.CompoundNBT;
 
 /**
  * Every spirit ability.
+ *
+ * @author Eti
  */
+@SuppressWarnings("unused")
 public final class SpiritGameAbilities implements ISimpleNBTSerializable {
 	
 	/** Whether or not the player can jump up walls. */

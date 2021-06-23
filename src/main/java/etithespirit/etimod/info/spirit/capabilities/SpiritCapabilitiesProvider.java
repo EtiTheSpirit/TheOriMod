@@ -4,12 +4,17 @@ import etithespirit.etimod.registry.CapabilityRegistry;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
-import net.minecraftforge.common.capabilities.ICapabilityProvider;
 import net.minecraftforge.common.capabilities.ICapabilitySerializable;
 import net.minecraftforge.common.util.LazyOptional;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+/**
+ * Provides an instance of spirit capabilities, which contains data like whether or not the player is a spirit, and what abilities
+ * they have or haven't unlocked.
+ *
+ * @author Eti
+ */
 public final class SpiritCapabilitiesProvider implements ICapabilitySerializable<CompoundNBT> {
 	
 	private final LazyOptional<ISpiritCapabilities> spiritCapabilities = LazyOptional.of(SpiritCapabilities::new);

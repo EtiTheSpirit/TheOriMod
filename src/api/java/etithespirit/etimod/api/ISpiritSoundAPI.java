@@ -11,6 +11,7 @@ import net.minecraft.block.material.Material;
  * An API providing a means of registering custom sounds for when a spirit walks on your blocks or materials. Use {@link #getAPI()} to acquire an instance of the API.
  * @author Eti
  */
+@SuppressWarnings("unused")
 public interface ISpiritSoundAPI {
 	
 	/**

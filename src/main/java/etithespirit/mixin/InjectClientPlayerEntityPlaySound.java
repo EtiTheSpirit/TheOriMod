@@ -23,6 +23,7 @@ import net.minecraft.util.SoundEvent;
  *
  */
 @Mixin(ClientPlayerEntity.class)
+@SuppressWarnings("unused")
 public abstract class InjectClientPlayerEntityPlaySound extends AbstractClientPlayerEntity {
 
 	public InjectClientPlayerEntityPlaySound(ClientWorld world, GameProfile profile) { super(world, profile); }
@@ -44,7 +45,6 @@ public abstract class InjectClientPlayerEntityPlaySound extends AbstractClientPl
 			// See OverrideEntityPlaySound for what this garbage is.
 			playSound(new DuplicateSoundEvent(evt.getSound()), evt.getVolume(), evt.getPitch());
 			ci.cancel();
-			return;
 		}
 	}
 	
@@ -66,7 +66,6 @@ public abstract class InjectClientPlayerEntityPlaySound extends AbstractClientPl
 			// See OverrideEntityPlaySound for what this garbage is.
 			playNotifySound(new DuplicateSoundEvent(evt.getSound()), evt.getCategory(), evt.getVolume(), evt.getPitch());
 			ci.cancel();
-			return;
 		}
 	}
 	

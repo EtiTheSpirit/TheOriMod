@@ -48,8 +48,7 @@ public class DecayEffect extends SimpleEffect implements IAutoEffect {
 
 	@Override
 	public boolean isDurationEffectTick(int duration, int amplifier) {
-		if (duration % getDamageRate(amplifier) == 0) return true;
-		return false;
+		return duration % getDamageRate(amplifier) == 0;
 	}
 	
 	protected int getDamageRate(int amplifier) {

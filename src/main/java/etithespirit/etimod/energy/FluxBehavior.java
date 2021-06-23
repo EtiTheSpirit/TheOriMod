@@ -9,6 +9,7 @@ import etithespirit.etimod.valuetypes.MutableNumberRange;
  * @author Eti
  *
  */
+@SuppressWarnings("unused")
 public final class FluxBehavior {
 
 	/**
@@ -37,7 +38,7 @@ public final class FluxBehavior {
 	
 	private long iteration;
 	
-	private Random rng;
+	private final Random rng;
 	
 	public FluxBehavior(MutableNumberRange magnitude) {
 		this(magnitude, 0);
@@ -63,10 +64,10 @@ public final class FluxBehavior {
 	
 	/**
 	 * Returns the next amount of flux. canExtract and canReceive should reflect the ILightEnergyStorage this exists for, and will set the min (or max) of the randomized energy modifier to 0 accordingly.
-	 * @param canExtract
-	 * @param canReceive
-	 * @param simulate
-	 * @return
+	 * @param canExtract Whether or not the element can extract energy.
+	 * @param canReceive Whether or not the element can receive energy.
+	 * @param simulate Whether or not this fluctuation is simulated.
+	 * @return The net energy, which may be positive or negative depending on the circumstances.
 	 */
 	public double getNextEnvFlux(boolean canExtract, boolean canReceive, boolean simulate) {
 		if (!enabled) return 0;
@@ -87,7 +88,7 @@ public final class FluxBehavior {
 	
 	/**
 	 * Returns the {@link MutableNumberRange} that is used to generate values. Modify this object as needed.
-	 * @return
+	 * @return The range used to generate random values.
 	 */
 	public MutableNumberRange getRange() {
 		if (locked) return null;
@@ -96,7 +97,7 @@ public final class FluxBehavior {
 	
 	/**
 	 * Returns the bias of this behavior.
-	 * @return
+	 * @return A constant bias always added to the value.
 	 */
 	public double getBias() {
 		if (locked) return 0;
@@ -105,18 +106,25 @@ public final class FluxBehavior {
 	
 	/**
 	 * Sets the bias of this behavior.
-	 * @param newBias
+	 * @param newBias A new bias to constantly add to this value.
 	 */
 	public void setBias(double newBias) {
 		if (locked) return;
 		bias = newBias;
 	}
 	
+	/**
+	 * @return Whether or not this {@link FluxBehavior} is allowed to alter the storage it is tied to.
+	 */
 	public boolean isEnabled() {
 		if (locked) return false;
 		return enabled;
 	}
 	
+	/**
+	 * Sets whether or not this {@link FluxBehavior} is allowed to alter the storage it is tied to.
+	 * @param enabled Whether or not this can alter the storage it's tied to.
+	 */
 	public void setEnabled(boolean enabled) {
 		if (locked) return;
 		this.enabled = enabled;

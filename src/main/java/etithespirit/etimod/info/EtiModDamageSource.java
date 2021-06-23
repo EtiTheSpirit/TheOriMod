@@ -2,6 +2,11 @@ package etithespirit.etimod.info;
 
 import net.minecraft.util.DamageSource;
 
+/**
+ * Custom damage sources relevant to the mod.
+ *
+ * @author Eti
+ */
 public final class EtiModDamageSource {
 	
 	// Prevent instances.

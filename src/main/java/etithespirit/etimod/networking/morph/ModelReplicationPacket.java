@@ -6,6 +6,12 @@ import javax.annotation.Nullable;
 
 import net.minecraft.client.Minecraft;
 
+/**
+ * A packet used to replicate intents with the player's Spirit state.
+ *
+ * @author Eti
+ */
+@SuppressWarnings("unused")
 public class ModelReplicationPacket {
 	
 	/** Whether or not this packet is invalid because the associated network data was malformed. */
@@ -32,8 +38,9 @@ public class ModelReplicationPacket {
 	/**
 	 * SERVER ONLY<br/>
 	 * An alias method that constructs a ModelReplicationPacket with the data necessary to respond to EventType.GetPlayerModel
-	 * @param beSpirit
-	 * @return
+	 * @param refPlayerID The ID of the player in question.
+	 * @param beSpirit Whether or not this player is a spirit.
+	 * @return A packet with the necessary data set.
 	 */
 	public static ModelReplicationPacket asResponseToGetPlayerModel(int refPlayerID, boolean beSpirit) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(refPlayerID);
@@ -45,7 +52,7 @@ public class ModelReplicationPacket {
 	/**
 	 * SERVER ONLY<br/>
 	 * An alias method used to tell all clients that the given player is using the given model.
-	 * @return
+	 * @return A packet with the necessary data set.
 	 */
 	public static ModelReplicationPacket toTellAllClientsSomeoneIsA(int refPlayerID, boolean beSpirit) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(refPlayerID);
@@ -57,10 +64,10 @@ public class ModelReplicationPacket {
 	/**
 	 * CLIENT ONLY<br/>
 	 * An alias method that constructs a ModelReplicationPacket with the data necessary for a client to ask what someone's model is.
-	 * @param refPlayerID
-	 * @return
+	 * @param refPlayerID The ID of the player I need the state of.
+	 * @return A packet with the necessary data set.
 	 */
-	public static ModelReplicationPacket AsRequestGetPlayerModel(int refPlayerID) {
+	public static ModelReplicationPacket asRequestGetPlayerModel(int refPlayerID) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(refPlayerID);
 		pack.type = EventType.GET_PLAYER_MODEL;
 		return pack;
@@ -69,7 +76,8 @@ public class ModelReplicationPacket {
 	/**
 	 * CLIENT ONLY<br/>
 	 * An alias method that requests I turn into the given model.
-	 * @return
+	 * @param beSpirit Whether or not I want to be a spirit.
+	 * @return A packet with the necessary data set.
 	 */
 	@SuppressWarnings("resource")
 	public static ModelReplicationPacket asRequestSetModel(boolean beSpirit) {
@@ -82,7 +90,9 @@ public class ModelReplicationPacket {
 	/**
 	 * CLIENT ONLY<br/>
 	 * An alias method that requests I turn the given player into the given model.
-	 * @return
+	 * @param playerId The ID iof the player whose model should be set.
+	 * @param beSpirit Whether or not it should be set to a spirit.
+	 * @return A packet with the necessary data set.
 	 */
 	@SuppressWarnings("resource")
 	public static ModelReplicationPacket asRequestSetModel(int playerId, boolean beSpirit) {
@@ -97,7 +107,7 @@ public class ModelReplicationPacket {
 	/**
 	 * CLIENT ONLY<br/>
 	 * An alias method that requests a list of who is a spirit.
-	 * @return
+	 * @return A packet with the necessary data set.
 	 */
 	@SuppressWarnings("resource")
 	public static ModelReplicationPacket asRequestGetAllModels() {
@@ -109,9 +119,9 @@ public class ModelReplicationPacket {
 	/**
 	 * SERVER ONLY<br/>
 	 * Tells a given client the status of every player.
-	 * @param playerSendingTo
-	 * @param whoIsASpirit
-	 * @return
+	 * @param playerSendingTo The player that will receive this data.
+	 * @param whoIsASpirit A lookup from player entity ID to boolean representing which of them is or isn't a spirit.
+	 * @return A packet with the necessary data set.
 	 */
 	public static ModelReplicationPacket toTellClientWhatEveryoneIs(int playerSendingTo, Map<Integer, Boolean> whoIsASpirit) {
 		ModelReplicationPacket pack = new ModelReplicationPacket(playerSendingTo);

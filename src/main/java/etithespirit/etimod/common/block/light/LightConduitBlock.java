@@ -1,8 +1,6 @@
 package etithespirit.etimod.common.block.light;
 
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
-import etithespirit.etimod.common.tile.IWorldUpdateListener;
-import etithespirit.etimod.common.tile.light.TileEntityLightCapacitor;
 import etithespirit.etimod.common.tile.light.TileEntityLightEnergyConduit;
 import etithespirit.etimod.registry.SoundRegistry;
 import etithespirit.etimod.util.blockstates.SixSidedUtils;
@@ -17,7 +15,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.math.shapes.VoxelShapes;
 import net.minecraft.world.IBlockReader;
-import net.minecraft.world.World;
 
 import static etithespirit.etimod.util.EtiUtils.hasFlag;
 
@@ -75,6 +72,7 @@ public class LightConduitBlock extends ConnectableLightTechBlock {
 	 * Returns the shape of the collision box.
 	 */
 	@Override
+	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return COLLISION_SHAPES[SixSidedUtils.getNumberFromSurfaces(state)];
 	}

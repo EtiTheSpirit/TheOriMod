@@ -10,6 +10,8 @@ import net.minecraftforge.common.Tags;
 
 /**
  * Assists in finding out qualities of various things. Very unorganized, generally handy.
+ *
+ * @author Eti
  */
 public final class IdentifierHelper {
 	

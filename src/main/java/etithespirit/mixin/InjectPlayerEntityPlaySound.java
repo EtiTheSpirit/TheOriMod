@@ -21,6 +21,7 @@ import net.minecraft.world.World;
  *
  */
 @Mixin(PlayerEntity.class)
+@SuppressWarnings("unused")
 public abstract class InjectPlayerEntityPlaySound extends LivingEntity implements ISelfProvider {
 
 	protected InjectPlayerEntityPlaySound(EntityType<? extends LivingEntity> type, World worldIn) { super(type, worldIn); }
@@ -42,7 +43,6 @@ public abstract class InjectPlayerEntityPlaySound extends LivingEntity implement
 			// See OverrideEntityPlaySound for what this garbage is.
 			playSound(new DuplicateSoundEvent(evt.getSound()), evt.getVolume(), evt.getPitch());
 			ci.cancel();
-			return;
 		}
 	}
 }

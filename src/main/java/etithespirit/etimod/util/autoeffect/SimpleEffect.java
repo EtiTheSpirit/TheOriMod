@@ -3,6 +3,10 @@ package etithespirit.etimod.util.autoeffect;
 import net.minecraft.potion.Effect;
 import net.minecraft.potion.EffectType;
 
+/**
+ * A simple effect implementation that allows for custom effect colors.
+ * @author Eti
+ */
 public abstract class SimpleEffect extends Effect {
 	
 	protected EffectType type;
@@ -43,13 +47,13 @@ public abstract class SimpleEffect extends Effect {
 	
 	/**
 	 * Returns the default type for this effect. This value is cached and this method will only be called once.
-	 * @return
+	 * @return The type of effect.
 	 */
 	public abstract EffectType getType();
 	
 	/**
 	 * Returns the default color for this effect. This value is cached and this method will only be called once.
-	 * @return
+	 * @return The custom color. 0x00RRGGBB
 	 */
 	public abstract int getCustomColor();
 

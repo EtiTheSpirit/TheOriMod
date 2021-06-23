@@ -7,11 +7,11 @@ public final class StaticData {
 	/**
 	 * An IPositionPredicate instance that always returns false.
 	 */
-	public static final IPositionPredicate FALSE_POSITION_PREDICATE = (a, b, c) -> { return false; };
+	public static final IPositionPredicate FALSE_POSITION_PREDICATE = (a, b, c) -> false;
 	
 	/**
 	 * An IPositionPredicate instance that always returns true.
 	 */
-	public static final IPositionPredicate TRUE_POSITION_PREDICATE = (a, b, c) -> { return true; };
+	public static final IPositionPredicate TRUE_POSITION_PREDICATE = (a, b, c) -> true;
 
 }

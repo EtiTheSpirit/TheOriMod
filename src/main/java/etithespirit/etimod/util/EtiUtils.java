@@ -10,6 +10,11 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.NoSuchElementException;
 
+/**
+ * Utilities made by me!
+ *
+ * @author Eti
+ */
 @SuppressWarnings("unused")
 public final class EtiUtils {
 	

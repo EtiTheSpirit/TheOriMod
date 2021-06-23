@@ -1,5 +1,10 @@
 package etithespirit.etimod.util;
 
+/**
+ * Well boys, we did it. We invented math 2.
+ *
+ * @author Eti
+ */
 public final class Math2 {
 	
 	private Math2() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

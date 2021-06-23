@@ -1,7 +1,6 @@
 package etithespirit.etimod.util.blockstates;
 
 import com.google.common.collect.ImmutableMap;
-import etithespirit.etimod.common.block.decay.DecayCommon;
 import etithespirit.etimod.info.coordinate.Cardinals;
 import etithespirit.etimod.util.EtiUtils;
 import net.minecraft.block.Block;
@@ -37,6 +36,8 @@ import static net.minecraft.state.properties.BlockStateProperties.SOUTH;
  * Finally, due to its extensive use, this provides the ability to convert between {@link Direction} and cardinal {@link BooleanProperty} instances.
  * It also provides a means of getting the opposite cardinal {@link BooleanProperty} relative to another cardinal {@link BooleanProperty}
  * (for example, {@link BlockStateProperties#EAST} will return {@link BlockStateProperties#WEST})
+ *
+ * @author Eti
  */
 public final class SixSidedUtils {
 	
@@ -105,8 +106,8 @@ public final class SixSidedUtils {
 	
 	/**
 	 * Calls {@link #getNumberFromSurfaces(boolean, boolean, boolean, boolean, boolean, boolean)} from the given {@link BlockState}'s data, which should contain six booleans representing each face's occupied state.
-	 * @param state
-	 * @return
+	 * @param state The state to use.
+	 * @return A numeric value representing which surfaces are enabled.
 	 */
 	public static int getNumberFromSurfaces(BlockState state) {
 		return getNumberFromSurfaces(
@@ -124,7 +125,7 @@ public final class SixSidedUtils {
 	 * that represents the direction from {@code at} -&gt; {@code otherAt}.
 	 * @param at The origin block; the "from" component of this direction.
 	 * @param otherAt The destination block; the "to" component of this direction.
-	 * @return
+	 * @return A numeric value representing the given direction.
 	 */
 	public static int neighborFlagForBlockDirection(BlockPos at, BlockPos otherAt) {
 		Vector3i diff = otherAt.subtract(at);
@@ -195,7 +196,7 @@ public final class SixSidedUtils {
 	 * @param worldIn The {@link IWorldReader} for the world that this block exists in.
 	 * @param at The location of this block in the world.
 	 * @param filter A {@link Predicate} that determines whether a given neighbor's {@link BlockState} is valid.
-	 * @return
+	 * @return A numeric value with all bits set for directions that satisfy the predicate.
 	 */
 	public static int getFlagsForNeighborsWhere(IWorldReader worldIn, BlockPos at, Predicate<BlockState> filter) {
 		int flags = 0;
@@ -214,7 +215,7 @@ public final class SixSidedUtils {
 	 * This returns true if at least one adjacent block is not air, not occupied by a fluid or waterlogged, and has a funn face facing the block at the given {@link BlockPos}.
 	 * @param worldIn The {@link IWorldReader} for the world the given block exists in.
 	 * @param at The position of the block to check in the world.
-	 * @return
+	 * @return Whether or not at least one neighbor is sturdy and is not a fluid.
 	 */
 	public static boolean hasNonAirNonFluidFullNeighbor(IWorldReader worldIn, BlockPos at) {
 		return getNonAirNonFluidFullNeighbors(worldIn, at) != 0;
@@ -223,7 +224,7 @@ public final class SixSidedUtils {
 	/**
 	 * Given a {@link Direction}, this will return the associated cardinal blockstate
 	 * (for instance, {@link Direction#DOWN} returns {@link BlockStateProperties#DOWN}).
-	 * @param direction
+	 * @param direction The direction to convert.
 	 * @return A {@link BooleanProperty} representing a direction equivalent to the given {@link Direction}.
 	 */
 	public static BooleanProperty getBlockStateFromDirection(Direction direction) {

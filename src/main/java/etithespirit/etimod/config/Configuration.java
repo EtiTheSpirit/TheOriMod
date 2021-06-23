@@ -4,6 +4,7 @@ import net.minecraftforge.common.ForgeConfigSpec;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.config.ModConfig;
 
+@SuppressWarnings("unused")
 public final class Configuration { 
 
 	public static final String CATEGORY_GENERAL = "general";

@@ -14,6 +14,8 @@ import java.util.function.Consumer;
  * A "cached immutable set", which is a mutable set with a quick means of getting an immutable copy.<br/>
  * For performance, this immutable copy is cached.
  * @param <T> The type of element to store.
+ *
+ * @author Eti
  */
 @SuppressWarnings("unused")
 public final class CachedImmutableSetWrapper<T> implements Set<T>, List<T> {

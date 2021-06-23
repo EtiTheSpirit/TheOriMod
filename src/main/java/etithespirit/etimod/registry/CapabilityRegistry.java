@@ -14,6 +14,11 @@ import net.minecraftforge.common.capabilities.CapabilityManager;
 import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 
+/**
+ * Registers all custom capabilities to the game.
+ *
+ * @author Eti
+ */
 public class CapabilityRegistry {
 	
 	@CapabilityInject(ISpiritCapabilities.class)

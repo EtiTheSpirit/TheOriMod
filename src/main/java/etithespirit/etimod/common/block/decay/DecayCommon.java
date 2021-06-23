@@ -16,6 +16,7 @@ import net.minecraft.util.math.vector.Vector3i;
  * @author Eti
  *
  */
+@SuppressWarnings("unused")
 public final class DecayCommon {
 	
 	private DecayCommon() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
@@ -63,7 +64,7 @@ public final class DecayCommon {
 	/**
 	 * A mapping where keys are vanilla BlockStates and values are Decay equivalents.
 	 */
-	public static final Map<BlockState, BlockState> BLOCK_REPLACEMENT_TARGETS = new HashMap<BlockState, BlockState>();
+	public static final Map<BlockState, BlockState> BLOCK_REPLACEMENT_TARGETS = new HashMap<>();
 	
 	public static boolean isDecayBlock(Block block) {
 		return block instanceof IDecayBlockIdentifier;

@@ -11,9 +11,13 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.material.Material;
 
+/**
+ * An implementation of the spirit sound API, which is used if the mod is installed.
+ * @author Eti
+ */
 public class SpiritSoundAPI implements ISpiritSoundAPI {
 	
-	private static final void throwLoadCompleteIfNeeded() {
+	private static void throwLoadCompleteIfNeeded() {
 		if (EtiMod.forgeLoadingComplete()) throw new IllegalStateException(ConstantErrorMessages.FORGE_LOADING_COMPLETED);
 	}
 

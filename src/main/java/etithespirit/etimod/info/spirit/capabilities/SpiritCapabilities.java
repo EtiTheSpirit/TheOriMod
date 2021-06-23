@@ -2,6 +2,12 @@ package etithespirit.etimod.info.spirit.capabilities;
 
 import net.minecraft.nbt.CompoundNBT;
 
+/**
+ * Represents the actual capabilities of the player as a spirit, such as whether or not they are a spirit in the first
+ * place, and what abilities they have or have not unlocked.
+ *
+ * @author Eti
+ */
 public final class SpiritCapabilities implements ISpiritCapabilities {
 	
 	private boolean isSpirit;

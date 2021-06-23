@@ -8,15 +8,13 @@ import net.minecraft.client.renderer.model.ModelRenderer;
 
 import java.util.HashMap;
 
+@SuppressWarnings("unused")
 public class LumoWandModel extends Model {
 	private final ModelRenderer handle;
 	private final ModelRenderer wandcore;
-	private final ModelRenderer a;
-	private final ModelRenderer b;
-	private final ModelRenderer c;
 	
 	private final ModelRenderer[] rotatingParticles;
-	private final HashMap<ModelRenderer, float[]> originalAngles = new HashMap<ModelRenderer, float[]>();
+	private final HashMap<ModelRenderer, float[]> originalAngles = new HashMap<>();
 	
 	private float totalTimeExisted = 0;
 	
@@ -35,9 +33,9 @@ public class LumoWandModel extends Model {
 		wandcore.texOffs(4, 0).addBox(-1.0F, -6.0F, 0.0F, 1.0F, 3.0F, 1.0F, 0.0F, false);
 		wandcore.texOffs(4, 4).addBox(-1.0F, -7.0F, 0.0F, 1.0F, 2.0F, 1.0F, -0.2F, false);
 		
-		a = new ModelRenderer(this);
-		b = new ModelRenderer(this);
-		c = new ModelRenderer(this);
+		ModelRenderer a = new ModelRenderer(this);
+		ModelRenderer b = new ModelRenderer(this);
+		ModelRenderer c = new ModelRenderer(this);
 		a.setPos(0.5F, 5.5F, 0.5F);
 		a.texOffs(8, 0).addBox(-1.0F, -5.0F, -0.125F, 1.0F, 1.0F, 1.0F, 0.1F, false);
 		
@@ -51,7 +49,7 @@ public class LumoWandModel extends Model {
 		wandcore.addChild(b);
 		wandcore.addChild(c);
 		
-		rotatingParticles = new ModelRenderer[] { a, b, c };
+		rotatingParticles = new ModelRenderer[] {a, b, c};
 	}
 	
 	

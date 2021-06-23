@@ -1,14 +1,10 @@
 package etithespirit.etimod.common.block.light;
 
 import etithespirit.etimod.common.block.light.connection.ConnectableLightTechBlock;
-import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.common.tile.light.TileEntityLightCapacitor;
-import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.IBlockReader;

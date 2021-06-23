@@ -46,7 +46,7 @@ public class LumoWand extends Item {
 		BlockPos at = ctx.getClickedPos();
 		BlockState block = world.getBlockState(at);
 		if (ConnectableLightTechBlock.isInstance(block)){
-			boolean targetState = false;
+			boolean targetState;
 			if (ctx.isSecondaryUseActive()) {
 				targetState = !block.getValue(LightConduitBlock.AUTO);
 				BlockState oppositeAuto = block.setValue(LightConduitBlock.AUTO, targetState);

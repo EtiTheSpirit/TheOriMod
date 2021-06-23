@@ -3,6 +3,11 @@ package etithespirit.etimod.info.spirit.capabilities;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraftforge.common.util.INBTSerializable;
 
+/**
+ * A basic implementation of spirit capabilities. See {@link SpiritCapabilities} for more information.
+ *
+ * @author Eti
+ */
 public interface ISpiritCapabilities extends INBTSerializable<CompoundNBT> {
 	
 	/**
@@ -23,7 +28,7 @@ public interface ISpiritCapabilities extends INBTSerializable<CompoundNBT> {
 	
 	/**
 	 * Copies the data of this instance into the other instance.
-	 * @param other
+	 * @param other The receiving capabilities instance.
 	 */
 	void copyTo(ISpiritCapabilities other);
 	

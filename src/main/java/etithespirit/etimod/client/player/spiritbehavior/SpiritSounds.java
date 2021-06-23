@@ -8,7 +8,6 @@ import etithespirit.etimod.client.audio.variation.BreathLevel;
 import etithespirit.etimod.event.EntityEmittedSoundEvent;
 import etithespirit.etimod.event.EntityEmittedSoundEventProvider;
 import etithespirit.etimod.info.spirit.SpiritData;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
@@ -21,7 +20,6 @@ import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * Handles when certain sounds should play.
@@ -53,10 +51,8 @@ public final class SpiritSounds {
 	
 	/**
 	 * A tick based update method that calculates when to play air sounds.
-	 * @param evt
+	 * @param evt The tick event.
 	 */
-	@SuppressWarnings("resource")
-	@SubscribeEvent
 	public static void performAirSounds(PlayerTickEvent evt) {
 		if (evt.player == null) return;
 		if (evt.phase == TickEvent.Phase.END) return;
@@ -88,7 +84,7 @@ public final class SpiritSounds {
 				if (netAirLoss < bubbleInc) return;
 				
 				// Okay, so how much air do they have?
-				SoundEvent targetSound = null;
+				SoundEvent targetSound;
 				if (bubbles <= 4) {
 					// 2.5 bubbles or less: big
 					targetSound = SpiritSoundProvider.getSpiritBreathSound(BreathLevel.BIG);
@@ -113,7 +109,7 @@ public final class SpiritSounds {
 	
 	/**
 	 * Implements a crude version of <a href="https://github.com/MinecraftForge/MinecraftForge/pull/7491">Forge PR #7941</a>
-	 * @param event
+	 * @param event The custom mixin-provided event.
 	 */
 	private static void onSoundPlayedMixin(EntityEmittedSoundEvent event) {
 		if (event.getSound() == null) return;
@@ -125,7 +121,7 @@ public final class SpiritSounds {
 			PlayerEntity player = (PlayerEntity)entity;
 			ResourceLocation rsrc = event.getSound().getRegistryName();
 			
-			if (rsrc.getNamespace() != "minecraft") return; 
+			if (!rsrc.getNamespace().equals("minecraft")) return;
 			// The replaced sounds are only from MC, so don't bother testing if it's a mod source.
 			// Also prevents a stack overflow.
 			
@@ -171,6 +167,7 @@ public final class SpiritSounds {
 					event.setVolume(0.3f);
 					event.setPitch(SpiritSoundPlayer.getRandomPitch());
 					
+				/*
 				} else if (type == CustomSoundType.SPLASH) {
 					sound = SpiritSoundProvider.getSpiritSplashSound(false);
 					event.setVolume(0.3f);
@@ -178,6 +175,8 @@ public final class SpiritSounds {
 				} else if (type == CustomSoundType.SPLASH_BIG) {
 					sound = SpiritSoundProvider.getSpiritSplashSound(true);
 					event.setVolume(0.3f);	
+				}
+				*/
 				}
 				
 				if (sound == null) {
@@ -191,7 +190,6 @@ public final class SpiritSounds {
 		}
 	}
 	
-	@SubscribeEvent
 	public static void onEntityHurt(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntityLiving();
 		if (entity instanceof PlayerEntity) {
@@ -204,7 +202,6 @@ public final class SpiritSounds {
 		}
 	}
 	
-	@SubscribeEvent
 	public static void onEntityDied(LivingDeathEvent event) {
 		LivingEntity entity = event.getEntityLiving();
 		if (entity instanceof PlayerEntity) {
@@ -214,8 +211,6 @@ public final class SpiritSounds {
 			}
 		}
 	}
-	
-	
 	
 	// Jump and fall handling performed in JumpBehaviors because they modify the amount of jumps stored.
 }

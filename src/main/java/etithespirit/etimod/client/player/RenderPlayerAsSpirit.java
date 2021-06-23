@@ -1,7 +1,5 @@
 package etithespirit.etimod.client.player;
 
-import javax.annotation.Nullable;
-
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.vertex.IVertexBuilder;
 
@@ -9,7 +7,6 @@ import etithespirit.etimod.client.render.mob.ModelSpirit;
 import etithespirit.etimod.client.render.mob.ModelSpiritArmor;
 import etithespirit.etimod.client.render.mob.RenderSpiritMob;
 import etithespirit.etimod.info.spirit.SpiritData;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import etithespirit.etimod.registry.EntityRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.AbstractClientPlayerEntity;
@@ -21,12 +18,10 @@ import net.minecraft.client.renderer.entity.PlayerRenderer;
 import net.minecraft.client.renderer.entity.layers.BipedArmorLayer;
 import net.minecraft.client.renderer.entity.model.PlayerModel;
 import net.minecraft.client.renderer.model.ItemCameraTransforms;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
-import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
@@ -38,11 +33,25 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
+/**
+ * Relatively hacky code used to render a player as a spirit.
+ */
 public class RenderPlayerAsSpirit {
 	
+	/** The thing that renders spirits. */
 	private static RenderSpiritMob RENDERER = null;
+	
+	/** A local instance of the spirit model. */
 	private static ModelSpirit SPIRIT_MODEL = null;
+	
+	/** A local instance of the spirit armor model. */
 	private static ModelSpiritArmor SPIRIT_ARMOR_MODEL = null;
+	
+	/**
+	 * A dummy biped armor layer. This is used for access to the getArmorResource method, as it relies on no info in the object.
+	 * Naturally, this is not safe for use for any other purpose.
+	 */
+	private static final BipedArmorLayer<?, ?, ?> DUMMY_BIP_ARMOR_LAYER = new BipedArmorLayer<>(null, null, null);
 	
 	private static final EquipmentSlotType[] SLOTS = new EquipmentSlotType[] {
 		EquipmentSlotType.HEAD,
@@ -88,17 +97,13 @@ public class RenderPlayerAsSpirit {
 			}
 			
 			
-			mtx.pushPose(); // [
+			mtx.pushPose(); {
 				mtx.scale(ModelSpirit.WIDTH_MOD, ModelSpirit.HEIGHT_MOD, ModelSpirit.WIDTH_MOD);
 				setRotationAnglesFrom(partialTicks, mtx, player, preRenderEvent.getRenderer().getModel());
 				
 				SPIRIT_MODEL.renderToBuffer(mtx, solidEntityBuffer, light, 0xFFFFFF, r, g, b, 1f);
 				
 				//solidEntityBuffer.color(1, 1, 1, 1);
-				r = 1;
-				g = 1;
-				b = 1;
-				
 				boolean hasHelmet = player.hasItemInSlot(EquipmentSlotType.HEAD);
 				boolean hasChestplate = player.hasItemInSlot(EquipmentSlotType.CHEST);
 				boolean hasLeggings = player.hasItemInSlot(EquipmentSlotType.LEGS);
@@ -109,49 +114,46 @@ public class RenderPlayerAsSpirit {
 				for (int i = 0; i < SLOTS.length; i++) {
 					EquipmentSlotType slot = SLOTS[i];
 					ItemStack item = player.getItemBySlot(slot);
-					ResourceLocation armorRsrc = getArmorResource(player, item, slot, false);
+					ResourceLocation armorRsrc = DUMMY_BIP_ARMOR_LAYER.getArmorResource(player, item, slot, "");
 					if (armorRsrc == null) continue; // next iteration
 					
 					// is this even a good idea lol
 					IVertexBuilder drawBuffer = ItemRenderer.getArmorFoilBuffer(buf, RenderType.armorCutoutNoCull(armorRsrc), false, item.hasFoil());
 					
 					switch (i) {
-					case 0:
-						SPIRIT_ARMOR_MODEL.updateVisibility(hasHelmet, false, false, false);
-						//SPIRIT_ARMOR_MODEL.renderHelmet(mtx, drawBuffer, light, 0xFFFFFF);
-						break;
-					case 1:
-						SPIRIT_ARMOR_MODEL.updateVisibility(false, hasChestplate, false, false);
-						//SPIRIT_ARMOR_MODEL.renderChestplate(mtx, drawBuffer, light, 0xFFFFFF);
-						break;
-					case 2:
-						SPIRIT_ARMOR_MODEL.updateVisibility(false, false, hasLeggings, false);
-						//SPIRIT_ARMOR_MODEL.renderLeggings(mtx, drawBuffer, light, 0xFFFFFF);
-						break;
-					case 3:
-						SPIRIT_ARMOR_MODEL.updateVisibility(false, false, false, hasBoots);
-						//SPIRIT_ARMOR_MODEL.renderBoots(mtx, drawBuffer, light, 0xFFFFFF);
-						break;
-					default:
-						break;
+						case 0:
+							SPIRIT_ARMOR_MODEL.updateVisibility(hasHelmet, false, false, false);
+							//SPIRIT_ARMOR_MODEL.renderHelmet(mtx, drawBuffer, light, 0xFFFFFF);
+							break;
+						case 1:
+							SPIRIT_ARMOR_MODEL.updateVisibility(false, hasChestplate, false, false);
+							//SPIRIT_ARMOR_MODEL.renderChestplate(mtx, drawBuffer, light, 0xFFFFFF);
+							break;
+						case 2:
+							SPIRIT_ARMOR_MODEL.updateVisibility(false, false, hasLeggings, false);
+							//SPIRIT_ARMOR_MODEL.renderLeggings(mtx, drawBuffer, light, 0xFFFFFF);
+							break;
+						case 3:
+							SPIRIT_ARMOR_MODEL.updateVisibility(false, false, false, hasBoots);
+							//SPIRIT_ARMOR_MODEL.renderBoots(mtx, drawBuffer, light, 0xFFFFFF);
+							break;
+						default:
+							break;
 					}
 					
 					if (item != null && item.getItem() instanceof IDyeableArmorItem) {
-						int itemClr = ((IDyeableArmorItem)item.getItem()).getColor(item);
-						r = (float)(itemClr >> 16 & 255) / 255.0F;
-						g = (float)(itemClr >> 8 & 255) / 255.0F;
-						b = (float)(itemClr & 255) / 255.0F;
+						int itemClr = ((IDyeableArmorItem) item.getItem()).getColor(item);
+						r = (float) (itemClr >> 16 & 255) / 255.0F;
+						g = (float) (itemClr >> 8 & 255) / 255.0F;
+						b = (float) (itemClr & 255) / 255.0F;
 						
 						SPIRIT_ARMOR_MODEL.renderToBuffer(mtx, drawBuffer, light, 0xFFFFFF, r, g, b, 1);
-						r = 1;
-						g = 1;
-						b = 1;
-					} else {					
+					} else {
 						SPIRIT_ARMOR_MODEL.renderToBuffer(mtx, drawBuffer, light, 0xFFFFFF, 1, 1, 1, 1);
 					}
 				}
 				render(mtx, buf, light, player);
-			mtx.popPose(); // ]
+			} mtx.popPose();
 			
 			if (!preRenderEvent.getPlayer().equals(Minecraft.getInstance().player)) {
 				// Do not render our own nametag on our screen
@@ -160,43 +162,6 @@ public class RenderPlayerAsSpirit {
 			
 			preRenderEvent.setCanceled(true);
 		}
-	}
-	
-	/**
-	 * Duplicated from the biped armor layer renderer.
-	 * It is intentional that this still calls the forge event, as I want to provide a means of mods overriding armor without (still)
-	 * 
-	 * @param entity Entity wearing the armor
-	 * @param stack ItemStack for the armor
-	 * @param slot Slot ID that the item is in
-	 * @param isOverlay Whether or not to get the overlay texture.
-	 * @return ResourceLocation pointing at the armor's texture, or null if there was no item.
-	*/
-	public static @Nullable ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlotType slot, boolean isOverlay) {
-		if (stack == null || !(stack.getItem() instanceof ArmorItem)) {
-			return null;
-		}
-		
-		ArmorItem item = (ArmorItem)stack.getItem();
-		
-		String texture = item.getMaterial().getName();
-		String domain = "minecraft";
-		int idx = texture.indexOf(':');
-		if (idx != -1) {
-			domain = texture.substring(0, idx);
-			texture = texture.substring(idx + 1);
-		}
-		String s1 = String.format("%s:textures/models/armor/%s_layer_%d%s.png", domain, texture, 1, isOverlay ? "_overlay" : "");
-	
-		s1 = net.minecraftforge.client.ForgeHooksClient.getArmorTexture(entity, stack, s1, slot, isOverlay ? "overlay" : null);
-		ResourceLocation resourcelocation = BipedArmorLayer.ARMOR_LOCATION_CACHE.get(s1);
-	
-		if (resourcelocation == null) {
-			resourcelocation = new ResourceLocation(s1);
-			BipedArmorLayer.ARMOR_LOCATION_CACHE.put(s1, resourcelocation);
-		}
-	
-		return resourcelocation;
 	}
 
 	@SuppressWarnings("resource")
@@ -207,7 +172,7 @@ public class RenderPlayerAsSpirit {
 			float f = entityIn.getBbHeight() + 0.5F;
 			int i = "deadmau5".equals(displayNameIn.getString()) ? -10 : 0;
 			matrixStackIn.pushPose();
-			matrixStackIn.translate(0.0D, (double)f, 0.0D);
+			matrixStackIn.translate(0.0D, f, 0.0D);
 			matrixStackIn.mulPose(renderer.getDispatcher().cameraOrientation());
 			matrixStackIn.scale(-0.025F, -0.025F, 0.025F);
 			Matrix4f matrix4f = matrixStackIn.last().pose();
@@ -244,7 +209,7 @@ public class RenderPlayerAsSpirit {
 			mtx.mulPose(Vector3f.XP.rotationDegrees(-90.0F));
 			mtx.mulPose(Vector3f.YP.rotationDegrees(180.0F));
 			boolean flag = handSide == HandSide.LEFT;
-			mtx.translate((double)((float)(flag ? -1 : 1) / 16.0F), 0.125D, -0.625D);
+			mtx.translate(((float)(flag ? -1 : 1) / 16.0F), 0.125D, -0.625D);
 			Minecraft.getInstance().getItemInHandRenderer().renderItem(entity, heldItemStack, trsType, flag, mtx, renType, combinedLightIn);
 			mtx.popPose();
 		}

@@ -12,6 +12,7 @@ import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent.PlayerRespawnEvent;
 
+@SuppressWarnings("unused")
 public final class WorldLoading {
 	
 	public static void onLoggedInServer(PlayerLoggedInEvent evt) {
@@ -42,6 +43,7 @@ public final class WorldLoading {
 	
 	public static void onRespawnedServer(PlayerRespawnEvent evt) {
 		PlayerEntity player = evt.getPlayer();
+		ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(player, SpiritData.isSpirit(player));
 		player.refreshDimensions();
 	}
 	

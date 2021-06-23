@@ -23,7 +23,7 @@ import net.minecraft.world.gen.feature.structure.StructureManager;
 import net.minecraft.world.gen.settings.DimensionStructuresSettings;
 
 /**
- * Based off of McJty's tutorial. Modified for personal needs.
+ * Based off of McJty's tutorial. Modified for personal needs. Generates chunks in the Light Forest dimension.
  * @author Eti
  *
  */

@@ -7,16 +7,12 @@ import etithespirit.etimod.registry.PotionRegistry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.EffectInstance;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
-import net.minecraftforge.fml.common.Mod.EventBusSubscriber;
 
-@EventBusSubscriber
 public class EffectEnforcement {
 	
 	/** An empty ArrayList of items. This is used to define the list of objects that can cure the potion, which should be nothing. */
 	private static final ArrayList<ItemStack> EMPTY_LIST = new ArrayList<>();
 
-	@SubscribeEvent
 	public static void enforceEffects(PlayerTickEvent event) {
 		SpiritEffect spiritEffect = (SpiritEffect) PotionRegistry.get(SpiritEffect.class);
 		EffectInstance instance = event.player.getEffect(spiritEffect);

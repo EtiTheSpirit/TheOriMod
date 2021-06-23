@@ -8,6 +8,7 @@ import net.minecraft.util.math.MathHelper;
  * @author Eti
  *
  */
+@SuppressWarnings("unused")
 public final class NumericUtilities {
 	
 	/**
@@ -21,14 +22,14 @@ public final class NumericUtilities {
 	private static final float MAX_DURATION_FACTOR = (float)Math.pow(2, 32);
 	
 	/**
-	 * This is a variation of {@link net.minecraft.potion.EffectUtils.getPotionDurationString} that is designed to handle potion durations longer than Minecraft's general time threshold. It is mostly intended for use of large-scale effects, for instance, if the player has some passive buff for a couple days and you are displaying it via a potion effect, this is perfect.<br/>
+	 * This is a variation of {@link net.minecraft.potion.EffectUtils#formatDuration(EffectInstance, float)} that is designed to handle potion durations longer than Minecraft's general time threshold. It is mostly intended for use of large-scale effects, for instance, if the player has some passive buff for a couple days and you are displaying it via a potion effect, this is perfect.<br/>
 	 * <br/>
 	 * <strong>This derives standard timer functionality in that it does NOT use EffectInstance.getIsPotionDurationMax() to decide to return **:** for the duration</strong>. Rather, this has a cap of 96 hours (which should be more than enough for even most edge cases). If the time is beyond 96 hours, this will return **:**:**.
 	 * @param effect The effect that will provide the given duration in ticks. Throws a {@link java.lang.NullPointerException} if this is null.
 	 * @param durationFactor The remaining ticks will be multiplied by this value, and the result will be used to display time. Throws a {@link java.lang.IllegalArgumentException} if it is greater than or equal to 4294967296, or less than or equal to 0. 
 	 * @return A string in the format of HH:MM:SS, or if the duration is less than one hour, MM:SS.
 	 */
-	public static String getLongPotionDurationString(EffectInstance effect, float durationFactor) {
+	public static String getLongDurationFormat(EffectInstance effect, float durationFactor) {
 		if (durationFactor >= MAX_DURATION_FACTOR || durationFactor <= 0) throw new IllegalArgumentException("[durationFactor] cannot be >= 4294967296 or <= 0");
 		
 		int ticks = effect.getDuration();
@@ -38,18 +39,18 @@ public final class NumericUtilities {
 	}
 	
 	/**
-	 * This is a variation of {@link net.minecraft.potion.EffectUtils.getPotionDurationString} that is designed to handle potion durations longer than Minecraft's general time threshold. It is mostly intended for use of large-scale effects, for instance, if the player has some passive buff for a couple days and you are displaying it via a potion effect, this is perfect.<br/>
+	 * This is a variation of {@link net.minecraft.potion.EffectUtils#formatDuration(EffectInstance, float)} that is designed to handle potion durations longer than Minecraft's general time threshold. It is mostly intended for use of large-scale effects, for instance, if the player has some passive buff for a couple days and you are displaying it via a potion effect, this is perfect.<br/>
 	 * <br/>
 	 * <strong>This derives standard timer functionality in that it does NOT use EffectInstance.getIsPotionDurationMax() to decide to return **:** for the duration</strong>. Rather, this has a cap of 96 hours (which should be more than enough for even most edge cases). If the time is beyond 96 hours, this will return **:**:**.
 	 * @param effect The effect that will provide the given duration in ticks. Throws a {@link java.lang.NullPointerException} if this is null.
 	 * @return A string in the format of HH:MM:SS, or if the duration is less than one hour, MM:SS.
 	 */
-	public static String getLongPotionDurationString(EffectInstance effect) { return getLongPotionDurationString(effect, 1f); }
+	public static String getLongDurationFormat(EffectInstance effect) { return getLongDurationFormat(effect, 1f); }
 	
 	/**
 	 * Converts the given number of ticks to a timer in the format of HH:MM:SS, or if there is less than one hour, MM:SS. Throws {@link java.lang.IllegalArgumentException} if ticks is greater than Long.MAX_VALUE or less than 0.
-	 * @param ticks
-	 * @return
+	 * @param ticks The amount of ticks.
+	 * @return A clock time in HH:MM:SS or MM:SS
 	 */
 	public static String convertTicksToClock(long ticks) {
 		// Gotta love how Java handles signed/unsigned values.
@@ -74,8 +75,8 @@ public final class NumericUtilities {
 	 * Converts the input value to Roman numerals, capping at a maximum value of 1000. <em>Technically</em> this violates standards in that it does not respect localization, so if you care about that, you'll need to implement some special handling.<br/>
 	 * <br/>
 	 * Values greater than 1000 or less than 0 will throw an {@link java.lang.IllegalArgumentException}. A value of 0 will return an empty string, as Roman numeral zero 0 not exist.
-	 * @param number
-	 * @return
+	 * @param number The number to convert.
+	 * @return A string representing roman numerals for the givven number..
 	 */
 	public static String toRomanNumerals(int number) {
 		if (number > 1000 || number < 0) throw new IllegalArgumentException("The input number cannot be greater than 1000 or less than 0.");

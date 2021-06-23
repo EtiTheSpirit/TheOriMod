@@ -57,15 +57,13 @@ public class GenerateBlockModels extends BlockStateProvider {
 	
 	/**
 	 * Registers a block and an item for that block.
-	 * @param blockReg
+	 * @param blockReg The block registry object to create.
 	 */
 	protected void registerBlockAndItem(RegistryObject<Block> blockReg) {
 		Block block = blockReg.get();
 		ModelFile model = this.cubeAll(block);
 		VariantBlockStateBuilder builder = this.getVariantBuilder(block);
-		builder.forAllStates(state -> {
-			return new ConfiguredModel[] { new ConfiguredModel(model) };
-		});
+		builder.forAllStates(state -> new ConfiguredModel[] { new ConfiguredModel(model) });
 		
 		this.simpleBlockItem(block, model);
 		EtiMod.LOG.printf(Level.INFO, "Generated simple block at %s", model.getLocation().toString());
@@ -74,7 +72,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 	/**
 	 * Creates a block that's "inside out", or, the space it occupies renders on adjacent faces rather than as a full cube.<br/>
 	 * This is mostly used for decay mycelium, which coats the surfaces of blocks. The best vanilla block to compare this to is vines.
-	 * @param block
+	 * @param block The block registry object to create.
 	 */
 	private void registerInsideOutBlockAndItem(RegistryObject<Block> block) {
 		MultiPartBlockStateBuilder multiPart = this.getMultipartBuilder(block.get());
@@ -161,10 +159,10 @@ public class GenerateBlockModels extends BlockStateProvider {
 	
 	/**
 	 * Returns a model suited for the inside out block type.
-	 * @param block
+	 * @param block The block registry to use.
 	 * @param surfaceOffset How far away from the surface that the plane covering a specific surface is. Useful mostly for 2D models (thickness=0)
 	 * @param thickness The depth of each surface plane. Looks a bit better, but also has more to render. This can be used to mitigate z-fighting without introducing gaps on outward-facing corners.
-	 * @return
+	 * @return A model for an inside-out block.
 	 */
 	@SuppressWarnings("rawtypes")
 	private ModelFile getInsideOutBlockModel(RegistryObject<Block> block, float surfaceOffset, float thickness) {
@@ -288,10 +286,10 @@ public class GenerateBlockModels extends BlockStateProvider {
 	
 	/**
 	 * Creates a texture named "namespace:path-suffix".
-	 * @param block
-	 * @param path
-	 * @param suffix
-	 * @return
+	 * @param block The block that this is for. This is used to acquire the namespace.
+	 * @param path The path for this element.
+	 * @param suffix A special suffix for this element.
+	 * @return A {@link ResourceLocation} formatted as "namespace:path-suffix"
 	 */
 	private ResourceLocation localTexture(ResourceLocation block, String path, String suffix) {
 		return new ResourceLocation(block.getNamespace(), path + '-' + suffix);

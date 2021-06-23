@@ -2,6 +2,11 @@ package etithespirit.etimod.util.nbt;
 
 import net.minecraft.nbt.CompoundNBT;
 
+/**
+ * Allows the implementor to read to and write from a {@link CompoundNBT} instance.
+ *
+ * @author Eti
+ */
 public interface ISimpleNBTSerializable {
 	
 	/**

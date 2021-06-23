@@ -13,6 +13,7 @@ import mcp.mobius.waila.api.TooltipPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
+
 /**
  * <em>Hell now I oughta join in on it, make "SRWAILAASFSGDI" for "Stop Remaking WAILA And Settle For Something God Damn It"</em> -- Eti<br/>
  * All joking aside, this registers Light-based tech blocks to have their Light-energy readings put on WAILA

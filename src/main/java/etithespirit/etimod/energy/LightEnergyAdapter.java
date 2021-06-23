@@ -7,6 +7,7 @@ import net.minecraftforge.energy.IEnergyStorage;
  * 
  * @author Eti
  */
+@SuppressWarnings("unused")
 public final class LightEnergyAdapter {
 	// Prevent instances from being created. Shame Java has no static classes.
 	private LightEnergyAdapter() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

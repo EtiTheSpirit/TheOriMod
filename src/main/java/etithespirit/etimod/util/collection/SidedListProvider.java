@@ -4,8 +4,11 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 /**
  * A provider of two, distinct {@link CachedImmutableSetWrapper} instances, one for each side of the game.
- * @param <T>
+ * @param <T> The type of element to store.
+ *
+ * @author Eti
  */
+@SuppressWarnings("unused")
 public final class SidedListProvider<T> {
 	
 	/** The list for the dedicated or integrated server. */

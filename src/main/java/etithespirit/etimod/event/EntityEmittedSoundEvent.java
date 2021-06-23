@@ -10,6 +10,7 @@ import net.minecraft.util.math.vector.Vector3d;
  * @author Eti
  *
  */
+@SuppressWarnings("unused")
 public class EntityEmittedSoundEvent {
 	
 	private final Entity entity;
@@ -45,15 +46,11 @@ public class EntityEmittedSoundEvent {
 	
 	/** Returns whether or not some data was modified in this event, which determines if it should override vanilla sound playing behaviors. The cancelation state does not affect this return value. */
 	public boolean wasModified() {
-		if	(	!sound.equals(originalSound) || 
-				!category.equals(originalCategory) || 
-				!(volume == originalVolume) || 
-				!(pitch == originalPitch) || 
-				!position.equals(originalPosition)
-			) {
-			return true;
-		}
-		return false;
+		return !sound.equals(originalSound) ||
+			!category.equals(originalCategory) ||
+			!(volume == originalVolume) ||
+			!(pitch == originalPitch) ||
+			!position.equals(originalPosition);
 	}
 
 	/** Returns the sound that should be played. */

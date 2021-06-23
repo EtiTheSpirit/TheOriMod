@@ -7,6 +7,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
+/**
+ * Represents the water level in a dimension.
+ *
+ * @author Eti
+ */
 public class DimensionWaterLevel extends GenerationStyle<LightForestSettings.WaterLevelSettings> {
 
 	public DimensionWaterLevel(LightForestChunkGenerator generator) {

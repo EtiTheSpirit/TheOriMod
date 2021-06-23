@@ -2,7 +2,7 @@ package etithespirit.etimod.networking.morph;
 
 /**
  * Represents a type of morph replication packet, which describes the behavior that this packet should have on the associated side.
- * @author Eti the Spirit
+ * @author Eti
  */
 public enum EventType {
 	

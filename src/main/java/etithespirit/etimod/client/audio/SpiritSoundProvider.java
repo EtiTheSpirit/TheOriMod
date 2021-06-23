@@ -11,75 +11,46 @@ import etithespirit.etimod.info.EtiModDamageSource;
 import etithespirit.etimod.registry.SoundRegistry;
 import etithespirit.etimod.spiritmaterial.BlockToMaterialBinding;
 import etithespirit.etimod.spiritmaterial.SpiritMaterial;
-import net.minecraft.block.BlockState;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.util.DamageSource;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.MathHelper;
+
+import java.util.Objects;
 
 /**
- * Provides methods to acquire context specific sounds for spirits walking and falling.
+ * Provides methods to acquire context-specific sounds for spirits performing various actions.
  * @author Eti
  *
  */
 public class SpiritSoundProvider {
 	
 	/**
-	 * Returns the BlockPos of the block the entity is standing on by returning the BlockPos closest to (posX, posY-0.2, posZ)
-	 * @param entity
+	 * Returns the BlockPos of the block the entity is standing on.
+	 * @param entity The entity that provides the position.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static BlockPos getBlockOnPos(@Nonnull Entity entity) {
 		if (entity == null) throw new ArgumentNullException("entity");
-		
-		int x = MathHelper.floor(entity.getX());
-        int y = MathHelper.floor(entity.getY() - 0.2);
-        int z = MathHelper.floor(entity.getZ());
-        return new BlockPos(x, y, z);
+		return entity.blockPosition().below();
 	}
 	
 	/**
-	 * Returns the BlockPos of the block the entity is standing in by returning the BlockPos closest to (posX, posY+0.2, posZ)
-	 * @param entity
+	 * Returns the BlockPos of the block the entity is standing in.
+	 * @param entity The entity that provides the position.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static BlockPos getBlockInPos(@Nonnull Entity entity) {
 		if (entity == null) throw new ArgumentNullException("entity");
-		
-		int x = MathHelper.floor(entity.getX());
-        int y = MathHelper.floor(entity.getY() + 0.2);
-        int z = MathHelper.floor(entity.getZ());
-        return new BlockPos(x, y, z);
+		return entity.blockPosition();
 	}
-
-	/**
-     * @return the block the entity is standing on.
-     * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
-     */
-    public static BlockState getBlockOn(@Nonnull Entity entity) {
-    	if (entity == null) throw new ArgumentNullException("entity");
-    	
-        BlockState blockState = entity.getCommandSenderWorld().getBlockState(getBlockOnPos(entity));
-        return blockState;
-    }
-    
-    /**
-     * @return the block the entity is standing in.
-     * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
-     */
-    public static BlockState getBlockIn(@Nonnull Entity entity) {
-    	if (entity == null) throw new ArgumentNullException("entity");
-    	
-        BlockState blockState = entity.getCommandSenderWorld().getBlockState(getBlockInPos(entity));
-        return blockState;
-    }
 	
-    /**
+    /*
      * Returns a unique sound for falling onto a given block as a spirit.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
+	/*
     @Deprecated
     public static SoundEvent getSpiritFallSound(float height, @Nonnull LivingEntity entity, @Nullable SoundEvent vanilla) {
     	if (entity == null) throw new ArgumentNullException("entity");
@@ -90,7 +61,8 @@ public class SpiritSoundProvider {
     	SoundEvent spiritSound = getSound(spiritMtl,true);
     	return spiritSound != null ? spiritSound : vanilla;
     }
-    
+    */
+	
     
 	/**
      * Returns a unique sound for stepping on a given block as a spirit.
@@ -118,7 +90,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns the spirit damage sound.
-     * @param damageType
+     * @param damageType The type of damage inflicted.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
     public static SoundEvent getSpiritHurtSound(@Nonnull DamageSource damageType) {
@@ -129,7 +101,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns a death sound that is contextual to the given damage source.
-     * @param damageType
+     * @param damageType The type of damage inflicted.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
     public static SoundEvent getSpiritDeathSound(@Nonnull DamageSource damageType) {
@@ -150,7 +122,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns a sound for dashing. willImpactWallClosely should be true if a wall that will block the dash is within a short distance (around 1.5 blocks) of the player's direction.
-     * @param willImpactWallClosely
+     * @param willImpactWallClosely Whether or not the player will impact a wall immediately after dashing.
      */
     public static SoundEvent getSpiritDashSound(boolean willImpactWallClosely) {
     	if (willImpactWallClosely) {
@@ -161,7 +133,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns a swimming sound for spirits.
-     * @param belowWater
+     * @param belowWater Whether or not the player is swimming below water vs. treading above its surface.
      */
     public static SoundEvent getSpiritSwimSound(boolean belowWater) {
     	if (belowWater) return SoundRegistry.get("entity.spirit.aquatic.swim");
@@ -170,8 +142,9 @@ public class SpiritSoundProvider {
     
     /**
      * Returns a splashing sound for when a spirit falls into water.
-     * @param isBigSplash
+     * @param isBigSplash Whether or not the splash is big.
      */
+    @SuppressWarnings("unused")
     public static SoundEvent getSpiritSplashSound(boolean isBigSplash) {
     	// if (isBig) return SoundRegistry.get("entity.spirit.fall.water");
     	// return SoundRegistry.get("entity.spirit.fall.shallow_water");
@@ -180,7 +153,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns a sound based on the amount of times the player has jumped. Expected to be 1, 2, or 3. Any value outside of that range will return a silent sound.
-     * @param numberOfJumps
+     * @param numberOfJumps The amount of jumps that have been performed, counting the initial jump off of the ground.
      */
     public static SoundEvent getSpiritJumpSound(int numberOfJumps) {
     	if (numberOfJumps == 1) {
@@ -214,7 +187,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns a sound associated with attacking an entity with the given damage level.
-     * @param level
+     * @param level The damage level.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
     public static SoundEvent getSpiritAttackSound(@Nonnull DamageLevel level) {
@@ -230,7 +203,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns a sound associated with attacking an entity alongside the given damage effect.
-     * @param type
+     * @param type The damage type.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
     public static SoundEvent getSpiritAttackTypeSound(@Nonnull SpecialAttackType type) {
@@ -243,7 +216,7 @@ public class SpiritSoundProvider {
     
     /**
      * Returns the breath sound corresponding to the depth passed in.
-     * @param level
+     * @param level The urgency of the breath.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
     public static SoundEvent getSpiritBreathSound(@Nonnull BreathLevel level) {
@@ -258,8 +231,8 @@ public class SpiritSoundProvider {
     }
     
     private static SoundEvent getSound(SpiritMaterial mtl, boolean isFallingOn) {
-	    String key = null;
-	    if (isFallingOn && mtl.fallSoundKey != null && mtl.fallSoundKey != "nullsound") key = mtl.fallSoundKey;
+	    String key;
+	    if (isFallingOn && mtl.fallSoundKey != null && !Objects.equals(mtl.fallSoundKey, "nullsound")) key = mtl.fallSoundKey;
 	    else key = mtl.stepSoundKey;
 	
 	    if (key == null) key = "nullsound";

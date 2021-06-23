@@ -5,7 +5,9 @@ import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * A lazy implementation of a {@link ConcurrentHashMap} that has the same type for its keys and values, and provides access to the {@link Iterable} interface.
- * @param <T>
+ * @param <T> The type of element to store.
+ *
+ * @author Eti
  */
 public class ConcurrentBag<T> extends ConcurrentHashMap<T, T> implements Iterable<T> {
 	

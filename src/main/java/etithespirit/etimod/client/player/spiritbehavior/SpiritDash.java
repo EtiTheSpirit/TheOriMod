@@ -2,7 +2,6 @@ package etithespirit.etimod.client.player.spiritbehavior;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
 import etithespirit.etimod.info.spirit.SpiritData;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
@@ -11,7 +10,6 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.client.event.InputEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.ClientTickEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
 /**
  * Controls all functions of spirits performing a dash.
@@ -31,7 +29,7 @@ public final class SpiritDash {
 	private static boolean needsToReleaseDash = false;
 	private static Vector3d velocityBeforeLatestDash = null;
 	
-	@SubscribeEvent
+	@SuppressWarnings("unused")
 	public static void onKeyPressed(InputEvent.KeyInputEvent evt) {
 		Minecraft minecraft = Minecraft.getInstance();
 		ClientPlayerEntity player = minecraft.player;
@@ -55,7 +53,6 @@ public final class SpiritDash {
 		}
 	}
 	
-	@SubscribeEvent
 	public static void onClientUpdated(ClientTickEvent evt) {
 		if (evt.phase == TickEvent.Phase.START) return;
 		

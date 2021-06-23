@@ -6,7 +6,6 @@ import java.util.Map;
 import javax.annotation.Nullable;
 
 import etithespirit.etimod.info.spirit.SpiritData;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,33 +14,58 @@ import net.minecraft.util.math.vector.Vector3d;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.EntityEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-@SuppressWarnings("unused")
+/**
+ * All code pertaining to spirit size and collision modifications. This executes with the help of a mixin.
+ *
+ * @author Eti
+ */
 public final class SpiritSize {
 
+	/** A spirit's width relative to that of a player's width. */
 	public static final float X_SCALE = 0.79F;
+	
+	/** A spirit's height relative to that of a player's height. */
 	public static final float Y_SCALE = 0.53F;
 	
+	/** The size of a standing player. */
 	public static final EntitySize PLAYER_STANDING_SIZE = new EntitySize(0.6F, 1.8F, false);
+	
+	/** The size of a player flying with an Elytra. */
 	public static final EntitySize PLAYER_FALL_FLYING_SIZE = new EntitySize(0.6F, 0.6F, false);
+	
+	/** The size of a player who is swimming. */
 	public static final EntitySize PLAYER_SWIMMING_SIZE = new EntitySize(0.6F, 0.6F, false);
+	
+	/** The size of a player who SPEEN (I don't actually know what this pose is lol) */
 	public static final EntitySize PLAYER_SPIN_ATTACK_SIZE = new EntitySize(0.6F, 0.6F, false);
+	
+	/** The size of a player who is sneaking. */
 	public static final EntitySize PLAYER_CROUCHING_SIZE = new EntitySize(0.6F, 1.5F, false);
 	
+	/** The size of a standing spirit. */
 	public static final EntitySize SPIRIT_STANDING_SIZE = PLAYER_STANDING_SIZE.scale(X_SCALE, Y_SCALE);
+	
+	/** The size of a spirit flying with an Elytra. */
 	public static final EntitySize SPIRIT_FALL_FLYING_SIZE = PLAYER_FALL_FLYING_SIZE.scale(X_SCALE, Y_SCALE);
+	
+	/** The size of a spirit who is swimming. */
 	public static final EntitySize SPIRIT_SWIMMING_SIZE = PLAYER_SWIMMING_SIZE.scale(X_SCALE, Y_SCALE);
+	
+	/** The size of a spirit who SPEEN */
 	public static final EntitySize SPIRIT_SPIN_ATTACK_SIZE = PLAYER_SPIN_ATTACK_SIZE.scale(X_SCALE, Y_SCALE);
+	
+	/** The size of a spirit who is sneaking. */
 	public static final EntitySize SPIRIT_CROUCHING_SIZE = PLAYER_CROUCHING_SIZE.scale(X_SCALE, Y_SCALE);
 	
+	/** A lookup from {@link Pose} to {@link EntitySize} for spirits. Binds to the static final {@link EntitySize} instances in this class. */
 	public static final Map<Pose, EntitySize> SPIRIT_SIZE_BY_POSE = new HashMap<>();
-	public static final Map<Pose, EntitySize> PLAYER_SIZE_BY_POSE = new HashMap<>();
 	
-	private static boolean wasSpiritOnLastTick = false;
-	
-	@SubscribeEvent
-	public static void onGetEntitySize(EntityEvent.Size event) {
+	/**
+	 * Occurs when an entity's size is tested.
+	 * @param event The event. Obviously. I'm only writing this here so IntelliJ doesn't throw a fit.
+	 */
+	public static void onGetEntitySizeCommon(EntityEvent.Size event) {
 		if (!(event.getEntity() instanceof PlayerEntity)) return;
 		PlayerEntity player = (PlayerEntity)event.getEntity();
 		if (SpiritData.isSpirit(player)) {
@@ -129,26 +153,9 @@ public final class SpiritSize {
 	 * @return Whether or not that player is intersecting any blocks in the world.
 	 */
 	@SuppressWarnings ("BooleanMethodIsAlwaysInverted")
+	// ^ Because quite frankly, it's not. I think it's just seeing "is" on this method and "no" on the other one. Understandable.
 	public static boolean isPoseClear(PlayerEntity player, EntitySize entSize) {
 		return player.getCommandSenderWorld().noCollision(null, atWithSize(player.position(), entSize));
-	}
-	
-	/**
-	 * Returns whether or not there is a block above the player (based on if the default playermodel standing size clips with the world)
-	 * @param player The player to test.
-	 * @return Whether or not there is a block above the player that prevents standing.
-	 */
-	public static boolean isBlockAbove(PlayerEntity player) {
-		return !isPoseClear(player, PLAYER_STANDING_SIZE);
-	}
-	
-	/**
-	 * Returns true if the block above the player would make a full-size player crouch. Used to fix an edge case where a top half-slab above the spirit would cause a false crouching state. 
-	 * @param player The player to test.
-	 * @return Whether or not the block above the player, who is assumed to be a Spirit right now, would cause a full-size player to be unable to stand.
-	 */
-	public static boolean wouldBlockAboveMakeFullPlayerCrouch(PlayerEntity player) {
-		return !isPoseClear(player, PLAYER_CROUCHING_SIZE);
 	}
 	
 	/**
@@ -163,50 +170,11 @@ public final class SpiritSize {
 		return null;
 	}
 	
-	/**
-	 * Given a pose, this returns the vanilla playermodel size associated with it.
-	 * @param pose The pose to use for reference.
-	 * @return An {@link EntitySize} suited for this pose.
-	 */
-	public static @Nullable EntitySize getPlayerSizeFrom(Pose pose) {
-		if (PLAYER_SIZE_BY_POSE.containsKey(pose)) {
-			return PLAYER_SIZE_BY_POSE.get(pose);
-		}
-		return null;
-	}
-	
-	public static void onPlayerTickedClient(PlayerTickEvent evt) {
+	public static void onPlayerTickedCommon(PlayerTickEvent evt) {
 		if (evt.player == null) return;
-		if (evt.player != net.minecraft.client.Minecraft.getInstance().player) return;
 		if (evt.phase == TickEvent.Phase.END) return;
 		if (SpiritData.isSpirit(evt.player)) {
 			updatePose(evt.player);
-			if (!wasSpiritOnLastTick) {
-				evt.player.refreshDimensions();
-				wasSpiritOnLastTick = true;
-			}
-		} else {
-			if (wasSpiritOnLastTick) {
-				evt.player.setForcedPose(null);
-				evt.player.refreshDimensions();
-				wasSpiritOnLastTick = false;
-			}
-		}
-	}
-	
-	public static void onPlayerTickedServer(PlayerTickEvent evt) {
-		if (evt.player == null) return;
-		if (evt.phase == TickEvent.Phase.END) return;
-		if (SpiritData.isSpirit(evt.player)) {
-			if (!wasSpiritOnLastTick) {
-				evt.player.refreshDimensions();
-				wasSpiritOnLastTick = true;
-			}
-		} else {
-			if (wasSpiritOnLastTick) {
-				evt.player.refreshDimensions();
-				wasSpiritOnLastTick = false;
-			}
 		}
 	}
 	
@@ -216,11 +184,5 @@ public final class SpiritSize {
 		SPIRIT_SIZE_BY_POSE.put(Pose.SWIMMING, SPIRIT_SWIMMING_SIZE);
 		SPIRIT_SIZE_BY_POSE.put(Pose.SPIN_ATTACK, SPIRIT_SPIN_ATTACK_SIZE);
 		SPIRIT_SIZE_BY_POSE.put(Pose.CROUCHING, SPIRIT_CROUCHING_SIZE);
-		
-		PLAYER_SIZE_BY_POSE.put(Pose.STANDING, PLAYER_STANDING_SIZE);
-		PLAYER_SIZE_BY_POSE.put(Pose.FALL_FLYING, PLAYER_FALL_FLYING_SIZE);
-		PLAYER_SIZE_BY_POSE.put(Pose.SWIMMING, PLAYER_SWIMMING_SIZE);
-		PLAYER_SIZE_BY_POSE.put(Pose.SPIN_ATTACK, PLAYER_SPIN_ATTACK_SIZE);
-		PLAYER_SIZE_BY_POSE.put(Pose.CROUCHING, PLAYER_CROUCHING_SIZE);
 	}
 }

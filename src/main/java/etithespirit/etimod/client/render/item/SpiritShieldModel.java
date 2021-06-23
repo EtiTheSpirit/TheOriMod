@@ -25,7 +25,7 @@ public class SpiritShieldModel extends Model {
 	private final ModelRenderer RParticle0_r1;
 	
 	private final ModelRenderer[] rotatingParticles;
-	private final HashMap<ModelRenderer, float[]> originalAngles = new HashMap<ModelRenderer, float[]>();
+	private final HashMap<ModelRenderer, float[]> originalAngles = new HashMap<>();
 	
 	private float totalTimeExisted = 0;
 
@@ -133,8 +133,8 @@ public class SpiritShieldModel extends Model {
 	@Override
 	public void renderToBuffer(MatrixStack matrixStackIn, IVertexBuilder bufferIn, int packedLightIn, int packedOverlayIn, float red, float green, float blue, float alpha) {
 		totalTimeExisted += 0.2;
-		for (int index = 0; index < rotatingParticles.length; index++) {
-			setRotationOffset(rotatingParticles[index], Math.sin(totalTimeExisted / 12D) / 6, Math.sin(2 + (totalTimeExisted / 24D)) / 4, Math.cos(totalTimeExisted / 10D) / 5);
+		for (ModelRenderer rotatingParticle : rotatingParticles) {
+			setRotationOffset(rotatingParticle, Math.sin(totalTimeExisted / 12D) / 6, Math.sin(2 + (totalTimeExisted / 24D)) / 4, Math.cos(totalTimeExisted / 10D) / 5);
 		}
 		this.Root.render(matrixStackIn, bufferIn, packedLightIn, packedOverlayIn, red, green, blue, alpha);
 	}

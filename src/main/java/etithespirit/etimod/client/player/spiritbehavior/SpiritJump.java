@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
 import etithespirit.etimod.info.spirit.SpiritData;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.player.ClientPlayerEntity;
 import net.minecraft.client.settings.KeyBinding;
@@ -24,9 +23,12 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.InputUpdateEvent;
 import net.minecraftforge.event.TickEvent.PlayerTickEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
-import net.minecraftforge.eventbus.api.SubscribeEvent;
 
-@SuppressWarnings("unused")
+/**
+ * Manages all behaviors pertaining to how spirits jump.
+ *
+ * @author Eti
+ */
 public final class SpiritJump {
 	
 	//public static final KeyBinding CLIMB_BIND = new KeyBinding("input.etimod.climb", 340, "key.categories.movement"); // Bind climb to l-shift
@@ -44,38 +46,38 @@ public final class SpiritJump {
 	/** Speed on the Y axis will be divided by this every tick when clinging to a wall and sneaking. */
 	private static final float VERTICAL_SPEED_DECAY = 1.17f;
 	
-	/** Speed on the X and Z axes will be divided by this when determining the velocity to jump on walls at. */
-	private static final float LATERAL_DECAY = 2.5f;
+	/* Speed on the X and Z axes will be divided by this when determining the velocity to jump on walls at. */
+	//private static final float LATERAL_DECAY = 2.5f;
 	
 	/** Speed on the X and Z axes will be divided by this when performing a double or triple jump. */
 	private static final float LATERAL_DECAY_JUMP = 1.5f;
 	
-	/** The maximum descending speed (so it should be negative) for wall sliding. */
-	private static final float WALL_SLIDE_SPEED = -0.1f;
+	/* The maximum descending speed (so it should be negative) for wall sliding. */
+	//private static final float WALL_SLIDE_SPEED = -0.1f;
 	
 	/** The upward force applied to wall / multi jumps. */
 	private static final float UPWARD_FORCE = 0.55f;
 	
 	/** Storage of the walls adjacent to the player. */
-	private static final Set<Direction> WALLS = new HashSet<Direction>();
+	private static final Set<Direction> WALLS = new HashSet<>();
 	
 	/** Whether or not the system is waiting on space to be released. */
 	private static boolean waitingOnSpaceRelease = false;
 	
 	/**
 	 * Returns whether or not the given AxisAlignedBB collides with any blocks in the given world.
-	 * @param world
-	 * @param box
-	 * @return
+	 * @param world The world to test in.
+	 * @param box The box to test for collision.
+	 * @return Whether or not the AABB collides with the world.
 	 */
-	private static boolean CollidesWithBlock(World world, AxisAlignedBB box) {
+	private static boolean collidesWithBlock(World world, AxisAlignedBB box) {
 		return !world.noCollision(box);
     }
 	
 	/**
 	 * Returns the Y motion of the player as a float.
-	 * @param player
-	 * @return
+	 * @param player The player to test.
+	 * @return The motion of the player on the Y axis.
 	 */
     private static float getDeltaMovementY(ClientPlayerEntity player) {
     	return (float)player.getDeltaMovement().y;
@@ -83,8 +85,8 @@ public final class SpiritJump {
     
     /**
      * Sets the Y motion of the player.
-     * @param player
-     * @param y
+     * @param player The player to edit.
+     * @param y The new y component of the player's movement.
      */
     private static void setDeltaMovementY(ClientPlayerEntity player, float y) {
     	player.setDeltaMovement(player.getDeltaMovement().x, y, player.getDeltaMovement().z);
@@ -93,67 +95,70 @@ public final class SpiritJump {
     /**
      * New wall jump behavior derived from the Wall Jump mod. Returns whether or not a wall jump was actually performed.
      * Generally speaking, if this returns false, PerformMultiJump should be called instead.
-     * @param pl
-     * @return
+     * @param player The player to perform with.
+     * @return Whether or not the wall jump was actually performed.
      */
-    public static boolean PerformWallJump(ClientPlayerEntity pl) {
-    	if (!CanWallCling(pl)) return false;
-    	UpdateWalls(pl);
+    public static boolean performWallJump(ClientPlayerEntity player) {
+    	if (!canWallCling(player)) return false;
+    	updateWalls(player);
     	
     	for (int idx = 0; idx < WALLS.size(); idx++) {
-	    	Direction clingDir = GetNextClingDirection();
+	    	Direction clingDir = getNextClingDirection();
 	    	if (clingDir == Direction.UP) return false;
-	    	BlockPos wallPos = GetWallPos(pl, clingDir);
-	    	if (!IsWalkingTowards(pl, wallPos)) continue;
-			BlockState wallBlock = GetWallBlock(pl, clingDir);
-			PerformJump(pl, UPWARD_FORCE, wallBlock, wallPos, true);
+	    	BlockPos wallPos = getWallPos(player, clingDir);
+	    	if (!isWalkingTowards(player, wallPos)) continue;
+			performJump(player, UPWARD_FORCE, wallPos, true);
 			return true;
     	}
     	return false;
     }
-    
-	private static void PerformMultiJump(ClientPlayerEntity client) {
+	
+	/**
+	 * Attempts to perform a multi-jump.
+	 * @param client The client performing this action.
+	 */
+	private static void performMultiJump(ClientPlayerEntity client) {
 		if (currentJumps >= MAX_JUMPS) return;
 		if (client.isOnGround()) return; // No special stuffs if we're on the ground.
 		if (getDeltaMovementY(client) > 0.25) return; // Prevent spam
-		PerformJump(client, UPWARD_FORCE, null, null, false);
+		performJump(client, UPWARD_FORCE, null, false);
 	}
 	
 	/**
 	 * Attempts to cling to a wall, which reduces Y velocity quickly over time. As such, this should be called in a ticker.
-	 * @param pl
+	 * @param player The player who is doing this.
 	 */
-	public static void TryPerformWallCling(ClientPlayerEntity pl) {
-		if (!CanWallCling(pl)) {
+	public static void tryPerformWallCling(ClientPlayerEntity player) {
+		if (!canWallCling(player)) {
 			isClingingToWall = false;
 			return;
 		}
-		UpdateWalls(pl);
+		updateWalls(player);
 		if (WALLS.size() == 0) {
 			isClingingToWall = false;
 			return;
 		}
 		
 		isClingingToWall = true;
-		float y = getDeltaMovementY(pl);
+		float y = getDeltaMovementY(player);
 		if (y <= -0.1) {
-			setDeltaMovementY(pl, y / VERTICAL_SPEED_DECAY);
+			setDeltaMovementY(player, y / VERTICAL_SPEED_DECAY);
 		} else if (y < 0 && y > -0.1) {
-			setDeltaMovementY(pl, -0.1f);
+			setDeltaMovementY(player, -0.1f);
 		}
 	}
     
 	/**
 	 * Returns whether or not the current player is walking towards the given block position.
-	 * @param pl
-	 * @param pos
-	 * @return
+	 * @param player The player to check.
+	 * @param pos The position to check.
+	 * @return Whether or not the given player is walking towards the given position.
 	 */
-    private static boolean IsWalkingTowards(ClientPlayerEntity pl, BlockPos pos) {
-    	Vector3d moveDir = pl.getDeltaMovement();//pl.movementInput.getMoveVector();
+    private static boolean isWalkingTowards(ClientPlayerEntity player, BlockPos pos) {
+    	Vector3d moveDir = player.getDeltaMovement();//pl.movementInput.getMoveVector();
     	if (moveDir.x == 0 && moveDir.z == 0) return false; // Not moving.
     	
-    	Vector3d plPos = pl.position();
+    	Vector3d plPos = player.position();
     	if (pos.getX() == plPos.x && pos.getY() == plPos.y && pos.getZ() == plPos.z) return false; // Position is identical.
     	Vector3d moveDir3D = new Vector3d(moveDir.x, 0, moveDir.z);
     	moveDir3D.normalize();
@@ -168,24 +173,23 @@ public final class SpiritJump {
     
     /**
      * Observes the player's motion and determines if it's possible for them to cling to the wall.
-     * @param pl
-     * @return
+     * @param player The player to test.
+     * @return Whether or not it's possible to cling to a wall.
      */
-    private static boolean CanWallCling(ClientPlayerEntity pl) {
-    	if (pl.onClimbable() || getDeltaMovementY(pl) > 0.8) return false; // On a ladder or moving up super fast upward
-    	if (pl.isInWaterOrBubble() || pl.isInLava()) return false; // In water, lava, or a bubble column
-        if (CollidesWithBlock(pl.getCommandSenderWorld(), pl.getBoundingBox().move(0, -0.8, 0))) return false; // Too close to the ground.
-        return true;
+    private static boolean canWallCling(ClientPlayerEntity player) {
+    	if (player.onClimbable() || getDeltaMovementY(player) > 0.8) return false; // On a ladder or moving up super fast upward
+    	if (player.isInWaterOrBubble() || player.isInLava()) return false; // In water, lava, or a bubble column
+	    return !collidesWithBlock(player.getCommandSenderWorld(), player.getBoundingBox().move(0, -0.8, 0)); // Too close to the ground.
     }
 
     /**
      * Observes the walls that are surrounding the player and populates them into the walls array.
-     * @param pl
+     * @param player The player to do this update for.
      */
-    private static void UpdateWalls(ClientPlayerEntity pl) {
-        AxisAlignedBB box = new AxisAlignedBB(pl.getX() - 0.001, pl.getY(), pl.getZ() - 0.001, pl.getX() + 0.001, pl.getY() + pl.getEyeHeight(), pl.getZ() + 0.001);
+    private static void updateWalls(ClientPlayerEntity player) {
+        AxisAlignedBB box = new AxisAlignedBB(player.getX() - 0.001, player.getY(), player.getZ() - 0.001, player.getX() + 0.001, player.getY() + player.getEyeHeight(), player.getZ() + 0.001);
 
-        double dist = (pl.getBbWidth() / 2) + (isClingingToWall ? 0.2 : 0.06);
+        double dist = (player.getBbWidth() / 2) + (isClingingToWall ? 0.2 : 0.06);
         AxisAlignedBB[] axes = {box.expandTowards(0, 0, dist), box.expandTowards(-dist, 0, 0), box.expandTowards(0, 0, -dist), box.expandTowards(dist, 0, 0)};
 
         int i = 0;
@@ -193,9 +197,9 @@ public final class SpiritJump {
         WALLS.clear();
         for (AxisAlignedBB axis : axes) {
             direction = Direction.from2DDataValue(i++);
-            if (CollidesWithBlock(pl.getCommandSenderWorld(), axis)) {
+            if (collidesWithBlock(player.getCommandSenderWorld(), axis)) {
             	WALLS.add(direction);
-                pl.horizontalCollision = true;
+                player.horizontalCollision = true;
             }
         }
 
@@ -203,65 +207,54 @@ public final class SpiritJump {
 
     /**
      * Returns the direction of the next wall that can being clinged to relative to the player.
-     * @return
+     * @return The direction of the next wall that can being clinged to relative to the player.
      */
-    private static Direction GetNextClingDirection() {
+    private static Direction getNextClingDirection() {
         return WALLS.isEmpty() ? Direction.UP : WALLS.iterator().next();
     }
 
     /**
-     * Returns the BlockPos of the wall block that is being jumped against.
-     * @param player
-     * @return
+     * Returns the {@link BlockPos} of the wall block that is being jumped against.
+     * @param player The player to get the position of.
+     * @return The {@link BlockPos} of the wall block that is being jumped against.
      */
-    private static BlockPos GetWallPos(ClientPlayerEntity player, Direction clingDir) {
+    private static BlockPos getWallPos(ClientPlayerEntity player, Direction clingDir) {
         BlockPos pos = new BlockPos(player.position()).offset(clingDir.getNormal());
         return player.getCommandSenderWorld().getBlockState(pos).getMaterial().isSolid() ? pos : pos.offset(Direction.UP.getNormal());
-    }
-    
-    /**
-     * Returns the wall block that is being jumped against.
-     * @param player
-     * @return
-     */
-    private static BlockState GetWallBlock(ClientPlayerEntity player, Direction clingDir) {
-        BlockPos pos = new BlockPos(player.position()).offset(clingDir.getNormal());
-        return player.getCommandSenderWorld().getBlockState(pos);
     }
 
     /**
  	 * Emulates jumping with the given upward force, changing the sound based on isWallJump. If isWallJump is false, this increments CurrentJumps.
-     * @param pl
-     * @param up
-     * @param wallBlock Only needed for isWallJump = true, used to get the sound.
+     * @param player The player who is jumping.
+     * @param up The upward force.
      * @param isWallJump Whether or not this jump was prompted by a wall jump.
      */
-    public static void PerformJump(ClientPlayerEntity pl, float up, @Nullable BlockState wallBlock, @Nullable BlockPos wallPos, boolean isWallJump) {
-        float strafe = (float)Math.signum(pl.input.leftImpulse) * up * up;
-        float forward = (float)(Math.signum(pl.input.forwardImpulse) * up * up);
+    public static void performJump(ClientPlayerEntity player, float up, @Nullable BlockPos wallPos, boolean isWallJump) {
+        float strafe = Math.signum(player.input.leftImpulse) * up * up;
+        float forward = Math.signum(player.input.forwardImpulse) * up * up;
 
         float f = 1.0F / MathHelper.sqrt(strafe * strafe + up * up + forward * forward);
         
         strafe = strafe * f;
         forward = forward * f;
         
-        float f1 = MathHelper.sin(pl.yHeadRot * 0.017453292F) * 0.45f;
-        float f2 = MathHelper.cos(pl.yHeadRot * 0.017453292F) * 0.45f;
+        float f1 = MathHelper.sin(player.yHeadRot * 0.017453292F) * 0.45f;
+        float f2 = MathHelper.cos(player.yHeadRot * 0.017453292F) * 0.45f;
 
         int jumpBoostLevel = 0;
-        EffectInstance jumpBoostEffect = pl.getEffect(Effect.byId(8));
+        EffectInstance jumpBoostEffect = player.getEffect(Effect.byId(8));
         if (jumpBoostEffect != null) jumpBoostLevel = jumpBoostEffect.getAmplifier() + 1;
 
         float newMotionY = up + (jumpBoostLevel * .125f);
-        float newMotionX = (float) (pl.getDeltaMovement().x + strafe * f2 - forward * f1) / LATERAL_DECAY_JUMP;
-        float newMotionZ = (float) (pl.getDeltaMovement().z + forward * f2 + strafe * f1) / LATERAL_DECAY_JUMP;
-        pl.setDeltaMovement(newMotionX, newMotionY, newMotionZ);
+        float newMotionX = (float) (player.getDeltaMovement().x + strafe * f2 - forward * f1) / LATERAL_DECAY_JUMP;
+        float newMotionZ = (float) (player.getDeltaMovement().z + forward * f2 + strafe * f1) / LATERAL_DECAY_JUMP;
+        player.setDeltaMovement(newMotionX, newMotionY, newMotionZ);
         
         if (isWallJump) {
-        	SpiritSoundPlayer.playWallJumpSound(pl, wallPos);
+        	SpiritSoundPlayer.playWallJumpSound(player, wallPos);
         } else {
         	currentJumps++;
-        	SpiritSoundPlayer.playJumpSound(pl, currentJumps);
+        	SpiritSoundPlayer.playJumpSound(player, currentJumps);
         }
     }
     
@@ -277,7 +270,7 @@ public final class SpiritJump {
 	    		isClingingToWall = false;
 		    	return;
 	    	}
-			if (!SpiritJump.PerformWallJump(player)) PerformMultiJump(player);
+			if (!SpiritJump.performWallJump(player)) performMultiJump(player);
 		} else if (!evt.getMovementInput().jumping) {
 			waitingOnSpaceRelease = false;
 		}
@@ -293,7 +286,7 @@ public final class SpiritJump {
 	    		isClingingToWall = false;
 		    	return;
 	    	}
-    		TryPerformWallCling((ClientPlayerEntity)evt.player);
+    		tryPerformWallCling((ClientPlayerEntity)evt.player);
     	} else {
     		isClingingToWall = false;
     	}
@@ -304,7 +297,6 @@ public final class SpiritJump {
     }
     
 	// Wall jumping and multi-jumping should not raise this event.
-    @SubscribeEvent
 	public static void onEntityJumped(LivingJumpEvent event) {
 		LivingEntity entity = event.getEntityLiving();
 		if (entity instanceof PlayerEntity) {

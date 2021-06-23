@@ -10,6 +10,11 @@ import net.minecraft.entity.ai.attributes.ModifiableAttributeInstance;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 
+/**
+ * Registers attributes to my entities.
+ *
+ * @author Eti
+ */
 public final class EntityAttributeMarshaller {
 	
 	private static void onAttributesRegistered(final EntityAttributeCreationEvent attrCreation) {

@@ -19,7 +19,7 @@ public class DecayPoisonBlock extends FlowingFluidBlock {
 	}
 	
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" }) 
+	@SuppressWarnings({ "unchecked" })
 	public void createBlockStateDefinition(StateContainer.Builder builder) {
 		super.createBlockStateDefinition(builder);
 		builder.add(DecayFluid.IS_FULL_DECAY);

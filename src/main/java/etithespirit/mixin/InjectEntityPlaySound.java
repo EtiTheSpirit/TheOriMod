@@ -20,6 +20,7 @@ import net.minecraft.util.SoundEvent;
  *
  */
 @Mixin(Entity.class)
+@SuppressWarnings("unused")
 public abstract class InjectEntityPlaySound extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements ISelfProvider {
 	protected InjectEntityPlaySound(Class<Entity> baseClass) { super(baseClass); }
 	

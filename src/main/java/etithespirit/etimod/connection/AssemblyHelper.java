@@ -22,6 +22,7 @@ import java.util.List;
  *
  * @author Eti
  */
+@SuppressWarnings("unused")
 public final class AssemblyHelper {
 	
 	/** A logger used to track this helper's behavior. */

@@ -24,6 +24,7 @@ import java.util.UUID;
  *
  * @author Eti
  */
+@SuppressWarnings("unused")
 public final class Assembly {
 	
 	private static int currentid = 0;

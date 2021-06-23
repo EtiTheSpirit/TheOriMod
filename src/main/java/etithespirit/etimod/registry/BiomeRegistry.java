@@ -4,7 +4,6 @@ import etithespirit.etimod.EtiMod;
 import net.minecraft.util.RegistryKey;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.registry.Registry;
-//import net.minecraft.client.audio.BackgroundMusicSelector;
 import net.minecraft.world.biome.Biome;
 import net.minecraft.world.biome.Biome.Category;
 import net.minecraft.world.biome.Biome.RainType;
@@ -16,6 +15,12 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Registers all biomes to the game.
+ *
+ * @author Eti
+ */
+@SuppressWarnings("unused")
 public final class BiomeRegistry {
 	
 	//////////////////////////////////////////////////////////////////////////////

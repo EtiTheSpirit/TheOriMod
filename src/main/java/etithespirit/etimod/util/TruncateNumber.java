@@ -3,8 +3,8 @@ package etithespirit.etimod.util;
 /**
  * A class used to truncate numeric values to use SI endings.
  * @author Eti
- *
  */
+@SuppressWarnings("unused")
 public final class TruncateNumber {
 	
 	// Fun fact: This was adapted from a module I wrote in Lua a very long time ago.
@@ -16,8 +16,8 @@ public final class TruncateNumber {
 	
 	/**
 	 * Returns the number 10^value
-	 * @param value
-	 * @return
+	 * @param value The value to use for the exponent.
+	 * @return 10^value
 	 */
 	private static double tenToPowerOf(double value) {
 		return Math.pow(10, value);
@@ -25,9 +25,9 @@ public final class TruncateNumber {
 	
 	/**
 	 * Rounds the given number and preserves the given number of places in the decimals.
-	 * @param value
-	 * @param places
-	 * @return
+	 * @param value The value to round.
+	 * @param places The number of places to preserve.
+	 * @return The given value rounded down to the number of places.
 	 */
 	private static double roundPlaces(double value, int places) {
 		double e = tenToPowerOf(places);
@@ -40,18 +40,18 @@ public final class TruncateNumber {
 	
 	/**
 	 * Return a string representing the given number truncated with SI endings. For instance, 1000 will be returned as 1K, 1000000 will be returned as 1M, etc.
-	 * @param d
-	 * @return
+	 * @param number The value to truncate.
+	 * @return A string representing this value truncated with SI endings, down to one decimal place of accuracy.
 	 */
-	public static String truncateNumber(double d) {
-		return truncateNumber(d, 1);
+	public static String truncateNumber(double number) {
+		return truncateNumber(number, 1);
 	}
 	
 	/**
 	 * Return a string representing the given number truncated with SI endings. For instance, 1000 will be returned as 1K, 1000000 will be returned as 1M, etc.<br/>
 	 * This version supports a limited place count as well, so if given the number 54321, and if placeCount = 2, then this method will return "54.32K"
-	 * @param number
-	 * @return
+	 * @param number The number to truncate.
+	 * @return A string representing this value truncated with SI endings, down to the given amount of decimal places of accuracy.
 	 */
 	public static String truncateNumber(double number, int placeCount) {
 		int div = 3; // The 10^div factor that this number will be tested to fit into.
@@ -78,7 +78,7 @@ public final class TruncateNumber {
 			count -= TRUNCATE_LABELS.length;
 		} while (count > 0);
 		
-		return String.valueOf(resultingValue) + letterChain;
+		return resultingValue + letterChain;
 	}
 
 }

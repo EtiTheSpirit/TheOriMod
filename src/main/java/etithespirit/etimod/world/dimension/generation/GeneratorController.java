@@ -7,9 +7,14 @@ import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.ChunkPos;
 import net.minecraft.world.chunk.IChunk;
 
+/**
+ * Controls all generator routines and dispatches them for use.
+ *
+ * @author Eti
+ */
 public final class GeneratorController {
 
-	private final ArrayList<IGeneratorRoutine> GENERATORS = new ArrayList<IGeneratorRoutine>();
+	private final ArrayList<IGeneratorRoutine> GENERATORS = new ArrayList<>();
 	
 	public void registerGenerator(IGeneratorRoutine generator) {
 		GENERATORS.add(generator);
@@ -22,13 +27,13 @@ public final class GeneratorController {
 	 */
 	public void processForChunk(long seed, IChunk chunk) {
 		final long maxHeight = 256;//chunk.getWorldForge().getHeight();
-		boolean abort = false;
+		boolean abort;
 		for (int y = 0; y < maxHeight; y++) {
 			for (int x = 0; x < 16; x++) {
 				for (int z = 0; z < 16; z++) {
 					ChunkPos currentPos = chunk.getPos();
-					long newX = x + (currentPos.x * 16);
-					long newZ = z + (currentPos.z * 16);
+					long newX = x + (currentPos.x * 16L);
+					long newZ = z + (currentPos.z * 16L);
 					for (IGeneratorRoutine gen : GENERATORS) {
 						if (gen.isEnabled()) {
 							gen.setNoiseToSeed(seed);

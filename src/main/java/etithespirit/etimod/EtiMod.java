@@ -1,8 +1,16 @@
 package etithespirit.etimod;
 
+import etithespirit.etimod.client.gui.CustomHealthForEffects;
+import etithespirit.etimod.client.player.RenderPlayerAsSpirit;
+import etithespirit.etimod.client.player.spiritbehavior.SpiritDash;
+import etithespirit.etimod.client.player.spiritbehavior.SpiritJump;
+import etithespirit.etimod.client.player.spiritbehavior.SpiritSize;
 import etithespirit.etimod.client.player.spiritbehavior.SpiritSounds;
+import etithespirit.etimod.client.render.debug.LightTileDebugRenderer;
 import etithespirit.etimod.common.block.UpdateHelper;
 import etithespirit.etimod.common.datamanagement.WorldLoading;
+import etithespirit.etimod.common.player.DamageMarshaller;
+import etithespirit.etimod.common.player.EffectEnforcement;
 import etithespirit.etimod.registry.*;
 import etithespirit.etimod.util.profiling.UniProfiler;
 import net.minecraft.client.Minecraft;
@@ -17,7 +25,6 @@ import com.mojang.brigadier.CommandDispatcher;
 import etithespirit.datagen.GenerateBlockModels;
 import etithespirit.datagen.GenerateItemModels;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
-import etithespirit.etimod.networking.status.ReplicateEffect;
 import etithespirit.etimod.server.command.SetSpiritCommand;
 import etithespirit.etimod.world.dimension.LightForestBiomeProvider;
 import etithespirit.etimod.world.dimension.LightForestChunkGenerator;
@@ -37,6 +44,11 @@ import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.event.lifecycle.GatherDataEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
+/**
+ * The core code for Eti's Mod // The Ori Mod
+ *
+ * @author Eti
+ */
 @Mod(value=EtiMod.MODID)
 public final class EtiMod {
 		
@@ -80,7 +92,7 @@ public final class EtiMod {
     }
     
 	public void commonInit(final FMLCommonSetupEvent event) {
-    	MinecraftForge.EVENT_BUS.register(SpiritSounds.class);
+    	// For TEs
     	MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
 		
     	// These events need to run for both the client game build and dedicated server build (as they apply to the integrated server too)
@@ -90,6 +102,20 @@ public final class EtiMod {
 		
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityRegistry::attachCapabilities);
 		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::persistCapabilities);
+		
+		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::performAirSounds);
+		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityHurt);
+		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityDied);
+		
+		MinecraftForge.EVENT_BUS.addListener(SpiritSize::onPlayerTickedCommon);
+		MinecraftForge.EVENT_BUS.addListener(SpiritSize::onGetEntitySizeCommon);
+		
+		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityAttacked);
+		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityDamaged);
+		
+		MinecraftForge.EVENT_BUS.addListener(EffectEnforcement::enforceEffects);
+		
+		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onEntityJumped);
     	
 		event.enqueueWork(() -> {
 			Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation(EtiMod.MODID, "light_forest_chunkgen"), LightForestChunkGenerator.CORE_CODEC);
@@ -102,18 +128,16 @@ public final class EtiMod {
     public void clientGameBuildInit(final FMLClientSetupEvent event) {
     	UniProfiler.setProfiler(Minecraft.getInstance().getProfiler(), Dist.CLIENT);
     	
-    	MinecraftForge.EVENT_BUS.register(etithespirit.etimod.client.player.spiritbehavior.SpiritDash.class);
+	    MinecraftForge.EVENT_BUS.addListener(SpiritDash::onKeyPressed);
+	    MinecraftForge.EVENT_BUS.addListener(SpiritDash::onClientUpdated);
     	
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritJump::onEntityJumped);
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritJump::onKeyPressed);
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritJump::onPlayerTicked);
-	
-	    MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onPlayerTickedClient);
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onGetEntitySize);
+    	MinecraftForge.EVENT_BUS.addListener(SpiritJump::onEntityJumped);
+    	MinecraftForge.EVENT_BUS.addListener(SpiritJump::onKeyPressed);
+    	MinecraftForge.EVENT_BUS.addListener(SpiritJump::onPlayerTicked);
     	
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.RenderPlayerAsSpirit::whenRenderingPlayer);
-		MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.gui.CustomHealthForEffects::onElementDrawn);
-	    MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.render.debug.LightTileDebugRenderer::onWorldFinishedRendering);
+    	MinecraftForge.EVENT_BUS.addListener(RenderPlayerAsSpirit::whenRenderingPlayer);
+		MinecraftForge.EVENT_BUS.addListener(CustomHealthForEffects::onElementDrawn);
+	    MinecraftForge.EVENT_BUS.addListener(LightTileDebugRenderer::onWorldFinishedRendering);
 	
 	    MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedInClient);
 	    MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutClient);
@@ -121,17 +145,13 @@ public final class EtiMod {
     	
     	RenderRegistry.registerAll();
     	ReplicateMorphStatus.registerPackets(Dist.CLIENT);
-    	ReplicateEffect.registerPackets(Dist.CLIENT);
-    	ClientRegistry.registerKeyBinding(etithespirit.etimod.client.player.spiritbehavior.SpiritDash.DASH_BIND);
-    	ClientRegistry.registerKeyBinding(etithespirit.etimod.client.player.spiritbehavior.SpiritJump.CLING_BIND);
+    	ClientRegistry.registerKeyBinding(SpiritDash.DASH_BIND);
+    	ClientRegistry.registerKeyBinding(SpiritJump.CLING_BIND);
     }
     
+    @SuppressWarnings("unused")
     public void dedicatedServerBuildInit(final FMLDedicatedServerSetupEvent event) {
-    	MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onGetEntitySize);
-	    MinecraftForge.EVENT_BUS.addListener(etithespirit.etimod.client.player.spiritbehavior.SpiritSize::onPlayerTickedServer);
-    	
     	ReplicateMorphStatus.registerPackets(Dist.DEDICATED_SERVER);
-    	ReplicateEffect.registerPackets(Dist.DEDICATED_SERVER);
     }
     
     public void anyServerInit(final FMLServerStartedEvent event) {

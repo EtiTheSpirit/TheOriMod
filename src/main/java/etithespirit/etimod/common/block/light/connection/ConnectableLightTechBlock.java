@@ -113,7 +113,7 @@ public abstract class ConnectableLightTechBlock extends Block {
 	}
 	
 	@Override
-	@SuppressWarnings("deprecated")
+	@SuppressWarnings("deprecation")
 	public void neighborChanged(BlockState state, World world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
 		if (isInstance(state)) {
 			// ^ This is connectable

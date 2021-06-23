@@ -49,8 +49,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * When Decay blocks are registered, they define which block states they replace, and what state to replace those with.<br>
 	 * This method can be used to look up what a block's replacement is, e.g. pass in {@code Blocks.STONE.getDefaultState()} to receive the Decay-equivalent of stone.<br>
 	 * Returns null if there is no substitute.
-	 * @param existingBlock
-	 * @return
+	 * @param existingBlock The block that will be replaced.
+	 * @return The replacement blockstate, or null if there is no replacement.
 	 */
 	default @Nullable BlockState getDecayReplacementFor(BlockState existingBlock) {
 		if (BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock)) return BLOCK_REPLACEMENT_TARGETS.get(existingBlock);
@@ -59,8 +59,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	
 	/**
 	 * Returns whether or not a replacement for the given BlockState exists.
-	 * @param existingBlock
-	 * @return
+	 * @param existingBlock The block that may be replaced.
+	 * @return Whether or not this block actually has a replacement.
 	 */
 	default boolean hasDecayReplacementFor(World worldIn, BlockPos at, BlockState existingBlock) {
 		return BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock);
@@ -78,20 +78,17 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * @param rng A randomizer
 	 * @param edgeDetectionRarity The denominator of the current detection rarity.
 	 * @param denominatorOfMinChance The denominator of the lowest possible chance that can ever occur.
-	 * @return
+	 * @return Whether or not this block needs to do an edge check on this tick.
 	 */
 	default boolean needsToDoEdgeCheck(Random rng, int edgeDetectionRarity, int denominatorOfMinChance) {
 		float v = rng.nextFloat() * (denominatorOfMinChance + 1);
-		if (v > edgeDetectionRarity) {
-			// ^ + n -- add some bias.
-			return true;
-		}
-		return false;
+		// ^ + n -- add some bias.
+		return v > edgeDetectionRarity;
 	}
 	
 	/**
 	 * Provides a means of altering the given state. The input state is the state of this block when it replaces a non-decay block.
-	 * @param originalState
+	 * @param originalState The default state of this decay block
 	 * @return The state of the decay block when replacing a given block.
 	 */
 	default BlockState mutateReplacementState(BlockState originalState) {
@@ -101,7 +98,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	/**
 	 * Returns an array of 6 boolean values mapping in the order of: EAST, WEST, UP, DOWN, NORTH, SOUTH<br>
 	 * A given boolean is true if the corresponding block has no decay replacement. Note that decay blocks are not decayable either. As such, this method better describes when a block is stopping decay spread.<br>
-	 * @return
+	 * @return Six boolean values in the order of EAST, WEST, UP, DOWN, NORTH, SOUTH that represents whether or not the given adjacent block in that direction can be mutated.
 	 */
 	default boolean[] getNonDecayableAdjacents(World world, BlockPos pos) {
 		boolean[] result = new boolean[6];
@@ -115,10 +112,10 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	
 	/**
 	 * Returns a random unoccupied adjacent block. "Unoccupied" refers to meaning that the adjacent space has a valid decay block replacement.
-	 * @param world
-	 * @param originalPos
-	 * @param rng
-	 * @return
+	 * @param world The world to check in.
+	 * @param originalPos The position of this block.
+	 * @param rng A randomizer used to select a random direction.
+	 * @return An adjacent {@link BlockPos} in a random cardinal direction that is able to decay.
 	 */
 	default BlockPos randomUnoccupiedDirection(World world, BlockPos originalPos, Random rng) {
 		boolean[] adjacents = getNonDecayableAdjacents(world, originalPos);
@@ -138,11 +135,11 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	}
 	
 	/**
-	 * Returns one of the 20 possible diagonal adjacent directions that are occupied by a block that can decay.
-	 * @param world
-	 * @param originalPos
-	 * @param rng
-	 * @return
+	 * Returns one of the (up to) 20 possible diagonal adjacent directions that are occupied by a block that can decay.
+	 * @param world The world to test in.
+	 * @param originalPos The location of this block.
+	 * @param rng A randomizer used to select a random diagonal.
+	 * @return One of the (up to) 20 possible diagonal adjacent directions that are occupied by a block that can decay.
 	 */
 	default BlockPos randomUnoccupiedDiagonal(World world, BlockPos originalPos, Random rng) {
 		for (int idx = 0; idx < MAX_DIAGONAL_TESTS; idx++) {
@@ -211,6 +208,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	
 	void registerReplacements(List<BlockState> blocksToReplaceWithSelf);
 	
+	@SuppressWarnings("unused")
 	default void defaultNeighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(fromPos));
 		if (!(blockIn instanceof IDecayBlock) && replacement != null && !(replacement.getBlock() instanceof DecaySurfaceMyceliumBlock)) {
@@ -218,10 +216,11 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	default void defaultOnEntityWalked(World worldIn, BlockPos pos, Entity entityIn) {
 		if (!(entityIn instanceof LivingEntity)) return;
 		LivingEntity entity = (LivingEntity)entityIn;
-		if (worldIn.getRandom().nextDouble() > 0.3D) {
+		if (worldIn.getRandom().nextDouble() > 0.9D) {
 			DecayEffect decay = (DecayEffect)PotionRegistry.get(DecayEffect.class);
 			entity.addEffect(decay.constructEffect(20, 0));
 		}

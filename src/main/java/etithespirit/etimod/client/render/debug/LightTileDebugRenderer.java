@@ -87,6 +87,7 @@ public class LightTileDebugRenderer extends TileEntityRenderer<AbstractLightEner
 	}
 	
 	// Must be registered (of course). Cleans up the already rendered list.
+	@SuppressWarnings("unused")
 	public static void onWorldFinishedRendering(RenderWorldLastEvent evt) {
 		alreadyRendered.clear();
 	}

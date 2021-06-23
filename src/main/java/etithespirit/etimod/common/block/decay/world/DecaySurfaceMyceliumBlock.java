@@ -63,8 +63,8 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 * Given a numeric value with any of the right-most six bits set (0b00XXXXXX), this will return a collision box with a panel over the corresponding face.<br/>
 	 * In order from left to right, the bits are: back, front, bottom, top, left, right<br/>
 	 * For example, inputting {@code 0b100001} will return a collision box with a panel on the front and right surfaces of <em>this</em> block (so, that is, on the neighboring blocks it will be on the left face of the block to the right of this one, and on the back face of the block in front of this one.)
-	 * @param flags
-	 * @return
+	 * @param flags The shape flags.
+	 * @return A shape corresponding to the given flags.
 	 */
 	private static VoxelShape getShapeFor(int flags) {
 		if (flags == 0) return VoxelShapes.block(); 
@@ -108,7 +108,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	}
 	
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" }) 
+	@SuppressWarnings({ "unchecked" })
 	public void createBlockStateDefinition(StateContainer.Builder builder) {
 		builder.add(ALL_ADJACENT_ARE_DECAY);
 		builder.add(EDGE_DETECTION_RARITY);
@@ -155,6 +155,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	 * Returns the shape of the collision box.
 	 */
 	@Override
+	@SuppressWarnings("deprecation")
 	public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
 		return COLLISION_SHAPES[SixSidedUtils.getNumberFromSurfaces(state)];
 	}
@@ -189,11 +190,13 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	///////////////////////////////////////////////////////
 	/// NEIGHBOR STATE CHANGES ///
 	@Override
+	@SuppressWarnings("deprecation")
 	public void randomTick(BlockState state, ServerWorld worldIn, BlockPos pos, Random random) {
 		defaultRandomTick(state, worldIn, pos, random);
 	}
 	
 	@Override
+	@SuppressWarnings("deprecation")
 	public void neighborChanged(BlockState state, World worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		if (!SixSidedUtils.hasNonAirNonFluidFullNeighbor(worldIn, pos)) {
 			// No neighbors around this block now? Delete it.
@@ -210,6 +213,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	}
 	
 	@Override
+	@SuppressWarnings("deprecation")
 	public void onPlace(BlockState state, World worldIn, BlockPos pos, BlockState oldState, boolean isMoving) {
 		// onPlace
 		BlockState newState = modifyStateForNeighbors(worldIn, pos, state);
@@ -223,10 +227,10 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	/**
 	 * Determines if a surface mycelium block (this block) can spread to the given position. 
-	 * @param worldIn
-	 * @param at
-	 * @param existingBlock
-	 * @return
+	 * @param worldIn The world this is spreading in.
+	 * @param at The location this is spreading to.
+	 * @param existingBlock The block that is already there.
+	 * @return Whether or not this block can spread to the given block position.
 	 */
 	@SuppressWarnings("deprecation")
 	public static boolean canSpreadTo(World worldIn, BlockPos at, BlockState existingBlock) {

@@ -13,11 +13,16 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Registers my potions to the game. You don't know what you ask for traveler, my strongest potions could kill a dragon, let alone a man.
+ *
+ * @author Eti
+ */
 public final class PotionRegistry {
 	
 	private static final DeferredRegister<Effect> POTIONS = DeferredRegister.create(ForgeRegistries.POTIONS, EtiMod.MODID);
 	
-	private static final Map<Class<? extends Effect>, RegistryObject<Effect>> REGISTRY_BINDINGS = new HashMap<Class<? extends Effect>, RegistryObject<Effect>>();
+	private static final Map<Class<? extends Effect>, RegistryObject<Effect>> REGISTRY_BINDINGS = new HashMap<>();
 	
 	public static Effect get(Class<? extends Effect> clazz) {
 		return REGISTRY_BINDINGS.get(clazz).get();

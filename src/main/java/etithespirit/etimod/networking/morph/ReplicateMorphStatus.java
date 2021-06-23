@@ -26,20 +26,21 @@ import net.minecraftforge.fml.network.NetworkRegistry;
 import net.minecraftforge.fml.network.PacketDistributor;
 import net.minecraftforge.fml.network.simple.SimpleChannel;
 
+/**
+ * The core networking code used to dispatch and receive network events for player models.
+ *
+ * @author Eti
+ */
 public class ReplicateMorphStatus {
 	
-	// Common
-	private static final Function<PacketBuffer, ModelReplicationPacket> BUFFER_TO_PACKET;
-	private static final BiConsumer<ModelReplicationPacket, PacketBuffer> PACKET_TO_BUFFER;
-	
-	private static BiConsumer<ModelReplicationPacket, Supplier<NetworkEvent.Context>> ON_CLIENT_EVENT;
-	private static BiConsumer<ModelReplicationPacket, Supplier<NetworkEvent.Context>> ON_SERVER_EVENT;
+	private static final Function<PacketBuffer, ModelReplicationPacket> BUFFER_TO_PACKET = ReplicateMorphStatus::bufferToPacket;
+	private static final BiConsumer<ModelReplicationPacket, PacketBuffer> PACKET_TO_BUFFER = ReplicateMorphStatus::packetToBuffer;
 	
 	/** Callbacks that are registered, and will unregister if they return true. */
-	public static final ConcurrentBag<Function<ModelReplicationPacket, Boolean>> CLIENT_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS = new ConcurrentBag<Function<ModelReplicationPacket, Boolean>>();
+	public static final ConcurrentBag<Function<ModelReplicationPacket, Boolean>> CLIENT_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS = new ConcurrentBag<>();
 	
 	/** Callbacks that are registered, and will unregister if they return true. Note that this accepts garbage data too. Please verify data. */
-	public static final ConcurrentBag<Function<ModelReplicationPacket, Boolean>> SERVER_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS = new ConcurrentBag<Function<ModelReplicationPacket, Boolean>>();
+	public static final ConcurrentBag<Function<ModelReplicationPacket, Boolean>> SERVER_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS = new ConcurrentBag<>();
 	
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
 		new ResourceLocation(EtiMod.MODID, "model_replication"),
@@ -50,13 +51,9 @@ public class ReplicateMorphStatus {
 	
 	public static void registerPackets(Dist side) {
 		if (side.isClient()) {
-			ON_CLIENT_EVENT = ReplicateMorphStatus::onClientEvent;
-			
-			INSTANCE.registerMessage(ReplicationData.nextID(), ModelReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ON_CLIENT_EVENT);
+			INSTANCE.registerMessage(ReplicationData.nextID(), ModelReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateMorphStatus::onClientEvent);
 		} else {
-			ON_SERVER_EVENT = ReplicateMorphStatus::onServerEvent;
-			
-			INSTANCE.registerMessage(ReplicationData.nextID(), ModelReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ON_SERVER_EVENT);
+			INSTANCE.registerMessage(ReplicationData.nextID(), ModelReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateMorphStatus::onServerEvent);
 		}
 	}
 	
@@ -112,7 +109,7 @@ public class ReplicateMorphStatus {
 						// Are they an op? If so, we'll allow the different ID.
 						id = msg.playerID;
 					} else {
-						EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUUID().toString() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
+						EtiMod.LOG.warn("A client (" + sender.getName().getString() + "/" + sender.getUUID() + ") sent a model change request and the player ID field was populated with someone else's ID, but they are not an Op and cannot do this!");
 						return;
 					}
 				}
@@ -176,7 +173,7 @@ public class ReplicateMorphStatus {
 		}
 		
 		ctx.get().enqueueWork(() -> {
-			ArrayList<Function<ModelReplicationPacket, Boolean>> toRemove = new ArrayList<Function<ModelReplicationPacket, Boolean>>();
+			ArrayList<Function<ModelReplicationPacket, Boolean>> toRemove = new ArrayList<>();
 			for (Function<ModelReplicationPacket, Boolean> func : CLIENT_RECEIVED_EVENT_SINGLEFIRE_CALLBACKS) {
 				if (func.apply(msg)) {
 					toRemove.add(func);
@@ -191,7 +188,7 @@ public class ReplicateMorphStatus {
 	}
 	
 	/**
-	 * Relays a message to all players that the given player is now a spirit.
+	 * Relays a message to all players whether or not the given player is a spirit.
 	 * @param player The player who changed.
 	 * @param isSpirit The new state of whether or not they are a spirit.
 	 */
@@ -202,7 +199,7 @@ public class ReplicateMorphStatus {
 	
 	/**
 	 * Politely asks the server if I can become a spirit (or no longer be one).
-	 * @param isSpirit
+	 * @param isSpirit Whether or not I want to be a spirit.
 	 */
 	public static void askToSetSpiritStatusAsync(boolean isSpirit) {
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.asRequestSetModel(isSpirit));
@@ -213,20 +210,5 @@ public class ReplicateMorphStatus {
 	 */
 	public static void askWhoIsASpiritAsync() {
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), ModelReplicationPacket.asRequestGetAllModels());
-	}
-	
-	static {
-		BUFFER_TO_PACKET = new Function<PacketBuffer, ModelReplicationPacket>() {
-			@Override
-			public ModelReplicationPacket apply(PacketBuffer buffer) {
-				return bufferToPacket(buffer);
-			}
-		};
-		PACKET_TO_BUFFER = new BiConsumer<ModelReplicationPacket, PacketBuffer>() {
-			@Override
-			public void accept(ModelReplicationPacket t, PacketBuffer u) {
-				packetToBuffer(t, u);
-			}
-		};
 	}
 }

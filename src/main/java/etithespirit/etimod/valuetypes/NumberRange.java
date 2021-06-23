@@ -5,8 +5,8 @@ import java.util.Random;
 /**
  * A value representing a range between two numbers [min, max]
  * @author Eti
- *
  */
+@SuppressWarnings("unused")
 public final class NumberRange {
 	
 	/**
@@ -58,8 +58,8 @@ public final class NumberRange {
 	
 	/**
 	 * Returns the value of this range interpolated to the given percentage.
-	 * @param alpha
-	 * @return
+	 * @param alpha The percentage to go from min to max.
+	 * @return A value linearly interpolated from min to max by alpha percent.
 	 */
 	public double lerp(double alpha) {
 		if (equal) return min;
@@ -67,8 +67,7 @@ public final class NumberRange {
 	}
 	
 	/**
-	 * Returns a random value in the range [min, max), unless min and max are equal, from which that value will be returned verbatim.
-	 * @return
+	 * @return A random value in the range [min, max), unless min and max are equal, from which that value will be returned verbatim.
 	 */
 	public double random() {
 		if (equal) return min;
@@ -76,14 +75,17 @@ public final class NumberRange {
 	}
 	
 	/**
-	 * Returns a NumberRange with a range identical to this, but using the given randomizer.
-	 * @param newRandomzier
-	 * @return
+	 * Returns a new {@link NumberRange} with a range identical to this, but using the given randomizer.
+	 * @param newRandomizer The new randomizer to use.
+	 * @return A new {@link NumberRange} using the given randomizer.
 	 */
 	public NumberRange withRandomizer(Random newRandomizer) {
 		return new NumberRange(min, max, newRandomizer);
 	}
 	
+	/**
+	 * @return This {@link NumberRange} in a mutable state. The returned value will not affect this instance, but it will share the same randomizer.
+	 */
 	public MutableNumberRange mutable() {
 		return new MutableNumberRange(min, max, rng);
 	}

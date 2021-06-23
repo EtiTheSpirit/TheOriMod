@@ -14,7 +14,7 @@ import net.minecraft.item.ItemStack;
  */
 public final class ItemRecharger {
 	
-	private static final HashMap<ItemStack, ItemRecharger> RECHARGER_CACHE = new HashMap<ItemStack, ItemRecharger>();
+	private static final HashMap<ItemStack, ItemRecharger> RECHARGER_CACHE = new HashMap<>();
 	
 	private double speedCoefficient = 0.1D;
 	private final PlayerEntity player;
@@ -33,10 +33,10 @@ public final class ItemRecharger {
 	
 	/**
 	 * Returns a new or existing instance of ItemRecharger associated with the given ItemStack.
-	 * @param player
-	 * @param stack
-	 * @param asRechargeable
-	 * @return
+	 * @param player The player to get the recharger for.
+	 * @param stack The item stack to get it for.
+	 * @param asRechargeable The item stack as an {@link ISpiritRechargeable}
+	 * @return A new or pre-existing instance of {@link ItemRecharger} for this item.
 	 */
 	public static ItemRecharger get(PlayerEntity player, ItemStack stack, ISpiritRechargeable asRechargeable) {
 		ItemRecharger instance = rawGet(stack);
@@ -48,8 +48,8 @@ public final class ItemRecharger {
 	
 	/**
 	 * Attempts to return an instance of this type for the given ItemStack, or null if one is not active. Only useful for disposal.
-	 * @param stack
-	 * @return
+	 * @param stack The item stack to use.
+	 * @return An {@link ItemRecharger} for that stack, or null if one has not been created.
 	 */
 	public static ItemRecharger rawGet(ItemStack stack) {
 		if (RECHARGER_CACHE.containsKey(stack)) {
@@ -75,7 +75,7 @@ public final class ItemRecharger {
 		if (currentExp >= expToTake && itemReference.isDamaged()) {
 			PlayerDataUtils.removeExperiencePoints(player, expToTake);
 			itemReference.setDamageValue(itemReference.getDamageValue() - (int)(repair * speedCoefficient));
-			currentExp = player.getExperienceReward(player);
+			// currentExp = player.getExperienceReward(player);
 		}
 	}
 	

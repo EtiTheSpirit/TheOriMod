@@ -21,6 +21,7 @@ import com.mojang.blaze3d.vertex.IVertexBuilder;
 
 import etithespirit.etimod.common.mob.SpiritEntity;
 
+@SuppressWarnings("unused")
 public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, IHasHead {
 	
 	/** The mathematical constant pi */
@@ -187,9 +188,9 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 	
 	/**
 	 * Rotate the head with the given axes in radians.
-	 * @param x
-	 * @param y
-	 * @param z
+	 * @param x The x rotation
+	 * @param y The y rotation
+	 * @param z The z rotation
 	 */
 	private void setHeadRotation(final float x, final float y, final float z) {
 		setRotationAngle(Head, x, y, z);
@@ -197,12 +198,12 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 	
 	/**
 	 * Rotate the legs by the given numbers in radians.
-	 * @param lx
-	 * @param ly
-	 * @param lz
-	 * @param rx
-	 * @param ry
-	 * @param rz
+	 * @param lx The left leg X rotation
+	 * @param ly The left leg Y rotation
+	 * @param lz The left leg Z rotation
+	 * @param rx The right leg X rotation
+	 * @param ry The right leg Y rotation
+	 * @param rz The right leg Z rotation
 	 */
 	private void setLegRotation(final float lx, final float ly, final float lz, final float rx, final float ry, final float rz) {
 		setRotationAngle(LLeg, lx, ly, lz);
@@ -211,7 +212,7 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 
 	@Override
 	public void setupAnim(final @Nullable SpiritEntity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYawDegrees, final float headPitchDegrees) {
-		setRotationAngles((LivingEntity)entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYawDegrees, headPitchDegrees, null);
+		setRotationAngles(entityIn, limbSwing, limbSwingAmount, ageInTicks, netHeadYawDegrees, headPitchDegrees, null);
 	}
 	
 	public void setRotationAngles(final @Nonnull LivingEntity entityIn, final float limbSwing, final float limbSwingAmount, final float ageInTicks, final float netHeadYawDegrees, final float headPitchDegrees, final @Nullable PlayerModel<AbstractClientPlayerEntity> model) {
@@ -274,7 +275,7 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 	}
 	
 	private void translateAndRotate(ModelRenderer renderer, MatrixStack transformation) {
-		transformation.translate((double)(renderer.x / (8.0F / WIDTH_MOD)), 1/8D, 0);
+		transformation.translate((renderer.x / (8.0D / WIDTH_MOD)), 1/8D, 0);
 		if (renderer.zRot != 0.0F) {
 			transformation.mulPose(Vector3f.ZP.rotation(renderer.zRot));
 		}
@@ -374,6 +375,8 @@ public class ModelSpirit extends EntityModel<SpiritEntity> implements IHasArm, I
 			this.RightArm.yRot += this.Torso.yRot;
 			this.LeftArm.yRot += this.Torso.yRot;
 			this.LeftArm.xRot += this.Torso.yRot;
+			// yes it should
+			
 			f = 1.0F - entity.attackAnim;
 			f = f * f;
 			f = f * f;

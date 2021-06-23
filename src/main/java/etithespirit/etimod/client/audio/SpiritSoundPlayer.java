@@ -6,7 +6,6 @@ import javax.annotation.Nonnull;
 
 import etithespirit.etimod.exception.ArgumentNullException;
 import etithespirit.etimod.info.spirit.SpiritData;
-import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import etithespirit.etimod.util.EtiUtils;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.SoundType;
@@ -16,6 +15,11 @@ import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvent;
 import net.minecraft.util.math.BlockPos;
 
+/**
+ * Plays sounds pertaining to Spirits.
+ *
+ * @author Eti
+ */
 public final class SpiritSoundPlayer {
 	
 	private static final Random RNG = new Random();
@@ -149,12 +153,13 @@ public final class SpiritSoundPlayer {
     	}
     }
     
-    /**
+    /*
      * Plays the sound associated with falling a given distance.
      * @param player The player to play for. Whether or not they are a spirit is validated in this method.
      * @param fallDistance
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null. 
      */
+	/*
     @Deprecated
     public static void playFallSound(@Nonnull PlayerEntity player, float fallDistance) {
     	if (SpiritData.isSpirit(player)) {
@@ -162,11 +167,12 @@ public final class SpiritSoundPlayer {
 			if (sound != null) playSoundAtPlayer(player, sound, SoundCategory.PLAYERS, 0.1f, getRandomPitch());
 		}
     }
+    */
     
     /**
      * Plays the sound associated with being hurt.
      * @param player The player to play for. Whether or not they are a spirit is validated in this method.
-     * @param source
+     * @param source The cause of the damage.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
     public static void playHurtSound(@Nonnull PlayerEntity player, @Nonnull DamageSource source) {
@@ -182,7 +188,7 @@ public final class SpiritSoundPlayer {
     /**
      * Plays the sound associated with being killed.
      * @param player The player to play for. Whether or not they are a spirit is validated in this method.
-     * @param source
+     * @param source The cause of the damage.
      * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
      */
     public static void playDeathSound(@Nonnull PlayerEntity player, @Nonnull DamageSource source) {

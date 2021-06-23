@@ -29,6 +29,7 @@ import net.minecraft.world.World;
  *
  */
 @Mixin(PlayerEntity.class)
+@SuppressWarnings("unused")
 public abstract class InjectPlayerEntityAttackTarget extends LivingEntity implements ISelfProvider {
 
 	protected InjectPlayerEntityAttackTarget(EntityType<? extends LivingEntity> type, World worldIn) { super(type, worldIn); }
@@ -36,14 +37,14 @@ public abstract class InjectPlayerEntityAttackTarget extends LivingEntity implem
 	/**
 	 * Intercepts calls to world.playSound in PlayerEntity.attackTargetEntityWithCurrentItem
 	 * @param world The world that playSound is being called on.
-	 * @param player
-	 * @param x
-	 * @param y
-	 * @param z
-	 * @param soundIn
-	 * @param category
-	 * @param volume
-	 * @param pitch
+	 * @param player It's complicated, check world docs lol
+	 * @param x The X position of the sound.
+	 * @param y The Y position of the sound.
+	 * @param z The Z position of the sound.
+	 * @param soundIn The sound to play.
+	 * @param category The category to play the sound in.
+	 * @param volume The volume of the sound.
+	 * @param pitch The pitch modifier for the sound.
 	 */
 	@Redirect(
 		method = "attack(Lnet/minecraft/entity/Entity;)V", 
@@ -71,8 +72,8 @@ public abstract class InjectPlayerEntityAttackTarget extends LivingEntity implem
 	
 	/**
 	 * Given one of the vanilla sound events for a player attacking something, this returns the corresponding damage level for the amount of damage done.
-	 * @param sound
-	 * @return
+	 * @param sound The sound being playd.
+	 * @return A spirit DamageLevel suitable for the sound.
 	 */
 	private static DamageLevel damageLevelFromVanillaSoundEvent(@Nonnull SoundEvent sound) {
 		if (sound == null) throw new NullPointerException();
@@ -85,8 +86,8 @@ public abstract class InjectPlayerEntityAttackTarget extends LivingEntity implem
 	
 	/**
 	 * Given one of the vanilla sound events for a player attacking something, this returns the corresponding attack type for the damage done.
-	 * @param sound
-	 * @return
+	 * @param sound The sound being played.
+	 * @return A spirit SpecialAttackType suitable for the sound.
 	 */
 	private static SpecialAttackType attackTypeFromVanillaSoundEvent(@Nonnull SoundEvent sound) {
 		if (sound == null) throw new NullPointerException();

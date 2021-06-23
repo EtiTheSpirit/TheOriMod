@@ -14,6 +14,10 @@ import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.fml.RegistryObject;
 
+/**
+ * Generates models associated with items.
+ * @author Eti
+ */
 public final class GenerateItemModels extends ItemModelProvider {
 
 	public GenerateItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
@@ -42,7 +46,7 @@ public final class GenerateItemModels extends ItemModelProvider {
 	
 	/**
 	 * Given a RegistryObject&lt;Item&gt; for a shield, this will create its model.
-	 * @param item
+	 * @param item The item to create.
 	 */
 	private void generateShieldItem(RegistryObject<Item> item) {
 		ResourceLocation id = item.getId();

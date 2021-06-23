@@ -6,6 +6,11 @@ import etithespirit.etimod.world.dimension.generation.GeneratorController;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
+/**
+ * A generation style used to generate tall shards of rock and ice in the sky.
+ *
+ * @author Eti
+ */
 @Deprecated
 public class SkyShard extends GenerationStyle<LightForestSettings.SkyShardSettings> {
 	
@@ -42,8 +47,8 @@ local floor = ((256 - Noise(x * 2, z * 2)) + 48) / 2
 	private double specialNoiseAt(double x, double z, long maxHeight) {
 		double n = getNoiseBlock(x, z, maxHeight);
 		double n2 = getNoiseBlock(x / 2, z / 2, maxHeight);
-		if (n2 > maxHeight / 8 && n2 > n) {
-			return Math.floor(n / (maxHeight / 16));
+		if (n2 > maxHeight / 8f && n2 > n) {
+			return Math.floor(n / (maxHeight / 16f));
 		}
 		return Math.floor(n);
 	}

@@ -8,6 +8,8 @@ import net.minecraftforge.common.util.LazyOptional;
 
 /**
  * A class used to access a player's information pertaining to their Spirit state.
+ *
+ * @author Eti
  */
 public final class SpiritData {
 	

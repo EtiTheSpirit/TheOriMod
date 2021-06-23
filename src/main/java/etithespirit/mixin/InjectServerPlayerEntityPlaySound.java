@@ -24,6 +24,7 @@ import net.minecraft.world.World;
  *
  */
 @Mixin(ServerPlayerEntity.class)
+@SuppressWarnings("unused")
 public abstract class InjectServerPlayerEntityPlaySound extends PlayerEntity implements ISelfProvider {
 
 	public InjectServerPlayerEntityPlaySound(World p_i241920_1_, BlockPos p_i241920_2_, float p_i241920_3_, GameProfile p_i241920_4_) {
@@ -47,7 +48,6 @@ public abstract class InjectServerPlayerEntityPlaySound extends PlayerEntity imp
 			// See OverrideEntityPlaySound for what this garbage is.
 			playNotifySound(new DuplicateSoundEvent(evt.getSound()), evt.getCategory(), evt.getVolume(), evt.getPitch());
 			ci.cancel();
-			return;
 		}
 	}
 	

@@ -15,7 +15,7 @@ import net.minecraft.world.biome.Biomes;
 import net.minecraft.world.biome.provider.BiomeProvider;
 
 /**
- * Based off of McJty's tutorial. Modified for personal use.
+ * Based off of McJty's tutorial. Modified for personal use. Provides biomes in the Light Forest dimension.
  * @author Eti
  *
  */

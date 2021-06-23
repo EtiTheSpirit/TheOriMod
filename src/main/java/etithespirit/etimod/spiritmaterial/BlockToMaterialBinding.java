@@ -26,8 +26,8 @@ import net.minecraftforge.fml.RegistryObject;
  * A custom binding from block to material that may not necessarily use the Block's defined material.<br/>
  * If a block is not defined in this class to have a custom material, then the material it was constructed with is used.
  * @author Eti
- *
  */
+@SuppressWarnings("unused")
 public final class BlockToMaterialBinding {
 	
 	private BlockToMaterialBinding() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
@@ -37,44 +37,44 @@ public final class BlockToMaterialBinding {
 	/**
 	 * A lookup to access spirit materials from vanilla materials.
 	 */
-	private static final Map<Material, SpiritMaterial> MATERIAL_TO_SPIRIT_MTL = new HashMap<Material, SpiritMaterial>();
+	private static final Map<Material, SpiritMaterial> MATERIAL_TO_SPIRIT_MTL = new HashMap<>();
 	
 	/////////////////////////////////////////////////////////
 	/// CONSTANT BINDINGS
 	/**
 	 * Maps blocks to replacement materials.
 	 */
-	private static final Map<Block, Material> BLOCK_TO_MATERIAL = new HashMap<Block, Material>();
+	private static final Map<Block, Material> BLOCK_TO_MATERIAL = new HashMap<>();
 	
 	/**
 	 * Maps blocks to specific spirit materials.
 	 */
-	private static final Map<Block, SpiritMaterial> BLOCK_TO_SPIRIT_MTL = new HashMap<Block, SpiritMaterial>();
+	private static final Map<Block, SpiritMaterial> BLOCK_TO_SPIRIT_MTL = new HashMap<>();
 	
 	/**
 	 * A map from specific block states to spirit materials.
 	 */
-	private static final Map<BlockState, SpiritMaterial> SPECIFIC_STATE_TO_SPIRIT_MTL = new HashMap<BlockState, SpiritMaterial>();
+	private static final Map<BlockState, SpiritMaterial> SPECIFIC_STATE_TO_SPIRIT_MTL = new HashMap<>();
 	
 	/**
 	 * Maps arbitrary resources to specific spirit materials.
 	 */
-	private static final Map<ResourceLocation, SpiritMaterial> ARB_BLOCK_TO_SPIRIT_MTL = new HashMap<ResourceLocation, SpiritMaterial>();
+	private static final Map<ResourceLocation, SpiritMaterial> ARB_BLOCK_TO_SPIRIT_MTL = new HashMap<>();
 	
 	/**
 	 * For blocks that the player's feet are inside of, if the block is in this list, it should be tested as the effective material rather than the block they are standing on
 	 */
-	private static final List<Block> BLOCKS_TO_TEST_IF_INSIDE = new ArrayList<Block>();
+	private static final List<Block> BLOCKS_TO_TEST_IF_INSIDE = new ArrayList<>();
 
 	/**
 	 * For blocks that the player's feet are inside of, if the block is in this list, it should be tested as the effective material rather than the block they are standing on
 	 */
-	private static final List<BlockState> BLOCKSTATES_TO_TEST_IF_INSIDE = new ArrayList<BlockState>();
+	private static final List<BlockState> BLOCKSTATES_TO_TEST_IF_INSIDE = new ArrayList<>();
 	
 	/**
 	 * For blocks that the player's feet are inside of, if the block is in this list, it should be tested as the effective material rather than the block they are standing on
 	 */
-	private static final List<ResourceLocation> ARB_BLOCKS_TO_TEST_IF_INSIDE = new ArrayList<ResourceLocation>();
+	private static final List<ResourceLocation> ARB_BLOCKS_TO_TEST_IF_INSIDE = new ArrayList<>();
 	
 	/////////////////////////////////////////////////////////
 	/// CONDITIONAL BINDINGS
@@ -82,22 +82,22 @@ public final class BlockToMaterialBinding {
 	/**
 	 * Similar to CONDITIONAL_STATE_OVERRIDES, but instead of returning a state override, it's an entire material override.
 	 */
-	private static final Map<Block, ISpiritMaterialAquisitionFunction> BLOCK_CONDITIONAL_MATERIAL_OVERRIDES = new HashMap<Block, ISpiritMaterialAquisitionFunction>();
+	private static final Map<Block, ISpiritMaterialAquisitionFunction> BLOCK_CONDITIONAL_MATERIAL_OVERRIDES = new HashMap<>();
 	
 	/**
 	 * Identical to BLOCK_CONDITIONAL_MATERIAL_OVERRIDES, but it's for an entire material.
 	 */
-	private static final Map<Material, ISpiritMaterialAquisitionFunction> MATERIAL_CONDITIONAL_MATERIAL_OVERRIDES = new HashMap<Material, ISpiritMaterialAquisitionFunction>();
+	private static final Map<Material, ISpiritMaterialAquisitionFunction> MATERIAL_CONDITIONAL_MATERIAL_OVERRIDES = new HashMap<>();
 	
 	/////////////////////////////////////////////////////////
 	/// CORE CODE
 	
 	/**
 	 * A more rich method of acquiring an appropriate block sound using contextual entity information. Allows checking conditional cases.
-	 * @param entity
-	 * @param standingOn
-	 * @param standingIn
-	 * @return
+	 * @param entity The entity to test.
+	 * @param standingOn The position of the block the entity is standing on.
+	 * @param standingIn The position of the block the entity is standing in.
+	 * @return An appropriate material for the information in the system.
 	 */
 	public static SpiritMaterial getMaterialFor(Entity entity, BlockPos standingOn, BlockPos standingIn) {
 		World world = entity.getCommandSenderWorld();
@@ -123,8 +123,8 @@ public final class BlockToMaterialBinding {
 
 	/**
 	 * Return raw, 1:1 bindings from blocks/materials to SpiritMaterials. Does not work with conditional statements as those require an entity and two BlockStates.
-	 * @param state
-	 * @return
+	 * @param state The state of the block to test.
+	 * @return The appropriate material for this.
 	 */
 	public static SpiritMaterial getMaterialForRaw(BlockState state) {
 		// Its state?
@@ -171,12 +171,12 @@ public final class BlockToMaterialBinding {
 	
 	/**
 	 * Given two blockstates, this determines which state should be used to grab the material from.
-	 * @param blockStandingOn
-	 * @param blockStandingIn
-	 * @return
+	 * @param blockStandingOn The block that is being stood on.
+	 * @param blockStandingIn The block that is being stood in.
+	 * @return The appropriate {@link BlockState} to use given this material's settings.
 	 */
 	public static BlockState getAppropriateMaterialBetween(BlockState blockStandingOn, BlockState blockStandingIn) {
-		if (BLOCKS_TO_TEST_IF_INSIDE.contains(blockStandingIn.getBlock()) || ARB_BLOCKS_TO_TEST_IF_INSIDE.contains(blockStandingIn.getBlock().getRegistryName())) {
+		if (BLOCKS_TO_TEST_IF_INSIDE.contains(blockStandingIn.getBlock()) || ARB_BLOCKS_TO_TEST_IF_INSIDE.contains(blockStandingIn.getBlock().getRegistryName()) || BLOCKSTATES_TO_TEST_IF_INSIDE.contains(blockStandingIn)) {
 			return blockStandingIn;
 		}
 		return blockStandingOn;
@@ -264,7 +264,6 @@ public final class BlockToMaterialBinding {
 		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_PLANT, SpiritMaterial.GRASS_SOFT); // mojmap: REPLACEABLE_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.PORTAL, SpiritMaterial.GLASS);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_FIREPROOF_PLANT, SpiritMaterial.GRASS_CRISP); // mojmap: REPLACEABLE_FIREPROOF_PLANT
-		MATERIAL_TO_SPIRIT_MTL.put(Material.PLANT, SpiritMaterial.GRASS_SOFT); // mojmap: PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.WATER_PLANT, SpiritMaterial.SHROOM); // mojmap: WATER_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.SAND, SpiritMaterial.SAND);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.SHULKER_SHELL, SpiritMaterial.ROCK); // mojmap: SHULKER_SHELL
@@ -417,13 +416,13 @@ public final class BlockToMaterialBinding {
 	private static List<Block> vanillaBlocks = null;
 	public static boolean isMaterialVanilla(Material material) {
 		if (vanillaMaterials == null) {
-			vanillaMaterials = new ArrayList<Material>();
+			vanillaMaterials = new ArrayList<>();
 			Field[] allFields = Material.class.getFields();
 			for (Field field : allFields) {
 				if (EtiUtils.hasFlag(field.getModifiers(), Modifier.FINAL) && EtiUtils.hasFlag(field.getModifiers(), Modifier.STATIC)) {
 					try {
 						vanillaMaterials.add((Material)field.get(null));
-					} catch (Exception exc) { }
+					} catch (Exception ignored) { }
 				}
 			}
 		}
@@ -432,13 +431,13 @@ public final class BlockToMaterialBinding {
 	}
 	public static boolean isBlockVanilla(Block block) {
 		if (vanillaBlocks == null) {
-			vanillaBlocks = new ArrayList<Block>();
+			vanillaBlocks = new ArrayList<>();
 			Field[] allFields = Blocks.class.getFields();
 			for (Field field : allFields) {
 				if (EtiUtils.hasFlag(field.getModifiers(), Modifier.FINAL) && EtiUtils.hasFlag(field.getModifiers(), Modifier.STATIC)) {
 					try {
 						vanillaBlocks.add((Block)field.get(null));
-					} catch (Exception exc) { }
+					} catch (Exception ignored) { }
 				}
 			}
 		}

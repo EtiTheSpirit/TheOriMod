@@ -20,20 +20,19 @@ public interface IGeneratorRoutine {
 	 * @param worldZ The current Z coordinate in the world. It's safe to set a chunk's block to this coordinate as it wraps around 16.
 	 * @param maxHeight The height limit on the Y axis.
 	 */
-	public boolean generateBlock(GeneratorController source, IChunk chunk, long seed, long worldX, long worldY, long worldZ, long maxHeight);
+	boolean generateBlock(GeneratorController source, IChunk chunk, long seed, long worldX, long worldY, long worldZ, long maxHeight);
 
 	/**
 	 * Updates the noise generator to the given seed if necessary, or does nothing if it's already set.
 	 * @param seed The new seed to use.
 	 */
-	public void setNoiseToSeed(long seed);
+	void setNoiseToSeed(long seed);
 	
 	/**
-	 * Returns whether or not this element is enabled.
-	 * @return
+	 * @return Whether or not this element is enabled.
 	 */
 	@SuppressWarnings("rawtypes")
-	public default boolean isEnabled() {
+	default boolean isEnabled() {
 		if (this instanceof GenerationStyle) {
 			return ((GenerationStyle)this).getSettings().getEnabled();
 		}

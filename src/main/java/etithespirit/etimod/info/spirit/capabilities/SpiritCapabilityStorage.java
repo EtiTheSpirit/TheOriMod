@@ -5,6 +5,11 @@ import net.minecraft.nbt.INBT;
 import net.minecraft.util.Direction;
 import net.minecraftforge.common.capabilities.Capability;
 
+/**
+ * Stores spirit capabilities.
+ *
+ * @author Eti
+ */
 public final class SpiritCapabilityStorage implements Capability.IStorage<ISpiritCapabilities> {
 	
 	@Override

@@ -2,6 +2,12 @@ package etithespirit.etimod.valuetypes;
 
 import java.util.Random;
 
+/**
+ * An implementation of {@link NumberRange} that can be modified.
+ *
+ * @author Eti
+ */
+@SuppressWarnings("unused")
 public final class MutableNumberRange {
 	/**
 	 * A randomizer used for {@link #random()}
@@ -36,8 +42,8 @@ public final class MutableNumberRange {
 	
 	/**
 	 * Returns the value of this range interpolated to the given percentage.
-	 * @param alpha
-	 * @return
+	 * @param alpha The percentage to go from min to max.
+	 * @return A value linearly interpolated from min to max by alpha percent.
 	 */
 	public double lerp(double alpha) {
 		if (min == max) return min;
@@ -45,8 +51,7 @@ public final class MutableNumberRange {
 	}
 	
 	/**
-	 * Returns a random value in the range [min, max), unless min and max are equal, from which that value will be returned verbatim.
-	 * @return
+	 * @return A random value in the range [min, max), unless min and max are equal, from which that value will be returned verbatim.
 	 */
 	public double random() {
 		if (min == max) return min;
@@ -54,9 +59,8 @@ public final class MutableNumberRange {
 	}
 	
 	/**
-	 * Returns a NumberRange with a range identical to this, but using the given randomizer.
-	 * @param newRandomzier
-	 * @return
+	 * Returns a NumberRange with a range identical to this, but in an immutable state.
+	 * @return An immutable representation of this instance.
 	 */
 	public NumberRange immutable() {
 		return new NumberRange(min, max, rng);

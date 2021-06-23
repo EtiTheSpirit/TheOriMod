@@ -8,6 +8,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.chunk.IChunk;
 
+/**
+ * The generation style for the glades.
+ *
+ * @author Eti
+ */
 public class Glades extends GenerationStyle<LightForestSettings.GladesSettings> {
 
 	public Glades(LightForestChunkGenerator generator) {

@@ -12,16 +12,21 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 
+/**
+ * Registers all of my sounds to the game.
+ *
+ * @author Eti
+ */
 public final class SoundRegistry {
 	
 	private static final DeferredRegister<SoundEvent> SOUND_REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, EtiMod.MODID);
 	
-	public static final HashMap<String, RegistryObject<SoundEvent>> SOUNDS = new HashMap<String, RegistryObject<SoundEvent>>();
+	public static final HashMap<String, RegistryObject<SoundEvent>> SOUNDS = new HashMap<>();
 	
 	public static SoundEvent get(@Nonnull String soundEventName) {
 		RegistryObject<SoundEvent> sound = SOUNDS.get(soundEventName);
 		if (sound == null || !sound.isPresent()) {
-			throw new NullPointerException(String.format("ALERT: Something attempted to get a spirit sound that didn't exist! Key: %s, RegistryObject<SoundEvent> exists: %s (if TRUE, then the RegistryObject<SoundEvent> was empty)", String.valueOf(soundEventName), String.valueOf(sound != null)));
+			throw new NullPointerException(String.format("ALERT: Something attempted to get a spirit sound that didn't exist! Key: %s, RegistryObject<SoundEvent> exists: %s (if TRUE, then the RegistryObject<SoundEvent> was empty)", soundEventName, (sound != null)));
 		}
 		return SOUNDS.get(soundEventName).get();
 	}

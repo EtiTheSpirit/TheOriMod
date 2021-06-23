@@ -7,6 +7,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 
+/**
+ * Default implementations for sound behaviors on blocks.
+ *
+ * @author Eti
+ */
+@SuppressWarnings("unused")
 public final class DefaultImplementations {
 
 	/**
@@ -18,7 +24,7 @@ public final class DefaultImplementations {
 	private DefaultImplementations() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
 	@SuppressWarnings("deprecation")
-	public static final SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
+	public static SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		World world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
@@ -50,7 +56,7 @@ public final class DefaultImplementations {
 	}
 	
 	@SuppressWarnings("deprecation")
-	public static final SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
+	public static SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		World world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);

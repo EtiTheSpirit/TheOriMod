@@ -9,6 +9,7 @@ import static etithespirit.etimod.common.block.StaticData.TRUE_POSITION_PREDICAT
 
 import etithespirit.etimod.common.block.ExtendedMaterial;
 
+@SuppressWarnings("unused")
 public class HardLightBlock extends Block implements ILightBlockIdentifier {
 	
 	public HardLightBlock() {
@@ -19,7 +20,7 @@ public class HardLightBlock extends Block implements ILightBlockIdentifier {
 			.isSuffocating(FALSE_POSITION_PREDICATE)
 			.harvestTool(ToolType.PICKAXE) // but don't require a tool
 			.strength(10, 1000) // Make it absurdly blast resistant.
-			.lightLevel((state) -> { return 15; })
+			.lightLevel((state) -> 15)
 			.sound(SoundType.GLASS)
 		);
 	}

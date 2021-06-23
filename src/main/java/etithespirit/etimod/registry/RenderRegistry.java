@@ -5,6 +5,11 @@ import etithespirit.etimod.client.render.debug.LightTileDebugRenderer;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
 
+/**
+ * Registers all my renderers to the game.
+ *
+ * @author Eti
+ */
 public final class RenderRegistry {
 
 	public static void registerAll() {

@@ -10,6 +10,7 @@ import net.minecraft.nbt.CompoundNBT;
  * @author Eti
  *
  */
+@SuppressWarnings("unused")
 public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	
 	/**
@@ -74,7 +75,7 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	
 	/**
 	 * Should be called from the TileEntity that instantiated this instance, this appends the energy data to the entity.
-	 * @param nbt
+	 * @param nbt The NBT tag to read from.
 	 */
 	public void readFromNBT(CompoundNBT nbt) {
 		this.energy = Math.max(Math.min(capacity, nbt.getDouble(energyKeyOverride)), 0);
@@ -82,8 +83,8 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	
 	/**
 	 * Should be called from the TileEntity that instantiated this instance, this writes the energy data to NBT.
-	 * @param nbt
-	 * @return
+	 * @param nbt The NBT tag to write to.
+	 * @return The modified NBT tag.
 	 */
 	public CompoundNBT writeToNBT(CompoundNBT nbt) {
 		nbt.putDouble(energyKeyOverride, energy);

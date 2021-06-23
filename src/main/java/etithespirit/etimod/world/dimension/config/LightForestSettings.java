@@ -12,6 +12,7 @@ import net.minecraftforge.registries.ForgeRegistries;
  * @author Eti
  *
  */
+@SuppressWarnings("unused")
 public final class LightForestSettings {
 	
 	public final SkyShardSettings skyShards;
@@ -65,16 +66,14 @@ public final class LightForestSettings {
 		}
 		
 		/**
-		 * Returns whether or not this generation type should be used.
-		 * @return
+		 * @return Whether or not this generation type should be used.
 		 */
 		public final boolean getEnabled() {
 			return enabled;
 		}
 		
 		/**
-		 * Returns the raw resource location of the block to generate with in debug mode as a string.
-		 * @return
+		 * @return The raw resource location of the block to generate with in debug mode as a string.
 		 */
 		public final String getBlockString() {
 			return block;
@@ -82,23 +81,21 @@ public final class LightForestSettings {
 		
 		/**
 		 * Using getBlockString(), this will attempt to find the given block in the registry, and will return that actual block instance's default state.
-		 * @return
+		 * @return The default state of the ResourceLocation used in the settings.
 		 */
 		public final BlockState getBlockState() {
 			return blockState;
 		}
 		
 		/**
-		 * Returns the noise stretch on the X dimension.
-		 * @return
+		 * @return The noise stretch on the X dimension.
 		 */
 		public final double getNoiseStretchX() {
 			return noiseStretchX;
 		}
 
 		/**
-		 * Returns the noise stretch on the Z dimension.
-		 * @return
+		 * @return The noise stretch on the Z dimension.
 		 */
 		public final double getNoiseStretchZ() {
 			return noiseStretchZ;
@@ -251,8 +248,7 @@ public final class LightForestSettings {
 		}
 		
 		/**
-		 * Returns whether or not this feature should be used.
-		 * @return
+		 * @return Whether or not this feature should be used.
 		 */
 		public final boolean getEnabled() {
 			return enabled;

@@ -15,10 +15,6 @@ public class SpiritEntity extends AnimalEntity {
         super(eType, world);
     }
     
-    public boolean isAIEnabled() {
-        return false;
-    }
-    
     @Override
 	protected float getJumpPower() {
 	    return 0.84f;
