@@ -1,7 +1,6 @@
 package etithespirit.etimod.info.spirit.capabilities;
 
 import etithespirit.etimod.util.nbt.ISimpleNBTSerializable;
-import etithespirit.etimod.valuetypes.Trilean;
 import net.minecraft.nbt.CompoundNBT;
 
 /**
@@ -9,21 +8,30 @@ import net.minecraft.nbt.CompoundNBT;
  */
 public final class SpiritGameAbilities implements ISimpleNBTSerializable {
 	
-	// spirit flame (probably not)
+	/** Whether or not the player can jump up walls. */
 	public boolean wallJump;
-	// charge flame (probably not)
-	public Trilean airJump;
-	// bash (probably not gonna be a thing)
-	// stomp (idk)
-	// wall climb (probably not gonna be a thing)
-	// charge jump (or launch?)
+	
+	/** The amount of jumps this player can perform whilst in the air. 0 means none, 1 means double jump, 2 means triple jump. */
+	public byte airJump;
+	
+	/** Whether or not the player can use the Stomp ability. This has not been implemented. */
+	@Deprecated public final boolean stomp = false;
+	
+	// Lock stomp and launch to be false under final so that it's really cemented in that they don't do anything.
+	
+	/** Whether or not the player can use charge jump / launch. This has not been implemented. */
+	@Deprecated public final boolean launch = false;
+	
+	/** Whether or not the player can dash. */
 	public boolean dash;
-	// light burst (idk)
+	
 	
 	@Override
 	public CompoundNBT writeToNBT(CompoundNBT tag) {
 		tag.putBoolean("wallJump", wallJump);
-		tag.putByte("airJump", airJump.toByte());
+		tag.putByte("airJump", airJump);
+		// stomp
+		// launch
 		tag.putBoolean("dash", dash);
 		return tag;
 	}
@@ -31,7 +39,9 @@ public final class SpiritGameAbilities implements ISimpleNBTSerializable {
 	@Override
 	public void readFromNBT(CompoundNBT tag) {
 		wallJump = tag.getBoolean("wallJump");
-		airJump = Trilean.fromByte(tag.getByte("airJump"));
+		airJump = tag.getByte("airJump");
+		// stomp
+		// launch
 		dash = tag.getBoolean("dash");
 	}
 	
