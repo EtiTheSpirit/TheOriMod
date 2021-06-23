@@ -2,11 +2,8 @@
 
 An early alpha test of *The Ori Mod*, which appends mechanics from the *Ori* game franchise to Minecraft. It is mostly used in the official Discord server for the franchise.
 
-The document here is not yet complete as far as information goes.
+The document here is not yet complete as far as information goes, mostly because the mod isn't really ready.
 
 # For Developers
 
-There is no EtiMod API in the traditional sense. Rather, IMC is used extensively for this purpose. IMC is documented on the mod's wiki.
-
-## Spirits Have Hooves, and Hooves Make Special Sounds
-If you need to integrate your mod so that custom block sounds are appended when walked on by Spirits (out of the wide selection I have), you can use IMC to do so. Right now, this is documented on the mod's wiki. [check this page](https://the-ori-minecraft-mod.fandom.com/wiki/IMC_Methods) for more information on that.
+There is an API, but it only exists for a version that hasn't even been released yet. It will be documented once released.
