@@ -1,6 +1,7 @@
 package etithespirit.etimod.common.datamanagement;
 
 import etithespirit.etimod.client.audio.SpiritSoundPlayer;
+import etithespirit.etimod.common.player.EffectEnforcement;
 import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.networking.morph.ReplicateMorphStatus;
@@ -19,12 +20,14 @@ public final class WorldLoading {
 		PlayerEntity player = evt.getPlayer();
 		ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(player, SpiritData.isSpirit(player));
 		player.refreshDimensions();
+		EffectEnforcement.updatePlayerAttrs(player);
 	}
 	
 	public static void onLoggedInClient(PlayerLoggedInEvent evt) {
 		if (!Minecraft.getInstance().hasSingleplayerServer()) {
 			ReplicateMorphStatus.askWhoIsASpiritAsync(); // The server will reply to this on its own accord.
 		}
+		EffectEnforcement.updatePlayerAttrs(evt.getPlayer());
 	}
 	
 	public static void onLoggedOutServer(PlayerLoggedOutEvent evt) {
@@ -39,12 +42,14 @@ public final class WorldLoading {
 		PlayerEntity player = evt.getPlayer();
 		player.refreshDimensions();
 		SpiritSoundPlayer.playSoundAtPlayer(player, SoundRegistry.get("entity.spirit.respawn"), SoundCategory.PLAYERS, 0.2f, 1f);
+		EffectEnforcement.updatePlayerAttrs(player);
 	}
 	
 	public static void onRespawnedServer(PlayerRespawnEvent evt) {
 		PlayerEntity player = evt.getPlayer();
 		ReplicateMorphStatus.tellEveryonePlayerSpiritStatus(player, SpiritData.isSpirit(player));
 		player.refreshDimensions();
+		EffectEnforcement.updatePlayerAttrs(player);
 	}
 	
 }

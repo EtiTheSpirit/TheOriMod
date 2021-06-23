@@ -26,9 +26,10 @@ public abstract class InjectUsesInnerModel extends LayerRenderer {
 	
 	@Inject(
 		method = "usesInnerModel(Lnet/minecraft/inventory/EquipmentSlotType;)Z",
-		at = @At("RETURN") // No particular return ordinal is required here
+		at = @At("RETURN"), // No particular return ordinal is required here
 		// And to be honest, it's best for the interests of this mixin to
 		// override all return statements.
+		cancellable = true
 	)
 	public void usesInnerModel$spirit(EquipmentSlotType slotType, CallbackInfoReturnable<Boolean> ci) {
 		if (SpiritData.isSpirit(Minecraft.getInstance().player)) {

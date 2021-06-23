@@ -220,9 +220,9 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	default void defaultOnEntityWalked(World worldIn, BlockPos pos, Entity entityIn) {
 		if (!(entityIn instanceof LivingEntity)) return;
 		LivingEntity entity = (LivingEntity)entityIn;
-		if (worldIn.getRandom().nextDouble() > 0.9D) {
+		if (worldIn.getRandom().nextDouble() > 0.995D) {
 			DecayEffect decay = (DecayEffect)PotionRegistry.get(DecayEffect.class);
-			entity.addEffect(decay.constructEffect(20, 0));
+			entity.addEffect(decay.constructEffect(60, 2));
 		}
 	}
 	

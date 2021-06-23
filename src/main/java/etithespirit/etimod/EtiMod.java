@@ -113,7 +113,7 @@ public final class EtiMod {
 		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityAttacked);
 		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityDamaged);
 		
-		MinecraftForge.EVENT_BUS.addListener(EffectEnforcement::enforceEffects);
+		// MinecraftForge.EVENT_BUS.addListener(EffectEnforcement::enforceEffects);
 		
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onEntityJumped);
     	

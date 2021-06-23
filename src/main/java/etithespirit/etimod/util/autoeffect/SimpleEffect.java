@@ -18,7 +18,7 @@ public abstract class SimpleEffect extends Effect {
 	private int storedColor = 0;
 	
 	public SimpleEffect() {
-		super(EffectType.NEUTRAL, 0);
+		this(EffectType.NEUTRAL, 0);
 	}
 
 	private SimpleEffect(EffectType typeIn, int liquidColorIn) {

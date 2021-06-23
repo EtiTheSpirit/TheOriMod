@@ -22,6 +22,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.EquipmentSlotType;
+import net.minecraft.item.ArmorItem;
 import net.minecraft.item.IDyeableArmorItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.HandSide;
@@ -114,7 +115,8 @@ public class RenderPlayerAsSpirit {
 				for (int i = 0; i < SLOTS.length; i++) {
 					EquipmentSlotType slot = SLOTS[i];
 					ItemStack item = player.getItemBySlot(slot);
-					ResourceLocation armorRsrc = DUMMY_BIP_ARMOR_LAYER.getArmorResource(player, item, slot, "");
+					if (!(item.getItem() instanceof ArmorItem)) continue;
+					ResourceLocation armorRsrc = DUMMY_BIP_ARMOR_LAYER.getArmorResource(player, item, slot, null);
 					if (armorRsrc == null) continue; // next iteration
 					
 					// is this even a good idea lol
@@ -123,19 +125,15 @@ public class RenderPlayerAsSpirit {
 					switch (i) {
 						case 0:
 							SPIRIT_ARMOR_MODEL.updateVisibility(hasHelmet, false, false, false);
-							//SPIRIT_ARMOR_MODEL.renderHelmet(mtx, drawBuffer, light, 0xFFFFFF);
 							break;
 						case 1:
 							SPIRIT_ARMOR_MODEL.updateVisibility(false, hasChestplate, false, false);
-							//SPIRIT_ARMOR_MODEL.renderChestplate(mtx, drawBuffer, light, 0xFFFFFF);
 							break;
 						case 2:
 							SPIRIT_ARMOR_MODEL.updateVisibility(false, false, hasLeggings, false);
-							//SPIRIT_ARMOR_MODEL.renderLeggings(mtx, drawBuffer, light, 0xFFFFFF);
 							break;
 						case 3:
 							SPIRIT_ARMOR_MODEL.updateVisibility(false, false, false, hasBoots);
-							//SPIRIT_ARMOR_MODEL.renderBoots(mtx, drawBuffer, light, 0xFFFFFF);
 							break;
 						default:
 							break;

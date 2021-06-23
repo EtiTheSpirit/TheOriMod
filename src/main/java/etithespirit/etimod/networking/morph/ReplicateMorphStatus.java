@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 import etithespirit.etimod.EtiMod;
+import etithespirit.etimod.common.player.EffectEnforcement;
 import etithespirit.etimod.info.spirit.SpiritData;
 import etithespirit.etimod.networking.ReplicationData;
 import etithespirit.etimod.util.collection.ConcurrentBag;
@@ -115,6 +116,7 @@ public class ReplicateMorphStatus {
 				}
 				
 				SpiritData.setSpirit(sender, msg.wantsToBeSpirit);
+				EffectEnforcement.updatePlayerAttrs(sender);
 				INSTANCE.send(PacketDistributor.ALL.noArg(), ModelReplicationPacket.toTellAllClientsSomeoneIsA(id, msg.wantsToBeSpirit));
 		    });
 		} else if (msg.type == EventType.GET_EVERY_PLAYER_MODEL) {
@@ -158,7 +160,9 @@ public class ReplicateMorphStatus {
 				// We've received word from the server of a player's model after asking for it.
 				// Let's update our data.
 				// The server sent this, so it's safe to assume the value is sane.
-				SpiritData.setSpirit((PlayerEntity)world.getEntity(msg.playerID), msg.wantsToBeSpirit);
+				PlayerEntity player = (PlayerEntity)world.getEntity(msg.playerID);
+				SpiritData.setSpirit(player, msg.wantsToBeSpirit);
+				EffectEnforcement.updatePlayerAttrs(player);
 		    });
 			
 		} else if (msg.type == EventType.TELL_EVERY_PLAYER_MODEL) {

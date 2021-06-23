@@ -12,6 +12,7 @@ import net.minecraft.potion.EffectInstance;
 import net.minecraft.potion.EffectType;
 import net.minecraft.util.ResourceLocation;
 
+@Deprecated
 public class SpiritEffect extends SimpleEffect implements IAutoEffect {
 	
 	// public static SpiritEffect INSTANCE = new SpiritEffect(EffectType.NEUTRAL, 0xB2FFE9);
@@ -28,13 +29,11 @@ public class SpiritEffect extends SimpleEffect implements IAutoEffect {
 		this.addAttributeModifier(Attributes.KNOCKBACK_RESISTANCE, SPIRIT_EFFECT_KNOCKBACK_UUID, 1.0D, AttributeModifier.Operation.ADDITION);
 		this.addAttributeModifier(Attributes.MOVEMENT_SPEED, SPIRIT_EFFECT_SPEED_UUID, SPEED_MOD, AttributeModifier.Operation.ADDITION);
 		this.addAttributeModifier(Attributes.MAX_HEALTH, SPIRIT_EFFECT_MAX_HEALTH_UUID, -10D, AttributeModifier.Operation.ADDITION);
+		
 	}
 	
 	@Override
 	public boolean shouldRenderHUD(EffectInstance effectIn) { return false; }
-	
-	@Override
-	public boolean shouldRenderInvText(EffectInstance effect) { return false; }
 	
 	@Override
 	public ResourceLocation getCustomIcon() {
