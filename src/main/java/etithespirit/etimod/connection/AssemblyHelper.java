@@ -55,6 +55,16 @@ public final class AssemblyHelper {
 		recurse(initialHub.getBlockPos(), true);
 	}
 	
+	/**
+	 * Merges {@code other} into this instance of {@link AssemblyHelper}.
+	 * @param other The other helper to merge into this.
+	 */
+	public void mergeWith(AssemblyHelper other) {
+		connectedLinks.addAll(other.connectedLinks);
+		connectedHubs.addAll(other.connectedHubs);
+		skipPos.addAll(other.skipPos);
+	}
+	
 	/** Returns all hubs that are part of the assembly this works alongside. */
 	public IReadOnlyList<AbstractLightEnergyHub> getHubs() {
 		return connectedHubs.asReadOnly();

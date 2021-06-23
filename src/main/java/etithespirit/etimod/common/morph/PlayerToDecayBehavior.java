@@ -11,6 +11,7 @@ import net.minecraft.entity.player.PlayerEntity;
  * @author Eti
  *
  */
+@Deprecated // This is a remnant of very old code. It is not functional, and there are better ways to do this.
 public class PlayerToDecayBehavior {
 	
 	/**

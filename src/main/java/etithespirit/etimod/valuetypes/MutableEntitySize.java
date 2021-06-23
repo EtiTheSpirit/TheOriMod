@@ -5,6 +5,7 @@ import static etithespirit.etimod.util.ReflectionUtils.modifyFinalField;
 
 import java.lang.reflect.Field;
 
+@Deprecated
 public class MutableEntitySize extends EntitySize {
 	//protected float width;
 	//protected float height;

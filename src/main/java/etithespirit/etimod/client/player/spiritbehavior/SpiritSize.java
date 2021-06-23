@@ -7,7 +7,6 @@ import javax.annotation.Nullable;
 
 import etithespirit.etimod.info.spirit.SpiritIdentificationType;
 import etithespirit.etimod.info.spirit.SpiritIdentifier;
-import etithespirit.etimod.valuetypes.MutableEntitySize;
 import net.minecraft.entity.EntitySize;
 import net.minecraft.entity.Pose;
 import net.minecraft.entity.player.PlayerEntity;
@@ -24,20 +23,20 @@ public final class SpiritSize {
 	public static final float X_SCALE = 0.79F;
 	public static final float Y_SCALE = 0.53F;
 	
-	public static final MutableEntitySize PLAYER_STANDING_SIZE = new MutableEntitySize(0.6F, 1.8F);
-	public static final MutableEntitySize PLAYER_FALL_FLYING_SIZE = new MutableEntitySize(0.6F, 0.6F);
-	public static final MutableEntitySize PLAYER_SWIMMING_SIZE = new MutableEntitySize(0.6F, 0.6F);
-	public static final MutableEntitySize PLAYER_SPIN_ATTACK_SIZE = new MutableEntitySize(0.6F, 0.6F);
-	public static final MutableEntitySize PLAYER_CROUCHING_SIZE = new MutableEntitySize(0.6F, 1.5F);
+	public static final EntitySize PLAYER_STANDING_SIZE = new EntitySize(0.6F, 1.8F, false);
+	public static final EntitySize PLAYER_FALL_FLYING_SIZE = new EntitySize(0.6F, 0.6F, false);
+	public static final EntitySize PLAYER_SWIMMING_SIZE = new EntitySize(0.6F, 0.6F, false);
+	public static final EntitySize PLAYER_SPIN_ATTACK_SIZE = new EntitySize(0.6F, 0.6F, false);
+	public static final EntitySize PLAYER_CROUCHING_SIZE = new EntitySize(0.6F, 1.5F, false);
 	
-	public static final MutableEntitySize SPIRIT_STANDING_SIZE = PLAYER_STANDING_SIZE.scale(X_SCALE, Y_SCALE);
-	public static final MutableEntitySize SPIRIT_FALL_FLYING_SIZE = PLAYER_FALL_FLYING_SIZE.scale(X_SCALE, Y_SCALE);
-	public static final MutableEntitySize SPIRIT_SWIMMING_SIZE = PLAYER_SWIMMING_SIZE.scale(X_SCALE, Y_SCALE);
-	public static final MutableEntitySize SPIRIT_SPIN_ATTACK_SIZE = PLAYER_SPIN_ATTACK_SIZE.scale(X_SCALE, Y_SCALE);
-	public static final MutableEntitySize SPIRIT_CROUCHING_SIZE = PLAYER_CROUCHING_SIZE.scale(X_SCALE, Y_SCALE);
+	public static final EntitySize SPIRIT_STANDING_SIZE = PLAYER_STANDING_SIZE.scale(X_SCALE, Y_SCALE);
+	public static final EntitySize SPIRIT_FALL_FLYING_SIZE = PLAYER_FALL_FLYING_SIZE.scale(X_SCALE, Y_SCALE);
+	public static final EntitySize SPIRIT_SWIMMING_SIZE = PLAYER_SWIMMING_SIZE.scale(X_SCALE, Y_SCALE);
+	public static final EntitySize SPIRIT_SPIN_ATTACK_SIZE = PLAYER_SPIN_ATTACK_SIZE.scale(X_SCALE, Y_SCALE);
+	public static final EntitySize SPIRIT_CROUCHING_SIZE = PLAYER_CROUCHING_SIZE.scale(X_SCALE, Y_SCALE);
 	
-	public static final Map<Pose, MutableEntitySize> SPIRIT_SIZE_BY_POSE = new HashMap<>();
-	public static final Map<Pose, MutableEntitySize> PLAYER_SIZE_BY_POSE = new HashMap<>();
+	public static final Map<Pose, EntitySize> SPIRIT_SIZE_BY_POSE = new HashMap<>();
+	public static final Map<Pose, EntitySize> PLAYER_SIZE_BY_POSE = new HashMap<>();
 	
 	private static boolean wasSpiritOnLastTick = false;
 	

@@ -1,9 +1,11 @@
 package etithespirit.etimod.common.tile.light;
 
+import etithespirit.etimod.common.tile.INetworkNBTProvider;
 import etithespirit.etimod.common.tile.IWorldUpdateListener;
 import etithespirit.etimod.connection.Assembly;
 import etithespirit.etimod.energy.ILightEnergyStorage;
 import net.minecraft.block.BlockState;
+import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityType;
@@ -18,7 +20,7 @@ import net.minecraft.world.World;
  * @author Eti
  */
 @SuppressWarnings("unused")
-public abstract class AbstractLightEnergyHub extends TileEntity implements IWorldUpdateListener, ILightEnergyStorage, ITickableTileEntity {
+public abstract class AbstractLightEnergyHub extends TileEntity implements IWorldUpdateListener, ILightEnergyStorage, ITickableTileEntity, INetworkNBTProvider {
 	
 	/** The assembly associated with this instance (a collection of conduits and instances of {@link AbstractLightEnergyHub}) */
 	protected Assembly assembly = null;
@@ -33,6 +35,12 @@ public abstract class AbstractLightEnergyHub extends TileEntity implements IWorl
 	public AbstractLightEnergyHub(TileEntityType<?> tileEntityTypeIn, PersistentLightEnergyStorage storage) {
 		super(tileEntityTypeIn);
 		this.storage = storage;
+	}
+	
+	@Override
+	public CompoundNBT getNBTForUpdatePacket(CompoundNBT existingTag) {
+		if (assembly != null) existingTag.putUUID("assemblyId", assembly.assemblyId);
+		return existingTag;
 	}
 	
 	@Override
@@ -54,13 +62,25 @@ public abstract class AbstractLightEnergyHub extends TileEntity implements IWorl
 	@Override
 	public void setLevelAndPosition(World world, BlockPos pos) {
 		super.setLevelAndPosition(world, pos);
-		assembly = null;
+		if (assembly != null) {
+			assembly.disconnectHub(this);
+			assembly = Assembly.getAssemblyFor(this);
+		}
 	}
 	
 	@Override
 	public void setPosition(BlockPos pos) {
 		super.setPosition(pos);
-		assembly = null;
+		
+		// See if we're still part of the same assembly
+		if (assembly != null) {
+			assembly.disconnectHub(this);
+			assembly = Assembly.getAssemblyFor(this);
+			// By calling this after disconnection, it will skip the cache, but then check the links this is
+			// connected to instead. This can be used to either:
+			// A) Create a new assembly if needed (slow!), or
+			// B) Reconnect this to the assembly it was just disconnected from (fast!)
+		}
 	}
 	
 	@Override

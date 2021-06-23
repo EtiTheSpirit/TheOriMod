@@ -76,7 +76,7 @@ public class LightTileDebugRenderer extends TileEntityRenderer<AbstractLightEner
 				previous = link;
 			}
 			
-			RenderUtil.drawCubeFrame(line.getBounds(), mtx, vtxBuilder, RenderUtil.randomIndexedRGB(idx), 48);
+			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, vtxBuilder, RenderUtil.randomIndexedRGB(idx), 48);
 			idx++;
 		}
 	}

@@ -3,6 +3,7 @@ package etithespirit.etimod.connection;
 import etithespirit.etimod.EtiMod;
 import etithespirit.etimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.etimod.common.tile.light.AbstractLightEnergyLink;
+import etithespirit.etimod.exception.NotImplementedException;
 import etithespirit.etimod.util.collection.CachedImmutableSetWrapper;
 import etithespirit.etimod.util.collection.IReadOnlyList;
 import etithespirit.etimod.util.collection.SidedListProvider;
@@ -14,6 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nullable;
+import java.util.UUID;
 
 /**
  * Represents an arbitrary, scalable layout of connected objects that may have loops and/or forks. It is composed of
@@ -28,7 +30,7 @@ public final class Assembly {
 	
 	private static final Logger LOG = LogManager.getLogger(EtiMod.MODID + "::Assembly");
 	
-	/** Every instantiated assembly on this distribution of the game. */
+	/** Every instantiated assembly on this side of the game. */
 	private static final SidedListProvider<Assembly> ALL_ASM_CACHE = new SidedListProvider<>(true);
 	
 	/** All lines that form this assembly. */
@@ -46,6 +48,11 @@ public final class Assembly {
 	public final int debugId;
 	
 	/**
+	 * A synchronized unique identifier for this assembly that is safe for network replication.
+	 */
+	public final UUID assemblyId = UUID.randomUUID();
+	
+	/**
 	 * Returns a new assembly for the given {@link AbstractLightEnergyHub}, or if another assembly already
 	 * has this as one of its roots, returns that other assembly.
 	 * @param hub The {@link AbstractLightEnergyHub} to create or get an assembly for.
@@ -56,7 +63,7 @@ public final class Assembly {
 		
 		for (Assembly assembly : assemblies) {
 			IReadOnlyList<AbstractLightEnergyHub> hubs = assembly.getHubs();
-			if (assembly.helper.getHubs().contains(hub)) {
+			if (hubs.contains(hub)) {
 				return assembly;
 			}
 		}
@@ -72,7 +79,6 @@ public final class Assembly {
 				Assembly other = link.getAssembly();
 				if (other != null) {
 					other.connectHub(hub);
-					other.helper.manuallyRegisterHub(hub);
 					return other;
 				}
 			}
@@ -118,23 +124,30 @@ public final class Assembly {
 		return ALL_ASM_CACHE.getListForSide(world.isClientSide);
 	}
 	
-	@Deprecated
-	public void forceRefreshAllLines() {
-	
-	}
-	
 	/**
 	 * Assuming this assembly has just connected with the given other assembly, this merges the other assembly into this.
 	 * @param other The other assembly that will be merged into this.
+	 * @param cause If this was caused by the addition of a link, this is the link that caused it.
 	 */
-	public void mergeWith(Assembly other) {
+	public void mergeWith(Assembly other, AbstractLightEnergyLink cause) {
 		// In a merge, whatever conduit made the merge has three possibilities
-		// #1: It was a new block added to the end of a line, extending its length (for at least one of both sides)
+		// #1: It was a new block added to the end of a line, extending its length (for at least one of both sides. the other side may have a T joint or it may be straight)
 			// If this is the case, then that block goes to that line, and then every line is copied over because they are valid.
-		// #2: It was a new block added to the side of a line, causing a T joint and a line fragment (for both sides at once)
+		// #2: It was a new block added to the side of a line, causing a T joint and a line fragment (importantly, for both sides at once)
 			// That block should be added as a new line instance containing only that block.
 		// #3: It was two lines that were next to eachother in some way, and their connection state was changed, causing a connection to form.
 			// The lines should remain completely unchanged, with the exception of the lines that it is connected to.
+		
+		throw new NotImplementedException();
+	}
+	
+	/**
+	 * Assuming this assembly has just been broken into more than one disconnected part, this will figure out where the break
+	 * occurred, resize this assembly to what parts remain, and create a new assembly out of the parts that were disconnected.
+	 * @return This assembly in index #0, and the new assembly from the disconnected parts in the remaining indices.
+	 */
+	public Assembly[] fragment() {
+		throw new NotImplementedException();
 	}
 	
 	/**
@@ -156,7 +169,7 @@ public final class Assembly {
 	 * @param link The conduit that was just added.
 	 */
 	public void handleLinkAddition(AbstractLightEnergyLink link) {
-	
+		throw new NotImplementedException();
 	}
 	
 	/**
@@ -164,7 +177,7 @@ public final class Assembly {
 	 * @param link The conduit that was just removed.
 	 */
 	public void handleLinkRemoval(AbstractLightEnergyLink link) {
-	
+		throw new NotImplementedException();
 	}
 	
 	/**
@@ -172,7 +185,7 @@ public final class Assembly {
 	 * @param link The conduit whose connection state changed.
 	 */
 	public void handleLinkConnectionStateChanged(AbstractLightEnergyLink link) {
-	
+		throw new NotImplementedException();
 	}
 	
 	/**

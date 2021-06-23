@@ -131,7 +131,10 @@ public final class Line {
 		for (BlockPos pos : neighborBlockPos) {
 			TileEntity neighborTE = parent.world.getBlockEntity(pos);
 			if (neighborTE instanceof AbstractLightEnergyLink) {
-				neighbors.add((AbstractLightEnergyLink)neighborTE);
+				AbstractLightEnergyLink link = (AbstractLightEnergyLink)neighborTE;
+				if (!alreadyCovered.contains(link)) {
+					neighbors.add(link);
+				}
 			}
 		}
 		

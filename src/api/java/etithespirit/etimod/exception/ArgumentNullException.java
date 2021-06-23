@@ -5,7 +5,7 @@ package etithespirit.etimod.exception;
  * <br/>
  * Derived from .NET (mscorlib.dll, System.Runtime.dll) // See <a href="https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0">https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0</a>
  * @author Microsoft (for the .NET implementation)
- * @author Eti (for the Java implementation)
+ *  * @author Eti (for the Java implementation)
  *
  */
 public class ArgumentNullException extends NullPointerException {

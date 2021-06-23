@@ -35,7 +35,7 @@ public final class TruncateNumber {
 	}
 	
 	private static int clamp(int value, int min, int max) {
-		return (int)Math.min(max, Math.max(min, value));
+		return (int) Math2.clamp(value, min, max);
 	}
 	
 	/**

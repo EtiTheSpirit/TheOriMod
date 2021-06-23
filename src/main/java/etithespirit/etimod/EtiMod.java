@@ -61,6 +61,7 @@ public final class EtiMod {
 	
 	    BiomeRegistry.registerAll();
 	    BlockRegistry.registerAll();
+	    CapabilityRegistry.registerAll();
 	    DimensionRegistry.registerAll();
     	// EntityRegistry.registerAll();
 	    // EntityAttributeMarshaller.registerAll();
@@ -85,6 +86,9 @@ public final class EtiMod {
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedInServer);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutServer);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onRespawnedServer);
+		
+		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::attachCapabilities);
+		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::persistCapabilities);
     	
 		event.enqueueWork(() -> {
 			Registry.register(Registry.CHUNK_GENERATOR, new ResourceLocation(EtiMod.MODID, "light_forest_chunkgen"), LightForestChunkGenerator.CORE_CODEC);

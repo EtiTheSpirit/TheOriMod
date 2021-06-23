@@ -11,12 +11,9 @@ import net.minecraftforge.common.util.Constants;
 
 public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements IWorldUpdateListener {
 	
-	private boolean hasZeroEnergy;
-	
 	public TileEntityLightCapacitor() {
 		super(TileEntityRegistry.LIGHT_CAPACITOR.get());
 		this.storage = new PersistentLightEnergyStorage(this::setChanged, 10000, 20, 20, FluxBehavior.DISABLED, false, 10000);
-		hasZeroEnergy = storage.getLightStored() == 0;
 	}
 	
 	@Override
@@ -38,8 +35,9 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 	
 	@Override
 	public SUpdateTileEntityPacket getUpdatePacket() {
-		CompoundNBT nbt = storage.writeToNBT(new CompoundNBT());
-		return new SUpdateTileEntityPacket(getBlockPos(), -1, nbt);
+		CompoundNBT tag = getNBTForUpdatePacket(new CompoundNBT());
+		tag = storage.writeToNBT(tag);
+		return new SUpdateTileEntityPacket(getBlockPos(), -1, tag);
 	}
 	
 	@Override

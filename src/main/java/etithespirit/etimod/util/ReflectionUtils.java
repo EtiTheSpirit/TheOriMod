@@ -10,9 +10,10 @@ import java.util.Set;
  * @author Eti
  *
  */
+@Deprecated
 public final class ReflectionUtils {
 	
-	private static final Set<Field> ModifiedFields = new HashSet<Field>();
+	private static final Set<Field> MODIFIED_FIELDS = new HashSet<Field>();
 	
 	/**
 	 * Slotta field.
@@ -45,10 +46,10 @@ public final class ReflectionUtils {
 	 */
 	public static void modifyFinalField(Object ofObject, Field field, Object newValue) {
 		try {
-			if (!ModifiedFields.contains(field)) {
+			if (!MODIFIED_FIELDS.contains(field)) {
 				field.setAccessible(true);
 				removeFieldModifiers(field, Modifier.FINAL);
-				ModifiedFields.add(field);
+				MODIFIED_FIELDS.add(field);
 			}
 			field.set(ofObject, newValue);
 		} catch (Exception exc) { 
