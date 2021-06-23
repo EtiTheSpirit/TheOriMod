@@ -71,7 +71,7 @@ public interface ISpiritSoundAPI {
 	/**
 	 * If called, then all states of the given block will play their custom step sound if the 
 	 * player is walking <em>in</em> the same BlockPos rather than on top of it. This is useful for things like snow layer blocks,
-	 * 	 * which should cause the player to sound like they are walking in snow.
+	 * which should cause the player to sound like they are walking in snow.
 	 * 
 	 * @param entireBlockType The block from which all states will be tested for occupancy rather than being stepped on.
 	 * @throws IllegalArgumentException If the input block is null.
