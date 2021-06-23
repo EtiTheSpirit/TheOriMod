@@ -10,37 +10,38 @@ import net.minecraft.entity.player.ServerPlayerEntity;
  * @author Eti
  *
  */
+@SuppressWarnings("unused")
 public interface ISelfProvider {
 	
 	/**
 	 * Identical to "this", but treats the implementer like an Entity.
-	 * @return
+	 * @return This instance as an {@link Entity}.
 	 */
-	public default Entity self() {
+	default Entity self() {
 		return (Entity)this;
 	}
 	
 	/**
 	 * Identical to "this", but treats the implementer like a PlayerEntity.
-	 * @return
+	 * @return This instance as a {@link PlayerEntity}
 	 */
-	public default PlayerEntity player() {
+	default PlayerEntity player() {
 		return (PlayerEntity)this;
 	}
 	
 	/**
 	 * Identical to "this", but treats the implementer like a ServerPlayerEntity.
-	 * @return
+	 * @return This instance as a {@link ServerPlayerEntity}
 	 */
-	public default ServerPlayerEntity serverPlayer() {
+	default ServerPlayerEntity serverPlayer() {
 		return (ServerPlayerEntity)this;
 	}
 	
 	/**
 	 * Identical to "this", but treats the implementer like a ClientPlayerEntity.
-	 * @return
+	 * @return This instance as a {@link ClientPlayerEntity}
 	 */
-	public default ClientPlayerEntity clientPlayer() {
+	default ClientPlayerEntity clientPlayer() {
 		return (ClientPlayerEntity)this;
 	}
 
