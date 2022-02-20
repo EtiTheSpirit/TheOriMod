@@ -1,0 +1,772 @@
+{
+  "variants": {
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=false,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=true,up=false,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=false,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=true,up=true,west=false": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=false,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=true,up=false,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=false,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=false,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=false,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=false,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=false,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=false,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=false,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=false,east=true,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=false,east=true,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=false,down=true,east=true,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    },
+    "autoconnect=true,down=true,east=true,in_use=true,north=true,south=true,up=true,west=true": {
+      "model": "orimod:block/light_capacitor"
+    }
+  }
+}

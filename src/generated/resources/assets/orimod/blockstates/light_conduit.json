@@ -1,0 +1,138 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "in_use": "false"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-core"
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "in_use": "false"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector"
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "in_use": "false"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "in_use": "false"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "in_use": "false"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "in_use": "false"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "in_use": "false"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-core-energized"
+      }
+    },
+    {
+      "when": {
+        "north": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector-energized"
+      }
+    },
+    {
+      "when": {
+        "south": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector-energized",
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "west": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector-energized",
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "east": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector-energized",
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector-energized",
+        "x": 270
+      }
+    },
+    {
+      "when": {
+        "down": "true",
+        "in_use": "true"
+      },
+      "apply": {
+        "model": "orimod:block/light_conduit-connector-energized",
+        "x": 90
+      }
+    }
+  ]
+}

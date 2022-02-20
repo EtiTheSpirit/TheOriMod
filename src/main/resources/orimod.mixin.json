@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "package": "etithespirit.mixin.mixins",
+  "refmap": "orimod.refmap.json",
+  "minVersion": "0.8.5",
+  "mixins": [
+    "InjectEntityPlaySound",
+    "InjectPlayerAttackTarget",
+    "InjectPlayerPlaySound",
+    "RedirectForSpiritPose"
+  ],
+  "client": [
+    "InjectLocalPlayerPlaySound",
+    "InjectUsesInnerModel",
+    "RedirectForgeIngameGuiDrawHealth"
+  ],
+  "server": [
+    "InjectServerPlayerPlaySound"]
+}

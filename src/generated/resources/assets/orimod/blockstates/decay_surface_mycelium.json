@@ -1,0 +1,60 @@
+{
+  "multipart": [
+    {
+      "when": {
+        "north": "true"
+      },
+      "apply": {
+        "model": "orimod:block/decay_surface_mycelium",
+        "x": 90,
+        "y": 180
+      }
+    },
+    {
+      "when": {
+        "south": "true"
+      },
+      "apply": {
+        "model": "orimod:block/decay_surface_mycelium",
+        "x": 90
+      }
+    },
+    {
+      "when": {
+        "west": "true"
+      },
+      "apply": {
+        "model": "orimod:block/decay_surface_mycelium",
+        "x": 90,
+        "y": 270
+      }
+    },
+    {
+      "when": {
+        "east": "true"
+      },
+      "apply": {
+        "model": "orimod:block/decay_surface_mycelium",
+        "x": 90,
+        "y": 90
+      }
+    },
+    {
+      "when": {
+        "up": "true"
+      },
+      "apply": {
+        "model": "orimod:block/decay_surface_mycelium",
+        "x": 180
+      }
+    },
+    {
+      "when": {
+        "down": "true"
+      },
+      "apply": {
+        "model": "orimod:block/decay_surface_mycelium"
+      }
+    }
+  ]
+}
