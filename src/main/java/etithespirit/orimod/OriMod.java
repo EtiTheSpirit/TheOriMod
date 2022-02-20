@@ -1,6 +1,7 @@
 package etithespirit.orimod;
 
 
+import etithespirit.orimod.client.render.debug.LightTileDebugRenderer;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
@@ -132,7 +133,9 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onPlayerTicked);
 		
 		//MinecraftForge.EVENT_BUS.addListener(CustomHealthForEffects::onElementDrawn);
-		//MinecraftForge.EVENT_BUS.addListener(LightTileDebugRenderer::onWorldFinishedRendering);
+		//
+		
+		MinecraftForge.EVENT_BUS.addListener(LightTileDebugRenderer::onWorldFinishedRendering);
 		
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedInClient);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutClient);

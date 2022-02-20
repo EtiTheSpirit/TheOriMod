@@ -64,7 +64,7 @@ public enum SpiritMaterial {
 	/** Corresponds to sand, kind of sounds like a carpet. */
 	SAND(),
 	
-	/** Corresponds to fungus or other wet, mushy, but not really squishy stuff. */
+	/** Corresponds to fungus or other wet, but not really squishy stuff. */
 	SHROOM(),
 	
 	/** Corresponds to slimy materials, like mud or (obviously) slime. */
