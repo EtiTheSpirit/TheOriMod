@@ -15,7 +15,9 @@ import net.minecraft.world.level.material.Material;
 @SuppressWarnings("unused")
 public interface ISpiritSoundAPI {
 	
-	/** <strong>MUST BE CHECKED BEFORE OTHER METHODS ARE USED.</strong> This returns whether or not the API is installed. */
+	/** <strong>MUST BE CHECKED BEFORE OTHER METHODS ARE USED.</strong>
+	 * @return Whether or not the API is installed.
+	 */
 	boolean isInstalled();
 	
 	/**

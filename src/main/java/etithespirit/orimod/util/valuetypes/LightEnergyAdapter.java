@@ -81,6 +81,7 @@ public final class LightEnergyAdapter {
 	 * @author Eti
 	 *
 	 */
+	@SuppressWarnings ("ClassCanBeRecord")
 	public static final class EnergyTransactionResult {
 		
 		/** The amount of Spirit Light that was transferred. */
@@ -98,7 +99,7 @@ public final class LightEnergyAdapter {
 		/** If true, this conversion was not actually performed, only simulated. */
 		public final boolean wasSimulated;
 		
-		protected EnergyTransactionResult(double lightTransferred, int rfTransferred, double lightToRFRatio, EnergyTransactionDirection direction, boolean wasSimulated) {
+		private EnergyTransactionResult(double lightTransferred, int rfTransferred, double lightToRFRatio, EnergyTransactionDirection direction, boolean wasSimulated) {
 			this.lightTransferred = lightTransferred;
 			this.rfTransferred = rfTransferred;
 			this.lightToRFRatio = lightToRFRatio;

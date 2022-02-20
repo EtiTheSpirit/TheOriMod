@@ -18,7 +18,7 @@ import org.apache.logging.log4j.Level;
  * @author Eti
  */
 public final class GenerateItemModels extends ItemModelProvider {
-	
+	/***/
 	public GenerateItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
 		super(generator, OriMod.MODID, existingFileHelper);
 	}

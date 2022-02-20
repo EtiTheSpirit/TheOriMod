@@ -41,6 +41,7 @@ public final class Line {
 	
 	private AABB bounds = null;
 	
+	/***/
 	public Line(Assembly parent, AssemblyHelper helper) {
 		this.parent = parent;
 		this.helper = helper;
@@ -68,6 +69,9 @@ public final class Line {
 		return getBounds().getCenter();
 	}
 	
+	/**
+	 * @return The bounding box of this line.
+	 */
 	public AABB getBounds() {
 		if (bounds == null) {
 			Vec3 min = new Vec3(Double.MAX_VALUE, Double.MAX_VALUE, Double.MAX_VALUE);
@@ -108,6 +112,8 @@ public final class Line {
 	
 	/**
 	 * Get all lines of the given {@link Assembly}.
+	 * @param parent The assembly to build from.
+	 * @param helper The assembly's assigned helper.
 	 * @return The lines constructed from the connections and their branches, or null if the given {@link AbstractLightEnergyHub} is not in a world.
 	 */
 	public static List<Line> constructFrom(Assembly parent, AssemblyHelper helper) {

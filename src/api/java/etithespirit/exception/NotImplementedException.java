@@ -8,10 +8,12 @@ package etithespirit.exception;
  */
 public class NotImplementedException extends UnsupportedOperationException {
 	
+	/***/
 	public NotImplementedException() {
 		this("The method or operation is not implemented.");
 	}
 	
+	/***/
 	public NotImplementedException(String message) {
 		super(message);
 	}

@@ -24,12 +24,18 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
+/**
+ * A class that replicates changes in effect duration over the network.
+ */
 public class EffectModificationReplication {
 	
 	
 	private static final Function<FriendlyByteBuf, EffectReplicationPacket> BUFFER_TO_PACKET = EffectModificationReplication::bufferToPacket;
 	private static final BiConsumer<EffectReplicationPacket, FriendlyByteBuf> PACKET_TO_BUFFER = EffectModificationReplication::packetToBuffer;
 	
+	/**
+	 * The networking channel for this packet.
+	 */
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
 		new ResourceLocation(OriMod.MODID, "replicate_effect"),
 		() -> ReplicationData.PROTOCOL_VERSION,
@@ -37,6 +43,10 @@ public class EffectModificationReplication {
 		ReplicationData.PROTOCOL_VERSION::equals
 	);
 	
+	/**
+	 * Register the packets for the given logical side.
+	 * @param side The side that this packet exists on.
+	 */
 	public static void registerPackets(Dist side) {
 		if (side.isClient()) {
 			INSTANCE.registerMessage(ReplicationData.nextID(), EffectReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, EffectModificationReplication::onClientEvent);
@@ -45,20 +55,20 @@ public class EffectModificationReplication {
 		}
 	}
 	
-	protected static EffectReplicationPacket bufferToPacket(FriendlyByteBuf buffer) {
+	private static EffectReplicationPacket bufferToPacket(FriendlyByteBuf buffer) {
 		return new EffectReplicationPacket(new ResourceLocation(OriMod.MODID, buffer.readUtf()), buffer.readInt());
 	}
 	
-	protected static void packetToBuffer(EffectReplicationPacket packet, FriendlyByteBuf buffer) {
+	private static void packetToBuffer(EffectReplicationPacket packet, FriendlyByteBuf buffer) {
 		buffer.writeUtf(packet.effect.getPath());
 		buffer.writeInt(packet.addedDuration);
 	}
 	
-	protected static void onServerEvent(EffectReplicationPacket msg, Supplier<NetworkEvent.Context> ctx) {
+	private static void onServerEvent(EffectReplicationPacket msg, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().setPacketHandled(true);
 	}
 	
-	protected static void onClientEvent(EffectReplicationPacket msg, Supplier<NetworkEvent.Context> ctx) {
+	private static void onClientEvent(EffectReplicationPacket msg, Supplier<NetworkEvent.Context> ctx) {
 		ctx.get().enqueueWork(() -> {
 			LocalPlayer player = Minecraft.getInstance().player;
 			MobEffect effect = PotionRegistry.get(msg.effect);
@@ -70,6 +80,12 @@ public class EffectModificationReplication {
 		ctx.get().setPacketHandled(true);
 	}
 	
+	/**
+	 * Reports that the duration of a status effect was modified to a client.
+	 * @param player The player to tell.
+	 * @param effect The effect that was changed.
+	 * @param addedDuration The change in duration.
+	 */
 	@ServerUseOnly
 	public static void tellClientDurationModified(ServerPlayer player, Class<? extends MobEffect> effect, int addedDuration) {
 		INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new EffectReplicationPacket(PotionRegistry.getId(effect), addedDuration));

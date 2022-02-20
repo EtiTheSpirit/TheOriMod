@@ -28,10 +28,20 @@ public final class PotionRegistry {
 		return REGISTRY_BINDINGS.get(clazz).get();
 	}
 	
+	/**
+	 * Returns the ID of the given custom potion, or null if it is not a custom potion as defined here.
+	 * @param clazz The class of the potion.
+	 * @return The ID of the potion in the registry, or null if it is not from this registry.
+	 */
 	public static ResourceLocation getId(Class<? extends MobEffect> clazz) {
 		return REGISTRY_BINDINGS.get(clazz).getId();
 	}
 	
+	/**
+	 * Returns the actual effect associated with the given ID.
+	 * @param rsrc The ID
+	 * @return The actual effect, or null if the ID is not from this registry.
+	 */
 	public static MobEffect get(ResourceLocation rsrc) {
 		for (RegistryObject<MobEffect> fxo : REGISTRY_BINDINGS.values()) {
 			if (fxo.getId().equals(rsrc)) return fxo.get();
@@ -45,6 +55,7 @@ public final class PotionRegistry {
 		REGISTRY_BINDINGS.put(RadiantEffect.class, POTIONS.register("radiant", RadiantEffect::new));
 	}
 	
+	/** */
 	public static void registerAll() {
 		instantiateAll();
 		POTIONS.register(FMLJavaModLoadingContext.get().getModEventBus());

@@ -2,6 +2,9 @@ package etithespirit.orimod.info.coordinate;
 
 import net.minecraft.core.Vec3i;
 
+/**
+ * Cardinals stores utilities related to the six adjacent directions around a cube, or, the six "cardinal" directions.
+ */
 public final class Cardinals {
 	
 	private Cardinals() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

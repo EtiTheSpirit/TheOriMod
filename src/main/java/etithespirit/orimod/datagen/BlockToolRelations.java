@@ -11,8 +11,17 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Level;
 
+/**
+ * This data generator is responsible for searching for mod objects implementing {@link IToolRequirementProvider} and using the data of that method to figure out
+ * what tags to give to the block.
+ */
 public class BlockToolRelations extends BlockTagsProvider {
 	
+	/**
+	 * Create a new data generator for block to tool relations.
+	 * @param p_126511_ The real generator.
+	 * @param existingFileHelper A tool to create or edit existing files.
+	 */
 	public BlockToolRelations(DataGenerator p_126511_, ExistingFileHelper existingFileHelper) {
 		super(p_126511_, OriMod.MODID, existingFileHelper);
 	}

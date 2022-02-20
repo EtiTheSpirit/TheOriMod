@@ -22,17 +22,17 @@ public class NumberRange {
 	/** The maximum possible value this will return. */
 	protected double max;
 	
-	/** Returns the minimum possible value that this can return. */
+	/** @return The minimum possible value that this can return. */
 	public double getMin() {
 		return min;
 	}
 	
-	/** Returns the maximum possible value that this can return. */
+	/** @return The maximum possible value that this can return. */
 	public double getMax() {
 		return max;
 	}
 	
-	/** Whether or not this has a range of zero. */
+	/** @return Whether or not this has a range of zero. */
 	public boolean isSingular() {
 		return min == max;
 	}

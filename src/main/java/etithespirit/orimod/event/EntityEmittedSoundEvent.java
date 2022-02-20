@@ -27,6 +27,15 @@ public class EntityEmittedSoundEvent {
 	private float pitch;
 	private boolean cancel;
 	
+	/**
+	 * Create a new event describing that an entity has just played a sound.
+	 * @param source The entity responsible for the sound.
+	 * @param position The position at which this sound played in the world.
+	 * @param sound The sound that is playing.
+	 * @param category The category that this sound is a part of.
+	 * @param volume The volume of this sound.
+	 * @param pitch The pitch of this sound.
+	 */
 	public EntityEmittedSoundEvent(Entity source, Vec3 position, SoundEvent sound, SoundSource category, float volume, float pitch)
 	{
 		this.originalSound = sound;
@@ -43,7 +52,7 @@ public class EntityEmittedSoundEvent {
 		this.cancel = false;
 	}
 	
-	/** Returns whether or not some data was modified in this event, which determines if it should override vanilla sound playing behaviors. The cancelation state does not affect this return value. */
+	/** @return Whether or not some data was modified in this event, which determines if it should override vanilla sound playing behaviors. The cancelation state does not affect this return value. */
 	public boolean wasModified() {
 		return !sound.equals(originalSound) ||
 			!category.equals(originalCategory) ||
@@ -51,42 +60,67 @@ public class EntityEmittedSoundEvent {
 			!(pitch == originalPitch);
 	}
 	
+	/** @return The position at which this sound will be played. */
 	public Vec3 getPosition() { return this.originalPosition; }
 	
-	/** Returns the sound that should be played. */
+	/** @return The sound that should be played. */
 	public SoundEvent getSound() { return this.sound; }
 	
-	/** Returns the category of the sound that should be played. */
+	/** @return The category of the sound that should be played. */
 	public SoundSource getCategory() { return this.category; }
 	
-	/** Returns the current override volume for this sound. */
+	/** @return The current override volume for this sound. */
 	public float getVolume() { return this.volume; }
 	
-	/** Returns the current override pitch for this sound. */
+	/** @return The current override pitch for this sound. */
 	public float getPitch() { return this.pitch; }
 	
-	/** Returns the entity that is responsible for playing this sound. */
+	/** @return The entity that is responsible for playing this sound. */
 	public Entity getEntity() { return this.entity; }
 	
-	/** Returns true if this sound should no longer play. */
+	/** @return True if this sound should no longer play. */
 	public boolean isCanceled() { return this.cancel; }
 	
 	
-	/** Returns the sound that this event had when the event was first constructed. */
+	/** @return The sound that this event had when the event was first constructed. */
 	public SoundEvent getDefaultSound() { return this.originalSound; }
 	
-	/** Returns the sound category that this sound started with when the event was constructed. */
+	/** @return The sound category that this sound started with when the event was constructed. */
 	public SoundSource getDefaultCategory() { return this.originalCategory; }
 	
-	/** Returns the volume that this sound started with when the event was constructed. */
+	/** @return The volume that this sound started with when the event was constructed. */
 	public float getDefaultVolume() { return this.originalVolume; }
 	
-	/** Returns the pitch that this sound started with when the event was constructed. */
+	/** @return The pitch that this sound started with when the event was constructed. */
 	public float getDefaultPitch() { return this.originalPitch; }
 	
+	/**
+	 * Change the sound associated with this event.
+	 * @param value The new sound.
+	 */
 	public void setSound(SoundEvent value) { this.sound = value; }
+	
+	/**
+	 * Change the type of sound associated with this event.
+	 * @param category The new category this sound should play in.
+	 */
 	public void setCategory(SoundSource category) { this.category = category; }
+	
+	/**
+	 * Change the volume of this sound.
+	 * @param value The new volume.
+	 */
 	public void setVolume(float value) { this.volume = value; }
+	
+	/**
+	 * Change the pitch of this sound.
+	 * @param value The new pitch.
+	 */
 	public void setPitch(float value) { this.pitch = value; }
+	
+	/**
+	 * Set whether or not to cancel this sound and stop it from playing
+	 * @param cancel Whether or not this sound should be canceled.
+	 */
 	public void setCanceled(boolean cancel) { this.cancel = cancel; }
 }

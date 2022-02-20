@@ -93,7 +93,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	
 	/////////////////////////
 	/// CTOR ///
-	
+	/** */
 	public DecaySurfaceMyceliumBlock() {
 		super(Properties.of(Material.REPLACEABLE_PLANT).dynamicShape().strength(0.4f).noCollission().sound(SoundType.SLIME_BLOCK).randomTicks().noDrops().isRedstoneConductor(FALSE_POSITION_PREDICATE));
 		this.registerDefaultState(

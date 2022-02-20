@@ -50,6 +50,11 @@ public final class AssemblyHelper {
 	/** Used for limiting the size of assemblies in conjunction with {@link #MAX_SUCCESSFUL_TILE_COUNT}. */
 	private int numTestedSuccessfully = 0;
 	
+	/**
+	 * Creates a new helper for the given assembly and the first hub that is responsible for the creation of that assembly.
+	 * @param forAsm The assembly to create for.
+	 * @param initialHub The hub that this assembly was created by.
+	 */
 	public AssemblyHelper(Assembly forAsm, AbstractLightEnergyHub initialHub) {
 		assembly = forAsm;
 		recurse(initialHub.getBlockPos(), true);
@@ -65,12 +70,12 @@ public final class AssemblyHelper {
 		skipPos.addAll(other.skipPos);
 	}
 	
-	/** Returns all hubs that are part of the assembly this works alongside. */
+	/** @return All hubs that are part of the assembly this works alongside. */
 	public List<AbstractLightEnergyHub> getHubs() {
 		return ImmutableList.copyOf(connectedHubs);
 	}
 	
-	/** Returns all links that are part of the assembly this works alongside. */
+	/** @return All links that are part of the assembly this works alongside. */
 	public List<AbstractLightEnergyLink> getLinks() {
 		return ImmutableList.copyOf(connectedLinks);
 	}
@@ -225,6 +230,9 @@ public final class AssemblyHelper {
 		return validAdjacent;
 	}
 	
+	/**
+	 * Unregisters all data from this helper, intended for use when the assembly object is being destroyed.
+	 */
 	public void dispose() {
 		connectedLinks.clear();
 		connectedHubs.clear();

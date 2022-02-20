@@ -10,6 +10,9 @@ import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.NoSuchElementException;
 
+/**
+ * A set of general utilities that the mod may or may not use.
+ */
 public final class GeneralUtils {
 	
 	private GeneralUtils() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

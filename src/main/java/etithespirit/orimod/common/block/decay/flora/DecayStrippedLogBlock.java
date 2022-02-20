@@ -7,9 +7,13 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
+/**
+ * A stripped decay log.
+ */
 public class DecayStrippedLogBlock extends DecayLogBase {
 	private static final Properties DEFAULT_PROPERTIES = Properties.copy(Blocks.STRIPPED_OAK_LOG).sound(SoundType.STONE);
 	
+	/** */
 	public DecayStrippedLogBlock() {
 		super(DEFAULT_PROPERTIES, true);
 	}

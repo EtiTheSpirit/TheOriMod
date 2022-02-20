@@ -36,8 +36,7 @@ public class ArgumentNullException extends NullPointerException {
 	 * The exception that is thrown when a null reference is passed to a method that does not accept it as a valid argument.<br/>
 	 * <br/>
 	 * Derived from .NET (mscorlib.dll, System.Runtime.dll) // See <a href="https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0">https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0</a>
-	 * @author Microsoft
-	 * @author Eti (for the Java implementation)
+	 * @param parameterName The parameter that was null when it should have not been.
 	 *
 	 */
 	public ArgumentNullException(String parameterName) {
@@ -48,9 +47,8 @@ public class ArgumentNullException extends NullPointerException {
 	 * The exception that is thrown when a null reference is passed to a method that does not accept it as a valid argument.<br/>
 	 * <br/>
 	 * Derived from .NET (mscorlib.dll, System.Runtime.dll) // See <a href="https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0">https://docs.microsoft.com/en-us/dotnet/api/system.argumentnullexception?view=net-5.0</a>
-	 * @author Microsoft
-	 * @author Eti (for the Java implementation)
-	 *
+	 * @param parameterName The parameter that was null when it should have not been.
+	 * @param message The message to add onto the null error.
 	 */
 	public ArgumentNullException(String parameterName, String message) {
 		if (parameterName == null) {

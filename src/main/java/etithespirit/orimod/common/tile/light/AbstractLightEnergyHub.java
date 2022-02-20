@@ -39,11 +39,23 @@ public abstract class AbstractLightEnergyHub extends BlockEntity implements Enti
 	/** A container used to store energy. */
 	protected PersistentLightEnergyStorage storage;
 	
-	
-	public AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state) {
+	/**
+	 * Create a new hub using no storage.
+	 * @param tileEntityTypeIn The type of BlockEntity to create.
+	 * @param at The location to create it at.
+	 * @param state The BlockState to create it for.
+	 */
+	protected AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state) {
 		this(tileEntityTypeIn, at, state, null);
 	}
 	
+	/**
+	 * Create a new hub with the given storage.
+	 * @param tileEntityTypeIn The type of BlockEntity to create.
+	 * @param at The location to create it at.
+	 * @param state The BlockState to create it for.
+	 * @param storage The energy storage data to use.
+	 */
 	public AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state, PersistentLightEnergyStorage storage) {
 		super(tileEntityTypeIn, at, state);
 		this.storage = storage;

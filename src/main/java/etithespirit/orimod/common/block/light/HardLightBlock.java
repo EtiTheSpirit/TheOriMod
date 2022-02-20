@@ -11,10 +11,10 @@ import java.util.Set;
 
 import static etithespirit.orimod.common.block.StaticData.FALSE_POSITION_PREDICATE;
 import static etithespirit.orimod.common.block.StaticData.TRUE_POSITION_PREDICATE;
-
+/***/
 @SuppressWarnings("unused")
 public class HardLightBlock extends Block implements ILightBlockIdentifier, IToolRequirementProvider {
-	
+	/***/
 	public HardLightBlock() {
 		this(
 			Properties.of(ExtendedMaterial.LIGHT)
@@ -26,7 +26,7 @@ public class HardLightBlock extends Block implements ILightBlockIdentifier, IToo
 				.sound(SoundType.GLASS)
 		);
 	}
-	
+	/***/
 	public HardLightBlock(Properties properties) {
 		super(properties);
 	}

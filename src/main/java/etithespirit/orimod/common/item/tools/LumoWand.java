@@ -38,7 +38,7 @@ import java.util.List;
  * In the off chance that any other devs reading this code find this, yes, it is from SkySaga c:
  */
 public class LumoWand extends Item {
-	
+	/***/
 	public LumoWand() {
 		this(
 			new Item.Properties()
@@ -46,7 +46,7 @@ public class LumoWand extends Item {
 				.tab(CreativeModeTab.TAB_TOOLS)
 		);
 	}
-	
+	/***/
 	public LumoWand(Properties props) {
 		super(props);
 	}
@@ -102,7 +102,7 @@ public class LumoWand extends Item {
 	
 	
 	@Override
-	public void appendHoverText(ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, TooltipFlag flagIn) {
+	public void appendHoverText(@Nullable ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, @Nullable TooltipFlag flagIn) {
 		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.1"));
 		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.2"));
 		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.3"));

@@ -50,6 +50,7 @@ public abstract class RichEffect extends MobEffect {
 		}
 	};
 	
+	/** */
 	public RichEffect() {
 		this(MobEffectCategory.NEUTRAL, 0);
 	}
@@ -78,10 +79,16 @@ public abstract class RichEffect extends MobEffect {
 	 */
 	public abstract ResourceLocation getCustomIcon();
 	
+	/**
+	 * @return The color of the text foreground.
+	 */
 	public int getTextMainColor() {
 		return 0xFFFFFF;
 	}
 	
+	/**
+	 * @return The color of the text shadow.
+	 */
 	public int getTextShadowColor() {
 		return 0x7F7F7F;
 	}

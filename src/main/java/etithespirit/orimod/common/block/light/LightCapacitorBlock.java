@@ -18,15 +18,18 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
+/**
+ * Represents a Light Capacitor, used to store Light energy.
+ */
 public class LightCapacitorBlock extends ConnectableLightTechBlock implements ILightBlockIdentifier, IToolRequirementProvider, EntityBlock {
-	
+	/***/
 	public LightCapacitorBlock() {
 		this(Properties.of(Material.STONE)
 			// No tool requirement
 			     .sound(SoundType.STONE)
 		);
 	}
-	
+	/***/
 	public LightCapacitorBlock(Properties properties) {
 		super(properties);
 		ConnectableLightTechBlock.autoRegisterDefaultState(this::registerDefaultState, this.stateDefinition);

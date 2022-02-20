@@ -40,17 +40,17 @@ public final class OriMod {
 
 	/** hnnnng kernol,,,,, id,,,, */
 	public static final String MODID = "orimod";
-	
+	/***/
 	public static final Logger LOG = LogManager.getLogger();
 
 	/** Returns the singleton instance of this mod. */
 	public static OriMod getInstance() {
 		return _instance;
 	}
-	public static OriMod _instance;
+	private static OriMod _instance;
 	
 	private static boolean isModLoadingComplete = false;
-	
+	/***/
 	public OriMod() {
 		_instance = this;
 		OriModConfigs.initialize();
@@ -80,6 +80,7 @@ public final class OriMod {
 		return isModLoadingComplete;
 	}
 	
+	/***/
 	public void commonInit(final FMLCommonSetupEvent event) {
 		// For TEs
 		MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
@@ -118,7 +119,7 @@ public final class OriMod {
 		CapabilityRegistry.registerAll();
 		*/
 	}
-	
+	/***/
 	public void clientGameBuildInit(final FMLClientSetupEvent event) {
 		//UniProfiler.setProfiler(Minecraft.getInstance().getProfiler(), Dist.CLIENT);
 		
@@ -153,7 +154,7 @@ public final class OriMod {
 		*/
 		
 	}
-	
+	/***/
 	public void dedicatedServerBuildInit(final FMLDedicatedServerSetupEvent event) {
 		ReplicateSpiritStatus.registerPackets(Dist.DEDICATED_SERVER);
 		EffectModificationReplication.registerPackets(Dist.DEDICATED_SERVER);
@@ -161,12 +162,12 @@ public final class OriMod {
 		
 		//UniProfiler.setProfiler(.getProfiler(), Dist.DEDICATED_SERVER);
 	}
-	
+	/***/
 	public void commandInit(final RegisterCommandsEvent event) {
 		//CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
 		//SetSpiritCommand.registerCommand(dispatcher);
 	}
-	
+	/***/
 	public void onDataGenerated(final GatherDataEvent dataEvt) {
 		if (dataEvt.includeClient()) {
 			DataGenerator generator = dataEvt.getGenerator();
@@ -178,7 +179,7 @@ public final class OriMod {
 			generator.addProvider(blockTags);
 		}
 	}
-	
+	/***/
 	public void onModLoadingComplete(final FMLLoadCompleteEvent evt) {
 		isModLoadingComplete = true;
 	}

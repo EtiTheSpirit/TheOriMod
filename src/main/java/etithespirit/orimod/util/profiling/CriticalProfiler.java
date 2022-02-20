@@ -37,7 +37,9 @@ import java.util.function.Supplier;
 
 /**
  * A profiler for the Ori mod. It is very similar to MC's ActiveProfiler but has some slight differences.
+ * It is deprecated in favor of using MC's built in stuff.
  */
+@Deprecated(forRemoval = true)
 public final class CriticalProfiler {
 	private final LongArrayList starts = new LongArrayList();
 	private final MergeableStringStack pathStack = new MergeableStringStack();
@@ -48,10 +50,13 @@ public final class CriticalProfiler {
 	private final long totalWarnTimeNanos;
 	private boolean live;
 	
-	public CriticalProfiler(Logger log, LongSupplier nanoSupplier) {
-		this(log, nanoSupplier, Long.MAX_VALUE, Long.MAX_VALUE);
-	}
-	
+	/**
+	 *
+	 * @param log The logger to use.
+	 * @param nanoSupplier A supplier that returns the current system time in nanoseconds.
+	 * @param warnTimeNanos The amount of time that any subroutine must remain under, lest a warning is posted.
+	 * @param totalWarnTimeNanos The amount of time that the entire profiling operation must remain under, lest a warning is posted.
+	 */
 	public CriticalProfiler(Logger log, LongSupplier nanoSupplier, long warnTimeNanos, long totalWarnTimeNanos) {
 		this.log = log;
 		this.getRealTime = nanoSupplier;
@@ -59,10 +64,16 @@ public final class CriticalProfiler {
 		this.totalWarnTimeNanos = totalWarnTimeNanos;
 	}
 	
+	/**
+	 * @return Whether or not this profiler is profiling right now.
+	 */
 	public boolean isLive() {
 		return live;
 	}
 	
+	/**
+	 * Begins the profiling process.
+	 */
 	public void profileBegin() {
 		if (live) {
 			OriMod.LOG.error("Profiler tick was already running. Was a call to profileEnd() forgotten? Was profileBegin() called twice?");
@@ -73,6 +84,9 @@ public final class CriticalProfiler {
 		}
 	}
 	
+	/**
+	 * Ends the profiling process.
+	 */
 	public void profileEnd() {
 		if (!this.live) {
 			log.error("Profiler tick was not running. Was a call to profileBegin() forgotten? Was profileEnd() called twice?");
@@ -89,6 +103,10 @@ public final class CriticalProfiler {
 		}
 	}
 	
+	/**
+	 * Starts a new subroutine.
+	 * @param routine The name of the routine.
+	 */
 	public void push(String routine) {
 		if (!live) {
 			log.error("Cannot push '{}' - The profiler hasn't started! Is there a missing profileBegin() call?", routine);
@@ -98,6 +116,9 @@ public final class CriticalProfiler {
 		}
 	}
 	
+	/**
+	 * Jumps out of the current subroutine.
+	 */
 	public void pop() {
 		if (!live) {
 			log.error("Cannot pop - The profiler hasn't started! Is there a missing profileBegin() call?");
@@ -111,6 +132,10 @@ public final class CriticalProfiler {
 		}
 	}
 	
+	/**
+	 * Jumps out of the current subroutine, then jumps into a new one.
+	 * @param newRoutine The name of the new routine.
+	 */
 	public void popPush(String newRoutine) {
 		this.pop();
 		this.push(newRoutine);

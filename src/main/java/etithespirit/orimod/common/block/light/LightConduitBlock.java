@@ -25,6 +25,9 @@ import java.util.List;
 
 import static etithespirit.orimod.util.Bit32.hasFlag;
 
+/**
+ * Represents a Light Conduit.
+ */
 public class LightConduitBlock extends ConnectableLightTechBlock implements IToolRequirementProvider {
 	
 	private static final VoxelShape CORE = Block.box(4, 4, 4, 12, 12, 12);
@@ -36,12 +39,15 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IToo
 	private static final VoxelShape V_NORTH = Block.box(4, 4, 0, 12, 12, 4);
 	private static final VoxelShape V_SOUTH = Block.box(4, 4, 12, 12, 12, 16);
 	
+	/***/
 	protected static final VoxelShape[] COLLISION_SHAPES = SixSidedUtils.getBitwiseColliderArrayFor(LightConduitBlock::getShapeFor);
 	
+	/***/
 	public LightConduitBlock() {
 		this(BlockBehaviour.Properties.of(Material.STONE));
 	}
 	
+	/***/
 	public LightConduitBlock(Properties props) {
 		super(props);
 		ConnectableLightTechBlock.autoRegisterDefaultState(this::registerDefaultState, this.stateDefinition);

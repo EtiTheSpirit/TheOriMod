@@ -39,7 +39,7 @@ public final class APIProvider {
 	 * The first one to yield a result is used. If none of these yield a result, the vanilla sound will be passed through.
 	 * @return The instance of the sound API. If the mod is not installed (and only the API is), then a dummy API will be returned. Use {@link ISpiritSoundAPI#isInstalled()} to determine whether or not the returned API is usable, as the dummy API will raise an exception upon calling any of its members.
 	 */
-	static ISpiritSoundAPI getSpiritSoundAPI() {
+	public static ISpiritSoundAPI getSpiritSoundAPI() {
 		if (spiritSoundAPI == null) {
 			try {
 				Class<?> apiClass = Class.forName("etithespirit.orimod.apiimpl.SpiritSoundAPI");

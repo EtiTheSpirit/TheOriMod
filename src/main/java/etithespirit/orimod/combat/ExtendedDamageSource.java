@@ -2,6 +2,9 @@ package etithespirit.orimod.combat;
 
 import net.minecraft.world.damagesource.DamageSource;
 
+/**
+ * Additional damage sources defined by this mod.
+ */
 public final class ExtendedDamageSource {
 	
 	// Prevent instances.

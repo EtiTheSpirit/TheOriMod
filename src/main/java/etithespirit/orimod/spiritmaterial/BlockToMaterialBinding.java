@@ -186,50 +186,116 @@ public final class BlockToMaterialBinding {
 	/////////////////////////////////////////////////////////
 	/// REGISTRY CODE
 	
+	/**
+	 * Associates the given Minecraft or Mod {@link Material} with the given {@link SpiritMaterial}
+	 * @param mtl The Minecraft vanilla material (or custom Mod material) to associate.
+	 * @param smtl The Spirit Material to associate it with.
+	 */
 	public static void associateMCMaterialWith(Material mtl, SpiritMaterial smtl) {
 		MATERIAL_TO_SPIRIT_MTL.put(mtl, smtl);
 	}
 	
-	public static void setOverrideMaterialFor(Block block, Material mtl) {
+	/**
+	 * Associates the specific {@link Block} with the given Minecraft or Mod {@link Material}, which can be used to alter its sound on a material basis.
+	 * This is mostly intended for use with modded blocks. Only use this with vanilla blocks if, for whatever reason, you have completely overridden it
+	 * and it requires unique behavior.
+	 *
+	 * This is strictly only useful if the auditory material is different than the block's assigned material.
+	 *
+	 * @param block The block to associate
+	 * @param mtl The material to associate it with.
+	 * @throws IllegalArgumentException If the block's material is identical to mtl.
+	 */
+	public static void setOverrideMaterialFor(Block block, Material mtl) throws IllegalArgumentException {
+		if (block.defaultBlockState().getMaterial().equals(mtl)) throw new IllegalArgumentException(String.format("Something attempted to assign the given block (%s) such that its material would be overridden to a different material, however, the supposed \"override\" is identical to the block's existing material! This override call should be removed immediately.", block.getRegistryName().toString(), mtl));
 		BLOCK_TO_MATERIAL.put(block, mtl);
 	}
 	
+	/**
+	 * Associates the specific {@link Block} with the given {@link SpiritMaterial}, which is used to alter its sound to a specific Spirit block material.
+	 * @param block The block to associate.
+	 * @param mtl The Spirit material to associate it with.
+	 */
 	public static void setSpiritMaterialFor(Block block, SpiritMaterial mtl) {
 		BLOCK_TO_SPIRIT_MTL.put(block, mtl);
 	}
 	
+	/**
+	 * A more concise method that allows associating a specific {@link BlockState} to a specific material rather than the entire block type.
+	 * @param state The specific state to associate.
+	 * @param mtl The Spirit material to associate it with.
+	 */
 	public static void setSpiritMaterialForState(BlockState state, SpiritMaterial mtl) {
 		SPECIFIC_STATE_TO_SPIRIT_MTL.put(state, mtl);
 	}
 	
+	/**
+	 * A sort of concise method of associating a block ID with a {@link SpiritMaterial}, which can be used for mods with conditionally registered blocks or blocks from other mods.<br/>
+	 * <strong>Note:</strong> Conditionally registered blocks are considered bad practice by Forge. According to Forge, you should
+	 * simply disable its recipe instead. This can also be used to register blocks from other mods, however it is generally a bad idea to do this unless
+	 * it is your own mod.
+	 * @param loc The ID of a hypothetical block to associate.
+	 * @param mtl The Spirit material to associate it with.
+	 */
 	public static void setSpiritMaterialForArbitrary(ResourceLocation loc, SpiritMaterial mtl) {
 		ARB_BLOCK_TO_SPIRIT_MTL.put(loc, mtl);
 	}
 	
+	/**
+	 * Associates the specific {@link Block} (by registry object) with the given {@link SpiritMaterial}, which is used to alter its sound to a specific Spirit block material.
+	 * @param block The block to associate.
+	 * @param mtl The Spirit material to associate it with.
+	 */
 	public static void setEffectiveMaterialForRegistryObject(RegistryObject<Block> block, SpiritMaterial mtl) {
 		setSpiritMaterialForArbitrary(block.getId(), mtl);
 	}
 	
+	/**
+	 * Modify the test used for this block's material so that its sound is played if the player is <em>inside of</em> this block (as opposed to on top of it).
+	 * @param block The block to set.
+	 */
 	public static void useIfIn(Block block) {
 		BLOCKS_TO_TEST_IF_INSIDE.add(block);
 	}
 	
+	/**
+	 * Modify the test used for this specific state's material so that its sound is played if the player is <em>inside of</em> this block (as opposed to on top of it).
+	 * @param state The specific block state to set.
+	 */
 	public static void useIfIn(BlockState state) {
 		BLOCKSTATES_TO_TEST_IF_INSIDE.add(state);
 	}
 	
+	/**
+	 * Modify the test used for this block's (by ID) material so that its sound is played if the player is <em>inside of</em> this block (as opposed to on top of it).
+	 * @param loc The ID of a hypothetical block to set.
+	 */
 	public static void useIfIn(ResourceLocation loc) {
 		ARB_BLOCKS_TO_TEST_IF_INSIDE.add(loc);
 	}
 	
+	/**
+	 * Modify the test used for this registered block's material so that its sound is played if the player is <em>inside of</em> this block (as opposed to on top of it).
+	 * @param block The registry object of the block to set.
+	 */
 	public static void useIfIn(RegistryObject<Block> block) {
 		useIfIn(block.getId());
 	}
 	
+	/**
+	 * Registers a means of applying a custom material to a block via a predicate function.
+	 * @param block The block to apply the predicate to.
+	 * @param func A function that determines which material to use based on the entity's information
+	 */
 	public static void setConditionForBlock(Block block, ISpiritMaterialAquisitionFunction func) {
 		BLOCK_CONDITIONAL_MATERIAL_OVERRIDES.put(block, func);
 	}
 	
+	/**
+	 * Registers a means of applying a custom material to a different block material via a predicate function.
+	 * @param mtl The material to apply the predicate to.
+	 * @param func A function that determines which material to use based on the entity's information
+	 */
 	public static void setConditionForMaterial(Material mtl, ISpiritMaterialAquisitionFunction func) {
 		MATERIAL_CONDITIONAL_MATERIAL_OVERRIDES.put(mtl, func);
 	}
@@ -414,6 +480,12 @@ public final class BlockToMaterialBinding {
 	
 	private static List<Material> vanillaMaterials = null;
 	private static List<Block> vanillaBlocks = null;
+	
+	/**
+	 * Returns true if this material is vanilla based on whether or not it is a field in {@link Material}.
+	 * @param material The material to check.
+	 * @return True if the reference is one present in {@link Material}.
+	 */
 	public static boolean isMaterialVanilla(Material material) {
 		if (vanillaMaterials == null) {
 			vanillaMaterials = new ArrayList<>();
@@ -430,6 +502,12 @@ public final class BlockToMaterialBinding {
 		
 		return vanillaMaterials.contains(material);
 	}
+	
+	/**
+	 * Returns true if this block is vanilla based on whether or not it is a field in {@link Blocks}.
+	 * @param block The block to check.
+	 * @return True if the reference is one present in {@link Blocks}.
+	 */
 	public static boolean isBlockVanilla(Block block) {
 		if (vanillaBlocks == null) {
 			vanillaBlocks = new ArrayList<>();

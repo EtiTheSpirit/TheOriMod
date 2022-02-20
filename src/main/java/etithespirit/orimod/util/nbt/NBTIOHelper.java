@@ -5,6 +5,9 @@ import net.minecraft.core.Vec3i;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.ChunkPos;
 
+/**
+ * This class provides utilities that allow writing some more object types to NBT as well as reading that data back.
+ */
 public final class NBTIOHelper {
 	
 	private NBTIOHelper() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

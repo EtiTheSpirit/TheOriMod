@@ -1,6 +1,9 @@
 package etithespirit.orimod.common.block.light.connection;
 
 
+import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
+import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
+import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
@@ -27,8 +30,7 @@ import java.util.function.Consumer;
  * to communicate with one-another, for instance, by allowing two storage devices to transfer power through a pipeline.<br/>
  * <br/>
  * Blocks extending this class should always have a {@link net.minecraft.world.level.block.entity.BlockEntity TileEntity} associated with them, where
- * said tile extends {@link etithespirit.etimod.common.tile.light.AbstractLightEnergyLink AbstractLightEnergyLink} or
- * {@link etithespirit.etimod.common.tile.light.AbstractLightEnergyHub AbstractLightEnergyHub}
+ * said tile extends {@link AbstractLightEnergyLink} or {@link AbstractLightEnergyHub}
  * @author Eti
  */
 @SuppressWarnings("unused")
@@ -39,9 +41,14 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	
 	/**
 	 * Whether or not this is energized, which is not valid for use on Tile Entity providers implementing {@link ILightEnergyStorage}.
-	 * Instead, this represents whether or not a passive Light-based block is handling Energy indirectly in some way, for instance, if a conduit is permitting transfer between two power sources. */
+	 * Instead, this represents whether or not a passive Light-based block is handling Energy indirectly in some way, for instance, if a conduit is permitting transfer between two power sources.
+	 */
 	public static final BooleanProperty ENERGIZED = BooleanProperty.create("in_use");
 	
+	/**
+	 * Redirects to Block's ctor.
+	 * @param p_i48440_1_ The properties of this block.
+	 */
 	protected ConnectableLightTechBlock(Properties p_i48440_1_) {
 		super(p_i48440_1_);
 	}

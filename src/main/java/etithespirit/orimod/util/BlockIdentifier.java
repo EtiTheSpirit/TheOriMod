@@ -3,6 +3,9 @@ package etithespirit.orimod.util;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;
 
+/**
+ * A utility class that can be used to identify blocks by a general type.
+ */
 public final class BlockIdentifier {
 	
 	private BlockIdentifier() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }

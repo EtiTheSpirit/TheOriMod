@@ -11,13 +11,27 @@ import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 
-public class DecayEffect extends RichEffect {
+/**
+ * The status effect that occurs when someone is decaying.
+ */
+public final class DecayEffect extends RichEffect {
 	
+	/** The icon of the Decay effect. */
 	public static final ResourceLocation DECAY_ICON = new ResourceLocation(OriMod.MODID, "textures/mob_effect/decay.png");
+	
+	/** The max effective level of Decay. */
 	public static final int MAX_AMP = 9;
+	
+	/** The damage done per decay tick at level 0. */
 	public static final int MIN_DAMAGE = 1;
+	
+	/** The damage done per decay tick at level MAX_AMP-1. */
 	public static final int MAX_DAMAGE = 8;
+	
+	/** The longest delay in decay ticks measured in real ticks. This occurs at level 0. */
 	public static final int LONGEST_DELAY_TICKS = 40;
+	
+	/** The shortest delay in decay ticks measured in real ticks. This occurs at level MAX_AMP-1. */
 	public static final int SHORTEST_DELAY_TICKS = 10;
 	
 	@Override
@@ -73,7 +87,7 @@ public class DecayEffect extends RichEffect {
 		return true;
 	}
 	
-	protected int getDamageRate(int amplifier) {
+	private int getDamageRate(int amplifier) {
 		// TARGETS:
 		// Highest effective amplifier should be 4 (Decay V) => Damage once every half second (10 ticks)
 		// Lowest effective amplifier is 0 (Decay I) => Damage once every two seconds (40 ticks)
@@ -83,7 +97,7 @@ public class DecayEffect extends RichEffect {
 		return (int) Mth.lerp(LONGEST_DELAY_TICKS, SHORTEST_DELAY_TICKS, (float)amplifier / Mth.floor(MAX_AMP / 2f));
 	}
 	
-	protected float getDamageAmount(int amplifier) {
+	private float getDamageAmount(int amplifier) {
 		// For all standard levels, damage should be one half heart.
 		if (amplifier <= 4) {
 			return 1;

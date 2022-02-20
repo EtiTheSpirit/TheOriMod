@@ -22,8 +22,9 @@ import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Level;
-
+/***/
 public class GenerateBlockModels extends BlockStateProvider {
+	/***/
 	public GenerateBlockModels(DataGenerator gen, ExistingFileHelper exFileHelper) {
 		super(gen, OriMod.MODID, exFileHelper);
 	}
@@ -57,7 +58,7 @@ public class GenerateBlockModels extends BlockStateProvider {
 	 * Registers a block and an item for that block.
 	 * @param blockReg The block registry object to create.
 	 */
-	protected void registerBlockAndItem(RegistryObject<Block> blockReg) {
+	private void registerBlockAndItem(RegistryObject<Block> blockReg) {
 		Block block = blockReg.get();
 		ModelFile model = this.cubeAll(block);
 		VariantBlockStateBuilder builder = this.getVariantBuilder(block);
@@ -116,14 +117,14 @@ public class GenerateBlockModels extends BlockStateProvider {
 		OriMod.LOG.printf(Level.INFO, "Generated conduit block at %s and %s", core.getLocation().toString(), connector.getLocation().toString());
 	}
 	
-	protected void registerLogBlockAndItem(RegistryObject<Block> block) {
+	private void registerLogBlockAndItem(RegistryObject<Block> block) {
 		this.axisBlockWithStates((RotatedPillarBlock)block.get(), this.blockTexture(block.get()), extend(this.blockTexture(block.get()), "_top"));
 	}
-	
+	/***/
 	public void axisBlockWithStates(RotatedPillarBlock block, ResourceLocation side, ResourceLocation end) {
 		axisBlockWithStates(block, models().cubeColumn(name(block), side, end), models().cubeColumnHorizontal(name(block) + "_horizontal", side, end));
 	}
-	
+	/***/
 	public void axisBlockWithStates(RotatedPillarBlock block, ModelFile vertical, ModelFile horizontal) {
 		
 		for (BlockState fullState : block.getStateDefinition().getPossibleStates()) {

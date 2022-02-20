@@ -37,29 +37,31 @@ public interface ILightEnergyStorage {
 	double extractLight(double maxExtract, boolean simulate);
 	
 	/**
-	 * Returns the amount of energy currently stored.
+	 * @return The amount of energy currently stored.
 	 */
 	double getLightStored();
 	
 	/**
-	 * Returns the maximum amount of energy that can be stored.
+	 * @return The maximum amount of energy that can be stored.
 	 */
 	double getMaxLightStored();
 	
 	/**
 	 * Returns if this storage can have energy extracted.
 	 * If this is false, then any calls to extractEnergy will return 0.
+	 * @return Whether or not this storage can have energy extracted from it.
 	 */
 	boolean canExtractLight();
 	
 	/**
 	 * Used to determine if this storage can receive energy.
 	 * If this is false, then any calls to receiveEnergy will return 0.
+	 * @return Whether or not this storage can have energy added to it.
 	 */
 	boolean canReceiveLight();
 	
 	/**
-	 * Whether or not this can interact with RF (as opposed to Light), which determines its usability in {@link LightEnergyAdapter LightEnergyAdapter}.
+	 * @return whether or not this can interact with RF (as opposed to Light), which determines its usability in {@link LightEnergyAdapter LightEnergyAdapter}.
 	 */
 	boolean acceptsConversion();
 	

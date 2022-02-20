@@ -8,6 +8,8 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
+import javax.annotation.Nonnull;
+
 /**
  * Default implementations for sound behaviors on blocks.
  *
@@ -24,8 +26,15 @@ public final class DefaultImplementations {
 	// Prevent instances
 	private DefaultImplementations() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
-	@SuppressWarnings("deprecation")
-	public static SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
+	/**
+	 * A default implementation of {@link etithespirit.orimod.api.delegate.ISpiritMaterialAquisitionFunction} that returns the appropriate material for wood blocks based on the weather and nearby objects.
+	 * @param entity The entity stepping on this block.
+	 * @param on The block being walked on top of.
+	 * @param in The block being walked inside of.
+	 * @param isStandingIn Whether or not the block that was associated with a custom material is the one that is being stood inside of (if false, the block associated is being walked on top of)
+	 * @return A better suited Spirit Material given the context of the given wood block.
+	 */
+	public static @Nonnull SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		Level world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
@@ -56,8 +65,15 @@ public final class DefaultImplementations {
 		return SpiritMaterial.WOOD_DRY;
 	}
 	
-	@SuppressWarnings("deprecation")
-	public static SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
+	/**
+	 * A default implementation of {@link etithespirit.orimod.api.delegate.ISpiritMaterialAquisitionFunction} that returns the appropriate material for water blocks based on how full the block is.
+	 * @param entity The entity stepping on this block.
+	 * @param on The block being walked on top of.
+	 * @param in The block being walked inside of.
+	 * @param isStandingIn Whether or not the block that was associated with a custom material is the one that is being stood inside of (if false, the block associated is being walked on top of)
+	 * @return A better suited Spirit Material given the context of the given water block.
+	 */
+	public static @Nonnull SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		Level world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);

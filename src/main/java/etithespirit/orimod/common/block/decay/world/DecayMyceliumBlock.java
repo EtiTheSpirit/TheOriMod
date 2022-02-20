@@ -17,7 +17,7 @@ import java.util.List;
 public class DecayMyceliumBlock extends DecayBlockBase {
 	
 	private static final Properties DEFAULT_PROPERTIES = Properties.of(Material.GRASS).sound(SoundType.SLIME_BLOCK).strength(1.2f).friction(0.9995f);
-	
+	/** */
 	public DecayMyceliumBlock() {
 		super(DEFAULT_PROPERTIES, true);
 	}

@@ -50,12 +50,20 @@ public class EntityEmittedSoundEventProvider {
 		return evt;
 	}
 	
+	/**
+	 * Register an event handler for this event.
+	 * @param handler The handler to register.
+	 */
 	public static void registerHandler(Consumer<EntityEmittedSoundEvent> handler) {
 		if (!CONSUMERS.contains(handler)) {
 			CONSUMERS.add(handler);
 		}
 	}
 	
+	/**
+	 * Unregister an event handler for this event.
+	 * @param handler The handler to unregister.
+	 */
 	public static void unregisterHandler(Consumer<EntityEmittedSoundEvent> handler) {
 		CONSUMERS.remove(handler);
 	}

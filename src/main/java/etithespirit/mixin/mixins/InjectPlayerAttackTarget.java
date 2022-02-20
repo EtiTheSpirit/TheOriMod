@@ -19,8 +19,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/***/
 @Mixin(Player.class)
 public abstract class InjectPlayerAttackTarget extends LivingEntity implements ISelfProvider {
+	/***/
 	protected InjectPlayerAttackTarget(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) { super(p_20966_, p_20967_); }
 	
 	

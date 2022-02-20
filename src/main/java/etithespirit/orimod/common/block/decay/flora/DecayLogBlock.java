@@ -7,10 +7,11 @@ import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
 
+/** A petrified log. */
 public class DecayLogBlock extends DecayLogBase {
 	
 	private static final Properties DEFAULT_PROPERTIES = Properties.copy(Blocks.OAK_LOG).sound(SoundType.STONE);
-	
+	/** */
 	public DecayLogBlock() {
 		super(DEFAULT_PROPERTIES, true);
 	}

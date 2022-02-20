@@ -15,12 +15,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+/***/
 @Mixin(LocalPlayer.class)
 public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer implements ISelfProvider {
-	
+	/***/
 	public InjectLocalPlayerPlaySound(ClientLevel p_108548_, GameProfile p_108549_) { super(p_108548_, p_108549_); }
 	
+	/***/
 	@Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.
@@ -41,7 +42,7 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 		}
 	}
 	
-	
+	/***/
 	@Inject(method = "playNotifySound(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalledWithCategory(SoundEvent soundIn, SoundSource category, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.

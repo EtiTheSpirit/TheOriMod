@@ -67,6 +67,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	
 	/**
 	 * Returns whether or not a replacement for the given BlockState exists.
+	 * @param worldIn The {@link Level} that this block exists in.
+	 * @param at The location of this block in the world.
 	 * @param existingBlock The block that may be replaced.
 	 * @return Whether or not this block actually has a replacement.
 	 */
@@ -76,6 +78,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	
 	/**
 	 * Returns whether or not this decay block needs to spread because one or more of its adjacent blocks is not a decay block.
+	 * @param decayBlock The block that should be checked for spreadability.
+	 * @return Whether or not this block should spread.
 	 */
 	default boolean needsToSpread(BlockState decayBlock) {
 		return !decayBlock.getValue(ALL_ADJACENT_ARE_DECAY);
@@ -106,6 +110,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	/**
 	 * Returns an array of 6 boolean values mapping in the order of: EAST, WEST, UP, DOWN, NORTH, SOUTH<br>
 	 * A given boolean is true if the corresponding block has no decay replacement. Note that decay blocks are not decayable either. As such, this method better describes when a block is stopping decay spread.<br>
+	 * @param world The {@link Level} that this block exists in.
+	 * @param pos The location of this block in the level it exits in.
 	 * @return Six boolean values in the order of EAST, WEST, UP, DOWN, NORTH, SOUTH that represents whether or not the given adjacent block in that direction can be mutated.
 	 */
 	default boolean[] getNonDecayableAdjacents(Level world, BlockPos pos) {
@@ -161,6 +167,13 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		return null;
 	}
 	
+	/**
+	 * The default behavior that should generally occur on a random tick for a decay block.
+	 * @param state The block that is ticking.
+	 * @param worldIn The {@link Level} that this block is ticking in.
+	 * @param pos The location at which this block is ticking.
+	 * @param random The pseudorandomizer of this world.
+	 */
 	default void defaultRandomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		boolean doEdgeCheckInstead = needsToDoEdgeCheck(random, state.getValue(EDGE_DETECTION_RARITY), EDGE_TEST_MINIMUM_CHANCE);
 		boolean needsToSpreadToNewBlock = needsToSpread(state);
@@ -177,6 +190,13 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		}
 	}
 	
+	/**
+	 * The default routine for spreading to / infecting adjacent blocks.
+	 * @param state The block that is responsible for the spreading.
+	 * @param worldIn The {@link Level} that this spread is occurring in.
+	 * @param pos The location at which this block exists.
+	 * @param random The pseudorandomizer of this world.
+	 */
 	default void doAdjacentSpread(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		BlockPos randomUnoccupied = randomUnoccupiedDirection(worldIn, pos, random);
 		if (randomUnoccupied != null) {
@@ -193,6 +213,14 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		}
 	}
 	
+	/**
+	 * The default routine for spreading to / infecting diagonally oriented blocks (2D or 3D).
+	 * This can be imagined with the current block being the center of a 3x3x3 cube. It applies to all blocks that are not directly adjacent to one of the six faces of this block.
+	 * @param state The block that is responsible for the spreading.
+	 * @param worldIn The {@link Level} that this spread is occurring in.
+	 * @param pos The location at which this block exists.
+	 * @param random The pseudorandomizer of this world.
+	 */
 	default void doDiagonalSpread(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
 		BlockPos randomUnoccupied = randomUnoccupiedDiagonal(worldIn, pos, random);
 		if (randomUnoccupied != null) {
@@ -214,8 +242,22 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		}
 	}
 	
+	/**
+	 * Register all of the blocks that this decay block will replace with itself once those blocks are infected.
+	 * @param blocksToReplaceWithSelf A list of every block that is replaced by this upon infection.
+	 */
 	void registerReplacements(List<BlockState> blocksToReplaceWithSelf);
 	
+	/**
+	 * The default logic for when a neighbor of this decay block is changed.
+	 * @param state This block's state.
+	 * @param worldIn The {@link Level} in which this change is occurring.
+	 * @param pos The location at which this change is occurring.
+	 * @param blockIn The block itself.
+	 * @param fromState The state of the block that changed.
+	 * @param fromPos The location of the block that changed.
+	 * @param isMoving Whether or not this change is the result of a piston.
+	 */
 	@SuppressWarnings("unused")
 	default void defaultNeighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockState fromState, BlockPos fromPos, boolean isMoving) {
 		BlockState replacement = getDecayReplacementFor(fromState);
@@ -224,6 +266,12 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		}
 	}
 	
+	/**
+	 * The default logic for when an entity walks on this decay block.
+	 * @param worldIn The {@link Level} in which this occurred.
+	 * @param pos The location of the block that was walked on.
+	 * @param entityIn The entity that walked on the block.
+	 */
 	@SuppressWarnings("unused")
 	default void defaultOnEntityWalked(Level worldIn, BlockPos pos, Entity entityIn) {
 		if (!(entityIn instanceof LivingEntity)) return;

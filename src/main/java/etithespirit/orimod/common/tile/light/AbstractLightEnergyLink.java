@@ -22,6 +22,12 @@ import javax.annotation.Nullable;
  */
 public abstract class AbstractLightEnergyLink extends BlockEntity implements IWorldUpdateListener {
 	
+	/**
+	 * Create a new link using the default BlockEntity ctor.
+	 * @param type The block entity type.
+	 * @param at The location to create it at.
+	 * @param state The BlockState to create it for.
+	 */
 	public AbstractLightEnergyLink(BlockEntityType<?> type, BlockPos at, BlockState state) { super(type, at, state); }
 	
 	/** The {@link Assembly} that this is a part of. */

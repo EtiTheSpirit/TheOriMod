@@ -76,7 +76,7 @@ public final class SpiritStateReplicationPacket {
 	/**
 	 * Constructs a packet that asks the server what the given players are with respect to being a spirit.
 	 * @param players The players to acquire information of. This can be empty to get all players,
-	 *                however it is recommended to use {@link #getModelsOfAll()} for this purpose.
+	 *                however it is recommended to use {@link #toGetModelsOfAll()} for this purpose.
 	 * @return A packet that can be sent to the server to acquire whether or not the given players are spirits or not.
 	 */
 	@ClientUseOnly
@@ -91,7 +91,7 @@ public final class SpiritStateReplicationPacket {
 	/**
 	 * Constructs a packet that asks the server what the given players are with respect to being a spirit.
 	 * @param players The players to acquire information of. This can be empty to get all players,
-	 *                however it is recommended to use {@link #getModelsOfAll()} for this purpose.
+	 *                however it is recommended to use {@link #toGetModelsOfAll()} for this purpose.
 	 * @return A packet that can be sent to the server to acquire whether or not the given players are spirits or not.
 	 */
 	@ClientUseOnly

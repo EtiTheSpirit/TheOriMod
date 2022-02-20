@@ -47,7 +47,7 @@ public final class DecayCommon {
 	
 	
 	/**
-	 * An array of panel shaped collision boxes. For those unaware, the units are pixels, so 16 is a full block. The order of this array matters for use in {@link etithespirit.etimod.common.block.decay.world.DecaySurfaceMyceliumBlock}
+	 * An array of panel shaped collision boxes. For those unaware, the units are pixels, so 16 is a full block. The order of this array matters for use in {@link etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock}
 	 */
 	public static final VoxelShape[] PANELS = new VoxelShape[] {
 		Block.box(15D, 0D, 0D, 16D, 16D, 16D),
@@ -67,15 +67,13 @@ public final class DecayCommon {
 	 */
 	public static final Map<BlockState, BlockState> BLOCK_REPLACEMENT_TARGETS = new HashMap<>();
 	
+	/**
+	 * Returns true if the block classifies as a decay block.
+	 * @param block The block to check.
+	 * @return True if this block classifies as a decay block.
+	 */
 	public static boolean isDecayBlock(Block block) {
 		return block instanceof IDecayBlockIdentifier;
-	}
-	
-	static {
-		int realMaxTests = Cardinals.ADJACENTS_IN_ORDER.length + Cardinals.DIAGONALS_IN_ORDER.length;
-		if (MAX_DIAGONAL_TESTS > realMaxTests) {
-			System.err.println("[WARNING] DecayBlockBase -- MAX_DIAGONAL_TESTS is greater than " + realMaxTests + " - being higher than this value will do absolutely nothing.");
-		}
 	}
 	
 }

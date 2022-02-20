@@ -13,10 +13,13 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+/***/
 @Mixin(HumanoidArmorLayer.class)
 public abstract class InjectUsesInnerModel<T extends LivingEntity, M extends HumanoidModel<T>, A extends HumanoidModel<T>> extends RenderLayer<T, M> {
+	/***/
 	public InjectUsesInnerModel(RenderLayerParent<T, M> p_117346_) { super(p_117346_); }
 	
+	/***/
 	@Inject (
 		method = "usesInnerModel(Lnet/minecraft/world/entity/EquipmentSlot;)Z",
 		at = @At ("RETURN"), // No particular return ordinal is required here

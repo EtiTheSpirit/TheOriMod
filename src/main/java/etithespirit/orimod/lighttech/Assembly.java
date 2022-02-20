@@ -140,7 +140,7 @@ public final class Assembly {
 	}
 	
 	/**
-	 * Should <strong>only</strong> be executed when a world is unloading. This sets {@link #currentDebugID} to 0 (to reset debug IDs) and clears the list of every instantiated assembly for this side.
+	 * This sets {@link #currentDebugID} to 0 (to reset debug IDs) and clears the list of every instantiated assembly for this side from memory. Should <strong>only</strong> be executed when a world is unloading.
 	 * @param client If true, the client list should be cleared. If false, the server (both dedicated and integrated apply) should be.
 	 */
 	public static void clearAllKnownAssemblies(boolean client) {
@@ -305,6 +305,7 @@ public final class Assembly {
 		return ImmutableList.copyOf(lines);
 	}
 	
+	/** Dispose of the data associated with this assembly. This is used when the assembly is being fully deleted. */
 	public void dispose() {
 		for (AbstractLightEnergyLink link : helper.getLinks()) {
 			link.setAssembly(null);

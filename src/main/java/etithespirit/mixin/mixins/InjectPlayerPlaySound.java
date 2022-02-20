@@ -13,11 +13,13 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+/***/
 @Mixin(Player.class)
 public abstract class InjectPlayerPlaySound extends LivingEntity implements ISelfProvider {
+	/***/
 	protected InjectPlayerPlaySound(EntityType<? extends LivingEntity> p_20966_, Level p_20967_) { super(p_20966_, p_20967_); }
 	
+	/***/
 	@Inject(method="playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at=@At ("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.

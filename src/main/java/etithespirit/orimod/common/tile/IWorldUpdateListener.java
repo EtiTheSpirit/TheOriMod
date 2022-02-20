@@ -8,6 +8,9 @@ import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * This interface mandates that the block entity implementing it receives notifications of the world changing.
+ */
 public interface IWorldUpdateListener {
 	
 	/**

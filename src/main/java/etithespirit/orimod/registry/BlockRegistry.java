@@ -17,6 +17,9 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * This class manages the registration of blocks for the mod.
+ */
 public final class BlockRegistry {
 	
 	/** Used in the item registry to generate BlockItems. */
@@ -29,16 +32,16 @@ public final class BlockRegistry {
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS
-	public static final RegistryObject<Block> DECAY_MYCELIUM = BLOCKS.register("decay_mycelium", DecayMyceliumBlock::new);
-	public static final RegistryObject<Block> DECAY_LOG = BLOCKS.register("decay_log", DecayLogBlock::new);
-	public static final RegistryObject<Block> DECAY_STRIPPED_LOG = BLOCKS.register("stripped_decay_log", DecayStrippedLogBlock::new);
-	public static final RegistryObject<Block> DECAY_SURFACE_MYCELIUM = BLOCKS.register("decay_surface_mycelium", DecaySurfaceMyceliumBlock::new);
+	/** */ public static final RegistryObject<Block> DECAY_MYCELIUM = BLOCKS.register("decay_mycelium", DecayMyceliumBlock::new);
+	/** */ 	public static final RegistryObject<Block> DECAY_LOG = BLOCKS.register("decay_log", DecayLogBlock::new);
+	/** */ 	public static final RegistryObject<Block> DECAY_STRIPPED_LOG = BLOCKS.register("stripped_decay_log", DecayStrippedLogBlock::new);
+	/** */ 	public static final RegistryObject<Block> DECAY_SURFACE_MYCELIUM = BLOCKS.register("decay_surface_mycelium", DecaySurfaceMyceliumBlock::new);
 	
-	public static final RegistryObject<Block> LIGHT_CONDUIT = BLOCKS.register("light_conduit", LightConduitBlock::new);
+	/** */ 	public static final RegistryObject<Block> LIGHT_CONDUIT = BLOCKS.register("light_conduit", LightConduitBlock::new);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// TILE ENTITY BLOCKS
-	public static final RegistryObject<Block> LIGHT_CAPACITOR = BLOCKS.register("light_capacitor", LightCapacitorBlock::new);
+	/** */ 	public static final RegistryObject<Block> LIGHT_CAPACITOR = BLOCKS.register("light_capacitor", LightCapacitorBlock::new);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS WRAPPING FLUIDS
@@ -60,6 +63,7 @@ public final class BlockRegistry {
 		BLOCKS_TO_REGISTER.add(LIGHT_CAPACITOR);
 	}
 	
+	/***/
 	public static void registerAll() {
 		BLOCKS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		//FLUIDS.register(FMLJavaModLoadingContext.get().getModEventBus());

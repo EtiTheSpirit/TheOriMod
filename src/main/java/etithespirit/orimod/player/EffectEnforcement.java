@@ -6,6 +6,9 @@ import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 
+/**
+ * This class manages the speed, health, and knockback resistance of Spirits.
+ */
 public final class EffectEnforcement {
 	
 	private EffectEnforcement() { }
@@ -14,9 +17,14 @@ public final class EffectEnforcement {
 	private static final String SPIRIT_EFFECT_KNOCKBACK_UUID = "3FB8A8D0-3C6A-436A-BFF8-2ADA5887D3BB";
 	private static final String SPIRIT_EFFECT_MAX_HEALTH_UUID = "39BA687E-176C-11EB-ADC1-0242AC120002";
 	
+	/** This attribute makes Spirits faster. It is equal to Speed II. */
 	public static final AttributeModifier SPEED_MOD = new AttributeModifier(SPIRIT_EFFECT_SPEED_UUID, 0.0425D, AttributeModifier.Operation.ADDITION);
+	
+	/** This attribute makes Spirits immune to knockback. */
 	public static final AttributeModifier KNOCKBACK_MOD = new AttributeModifier(SPIRIT_EFFECT_KNOCKBACK_UUID, 1.0D, AttributeModifier.Operation.ADDITION);
-	public static final AttributeModifier HEALTH_MOD = new AttributeModifier(SPIRIT_EFFECT_MAX_HEALTH_UUID, -10D, AttributeModifier.Operation.ADDITION);
+	
+	/** This attribute makes Spirits have only half the health of a player. */
+	public static final AttributeModifier HEALTH_MOD = new AttributeModifier(SPIRIT_EFFECT_MAX_HEALTH_UUID, 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	
 	/**
 	 * Removes the spirit speed, knockback, and health modifications.

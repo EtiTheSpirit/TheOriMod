@@ -1,6 +1,7 @@
 package etithespirit.orimod.util.extension;
 
 
+import etithespirit.orimod.OriMod;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.item.ItemStack;
@@ -19,13 +20,16 @@ public final class MobEffectDataStorage {
 	
 	private MobEffectDataStorage() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
-	public static final String DATA_STORAGE_TAG_NAME = "customData";
+	/**
+	 * The name of the NBT tag that stores data.
+	 */
+	public static final String DATA_STORAGE_TAG_NAME = "customData_" + OriMod.MODID;
 	
 	/**
-	 * Gets a {@link CompoundNBT} storing data for the given {@link MobEffectInstance}. This also creates new data if the instance doesn't have it.<br/>
+	 * Gets a {@link CompoundTag} storing data for the given {@link MobEffectInstance}. This also creates new data if the instance doesn't have it.<br/>
 	 * <strong>Behaviorally, this adds air as a curative item (though this does nothing).</strong> Modifying the curative items array MUST retain this dummy air item, or else the data will be wiped or malformed.
 	 * @param instance The {@link MobEffectInstance} that the data pertains to.
-	 * @return A {@link CompoundNBT} with the data for the given {@link MobEffectInstance}
+	 * @return A {@link CompoundTag} with the data for the given {@link MobEffectInstance}
 	 */
 	public static CompoundTag accessData(MobEffectInstance instance) {
 		for (ItemStack stack : instance.getCurativeItems()) {

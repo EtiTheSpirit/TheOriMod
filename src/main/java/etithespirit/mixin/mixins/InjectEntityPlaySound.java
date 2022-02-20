@@ -12,29 +12,30 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
+/***/
 @Mixin(Entity.class)
 public abstract class InjectEntityPlaySound extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements ISelfProvider {
+	/***/
 	protected InjectEntityPlaySound(Class<Entity> baseClass) { super(baseClass); }
-	
+	/***/
 	@Shadow
 	public abstract boolean isSilent();
-	
+	/***/
 	@Shadow
 	public abstract double getX();
-	
+	/***/
 	@Shadow
 	public abstract double getY();
-	
+	/***/
 	@Shadow
 	public abstract double getZ();
-	
+	/***/
 	@Shadow
 	public abstract SoundSource getSoundSource();
-	
+	/***/
 	@Shadow
 	public abstract void playSound(SoundEvent soundIn, float volume, float pitch);
-	
+	/***/
 	@Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// Now this is probably a really shitty idea, but basically I want to ensure maximum compatibility with other mixins.
