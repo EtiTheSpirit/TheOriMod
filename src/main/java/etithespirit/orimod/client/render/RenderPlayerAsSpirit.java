@@ -13,6 +13,7 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
+import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.core.Direction;
@@ -118,7 +119,7 @@ public class RenderPlayerAsSpirit {
 				// Start by using the player's model as a frame of reference.
 				// Call rotation methods on both the armor and the main body using this information.
 				setRotationAnglesFrom(partialTicks, mtx, player, renderer.getModel());
-				MODEL.renderToBuffer(mtx, consumer, packedLight, 0xFFFFFF, r, g, b, 1f);
+				MODEL.renderToBuffer(mtx, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0f), r, g, b, 1f);
 				// ^ This is where things seem to be going wrong?
 				
 				// Figure out what gear the player has.
