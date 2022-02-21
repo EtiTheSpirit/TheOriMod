@@ -4,7 +4,6 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
-import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
@@ -36,10 +35,9 @@ public class RenderPlayerAsSpirit {
 	 * The texture for a spirit.
 	 */
 	public static final ResourceLocation SPIRIT_TEXTURE = new ResourceLocation(OriMod.MODID, "textures/entity/spirit.png");
-	//public static final ResourceLocation SPIRIT_TEXTURE = new ResourceLocation("forge", "textures/white.png");
 	
 	/**
-	 * The model of a spirit
+	 * The model of a spirit.
 	 */
 	private static final SpiritModel MODEL = new SpiritModel();
 	
@@ -72,31 +70,33 @@ public class RenderPlayerAsSpirit {
 	 */
 	public static void whenRenderingPlayer(RenderPlayerEvent.Pre preRenderEvent) {
 		if (preRenderEvent.getPlayer() instanceof AbstractClientPlayer player && SpiritIdentifier.isSpirit(player)) {
-			// For debugging purposes, the above statement calling isSpirit() strictly always returns true.
 			
 			// Get some relevant information
 			PlayerRenderer renderer = preRenderEvent.getRenderer();
-			int light = preRenderEvent.getPackedLight();
+			int packedLight = preRenderEvent.getPackedLight();
 			float partialTicks = preRenderEvent.getPartialTick();
 			
-			
-			// Start by getting ahold of the buffers and whatnot.
+			// Now get the buffers, and set up the consumer to use the cutout renderer, using the Spirit texture.
 			MultiBufferSource bufferProvider = preRenderEvent.getMultiBufferSource();
 			VertexConsumer consumer = bufferProvider.getBuffer(RenderType.entityCutout(SPIRIT_TEXTURE));
 			PoseStack mtx = preRenderEvent.getPoseStack();
 			
 			// Control crouch and shadow rendering.
 			// This is a relatively lazy and honestly quite hacky solution to making the character just sink down when sneaking.
+			// TODO: Bend legs when sneaking!
 			renderer.shadowRadius = 0.4f; // AT'd
 			Vec3 crouchTranslation = renderer.getRenderOffset(player, partialTicks);
-			mtx.translate(-crouchTranslation.x, -crouchTranslation.y, -crouchTranslation.z); // Undo the translation applied by crouching.
+			mtx.translate(-crouchTranslation.x, -crouchTranslation.y, -crouchTranslation.z);
+			// Undo the translation applied by crouching.
+			// n.b. do it this way for compatibility with any mods that might just decide they feel like changing how player crouching works, rather than hardcoding y+0.125D.
 			mtx.translate(0, player.getForcedPose() == Pose.CROUCHING ? -0.125 : 0, 0);
 			// ^ This is done here because the shadow moves inversely if it's done after pushing the matrix.
 			// Effectively, I have to move the shadow down instead of up.
 			
 			
 			// Damage flickering
-			// n.b. these variables are reused for armor rendering later on.
+			// n.b. these variables are reused for armor rendering later on, albeit via reassigning them.
+			// TODO: Use packed overlay instead of this?
 			float r = 1;
 			float g = 1;
 			float b = 1;
@@ -112,13 +112,14 @@ public class RenderPlayerAsSpirit {
 				// Note:
 				// WIDTH_MOD = 0.495f;
 				// HEIGHT_MOD = 0.5f;
+				// The model is built at player scale (2x) for the sake of texture resolution. Scale the model down to its intended size.
 				mtx.scale(SpiritModel.WIDTH_MOD, SpiritModel.HEIGHT_MOD, SpiritModel.WIDTH_MOD);
 				
 				// Start by using the player's model as a frame of reference.
 				// Call rotation methods on both the armor and the main body using this information.
 				setRotationAnglesFrom(partialTicks, mtx, player, renderer.getModel());
-				//MODEL.renderToBuffer(mtx, consumer, GeneralUtils.FULL_BRIGHT_LIGHT, 0xFFFFFF, r, g, b, 1f);
-				MODEL.renderToBuffer(mtx, consumer, GeneralUtils.FULL_BRIGHT_LIGHT, 0xFFFFFF, r, g, b, 1f);
+				MODEL.renderToBuffer(mtx, consumer, packedLight, 0xFFFFFF, r, g, b, 1f);
+				// ^ This is where things seem to be going wrong?
 				
 				// Figure out what gear the player has.
 				boolean hasHelmet = player.hasItemInSlot(EquipmentSlot.HEAD);
@@ -126,8 +127,10 @@ public class RenderPlayerAsSpirit {
 				boolean hasLeggings = player.hasItemInSlot(EquipmentSlot.LEGS);
 				boolean hasBoots = player.hasItemInSlot(EquipmentSlot.FEET);
 				
+				// Update the visibility of the armor based on which parts the player has. This changes .visible properties.
 				ARMOR.updateVisibility(hasHelmet, hasChestplate, hasLeggings, hasBoots);
 				
+				// ARMOR RENDERING:
 				for (int i = 0; i < SLOTS.length; i++) {
 					// TODO: Improve this, it takes up to four iterations to draw armor!
 					EquipmentSlot slot = SLOTS[i];
@@ -168,24 +171,31 @@ public class RenderPlayerAsSpirit {
 						g = (float) (itemClr >> 8 & 255) / 255.0F;
 						b = (float) (itemClr & 255) / 255.0F;
 						
-						ARMOR.renderToBuffer(mtx, drawBuffer, light, 0xFFFFFF, r, g, b, 1);
+						ARMOR.renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, r, g, b, 1);
 					} else {
-						ARMOR.renderToBuffer(mtx, drawBuffer, light, 0xFFFFFF, 1, 1, 1, 1);
+						ARMOR.renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, 1, 1, 1, 1);
 					}
 				}
-				renderFirstPerson(mtx, bufferProvider, light, player);
+				renderThirdPersonItems(mtx, bufferProvider, packedLight, player);
 			} mtx.popPose();
 			
 			if (!player.equals(Minecraft.getInstance().player)) {
 				// Do not render our own nametag on our screen
-				renderer.renderNameTag(player, player.getName(), mtx, bufferProvider, light);
+				renderer.renderNameTag(player, player.getName(), mtx, bufferProvider, packedLight);
 			}
 			
 			preRenderEvent.setCanceled(true);
 		}
 	}
 	
-	public static void renderFirstPerson(PoseStack matrix, MultiBufferSource renBuf, int combinedLightIn, LivingEntity entity) {
+	/**
+	 * Renders the items being held by this character
+	 * @param matrix The current matrix stack
+	 * @param renBuf A source of render buffers, used by the renderArmWithItem method.
+	 * @param combinedLightIn The combined light on the item.
+	 * @param entity The entity to render for.
+	 */
+	public static void renderThirdPersonItems(PoseStack matrix, MultiBufferSource renBuf, int combinedLightIn, LivingEntity entity) {
 		boolean isRightHanded = entity.getMainArm() == HumanoidArm.RIGHT;
 		ItemStack leftItem = isRightHanded ? entity.getOffhandItem() : entity.getMainHandItem();
 		ItemStack rightItem = isRightHanded ? entity.getMainHandItem() : entity.getOffhandItem();
@@ -197,6 +207,16 @@ public class RenderPlayerAsSpirit {
 		}
 	}
 	
+	/**
+	 * Renders an item in the given arm for the entity.
+	 * @param entity The entity to render the item for.
+	 * @param heldItemStack The item being held.
+	 * @param trsType Where the item is.
+	 * @param handSide What side the item is on.
+	 * @param mtx The current matrix stack.
+	 * @param renType A container for render types.
+	 * @param combinedLightIn The combined light on this item.
+	 */
 	private static void renderArmWithItem(LivingEntity entity, ItemStack heldItemStack, ItemTransforms.TransformType trsType, HumanoidArm handSide, PoseStack mtx, MultiBufferSource renType, int combinedLightIn) {
 		if (!heldItemStack.isEmpty()) {
 			mtx.pushPose();
