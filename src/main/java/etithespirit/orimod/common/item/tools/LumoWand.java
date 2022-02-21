@@ -8,10 +8,8 @@ import etithespirit.orimod.registry.SoundRegistry;
 import net.minecraft.Util;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.network.chat.BaseComponent;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.TextComponent;
 import net.minecraft.network.chat.TranslatableComponent;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundEvents;
@@ -69,7 +67,7 @@ public class LumoWand extends Item {
 			} else {
 				
 				// The block connects no matter what, so toggling a side isn't possible.
-				if (ConnectableLightTechBlock.connectsFromAnySideAlways(block)) {
+				if (ConnectableLightTechBlock.alwaysConnectsWhenPossible(block)) {
 					return InteractionResult.FAIL;
 				}
 				

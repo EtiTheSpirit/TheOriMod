@@ -236,6 +236,9 @@ public class SpiritModel extends Model implements ArmedModel, HeadedModel {
 				this.rightArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
 				this.leftArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
 			}
+			case SPYGLASS -> {
+				// TODO: Spyglass angles!
+			}
 			case CROSSBOW_CHARGE -> AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, entity, true);
 			case CROSSBOW_HOLD -> AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, true);
 		}
@@ -262,6 +265,9 @@ public class SpiritModel extends Model implements ArmedModel, HeadedModel {
 				this.rightArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
 				this.leftArm.xRot = (-(float) Math.PI / 2F) + this.head.xRot;
 			}
+			case SPYGLASS -> {
+				// TODO: Spyglass angles!
+			}
 			case CROSSBOW_CHARGE -> AnimationUtils.animateCrossbowCharge(this.rightArm, this.leftArm, entity, false);
 			case CROSSBOW_HOLD -> AnimationUtils.animateCrossbowHold(this.rightArm, this.leftArm, this.head, false);
 		}
@@ -279,8 +285,9 @@ public class SpiritModel extends Model implements ArmedModel, HeadedModel {
 			
 			this.rightArm.yRot += this.torso.yRot;
 			this.leftArm.yRot += this.torso.yRot;
+			
+			//noinspection SuspiciousNameCombination
 			this.leftArm.xRot += this.torso.yRot;
-			// ^^^ yes it should assign yrot to xrot
 			
 			f = 1.0F - entity.attackAnim;
 			f = f * f;

@@ -36,7 +36,7 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 	}
 	
 	@Override
-	public boolean connectsFromAnySideAlways() {
+	public boolean alwaysConnectsWhenPossible() {
 		return true;
 	}
 	

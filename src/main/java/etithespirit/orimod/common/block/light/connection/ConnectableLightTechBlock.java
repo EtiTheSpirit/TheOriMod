@@ -7,6 +7,7 @@ import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.state.BlockState;
@@ -47,10 +48,10 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	
 	/**
 	 * Redirects to Block's ctor.
-	 * @param p_i48440_1_ The properties of this block.
+	 * @param props The properties of this block.
 	 */
-	protected ConnectableLightTechBlock(Properties p_i48440_1_) {
-		super(p_i48440_1_);
+	protected ConnectableLightTechBlock(Properties props) {
+		super(props);
 	}
 	
 	/**
@@ -129,15 +130,17 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	@Override
 	@SuppressWarnings("deprecation")
 	public void neighborChanged(BlockState state, Level world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+		// BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor
 		if (isInstance(state)) {
 			// ^ This is connectable
 			BlockState other = world.getBlockState(changedAt);
 			if (isInstance(other)) {
 				// ^ The changed block is connectable
-				// Something replaced with connectable block.
+				// Something in the world was replaced with connectable block.
+				// (Doesn't matter if what was there before was or wasn't connectable)
 				
-				boolean isOtherAnyConnect = connectsFromAnySideAlways(other);
-				boolean isSelfAnyConnect = this.connectsFromAnySideAlways();
+				boolean isOtherAnyConnect = alwaysConnectsWhenPossible(other);
+				boolean isSelfAnyConnect = this.alwaysConnectsWhenPossible();
 				// ^ Connects on any side, doesn't require the cardinal states to be set to true.
 				
 				if (isOtherAnyConnect) {
@@ -145,6 +148,7 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 					int flag = SixSidedUtils.neighborFlagForBlockDirection(at, changedAt);
 					
 					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), SixSidedUtils.getNumberFromSurfaces(state) | flag);
+					
 					world.setBlockAndUpdate(at, newState);
 					connectionStateChanged(state, newState);
 				} else {
@@ -190,22 +194,29 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	public abstract void connectionStateChanged(BlockState originalState, BlockState newState);
 	
 	/**
-	 * Tests if this block is set to always connect to its neighbors. If this is true, then not only are the cardinal
-	 * {@link BooleanProperty} instances meaningless, but {@link #AUTO} is also meaningless (as this returning true is
-	 * identical to always having outgoing connections, so no automation is needed in the first place).
+	 * Tests if this block is set to always connect to any neighbor that is accepting connections in the appropriate direction.
+	 * This is used for blocks like the Light Capacitor, which cannot have any given face turned on or off - under all circumstances, if something is connected to the
+	 * face of a capacitor, then that connection is live.<br/>
+	 * <br/>
+	 * To name an example, if a conduit and a capacitor are next to eachother, then whether or not they are connected
+	 * is <em>only</em> dependent on the conduit - the capacitor always connects, so the conduit is the only remaining thing that would be conditional.<br/>
+	 * <br/>
+	 * <strong>Note:</strong> When this is true, all six cardinal states as well as the automatic connection state are not meaningful, that is, it should be treated
+	 * as if all seven of those states are true no matter what.
 	 * @return Whether or not this block can auto-connect to neighbors regardless of the cardinal {@link BooleanProperty} values / automatic state this block has.
 	 */
-	public boolean connectsFromAnySideAlways() {
+	public boolean alwaysConnectsWhenPossible() {
 		return false;
 	}
 	
 	/**
-	 * @return Whether or not the given block can auto-connect to neighbors regardless of the cardinal {@link BooleanProperty} values it has.
+	 * @return The result of {@link #alwaysConnectsWhenPossible()} when called on the given block.
+	 * If the block is not an instance of {@link ConnectableLightTechBlock} then this will return false.
 	 * @param block The {@link Block} to test.
 	 */
-	public static boolean connectsFromAnySideAlways(Block block) {
-		if (block instanceof ConnectableLightTechBlock) {
-			return ((ConnectableLightTechBlock)block).connectsFromAnySideAlways();
+	public static boolean alwaysConnectsWhenPossible(Block block) {
+		if (block instanceof ConnectableLightTechBlock connectable) {
+			return connectable.alwaysConnectsWhenPossible();
 		}
 		return false;
 	}
@@ -214,8 +225,8 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	 * @return Whether or not the given block can auto-connect to neighbors regardless of the cardinal {@link BooleanProperty} values it has.
 	 * @param state The {@link BlockState} containing the {@link Block} to test.
 	 */
-	public static boolean connectsFromAnySideAlways(BlockState state) {
-		return connectsFromAnySideAlways(state.getBlock());
+	public static boolean alwaysConnectsWhenPossible(BlockState state) {
+		return alwaysConnectsWhenPossible(state.getBlock());
 	}
 	
 	/**

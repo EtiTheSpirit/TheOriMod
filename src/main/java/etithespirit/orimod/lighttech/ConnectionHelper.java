@@ -66,7 +66,7 @@ public final class ConnectionHelper {
 		ConnectableLightTechBlock connectable = ConnectableLightTechBlock.from(target);
 		if (connectable == null) throw new IllegalArgumentException("The given BlockPos does not correspond to an instance of " + ConnectableLightTechBlock.class.getSimpleName() + " in the given world.");
 		
-		if (connectable.connectsFromAnySideAlways()) {
+		if (connectable.alwaysConnectsWhenPossible()) {
 			return true;
 		}
 		

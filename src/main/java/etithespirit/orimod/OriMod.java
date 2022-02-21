@@ -132,9 +132,6 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onKeyPressed);
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onPlayerTicked);
 		
-		//MinecraftForge.EVENT_BUS.addListener(CustomHealthForEffects::onElementDrawn);
-		//
-		
 		MinecraftForge.EVENT_BUS.addListener(LightTileDebugRenderer::onWorldFinishedRendering);
 		
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedInClient);
@@ -145,25 +142,13 @@ public final class OriMod {
 		EffectModificationReplication.registerPackets(Dist.CLIENT);
 		ClientRegistry.registerKeyBinding(SpiritDash.DASH_BIND);
 		ClientRegistry.registerKeyBinding(SpiritJump.CLING_BIND);
-		
-		/*
-		
-		*/
+
 		MinecraftForge.EVENT_BUS.addListener(RenderPlayerAsSpirit::whenRenderingPlayer);
-		/*
-		
-		
-		
-		*/
-		
 	}
 	/***/
 	public void dedicatedServerBuildInit(final FMLDedicatedServerSetupEvent event) {
 		ReplicateSpiritStatus.registerPackets(Dist.DEDICATED_SERVER);
 		EffectModificationReplication.registerPackets(Dist.DEDICATED_SERVER);
-		//EffectModificationReplication.registerPackets(Dist.DEDICATED_SERVER);
-		
-		//UniProfiler.setProfiler(.getProfiler(), Dist.DEDICATED_SERVER);
 	}
 	/***/
 	public void commandInit(final RegisterCommandsEvent event) {
