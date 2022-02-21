@@ -129,58 +129,64 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	
 	@Override
 	@SuppressWarnings("deprecation")
-	public void neighborChanged(BlockState state, Level world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+	public void neighborChanged(BlockState thisState, Level world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
 		// BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor
-		if (isInstance(state)) {
+		if (isInstance(thisState)) {
 			// ^ This is connectable
-			BlockState other = world.getBlockState(changedAt);
-			if (isInstance(other)) {
+			BlockState otherState = world.getBlockState(changedAt);
+			if (isInstance(otherState)) {
 				// ^ The changed block is connectable
-				// Something in the world was replaced with connectable block.
+				// Read: Something in the world was replaced with connectable block.
 				// (Doesn't matter if what was there before was or wasn't connectable)
+				ConnectableLightTechBlock other = from(otherState.getBlock());
 				
-				boolean isOtherAnyConnect = alwaysConnectsWhenPossible(other);
-				boolean isSelfAnyConnect = this.alwaysConnectsWhenPossible();
+				boolean otherIsAlwaysConnected = other.alwaysConnectsWhenPossible();
+				boolean thisIsAlwaysConnected = this.alwaysConnectsWhenPossible();
+				boolean otherAutoConnects = connectsAutomatically(otherState);
+				boolean thisAutoConnects = connectsAutomatically(thisState);
 				// ^ Connects on any side, doesn't require the cardinal states to be set to true.
 				
-				if (isOtherAnyConnect) {
-					if (!state.getValue(AUTO)) return; // Unless we aren't automatic.
-					int flag = SixSidedUtils.neighborFlagForBlockDirection(at, changedAt);
-					
-					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), SixSidedUtils.getNumberFromSurfaces(state) | flag);
+				if (otherIsAlwaysConnected) {
+					// The other block that replaced will force connect. Do we connect?
+					if (!thisAutoConnects) return; // Nope! We are not automatic.
+					int newFlag = SixSidedUtils.neighborFlagForBlockDirection(at, changedAt);
+					int existingFlags = SixSidedUtils.getNumberFromSurfaces(thisState);
+					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), existingFlags | newFlag);
 					
 					world.setBlockAndUpdate(at, newState);
-					connectionStateChanged(state, newState);
+					connectionStateChanged(thisState, newState);
 				} else {
+					// The other block that replaced will NOT force connect.
+					// The question then becomes whether or not we will try to do the same.
 					BooleanProperty prop = SixSidedUtils.getBlockStateForSingleFlagValue(SixSidedUtils.neighborFlagForBlockDirection(at, changedAt));
 					BooleanProperty othersProp = SixSidedUtils.oppositeState(prop);
 					// prop is my property connecting to other.
-					// othersprop is the other block connecting to this.
+					// othersProp is the other block connecting to this.
 					
 					// Connect to other if other wants to connect to us.
-					boolean isOtherConnected = other.getValue(othersProp);
-					boolean isConnected = state.getValue(prop) | isSelfAnyConnect;
+					boolean isOtherConnected = otherState.getValue(othersProp);
+					boolean isConnected = thisState.getValue(prop) | (thisAutoConnects | thisIsAlwaysConnected);
 					if (isConnected == isOtherConnected) return;
 					
-					if (state.getValue(AUTO)) {
-						BlockState newState = state.setValue(prop, isOtherConnected);
+					if (thisAutoConnects) {
+						BlockState newState = thisState.setValue(prop, isOtherConnected);
 						world.setBlockAndUpdate(at, newState);
-						connectionStateChanged(state, newState);
+						connectionStateChanged(thisState, newState);
 					}
 				}
-			} else if (!ConnectableLightTechBlock.isInstance(other)) {
+			} else {
 				// Something replaced the connectable that isn't connectable.
-				if (!state.getValue(AUTO)) return;
+				if (!connectsAutomatically(thisState)) return; // Do nothing if we don't auto update.
 				if (isInstance(replacedBlock)) {
 					// Something destroyed the conduit
 					int inverseFlag = ~SixSidedUtils.neighborFlagForBlockDirection(at, changedAt);
 					// ^ Get the opposite of the flag if we *were* going to connect to this block
-					int newFlags = SixSidedUtils.getNumberFromSurfaces(state) & inverseFlag;
+					int newFlags = SixSidedUtils.getNumberFromSurfaces(thisState) & inverseFlag;
 					// ^ And take that away from the current flags to disable that side.
 					
 					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), newFlags);
 					world.setBlockAndUpdate(at, newState);
-					connectionStateChanged(state, newState);
+					connectionStateChanged(thisState, newState);
 				}
 			}
 		}

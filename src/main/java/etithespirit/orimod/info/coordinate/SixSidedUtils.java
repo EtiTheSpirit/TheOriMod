@@ -2,6 +2,7 @@ package etithespirit.orimod.info.coordinate;
 
 
 import com.google.common.collect.ImmutableMap;
+import com.mojang.datafixers.util.Function3;
 import etithespirit.orimod.util.BlockIdentifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -122,7 +123,7 @@ public final class SixSidedUtils {
 	
 	/**
 	 * Given two given block positions, this will return a value with a single flag set
-	 * that represents the direction from {@code at} -&gt; {@code otherAt}.
+	 * that represents the direction from {@code at} -&gt; {@code otherAt}. Note that these blocks MUST be adjacent.
 	 * @param at The origin block; the "from" component of this direction.
 	 * @param otherAt The destination block; the "to" component of this direction.
 	 * @return A numeric value representing the given direction.
@@ -141,6 +142,18 @@ public final class SixSidedUtils {
 			}
 		}
 		return 0;
+	}
+	
+	/**
+	 * Given two given block positions, this will return true or false based on if the
+	 * block at "from" has a connection flag set in the direction of "to". Note that these blocks MUST be adjacent.
+	 * @param fromBlock The origin block itself.
+	 * @param from The origin block; the "from" component of this direction.
+	 * @param to The destination block; the "to" component of this direction.
+	 * @return A numeric value representing the given direction.
+	 */
+	public static boolean wantsToConnectTo(BlockState fromBlock, BlockPos from, BlockPos to) {
+		return fromBlock.getValue(getBlockStateForSingleFlagValue(neighborFlagForBlockDirection(from, to)));
 	}
 	
 	/**
@@ -198,13 +211,13 @@ public final class SixSidedUtils {
 	 * @param filter A {@link Predicate} that determines whether a given neighbor's {@link BlockState} is valid.
 	 * @return A numeric value with all bits set for directions that satisfy the predicate.
 	 */
-	public static int getFlagsForNeighborsWhere(BlockGetter worldIn, BlockPos at, Predicate<BlockState> filter) {
+	public static int getFlagsForNeighborsWhere(BlockGetter worldIn, BlockPos at, Function3<BlockState, BlockPos, BlockPos, Boolean> filter) {
 		int flags = 0;
 		for (int o = 0; o < ADJACENTS_IN_ORDER.length; o++) {
 			Vec3i offset = ADJACENTS_IN_ORDER[o];
 			BlockPos targetPos = at.offset(offset);
 			BlockState neighbor = worldIn.getBlockState(targetPos);
-			if (filter.test(neighbor)) {
+			if (filter.apply(neighbor, at, targetPos)) {
 				flags |= (1 << o);
 			}
 		}
@@ -316,10 +329,8 @@ public final class SixSidedUtils {
 		BlockState state = original.getBlock().defaultBlockState();
 		for (int idx = 0; idx < 6; idx++) {
 			int value = 1 << idx;
-			if ((flags & value) == flags) {
-				BooleanProperty prop = BITWISE_ASSOCIATIONS.get(value);
-				state = state.setValue(prop, true);
-			}
+			BooleanProperty prop = BITWISE_ASSOCIATIONS.get(value);
+			state = state.setValue(prop, (flags & value) == flags);
 		}
 		return state;
 	}

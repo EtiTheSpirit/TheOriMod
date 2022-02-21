@@ -6,6 +6,7 @@ import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlo
 import etithespirit.orimod.common.tile.light.TileEntityLightEnergyConduit;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.SoundRegistry;
+import etithespirit.orimod.util.Bit32;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.BlockTags;
@@ -92,11 +93,18 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IToo
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
-		
 		BlockPos pos = ctx.getClickedPos();
-		int neighborFlags = SixSidedUtils.getFlagsForNeighborsWhere(ctx.getLevel(), pos, state -> {
-			boolean isConnectable = state.getBlock() instanceof ConnectableLightTechBlock;
-			if (isConnectable) return state.getValue(AUTO);
+		int neighborFlags = SixSidedUtils.getFlagsForNeighborsWhere(ctx.getLevel(), pos, (neighborState, currentPos, neighborPos) -> {
+			boolean isConnectable = neighborState.getBlock() instanceof ConnectableLightTechBlock;
+			if (isConnectable) {
+				if (neighborState.getValue(AUTO)) {
+					return true;
+				}
+				int neighborOutgoing = SixSidedUtils.getNumberFromSurfaces(neighborState);
+				if (Bit32.hasFlag(neighborOutgoing, SixSidedUtils.neighborFlagForBlockDirection(neighborPos, currentPos))) {
+					return true;
+				}
+			}
 			return false;
 		});
 		if (neighborFlags != 0) {
