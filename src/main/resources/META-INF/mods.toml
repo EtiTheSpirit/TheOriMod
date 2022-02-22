@@ -28,7 +28,17 @@ displayName="The Ori Mod" #mandatory
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="orimod.png" #optional
 # A text field displayed in the mod UI
-credits="EtiTheSpirit, with help from RobotGryphon for some render overlay stuffs" #optional
+credits='''§lMain Stuffs:§r
+- EtiTheSpirit
+- RobotGryphon (some of the debug render overlay code was from Compact Machines)
+
+§1Honorable Mentions (Thanks for the help!):§r
+- Random (Forge Discord)
+- Commable (Forge Discord)
+- gigaherz
+- SizableShrimp
+- McJty
+- Lupicus (Forge Discord)''' #optional
 # A text field displayed in the mod UI
 authors="EtiTheSpirit" #optional
 # The description text for the mod (multi line!) (#mandatory)

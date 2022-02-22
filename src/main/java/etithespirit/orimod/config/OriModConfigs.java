@@ -3,6 +3,7 @@ package etithespirit.orimod.config;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParseException;
 import etithespirit.orimod.OriMod;
+import etithespirit.orimod.annotation.ClientUseOnly;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
@@ -36,6 +37,9 @@ public class OriModConfigs {
 	public static ForgeConfigSpec.DoubleValue LUX_TO_RF_RATIO;
 	public static ForgeConfigSpec.BooleanValue USE_ENV_FLUX;
 	public static ForgeConfigSpec.BooleanValue USE_ENV_POWER;
+	
+	@ClientUseOnly
+	public static ForgeConfigSpec.BooleanValue DEBUG_RENDER_ASSEMBLIES;
 	
 	private static final Language ORI_MOD_LANGUAGE = earlyLoadLanguage();
 	
@@ -99,12 +103,8 @@ public class OriModConfigs {
 		setupClientCfg();
 		setupServerCfg();
 		
-		//ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CLIENT_ONLY);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CLIENT_ONLY);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SERVER_SYNCED);
-	}
-	
-	private static void setupClientCfg() {
-	
 	}
 	
 	/**
@@ -136,6 +136,19 @@ public class OriModConfigs {
 		String descUsingStartupLang = ORI_MOD_LANGUAGE.getOrDefault(desc);
 		return builder.translation(base).comment(descUsingStartupLang).defineInRange(key, defaultValue, min, max);
 	}
+	
+	
+	
+	private static void setupClientCfg() {
+		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
+		
+		String current = "rendering";
+		builder.push(current);
+		DEBUG_RENDER_ASSEMBLIES = createBoolean(builder, current, "assemblies", false);
+		
+		CLIENT_ONLY = builder.build();
+	}
+	
 	
 	private static void setupServerCfg() {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();

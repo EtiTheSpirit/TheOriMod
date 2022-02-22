@@ -1,5 +1,6 @@
 package etithespirit.orimod.info.coordinate;
 
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
 
 /**
@@ -19,6 +20,18 @@ public final class Cardinals {
 		new Vec3i(0, -1, 0),
 		new Vec3i(0, 0, -1),
 		new Vec3i(0, 0, 1)
+	};
+	
+	/**
+	 * All Direction enums in the same order as {@link #ADJACENTS_IN_ORDER}
+	 */
+	public static final Direction[] DIRECTIONS_IN_ORDER = new Direction[] {
+		Direction.EAST,
+		Direction.WEST,
+		Direction.UP,
+		Direction.DOWN,
+		Direction.NORTH,
+		Direction.SOUTH
 	};
 	
 	/**

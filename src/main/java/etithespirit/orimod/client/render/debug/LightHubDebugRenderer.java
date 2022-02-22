@@ -1,19 +1,20 @@
 package etithespirit.orimod.client.render.debug;
 
-
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
+import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.lighttech.Assembly;
 import etithespirit.orimod.lighttech.ConnectionHelper;
 import etithespirit.orimod.lighttech.Line;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
+import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.world.phys.Vec3;
@@ -25,15 +26,21 @@ import static etithespirit.orimod.client.render.debug.RenderUtil.TOP_LINES;
 
 /**
  * A utility for {@link AbstractLightEnergyHub} that visualizes all connections.
+ * This is a bit of a hack in that it registers itself as the renderer for a given hub BE (despite not actually being a renderer for a hub BE
  */
-public class LightTileDebugRenderer implements BlockEntityRenderer<AbstractLightEnergyHub> {
+public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightEnergyHub> {
+	
+	public LightHubDebugRenderer(BlockEntityRendererProvider.Context ctx) {
+	
+	}
 	
 	private static final ArrayList<Assembly> alreadyRendered = new ArrayList<>();
 	
 	@Override
 	public void render(AbstractLightEnergyHub tile, float partialTicks, PoseStack mtx, MultiBufferSource bufferProvider, int packedLightIn, int packedOverlayIn) {
 		if (!GeneralUtils.isPlayerViewingDebugMenu()) return;
-		
+		if (!OriModConfigs.DEBUG_RENDER_ASSEMBLIES.get()) return;
+		if (tile.isRemoved()) return;
 		
 		Vec3i pos = tile.getBlockPos();
 		Camera cam = Minecraft.getInstance().gameRenderer.getMainCamera();
@@ -47,6 +54,7 @@ public class LightTileDebugRenderer implements BlockEntityRenderer<AbstractLight
 		
 		if (alreadyReg) return;
 		alreadyRendered.add(asm);
+		// TODO: ^ not this lol
 		
 		int lineIdx = 0;
 		for (Line line : asm.getLines()) {
@@ -56,7 +64,8 @@ public class LightTileDebugRenderer implements BlockEntityRenderer<AbstractLight
 			lineIdx++;
 		}
 		
-		VertexConsumer vtxBuilder = bufferProvider.getBuffer(TOP_LINES);
+		VertexConsumer topLines = bufferProvider.getBuffer(TOP_LINES);
+		VertexConsumer solidLines = bufferProvider.getBuffer(RenderType.LINES);
 		int idx = 0;
 		for (Line line : asm.getLines()) {
 			AbstractLightEnergyLink previous = null;
@@ -69,11 +78,11 @@ public class LightTileDebugRenderer implements BlockEntityRenderer<AbstractLight
 					continue;
 					//color = 0xFF_FF0000;
 				}
-				RenderUtil.drawLine(vtxBuilder, mtx, color, start, link.getBlockPos());
+				RenderUtil.drawLine(topLines, mtx, color, start, link.getBlockPos());
 				previous = link;
 			}
 			
-			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, vtxBuilder, RenderUtil.randomIndexedRGB(idx), 48);
+			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, solidLines, RenderUtil.randomIndexedRGB(idx), 48);
 			idx++;
 		}
 	}

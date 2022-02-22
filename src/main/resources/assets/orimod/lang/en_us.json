@@ -86,6 +86,9 @@
 	"config.orimod.light_energy.env_power" : "Environmental Light Efficiency",
 	"config.orimod.light_energy.env_power.description" : "If enabled, environments of §5Decay §ror §bLight §rwill reduce or improve the efficiency of Light-based devices respectively.",
 
+	"config.orimod.rendering" : "Rendering Configuration",
+	"config.orimod.rendering.assemblies" : "Render Assembly Debugging Info",
+	"config.orimod.rendering.assemblies.description" : "§l§cThis will cause lag! §rIf enabled, pressing F3 to view the Debug Menu will also overlay all Light-based technology with information that can be used to debug the Assembly Optimization System, which optimizes large networks of equipment.",
 
 	"waila.orimod.energy" : "Storage: §b%1$s Luxen",
 	"waila.orimod.energy_rf" : "Storage: §b%1$s Luxen (%2$s RF)",

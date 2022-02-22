@@ -3,16 +3,24 @@ package etithespirit.orimod.common.block.light.connection;
 
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
+import etithespirit.orimod.common.tile.light.LightEnergyTicker;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelReader;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import org.jetbrains.annotations.Nullable;
 
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WEST;
@@ -98,15 +106,15 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	 * @param state The state of a block to test.
 	 * @return whether or not the given {@link BlockState} is an instance of {@link ConnectableLightTechBlock}
 	 */
-	public static boolean isInstance(BlockState state) {
-		return isInstance(state.getBlock());
+	public static boolean isConnectableBlock(BlockState state) {
+		return isConnectableBlock(state.getBlock());
 	}
 	
 	/**
 	 * @param block The block to test.
 	 * @return whether or not the given {@link Block} is an instance of {@link ConnectableLightTechBlock}
 	 */
-	public static boolean isInstance(Block block) {
+	public static boolean isConnectableBlock(Block block) {
 		return block instanceof ConnectableLightTechBlock;
 	}
 	
@@ -127,67 +135,77 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 		builder.add(ENERGIZED);
 	}
 	
+	/*
+	// TODO: Change my design so I can use this. Right now I depend on the reference to the previous block to have correct behavior.
+	@Override
+	public BlockState updateShape(BlockState thisState, Direction unusedDir, BlockState otherState, LevelAccessor world, BlockPos thisLocation, BlockPos changedAt) {
+		// super.neighborChanged(thisState, world, thisLocation, replacedBlock, changedAt, isMoving);
+		// BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor
+		if (isConnectableBlock(thisState)) {
+			// ^ This is connectable
+			boolean isNewConnectable = isConnectableBlock(otherState);
+			if (isNewConnectable) {
+				ConnectableLightTechBlock other = from(otherState);
+				// Next branch: Is this block or the neighboring block one that always connects in all directions no matter what?
+				// Easy test: If both of them are, then that is no problem, in fact we just do nothing
+				if (this.alwaysConnectsWhenPossible() && other.alwaysConnectsWhenPossible()) return thisState;
+				if (isConnectedTo(world, thisLocation, changedAt)) return thisState;
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
+				if (!shouldBeUpdatedToConnectTo(world, thisState, otherState, dir)) return thisState;
+				
+				BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
+				return thisState.setValue(toSet, true);
+			} else if (!isNewConnectable) {
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
+				BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
+				return thisState.setValue(toSet, false);
+			}
+		}
+		return thisState;
+	}
+	*/
+	
 	@Override
 	@SuppressWarnings("deprecation")
-	public void neighborChanged(BlockState thisState, Level world, BlockPos at, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+	public void neighborChanged(BlockState thisState, Level world, BlockPos thisLocation, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+		super.neighborChanged(thisState, world, thisLocation, replacedBlock, changedAt, isMoving);
 		// BlockState state, LevelReader world, BlockPos pos, BlockPos neighbor
-		if (isInstance(thisState)) {
+		if (isConnectableBlock(thisState)) {
 			// ^ This is connectable
 			BlockState otherState = world.getBlockState(changedAt);
-			if (isInstance(otherState)) {
-				// ^ The changed block is connectable
-				// Read: Something in the world was replaced with connectable block.
-				// (Doesn't matter if what was there before was or wasn't connectable)
-				ConnectableLightTechBlock other = from(otherState.getBlock());
+			boolean isNowConnectable = isConnectableBlock(otherState);
+			boolean wasNotNowIsConnectable = !isConnectableBlock(replacedBlock) && isNowConnectable;
+			
+			if (wasNotNowIsConnectable) {
+				ConnectableLightTechBlock other = from(otherState);
+				// Next branch: Is this block or the neighboring block one that always connects in all directions no matter what?
+				// Easy test: If both of them are, then that is no problem, in fact we just do nothing
+				if (this.alwaysConnectsWhenPossible() && other.alwaysConnectsWhenPossible()) return;
+				if (isConnectedTo(world, thisLocation, changedAt)) return;
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
 				
-				boolean otherIsAlwaysConnected = other.alwaysConnectsWhenPossible();
-				boolean thisIsAlwaysConnected = this.alwaysConnectsWhenPossible();
-				boolean otherAutoConnects = connectsAutomatically(otherState);
-				boolean thisAutoConnects = connectsAutomatically(thisState);
-				// ^ Connects on any side, doesn't require the cardinal states to be set to true.
+				if (!shouldBeUpdatedToConnectTo(world, thisState, otherState, dir)) return;
+				BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
+				world.setBlockAndUpdate(thisLocation, thisState.setValue(toSet, true));
+			} else if (isNowConnectable) {
+				ConnectableLightTechBlock other = from(otherState);
+				// Next branch: Is this block or the neighboring block one that always connects in all directions no matter what?
+				// Easy test: If both of them are, then that is no problem, in fact we just do nothing
+				if (this.alwaysConnectsWhenPossible() && other.alwaysConnectsWhenPossible()) return;
+				if (isConnectedTo(world, thisLocation, changedAt)) return;
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
 				
-				if (otherIsAlwaysConnected) {
-					// The other block that replaced will force connect. Do we connect?
-					if (!thisAutoConnects) return; // Nope! We are not automatic.
-					int newFlag = SixSidedUtils.neighborFlagForBlockDirection(at, changedAt);
-					int existingFlags = SixSidedUtils.getNumberFromSurfaces(thisState);
-					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), existingFlags | newFlag);
-					
-					world.setBlockAndUpdate(at, newState);
-					connectionStateChanged(thisState, newState);
-				} else {
-					// The other block that replaced will NOT force connect.
-					// The question then becomes whether or not we will try to do the same.
-					BooleanProperty prop = SixSidedUtils.getBlockStateForSingleFlagValue(SixSidedUtils.neighborFlagForBlockDirection(at, changedAt));
-					BooleanProperty othersProp = SixSidedUtils.oppositeState(prop);
-					// prop is my property connecting to other.
-					// othersProp is the other block connecting to this.
-					
-					// Connect to other if other wants to connect to us.
-					boolean isOtherConnected = otherState.getValue(othersProp);
-					boolean isConnected = thisState.getValue(prop) | (thisAutoConnects | thisIsAlwaysConnected);
-					if (isConnected == isOtherConnected) return;
-					
-					if (thisAutoConnects) {
-						BlockState newState = thisState.setValue(prop, isOtherConnected);
-						world.setBlockAndUpdate(at, newState);
-						connectionStateChanged(thisState, newState);
-					}
+				if (!shouldBeUpdatedToConnectTo(world, thisState, otherState, dir)) return;
+				if (otherState.getValue(SixSidedUtils.getBlockStateFromDirection(dir.getOpposite()))) {
+					// Other wants to connect to this.
+					BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
+					world.setBlockAndUpdate(thisLocation, thisState.setValue(toSet, true));
 				}
+				
 			} else {
-				// Something replaced the connectable that isn't connectable.
-				if (!connectsAutomatically(thisState)) return; // Do nothing if we don't auto update.
-				if (isInstance(replacedBlock)) {
-					// Something destroyed the conduit
-					int inverseFlag = ~SixSidedUtils.neighborFlagForBlockDirection(at, changedAt);
-					// ^ Get the opposite of the flag if we *were* going to connect to this block
-					int newFlags = SixSidedUtils.getNumberFromSurfaces(thisState) & inverseFlag;
-					// ^ And take that away from the current flags to disable that side.
-					
-					BlockState newState = SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), newFlags);
-					world.setBlockAndUpdate(at, newState);
-					connectionStateChanged(thisState, newState);
-				}
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
+				BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
+				world.setBlockAndUpdate(thisLocation, thisState.setValue(toSet, false));
 			}
 		}
 	}
@@ -241,6 +259,65 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	 */
 	public static boolean connectsAutomatically(BlockState state) {
 		return state.getValue(AUTO);
+	}
+	
+	/**
+	 * Given the two block positions, which must be adjacent, this returns whether or not the two blocks are connected.
+	 * @param world The world to read from.
+	 * @param from The origin block's position.
+	 * @param to The destination block's position.
+	 * @return True if the two blocks are both adjacent, and if both blocks either have the applicable cardinal states set and/or always connect in the given direction.
+	 * @throws IllegalArgumentException If the two positions do not represent the positions of {@link ConnectableLightTechBlock}s.
+	 */
+	public static boolean isConnectedTo(BlockGetter world, BlockPos from, BlockPos to) throws IllegalArgumentException {
+		BlockState fromState = world.getBlockState(from);
+		BlockState toState = world.getBlockState(to);
+		if (!isConnectableBlock(fromState) || !isConnectableBlock(toState)) throw new IllegalArgumentException("One or both of the given block positions did not correspond to an instance of " + ConnectableLightTechBlock.class.getSimpleName());
+		
+		Direction dir = SixSidedUtils.getDirectionBetweenBlocks(from, to);
+		if (dir == null) return false;
+		
+		if (alwaysConnectsWhenPossible(fromState) && alwaysConnectsWhenPossible(toState)) return true;
+		
+		BooleanProperty fromProp = SixSidedUtils.getBlockStateFromDirection(dir);
+		BooleanProperty toProp = SixSidedUtils.oppositeState(fromProp);
+		boolean connectsFrom = alwaysConnectsWhenPossible(fromState) || fromState.getValue(fromProp);
+		boolean connectsTo = alwaysConnectsWhenPossible(toState) || toState.getValue(toProp);
+		return connectsFrom && connectsTo;
+	}
+	
+	/**
+	 * Assuming that {@code newState} was just placed in the world, and relative to {@code existingState} it is one block in the given direction,
+	 * this method will observe the two states and determine if the existing state should be updated to connect to the new state.<br/>
+	 * <strong>The following are important to note:</strong>
+	 * <ol>
+	 *     <li>This assumes that the newly placed state has, prior to being placed (i.e. in {@link #getStateForPlacement(BlockPlaceContext)}), set its state to connect to this existing block.</li>
+	 *     <li>This returns false if the existing state is already connected in the given direction (and thus, no update is necessary).</li>
+	 * </ol>
+	 * @param world The world this change occurred in.
+	 * @param existingState The connectable tech block that was already in the world.
+	 * @param newState The connectable tech block that was just placed in the world (and resulted in this method being called)
+	 * @param inDirection The new state exists in this direction one block away from the existing state.
+	 * @return Whether or not the existing state should be updated to connect to the new state.
+	 * @throws IllegalArgumentException If the either one or both of the two states are not instances of {@link ConnectableLightTechBlock}.
+	 */
+	public static boolean shouldBeUpdatedToConnectTo(BlockGetter world, BlockState existingState, BlockState newState, Direction inDirection) throws IllegalArgumentException {
+		if (!isConnectableBlock(existingState) || !isConnectableBlock(newState)) throw new IllegalArgumentException("One or both of the given block states did not correspond to an instance of " + ConnectableLightTechBlock.class.getSimpleName());
+		if (existingState.getValue(SixSidedUtils.getBlockStateFromDirection(inDirection))) return false;
+		
+		return connectsAutomatically(existingState) || alwaysConnectsWhenPossible(existingState);
+	}
+	
+	
+	@Nullable
+	@Override
+	@SuppressWarnings("unchecked")
+	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
+		if (level.isClientSide) {
+			return (BlockEntityTicker<T>)LightEnergyTicker.CLIENT;
+		} else {
+			return (BlockEntityTicker<T>)LightEnergyTicker.SERVER;
+		}
 	}
 	
 }

@@ -24,14 +24,7 @@ import org.jetbrains.annotations.Nullable;
  * @author Eti
  */
 @SuppressWarnings("unused")
-public abstract class AbstractLightEnergyHub extends BlockEntity implements EntityBlock, IWorldUpdateListener, ILightEnergyStorage, INetworkNBTProvider {
-	
-	private static final BlockEntityTicker<AbstractLightEnergyHub> ABSTRACT_HUB_TICKER = (world, at, state, hub) -> {
-		if (hub.assembly == null) {
-			// Should always have an assembly.
-			hub.assembly = Assembly.getAssemblyFor(hub);
-		}
-	};
+public abstract class AbstractLightEnergyHub extends BlockEntity implements IWorldUpdateListener, ILightEnergyStorage, INetworkNBTProvider {
 	
 	/** The assembly associated with this instance (a collection of conduits and instances of {@link AbstractLightEnergyHub}) */
 	protected Assembly assembly = null;
@@ -59,13 +52,6 @@ public abstract class AbstractLightEnergyHub extends BlockEntity implements Enti
 	public AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state, PersistentLightEnergyStorage storage) {
 		super(tileEntityTypeIn, at, state);
 		this.storage = storage;
-	}
-	
-	@Nullable
-	@Override
-	@SuppressWarnings("unchecked")
-	public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state, BlockEntityType<T> type) {
-		return (BlockEntityTicker<T>) ABSTRACT_HUB_TICKER;
 	}
 	
 	@Override
@@ -114,5 +100,7 @@ public abstract class AbstractLightEnergyHub extends BlockEntity implements Enti
 	public AABB getRenderBoundingBox() {
 		return INFINITE_EXTENT_AABB;
 	}
+	
+	
 	
 }

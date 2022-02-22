@@ -2,6 +2,7 @@ package etithespirit.orimod.common.block.light;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
+import etithespirit.orimod.common.tile.light.LightEnergyTicker;
 import etithespirit.orimod.common.tile.light.TileEntityLightCapacitor;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
@@ -12,6 +13,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
@@ -60,4 +63,5 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 	public Iterable<Tag.Named<Block>> getTagsForBlock() {
 		return List.of(BlockTags.MINEABLE_WITH_PICKAXE);
 	}
+	
 }

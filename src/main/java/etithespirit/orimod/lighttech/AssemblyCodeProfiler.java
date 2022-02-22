@@ -14,7 +14,7 @@ final class AssemblyCodeProfiler {
 	private static final Logger LOG = LogManager.getLogger(LOGNAME);
 	
 	/** A profiler used to ensure this helper is performant. */
-	private static final CriticalProfiler PROFILER = new CriticalProfiler(LOG, Util.timeSource, 2000, 5000);
+	private static final CriticalProfiler PROFILER = new CriticalProfiler(LOG, Util.timeSource, 2000000, 50000000);
 	
 	/**
 	 * Attempts to call profileBegin on the profiler. Returns true if it started here (and should be stopped after the last pop), or false if it was started before this

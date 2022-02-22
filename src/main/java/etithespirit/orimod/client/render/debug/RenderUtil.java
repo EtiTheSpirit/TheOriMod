@@ -15,6 +15,7 @@ import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -28,6 +29,8 @@ import java.util.OptionalDouble;
 import java.util.Random;
 
 import static etithespirit.orimod.GeneralUtils.FULL_BRIGHT_LIGHT;
+import static net.minecraft.client.renderer.RenderStateShard.ITEM_ENTITY_TARGET;
+import static net.minecraft.client.renderer.RenderStateShard.RENDERTYPE_LINES_SHADER;
 import static net.minecraft.client.renderer.RenderType.create;
 import static net.minecraft.util.FastColor.ARGB32.alpha;
 import static net.minecraft.util.FastColor.ARGB32.blue;
@@ -44,11 +47,29 @@ public final class RenderUtil {
 	
 	private static final HashMap<Integer, Integer> RNG_INDEX_MAP = new HashMap<>();
 	
+	protected static final RenderStateShard.LineStateShard ASM_LINE = new RenderStateShard.LineStateShard(OptionalDouble.of(4.0D));
+	
 	/**
 	 * Identical to {@link RenderType#LINES} but this always draws on top.
 	 */
 	// A lot of these are AT'd
-	public static final RenderType.CompositeRenderType TOP_LINES = create("lines_top", DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.LINES, 256, RenderType.CompositeState.builder().setLineState(new RenderStateShard.LineStateShard(OptionalDouble.empty())).setDepthTestState(RenderStateShard.NO_DEPTH_TEST).setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY).setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE).createCompositeState(false));
+	public static final RenderType.CompositeRenderType TOP_LINES = create(
+		"lines_top",
+		DefaultVertexFormat.POSITION_COLOR,
+		VertexFormat.Mode.LINES,
+		256,
+		false,
+		true,
+		RenderType.CompositeState.builder()
+			.setShaderState(RENDERTYPE_LINES_SHADER)
+			.setLineState(ASM_LINE)
+			.setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
+			.setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
+			.setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
+			.setOutputState(ITEM_ENTITY_TARGET)
+			.createCompositeState(false)
+		
+	);
 	
 	/**
 	 * Sets up a transparency state based on original GL calls from Compact Machines. (1.12.x)<br/>
@@ -202,6 +223,7 @@ public final class RenderUtil {
 	 */
 	public static void renderText(String text, PoseStack mtx, Camera renderInfo, MultiBufferSource buffer, Vec3 at, int argb, boolean renderBetterThroughWalls) {
 		mtx.pushPose();
+		
 		mtx.translate(at.x, at.y + 1, at.z);
 		mtx.mulPose(renderInfo.rotation());
 		mtx.scale(-0.025F, -0.025F, 0.025F);

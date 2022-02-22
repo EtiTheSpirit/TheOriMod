@@ -15,4 +15,14 @@ public final class Bit32 {
 		return (value & flags) > 0;
 	}
 	
+	/**
+	 * Returns true if the given value has all of the bits in flags set.
+	 * @param value The value to check.
+	 * @param flags The flags to check the value against.
+	 * @return True if every one of the bits of flags is also set in value.
+	 */
+	public static boolean hasAllFlags(int value, int flags) {
+		return (value & flags) == flags;
+	}
+	
 }

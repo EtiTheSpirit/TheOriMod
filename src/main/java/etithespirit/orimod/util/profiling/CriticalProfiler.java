@@ -39,7 +39,6 @@ import java.util.function.Supplier;
  * A profiler for the Ori mod. It is very similar to MC's ActiveProfiler but has some slight differences.
  * It is deprecated in favor of using MC's built in stuff.
  */
-@Deprecated(forRemoval = true)
 public final class CriticalProfiler {
 	private final LongArrayList starts = new LongArrayList();
 	private final MergeableStringStack pathStack = new MergeableStringStack();

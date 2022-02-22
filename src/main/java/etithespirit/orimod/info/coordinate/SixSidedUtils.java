@@ -3,10 +3,12 @@ package etithespirit.orimod.info.coordinate;
 
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Function3;
+import etithespirit.orimod.util.Bit32;
 import etithespirit.orimod.util.BlockIdentifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
@@ -18,11 +20,13 @@ import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
 
+import javax.annotation.Nullable;
 import java.util.HashMap;
 import java.util.function.Function;
 import java.util.function.Predicate;
 
 import static etithespirit.orimod.info.coordinate.Cardinals.ADJACENTS_IN_ORDER;
+import static etithespirit.orimod.info.coordinate.Cardinals.DIRECTIONS_IN_ORDER;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.*;
 
 /**
@@ -63,6 +67,28 @@ public final class SixSidedUtils {
 	
 	public static BooleanProperty getBlockStateForSingleFlagValue(int flag) {
 		return BITWISE_ASSOCIATIONS.get(flag);
+	}
+	
+	/**
+	 * Returns whether or not the given {@link Vec3i} values are directly adjacent to one another.
+	 * @param from The origin position.
+	 * @param to The target position.
+	 * @return True if the two positions are next to eachother in the 3D grid.
+	 */
+	public static boolean isAdjacent(Vec3i from, Vec3i to) {
+		return isAdjacent(to.subtract(from));
+	}
+	
+	/**
+	 * Returns whether or not the given {@link Vec3i} value represents an offset that would put it adjacent to any given {@link Vec3i} if the two were added.
+	 * @param difference The difference between two {@link Vec3i}s.
+	 * @return True if the two positions are next to eachother in the 3D grid.
+	 */
+	public static boolean isAdjacent(Vec3i difference) {
+		int x = Mth.abs(difference.getX());
+		int y = Mth.abs(difference.getY());
+		int z = Mth.abs(difference.getZ());
+		return x + y + z == 1;
 	}
 	
 	/**
@@ -130,11 +156,7 @@ public final class SixSidedUtils {
 	 */
 	public static int neighborFlagForBlockDirection(BlockPos at, BlockPos otherAt) {
 		Vec3i diff = otherAt.subtract(at);
-		
-		// Below: MUST be adjacent blocks.
-		if ((Math.abs(diff.getX()) + Math.abs(diff.getY()) + Math.abs(diff.getZ())) != 1) return 0;
-		
-		diff = new Vec3i(Math.signum(diff.getX()), Math.signum(diff.getY()), Math.signum(diff.getZ()));
+		if (!isAdjacent(diff)) return 0;
 		for (int i = 0; i < ADJACENTS_IN_ORDER.length; i++) {
 			Vec3i adj = ADJACENTS_IN_ORDER[i];
 			if (adj.equals(diff)) {
@@ -142,18 +164,6 @@ public final class SixSidedUtils {
 			}
 		}
 		return 0;
-	}
-	
-	/**
-	 * Given two given block positions, this will return true or false based on if the
-	 * block at "from" has a connection flag set in the direction of "to". Note that these blocks MUST be adjacent.
-	 * @param fromBlock The origin block itself.
-	 * @param from The origin block; the "from" component of this direction.
-	 * @param to The destination block; the "to" component of this direction.
-	 * @return A numeric value representing the given direction.
-	 */
-	public static boolean wantsToConnectTo(BlockState fromBlock, BlockPos from, BlockPos to) {
-		return fromBlock.getValue(getBlockStateForSingleFlagValue(neighborFlagForBlockDirection(from, to)));
 	}
 	
 	/**
@@ -173,7 +183,6 @@ public final class SixSidedUtils {
 	 * @param forcedNeighbors Any neighbors defined here will forcefully have their flag set to 1. This only works for normals. (magnitude of 1, only 1 axis set to 1).
 	 * @return Flags representing which surrounding neighbors have a full face facing this block, and that are not waterlogged or a fluid.
 	 */
-	@SuppressWarnings("deprecation")
 	public static int getNonAirNonFluidFullNeighbors(BlockGetter worldIn, BlockPos at, BlockPos... forcedNeighbors) {
 		if (forcedNeighbors == null) forcedNeighbors = new BlockPos[0];
 		int flags = 0;
@@ -295,6 +304,26 @@ public final class SixSidedUtils {
 	}
 	
 	/**
+	 * Returns the {@link Direction} of from -> to. The blocks must be adjacent, otherwise the method will return null.
+	 * @param from The start position.
+	 * @param to The end position.
+	 * @return A direction from start to end, or null if the blocks are not adjacent.
+	 */
+	public static @Nullable	Direction getDirectionBetweenBlocks(BlockPos from, BlockPos to) {
+		Vec3i diff = to.subtract(from);
+		
+		// Below: MUST be adjacent blocks.
+		if (!isAdjacent(diff)) return null;
+		
+		for (Direction adj : DIRECTIONS_IN_ORDER) {
+			if (adj.getNormal().equals(diff)) {
+				return adj;
+			}
+		}
+		return null;
+	}
+	
+	/**
 	 * Given a block raytrace, this returns the closest face direction when comparing the ray's precise 3D location to the center of the block.<br/>
 	 * This is strictly useful if the block is NOT a cube. Otherwise just use {@link net.minecraft.world.phys.BlockHitResult#getDirection()} and pass it into {@link #getBlockStateFromDirection(Direction)}.
 	 * @param blockPos The position of the block to test.
@@ -312,7 +341,7 @@ public final class SixSidedUtils {
 	 * @param preciseClickPos A precise point somewhere around this block, usually acquired from a raycast result.
 	 * @return A {@link Direction} best representing the direction that the point is at relative to the block.
 	 */
-	public static Direction getNearestDirectionForBlock(BlockPos blockPos, Vec3 preciseClickPos) {
+	public static Direction getDirectionBetweenBlocks(BlockPos blockPos, Vec3 preciseClickPos) {
 		Vec3 dir = preciseClickPos.subtract(Vec3.atCenterOf(blockPos)).normalize();
 		return Direction.getNearest(dir.x, dir.y, dir.z);
 	}
@@ -329,27 +358,10 @@ public final class SixSidedUtils {
 		BlockState state = original.getBlock().defaultBlockState();
 		for (int idx = 0; idx < 6; idx++) {
 			int value = 1 << idx;
-			BooleanProperty prop = BITWISE_ASSOCIATIONS.get(value);
-			state = state.setValue(prop, (flags & value) == flags);
+			BooleanProperty prop = getBlockStateForSingleFlagValue(value);
+			state = state.setValue(prop, (value &  flags) == value);
 		}
 		return state;
-	}
-	
-	/**
-	 * A relatively expensive method of checking all empty adjacent neighbors of this block to see if any has any additional neighbors with full faces.
-	 * @param worldIn
-	 * @param at
-	 * @return
-	 */
-	public static boolean hasEmptyNeighborWithFullNeighbor(BlockGetter worldIn, BlockPos at) {
-		for (int o = 0; o < ADJACENTS_IN_ORDER.length; o++) {
-			Vec3i offset = ADJACENTS_IN_ORDER[o];
-			BlockPos adj = at.offset(offset);
-			if (worldIn.getBlockState(adj).isAir()) {
-				if (hasNonAirNonFluidFullNeighbor(worldIn, adj)) return true;
-			}
-		}
-		return false;
 	}
 	
 }

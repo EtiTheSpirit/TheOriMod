@@ -69,8 +69,7 @@ public final class Assembly {
 	 * @param hub The {@link AbstractLightEnergyHub} to create or get an assembly for.
 	 * @return A new instance of {@link Assembly}, or an existing instance of one already knows about this {@link AbstractLightEnergyHub}.
 	 */
-	public static @Nonnull
-	Assembly getAssemblyFor(AbstractLightEnergyHub hub) {
+	public static @Nonnull Assembly getAssemblyFor(AbstractLightEnergyHub hub) {
 		List<Assembly> assemblies = ALL_ASM_CACHE.getListForSide(hub.getLevel().isClientSide);
 		
 		for (Assembly assembly : assemblies) {

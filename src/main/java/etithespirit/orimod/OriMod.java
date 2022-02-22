@@ -1,7 +1,7 @@
 package etithespirit.orimod;
 
 
-import etithespirit.orimod.client.render.debug.LightTileDebugRenderer;
+import etithespirit.orimod.client.render.debug.LightHubDebugRenderer;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
@@ -15,6 +15,7 @@ import etithespirit.orimod.player.DamageMarshaller;
 import etithespirit.orimod.registry.BlockRegistry;
 import etithespirit.orimod.registry.ItemRegistry;
 import etithespirit.orimod.registry.PotionRegistry;
+import etithespirit.orimod.registry.RenderRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.registry.TileEntityRegistry;
 import etithespirit.orimod.spirit.SpiritSize;
@@ -35,6 +36,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.IOException;
 
 @Mod(OriMod.MODID)
 public final class OriMod {
@@ -64,6 +67,9 @@ public final class OriMod {
 		
 		//FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerAllLayers);
 		//FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerAllEntities);
+		
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerBERenderers);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerShaders);
 		
 		MinecraftForge.EVENT_BUS.addListener(this::commandInit);
 		
@@ -132,7 +138,7 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onKeyPressed);
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onPlayerTicked);
 		
-		MinecraftForge.EVENT_BUS.addListener(LightTileDebugRenderer::onWorldFinishedRendering);
+		MinecraftForge.EVENT_BUS.addListener(LightHubDebugRenderer::onWorldFinishedRendering);
 		
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedInClient);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutClient);

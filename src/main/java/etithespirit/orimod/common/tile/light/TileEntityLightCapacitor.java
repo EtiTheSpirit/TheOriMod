@@ -1,10 +1,15 @@
 package etithespirit.orimod.common.tile.light;
 
 
+import etithespirit.orimod.client.audio.LoopingLightEnergyBlockSound;
+import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
+import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
 import etithespirit.orimod.common.tile.IWorldUpdateListener;
 import etithespirit.orimod.energy.FluxBehavior;
+import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.registry.TileEntityRegistry;
 import net.minecraft.BlockUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
@@ -16,19 +21,49 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.entity.StructureBlockEntity;
+import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraftforge.event.world.BlockEvent;
 import net.minecraftforge.network.NetworkInstance;
 import org.jetbrains.annotations.Nullable;
 
-public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements IWorldUpdateListener {
+public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements IAmbientSoundEmitter {
+	
+	private final StartLoopEndBlockSound sound;
 	
 	public TileEntityLightCapacitor(BlockPos at, BlockState state) {
 		super(TileEntityRegistry.LIGHT_CAPACITOR.get(), at, state);
-		this.storage = new PersistentLightEnergyStorage(this::setChanged, 10000, 20, 20, FluxBehavior.DISABLED, false, 10000);
+		this.storage = new PersistentLightEnergyStorage(this::setChanged, 100, 50, 50, FluxBehavior.DISABLED, false, 100);
+		this.sound = new StartLoopEndBlockSound(
+			SoundRegistry.get("tile.light_tech.generic.activate"),
+			new LoopingLightEnergyBlockSound(this, SoundRegistry.get("tile.light_tech.generic.active_loop")),
+			SoundRegistry.get("tile.light_tech.generic.deactivate")
+		);
+		sound.loop.playStartupOnLoad = true;
 	}
 	
+	@Override
+	public void startSound() {
+		if (this.hasLevel()) {
+			Level level = this.getLevel();
+			if (level.isClientSide) {
+				sound.enqueue();
+			}
+		}
+	}
+	
+	@Override
+	public boolean soundShouldBePlaying() {
+		return getLightStored() > 0;
+	}
+	
+	@Override
+	public void onLoad() {
+		startSound();
+	}
 	
 	@Override
 	public void saveAdditional(CompoundTag nbt) {
@@ -113,9 +148,8 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 		return amount;
 	}
 	
-	@Nullable
 	@Override
-	public BlockEntity newBlockEntity(BlockPos at, BlockState state) {
-		return new TileEntityLightCapacitor(at, state);
+	public StartLoopEndBlockSound getSoundInstance() {
+		return sound;
 	}
 }

@@ -57,7 +57,9 @@ public final class AssemblyHelper {
 	 */
 	public AssemblyHelper(Assembly forAsm, AbstractLightEnergyHub initialHub) {
 		assembly = forAsm;
+		boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("recurse");
 		recurse(initialHub.getBlockPos(), true);
+		AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
 	}
 	
 	/**
@@ -92,7 +94,9 @@ public final class AssemblyHelper {
 		connectedLinks.clear();
 		skipPos.clear();
 		
+		AssemblyCodeProfiler.push("recurse");
 		recurse(mainTile.getBlockPos(), true);
+		AssemblyCodeProfiler.pop();
 		
 		AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
 	}
@@ -140,8 +144,6 @@ public final class AssemblyHelper {
 	 * @return True if <strong>all</strong> recursion should continue, false if it should not.
 	 */
 	private boolean recurse(BlockPos origin, boolean isDepth1) {
-		boolean _shouldEnd = false;
-		if (isDepth1) _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("recurse");
 		BlockPos[] neighbors = getAllNeighbors(origin);
 		for (int idx = 0; idx < neighbors.length; idx++) {
 			BlockPos validNeighbor = neighbors[idx];
@@ -189,7 +191,6 @@ public final class AssemblyHelper {
 			}
 		}
 		
-		if (isDepth1) AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
 		return true;
 	}
 	

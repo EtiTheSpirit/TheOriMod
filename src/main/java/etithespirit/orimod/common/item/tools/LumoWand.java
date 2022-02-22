@@ -1,8 +1,11 @@
 package etithespirit.orimod.common.item.tools;
 
 
+import etithespirit.orimod.OriMod;
+import etithespirit.orimod.common.block.light.LightCapacitorBlock;
 import etithespirit.orimod.common.block.light.LightConduitBlock;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
+import etithespirit.orimod.common.tile.light.TileEntityLightCapacitor;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.SoundRegistry;
 import net.minecraft.Util;
@@ -23,6 +26,7 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.UseOnContext;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.phys.Vec3;
@@ -55,32 +59,44 @@ public class LumoWand extends Item {
 		Level world = ctx.getLevel();
 		BlockPos at = ctx.getClickedPos();
 		BlockState block = world.getBlockState(at);
-		if (ConnectableLightTechBlock.isInstance(block)){
+		if (ConnectableLightTechBlock.isConnectableBlock(block)){
 			boolean targetState;
 			if (ctx.isSecondaryUseActive()) {
 				targetState = !block.getValue(LightConduitBlock.AUTO);
 				BlockState oppositeAuto = block.setValue(LightConduitBlock.AUTO, targetState);
 				world.setBlockAndUpdate(ctx.getClickedPos(), oppositeAuto);
 				if (!world.isClientSide()) {
-					message(ctx.getPlayer(), "info.etimod.lumowand.auto" + (targetState ? "on" : "off"));
+					message(ctx.getPlayer(), "info.orimod.lumowand.auto" + (targetState ? "on" : "off"));
 				}
 			} else {
 				
 				// The block connects no matter what, so toggling a side isn't possible.
 				if (ConnectableLightTechBlock.alwaysConnectsWhenPossible(block)) {
+					BlockEntity ent = world.getBlockEntity(at);
+					if (ent instanceof TileEntityLightCapacitor capacitor) {
+						double current = capacitor.getLightStored();
+						double max = capacitor.getMaxLightStored();
+						if (current > 0) {
+							capacitor.extractLight(current, false);
+						} else {
+							capacitor.receiveLight(max, false);
+						}
+						OriMod.LOG.info("Current energy: {}", capacitor.getLightStored());
+						return InteractionResult.SUCCESS;
+					}
 					return InteractionResult.FAIL;
 				}
 				
 				Vec3 clickPos = ctx.getClickLocation();
 				BooleanProperty blockFaceState = SixSidedUtils.getBlockStateFromEvidentFace(at, clickPos);
-				Direction dir = SixSidedUtils.getNearestDirectionForBlock(at, clickPos);
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(at, clickPos);
 				BlockState other = world.getBlockState(at.offset(dir.getNormal()));
 				targetState = !block.getValue(blockFaceState);
 				
 				// Important that this is run FIRST so that it triggers a block update if needed.
 				world.setBlockAndUpdate(at, block.setValue(blockFaceState, targetState));
 				
-				if (ConnectableLightTechBlock.isInstance(other) && targetState) {
+				if (ConnectableLightTechBlock.isConnectableBlock(other) && targetState) {
 					// we want to connect, the other is already facing us can connect in that direction
 					BooleanProperty isConnectedToMeProp = SixSidedUtils.oppositeState(blockFaceState);
 					boolean isConnectedToMe = other.getValue(isConnectedToMeProp);
