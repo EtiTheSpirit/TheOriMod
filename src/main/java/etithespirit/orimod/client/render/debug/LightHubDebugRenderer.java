@@ -53,9 +53,10 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 		int asmId = asm._id;
 		
 		boolean alreadyReg = alreadyRendered.contains(asm);
+		boolean isCore = asm.getCore() == tile;
 		
 		mtx.translate(-pos.getX(), -pos.getY(), -pos.getZ());
-		RenderUtil.renderText((alreadyReg ? "ASM: " : "ASM CORE: ") + asmId, mtx, cam, bufferProvider, tile.getBlockPos().below(), 0xFF_FFFFFF, true);
+		RenderUtil.renderText((isCore ? "ASM CORE: " : "ASM: ") + asmId, mtx, cam, bufferProvider, tile.getBlockPos().below(), 0xFF_FFFFFF, true);
 		
 		if (alreadyReg) return;
 		alreadyRendered.add(asm);
@@ -70,6 +71,7 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 		}
 		
 		// VertexConsumer topLines = bufferProvider.getBuffer(TOP_LINES);
+		VertexConsumer solidLines = bufferProvider.getBuffer(RenderType.lines());
 		VertexConsumer solidFaces = bufferProvider.getBuffer(TRANSLUCENT_SOLID);
 		int idx = 0;
 		for (Line line : asm.getLines()) {
@@ -99,8 +101,12 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 					lastDirection = current;
 				}
 				if (!lastDirection.equals(current)) {
-					//RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart, start, 0.2525);
+					bufferProvider.getBuffer(RenderType.lines());
+					RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart, start, 0.2525);
+					
+					bufferProvider.getBuffer(TRANSLUCENT_SOLID);
 					RenderUtil.drawWideCubeSolid(solidFaces, mtx, realColor, 4, fullStart, start, 0.2525);
+					
 					// Above: Do not draw to currentPos, remember, its the result of a direction change. Draw to "start" which is the last good position.
 					fullStart = start;
 				}
@@ -109,12 +115,15 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 				previous = link;
 			}
 			
-			//RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart,fullEnd, 0.2525);
+			
+			bufferProvider.getBuffer(RenderType.lines());
+			RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart,fullEnd, 0.2525);
+			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, solidLines, realColor, 4);
+			
+			bufferProvider.getBuffer(TRANSLUCENT_SOLID);
 			RenderUtil.drawWideCubeSolid(solidFaces, mtx, realColor, 4, fullStart,fullEnd, 0.2525);
 			
 			
-			VertexConsumer solidLines = bufferProvider.getBuffer(RenderType.lines());
-			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, solidLines, realColor, 4);
 			//RenderUtil.drawCubeFaces(line.getBounds().deflate(0.1), mtx, solidLines, RenderUtil.randomIndexedRGB(idx));
 			idx++;
 		}

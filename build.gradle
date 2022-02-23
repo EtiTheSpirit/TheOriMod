@@ -182,6 +182,17 @@ dependencies {
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
 
     implementation fg.deobf("curse.maven:configured-457570:3640884")
+    //implementation fg.deobf("curse.maven:jade-324717:3614181") // api
+    implementation fg.deobf("curse.maven:jade-324717:3614180") // full build
+    implementation fg.deobf("curse.maven:catalogue-459701:3559402")
+
+    /*
+    compileOnly = the dependency's sources are available in your dev environment
+    runtimeOnly = the dependency will be on the classpath (the mod will be "installed") while running from your dev environment
+    implementation = both of the above
+
+    Thanks Commoble!
+     */
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

@@ -70,7 +70,7 @@ public final class RenderUtil {
 	}
 	
 	/**
-	 * A render type used for translucent cubes.<br/>
+	 * A render type used for translucent quads.<br/>
 	 * Adapted heavily from <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/CCRenderTypes.java#L12">Compact Crafting CCRenderTypes</a> by robotgryphon.
 	 */
 	public static final RenderType TRANSLUCENT_SOLID = RenderType.create("translucent_quads",
@@ -83,8 +83,8 @@ public final class RenderUtil {
 		                                                                     .createCompositeState(false));
 	
 	/**
+	 * Provides a means of rendering colored lines or quads.
 	 * Politely borrowed from <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/FieldProjectorRenderer.java#L150">Compact Crafting</a>.
-	 * Provides a means of rendering colored lines.
 	 * @param vtxBuilder The vertex builder.
 	 * @param mtx The matrix that this vertex is affected by.
 	 * @param argb The color of the vertex.
@@ -105,8 +105,8 @@ public final class RenderUtil {
 	}
 	
 	/**
-	 * Politely borrowed from <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/FieldProjectorRenderer.java#L150">Compact Crafting</a>.
-	 * Provides a means of rendering colored lines.
+	 * Provides a means of rendering colored lines or quads.
+	 * Politely borrowed from <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/FieldProjectorRenderer.java#L150">Compact Crafting</a>
 	 * @param vtxBuilder The vertex builder.
 	 * @param mtx The matrix that this vertex is affected by.
 	 * @param argb The color of the vertex.
@@ -153,7 +153,7 @@ public final class RenderUtil {
 		if (RNG_INDEX_MAP.containsKey(index)) {
 			return RNG_INDEX_MAP.get(index);
 		}
-		int value = randomRGB();
+		int value = randomRGB(0x7F);
 		RNG_INDEX_MAP.put(index, value);
 		return value;
 	}

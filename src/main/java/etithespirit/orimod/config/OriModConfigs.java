@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParseException;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
+import etithespirit.orimod.spiritmaterial.SpiritMaterial;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
@@ -15,6 +16,8 @@ import net.minecraftforge.fml.config.ModConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -137,14 +140,12 @@ public class OriModConfigs {
 		return builder.translation(base).comment(descUsingStartupLang).defineInRange(key, defaultValue, min, max);
 	}
 	
-	
-	
 	private static void setupClientCfg() {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 		
 		String current = "rendering";
 		builder.push(current);
-		DEBUG_RENDER_ASSEMBLIES = createBoolean(builder, current, "assemblies", false);
+		DEBUG_RENDER_ASSEMBLIES = createBoolean(builder, current, "assembly_debug", false);
 		
 		CLIENT_ONLY = builder.build();
 	}
@@ -171,7 +172,7 @@ public class OriModConfigs {
 		
 		current = "light_energy";
 		builder.push(current);
-		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 0, 0.0001D, 10000D);
+		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 400, 0.0001D, 10000D);
 		USE_ENV_FLUX = createBoolean(builder, current, "env_flux", true);
 		USE_ENV_POWER = createBoolean(builder, current, "env_power", true);
 		builder.pop();
