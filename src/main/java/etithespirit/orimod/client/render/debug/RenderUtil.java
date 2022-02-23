@@ -8,29 +8,36 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Matrix4f;
+import etithespirit.orimod.GeneralUtils;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
+import net.minecraft.client.model.geom.ModelPart;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
+import net.minecraftforge.client.model.pipeline.BakedQuadBuilder;
 import org.codehaus.plexus.util.dag.Vertex;
 import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.OptionalDouble;
 import java.util.Random;
 
 import static etithespirit.orimod.GeneralUtils.FULL_BRIGHT_LIGHT;
 import static net.minecraft.client.renderer.RenderStateShard.ITEM_ENTITY_TARGET;
-import static net.minecraft.client.renderer.RenderStateShard.RENDERTYPE_LINES_SHADER;
+import static net.minecraft.client.renderer.RenderStateShard.POSITION_COLOR_SHADER;
 import static net.minecraft.client.renderer.RenderType.create;
 import static net.minecraft.util.FastColor.ARGB32.alpha;
 import static net.minecraft.util.FastColor.ARGB32.blue;
@@ -47,53 +54,30 @@ public final class RenderUtil {
 	
 	private static final HashMap<Integer, Integer> RNG_INDEX_MAP = new HashMap<>();
 	
-	protected static final RenderStateShard.LineStateShard ASM_LINE = new RenderStateShard.LineStateShard(OptionalDouble.of(4.0D));
+	/** A box used for rendering translucent cubes. */
+	private static final ModelPart BOX;
 	
-	/**
-	 * Identical to {@link RenderType#LINES} but this always draws on top.
-	 */
-	// A lot of these are AT'd
-	public static final RenderType.CompositeRenderType TOP_LINES = create(
-		"lines_top",
-		DefaultVertexFormat.POSITION_COLOR,
-		VertexFormat.Mode.LINES,
-		256,
-		false,
-		true,
-		RenderType.CompositeState.builder()
-			.setShaderState(RENDERTYPE_LINES_SHADER)
-			.setLineState(ASM_LINE)
-			.setDepthTestState(RenderStateShard.NO_DEPTH_TEST)
-			.setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
-			.setWriteMaskState(RenderStateShard.COLOR_DEPTH_WRITE)
-			.setOutputState(ITEM_ENTITY_TARGET)
-			.createCompositeState(false)
-		
-	);
-	
-	/**
-	 * Sets up a transparency state based on original GL calls from Compact Machines. (1.12.x)<br/>
-	 * Borrowed from <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/CCRenderTypes.java#L12">Compact Crafting CCRenderTypes</a> by robotgryphon.
-	 */
-	private static final RenderStateShard.TransparencyStateShard PROJECTION_TRANSPARENCY = new RenderStateShard.TransparencyStateShard(
-		"translucent_quads", () -> {
-			RenderSystem.enableBlend();
-			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
-		},
-		() -> {
-			RenderSystem.disableBlend();
-			RenderSystem.defaultBlendFunc();
-		});
+	static {
+		ModelPart.Cube block = new ModelPart.Cube(
+			0, 0,
+			0, 0, 0,
+			16, 16, 16,
+			0, 0, 0,
+			false,
+			0, 0
+		);
+		BOX = new ModelPart(List.of(block), Map.of());
+	}
 	
 	/**
 	 * A render type used for translucent cubes.<br/>
-	 * Borrowed from <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/CCRenderTypes.java#L12">Compact Crafting CCRenderTypes</a> by robotgryphon.
+	 * Adapted heavily from <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/CCRenderTypes.java#L12">Compact Crafting CCRenderTypes</a> by robotgryphon.
 	 */
-	@Deprecated // Used on a render mode that is not functional.
-	public static final RenderType TRANSLUCENT_QUADS = RenderType.create("translucent_quads",
+	public static final RenderType TRANSLUCENT_SOLID = RenderType.create("translucent_quads",
 	                                                                     DefaultVertexFormat.POSITION_COLOR, VertexFormat.Mode.QUADS, 256,
 	                                                                     RenderType.CompositeState.builder()
-		                                                                     .setTransparencyState(PROJECTION_TRANSPARENCY)
+		                                                                     .setShaderState(POSITION_COLOR_SHADER)
+		                                                                     .setTransparencyState(RenderStateShard.TRANSLUCENT_TRANSPARENCY)
 		                                                                     .setCullState(new RenderStateShard.CullStateShard(true))
 		                                                                     .setWriteMaskState(new RenderStateShard.WriteMaskStateShard(true, false))
 		                                                                     .createCompositeState(false));
@@ -106,8 +90,18 @@ public final class RenderUtil {
 	 * @param argb The color of the vertex.
 	 * @param position The location of the vertex.
 	 */
-	public static void addColoredVertex(VertexConsumer vtxBuilder, PoseStack mtx, int argb, BlockPos position) {
-		addColoredVertex(vtxBuilder, mtx, argb, Vec3.atCenterOf(position));
+	public static void addColoredVertex(VertexConsumer vtxBuilder, PoseStack mtx, int argb, float argbDivisor, Vec3 position) {
+		float x = (float)position.x();
+		float y = (float)position.y();
+		float z = (float)position.z();
+		Matrix4f pose = mtx.last().pose();
+		vtxBuilder
+			.vertex(pose, x, y, z)
+			.color(red(argb) / argbDivisor, green(argb) / argbDivisor, blue(argb) / argbDivisor, alpha(argb) / argbDivisor)
+			.uv2(0, 10) // was 240
+			.normal(1, 0, 0)
+			.endVertex();
+		
 	}
 	
 	/**
@@ -118,17 +112,19 @@ public final class RenderUtil {
 	 * @param argb The color of the vertex.
 	 * @param position The location of the vertex.
 	 */
-	public static void addColoredVertex(VertexConsumer vtxBuilder, PoseStack mtx, int argb, Vec3 position) {
+	public static void addColoredVertex(VertexConsumer vtxBuilder, PoseStack mtx, int argb, float argbDivisor, Vec3 position, Direction normal) {
 		float x = (float)position.x();
 		float y = (float)position.y();
 		float z = (float)position.z();
 		Matrix4f pose = mtx.last().pose();
+		Vec3i nrm = normal.getNormal();
 		vtxBuilder
-			.vertex(pose, x, y, z)
-			.color(red(argb), green(argb), blue(argb), alpha(argb))
-			.uv2(0, 240)
-			.normal(1, 0, 0)
+			.vertex(pose, x, y, z) // had pose as first arg
+			.color(red(argb) / argbDivisor, green(argb) / argbDivisor, blue(argb) / argbDivisor, alpha(argb) / argbDivisor)
+			.uv2(0, 240) // was 240
+			.normal(nrm.getX(), nrm.getY(), nrm.getZ())
 			.endVertex();
+		
 	}
 	
 	/**
@@ -163,16 +159,31 @@ public final class RenderUtil {
 	}
 	
 	/**
-	 * Draw a line between two block positions.
-	 * @param vtxBuilder The vertex builder.
-	 * @param mtx The matrix that this vertex is affected by.
-	 * @param argb The color of the line.
-	 * @param blockStart The starting block, one of two points on the line.
-	 * @param blockEnd The ending block, the other of two points on the line.
+	 * Returns an AABB containing the two given BlockPos center points (thus making the AABB one dimensional). The size property dictates how much to expand it by on all axes.
+	 * @param blockStart The start position.
+	 * @param blockEnd The end position.
+	 * @param size The "extra room" given for the AABB. A value of 1 makes it surround both of the blocks on their edges.
+	 * @return An AABB containing the two BlockPos instances.
 	 */
-	public static void drawLine(VertexConsumer vtxBuilder, PoseStack mtx, int argb, BlockPos blockStart, BlockPos blockEnd) {
-		addColoredVertex(vtxBuilder, mtx, argb, blockStart);
-		addColoredVertex(vtxBuilder, mtx, argb, blockEnd);
+	public static AABB getAABBEnclosing(BlockPos blockStart, BlockPos blockEnd, double size) {
+		Vec3 centerStart = new Vec3(blockStart.getX() + 0.5D, blockStart.getY() + 0.5D, blockStart.getZ() + 0.5D);
+		Vec3 centerEnd = new Vec3(blockEnd.getX() + 0.5D, blockEnd.getY() + 0.5D, blockEnd.getZ() + 0.5D);
+		AABB bounds = new AABB(centerStart, centerEnd).inflate(size);
+		return bounds;
+	}
+	
+	/**
+	 * Draws a wireframe tube between two block positions.
+	 * @param vtxBuilder The vertex builder. This should be one that builds with quads.
+	 * @param mtx The matrix stack for positioning the vertices.
+	 * @param argb The color in ARGB format.
+	 * @param argbDivisor A divisor applied to all four components of the ARGB value. This should be 255 for floating point colors and 1 for byte colors, but it can really be anything.
+	 * @param blockStart The start position of the frame. This uses the center of the block.
+	 * @param blockEnd The end position of the frame. This uses the center of the block.
+	 * @param size The diameter of the wireframe tube.
+	 */
+	public static void drawWideCubeFrame(VertexConsumer vtxBuilder, PoseStack mtx, int argb, float argbDivisor, BlockPos blockStart, BlockPos blockEnd, double size) {
+		drawCubeFrame(getAABBEnclosing(blockStart, blockEnd, size), mtx, vtxBuilder, argb, argbDivisor);
 	}
 	
 	/**
@@ -184,31 +195,47 @@ public final class RenderUtil {
 	 * @param argbDivisor When converting ARGB integer into floating point, the value is divided by this. By default, this should be 255 for an exact representation. Lower values will cause a bias to brighter colors. 0 will break everything. Don't divide by 0.
 	 */
 	public static void drawCubeFrame(AABB bounds, PoseStack mtx, VertexConsumer vtxBuilder, int argb, float argbDivisor) {
-		float alpha =   ((argb & 0xFF000000) >> 24) / argbDivisor;
-		float red =     ((argb & 0x00FF0000) >> 16) / argbDivisor;
-		float green =   ((argb & 0x0000FF00) >>  8) / argbDivisor;
-		//noinspection PointlessBitwiseExpression
-		float blue =    ((argb & 0x000000FF) >>  0) / argbDivisor;
+		float alpha =   alpha(argb) / argbDivisor;
+		float red =     red(argb) / argbDivisor;
+		float green =   green(argb) / argbDivisor;
+		float blue =    blue(argb) / argbDivisor;
 		
 		LevelRenderer.renderLineBox(mtx, vtxBuilder, bounds.minX, bounds.minY, bounds.minZ, bounds.maxX, bounds.maxY, bounds.maxZ, red, green, blue, alpha);
 	}
 	
 	/**
-	 * Politely borrowed from robotgryphon's "CompactCrafting" mod, the <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/FieldProjectorRenderer.java">Field Projector renderer</a> specifcially.<br/>
-	 * Draws a cube with translucent faces. This is a counterpart to {@link #drawCubeFrame(AABB, PoseStack, VertexConsumer, int, float)} in that this draws full faces rather than wireframe.
-	 * @param cube The bounds of the cube.
-	 * @param mtx The matrix that determines where the cube should go.
-	 * @param builder The builder used to draw the vertices. This should use a {@link RenderType} that implements translucent quads, such as {@link #TRANSLUCENT_QUADS}
-	 * @param argb The color of this cube in ARGB format.
+	 * Draws a cube frame as a tube between two block positions.
+	 * @param vtxBuilder The vertex builder. This should be one that builds with quads, and that uses translucent rendering.
+	 * @param mtx The matrix stack for positioning the vertices.
+	 * @param argb The color in ARGB format.
+	 * @param argbDivisor A divisor applied to all four components of the ARGB value. This should be 255 for floating point colors and 1 for byte colors, but it can really be anything.
+	 * @param blockStart The start position of the frame. This uses the center of the block.
+	 * @param blockEnd The end position of the frame. This uses the center of the block.
+	 * @param size The diameter of the wireframe tube.
 	 */
-	@Deprecated // The drawCubeFace method doesn't seem to work properly and it's not important enough to warrant fixing it.
-	public static void drawCubeFaces(AABB cube, PoseStack mtx, VertexConsumer builder, int argb) {
-		drawCubeFace(builder, mtx, cube, argb, Direction.NORTH);
-		drawCubeFace(builder, mtx, cube, argb, Direction.SOUTH);
-		drawCubeFace(builder, mtx, cube, argb, Direction.WEST);
-		drawCubeFace(builder, mtx, cube, argb, Direction.EAST);
-		drawCubeFace(builder, mtx, cube, argb, Direction.UP);
-		drawCubeFace(builder, mtx, cube, argb, Direction.DOWN);
+	public static void drawWideCubeSolid(VertexConsumer vtxBuilder, PoseStack mtx, int argb, float argbDivisor, BlockPos blockStart, BlockPos blockEnd, double size) {
+		drawBox(getAABBEnclosing(blockStart, blockEnd, size), mtx, vtxBuilder, argb, argbDivisor);
+	}
+	
+	/**
+	 * Draws a box representing the given AABB.
+	 * @param box The box to draw.
+	 * @param mtx The matrix used to place the vertices.
+	 * @param builder The thing used to actually put the vertices down in the first place.
+	 * @param argb The color of the box in ARGB format.
+	 * @param argbDivisor A divisor applied to all four components of the ARGB value. This should be 255 for floating point colors and 1 for byte colors, but it can really be anything.
+	 */
+	public static void drawBox(AABB box, PoseStack mtx, VertexConsumer builder, int argb, float argbDivisor) {
+		float alpha =   alpha(argb) / argbDivisor;
+		float red =     red(argb) / argbDivisor;
+		float green =   green(argb) / argbDivisor;
+		float blue =    blue(argb) / argbDivisor;
+		
+		mtx.pushPose();
+		mtx.translate(box.minX, box.minY, box.minZ);
+		mtx.scale((float)box.getXsize(), (float)box.getYsize(), (float)box.getZsize());
+		BOX.render(mtx, builder, FULL_BRIGHT_LIGHT, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
+		mtx.popPose();
 	}
 	
 	/**
@@ -252,71 +279,4 @@ public final class RenderUtil {
 		renderText(text, mtx, renderInfo, buffer, Vec3.atCenterOf(at).add(0, 1, 0), argb, renderBetterThroughWalls);
 	}
 	
-	/**
-	 * Politely borrowed from robotgryphon's "CompactCrafting" mod, the <a href="https://github.com/CompactMods/CompactCrafting/blob/d166e58807417004db6546da4d07c32c0fe80253/src/main/java/com/robotgryphon/compactcrafting/projector/render/FieldProjectorRenderer.java">Field Projector renderer</a> specifcially.<br/>
-	 * Draws a single face on a cube, as determined by {@code face}.
-	 * @param builder The vertex builder used to draw the vertices.
-	 * @param mtx The matrix that determines where the cube should go.
-	 * @param cube The cube's bounding box.
-	 * @param argb The color of the cube in ARGB format.
-	 * @param face The direction of which face this should render.
-	 */
-	private static void drawCubeFace(VertexConsumer builder, PoseStack mtx, AABB cube, int argb, Direction face) {
-		Vec3 BOTTOM_RIGHT = null,
-			TOP_RIGHT = null,
-			TOP_LEFT = null,
-			BOTTOM_LEFT = null;
-		
-		switch (face) {
-			case NORTH:
-				BOTTOM_RIGHT = new Vec3((float) cube.minX, (float) cube.minY, (float) cube.minZ);
-				TOP_RIGHT = new Vec3((float) cube.minX, (float) cube.maxY, (float) cube.minZ);
-				TOP_LEFT = new Vec3((float) cube.maxX, (float) cube.maxY, (float) cube.minZ);
-				BOTTOM_LEFT = new Vec3((float) cube.maxX, (float) cube.minY, (float) cube.minZ);
-				break;
-			
-			case SOUTH:
-				BOTTOM_RIGHT = new Vec3((float) cube.maxX, (float) cube.minY, (float) cube.maxZ);
-				TOP_RIGHT = new Vec3((float) cube.maxX, (float) cube.maxY, (float) cube.maxZ);
-				TOP_LEFT = new Vec3((float) cube.minX, (float) cube.maxY, (float) cube.maxZ);
-				BOTTOM_LEFT = new Vec3((float) cube.minX, (float) cube.minY, (float) cube.maxZ);
-				break;
-			
-			case WEST:
-				BOTTOM_RIGHT = new Vec3((float) cube.minX, (float) cube.minY, (float) cube.maxZ);
-				TOP_RIGHT = new Vec3((float) cube.minX, (float) cube.maxY, (float) cube.maxZ);
-				TOP_LEFT = new Vec3((float) cube.minX, (float) cube.maxY, (float) cube.minZ);
-				BOTTOM_LEFT = new Vec3((float) cube.minX, (float) cube.minY, (float) cube.minZ);
-				break;
-			
-			case EAST:
-				BOTTOM_RIGHT = new Vec3((float) cube.maxX, (float) cube.minY, (float) cube.minZ);
-				TOP_RIGHT = new Vec3((float) cube.maxX, (float) cube.maxY, (float) cube.minZ);
-				TOP_LEFT = new Vec3((float) cube.maxX, (float) cube.maxY, (float) cube.maxZ);
-				BOTTOM_LEFT = new Vec3((float) cube.maxX, (float) cube.minY, (float) cube.maxZ);
-				break;
-			
-			case UP:
-				BOTTOM_RIGHT = new Vec3((float) cube.minX, (float) cube.maxY, (float) cube.minZ);
-				TOP_RIGHT = new Vec3((float) cube.minX, (float) cube.maxY, (float) cube.maxZ);
-				TOP_LEFT = new Vec3((float) cube.maxX, (float) cube.maxY, (float) cube.maxZ);
-				BOTTOM_LEFT = new Vec3((float) cube.maxX, (float) cube.maxY, (float) cube.minZ);
-				break;
-			
-			case DOWN:
-				BOTTOM_RIGHT = new Vec3((float) cube.minX, (float) cube.minY, (float) cube.maxZ);
-				TOP_RIGHT = new Vec3((float) cube.minX, (float) cube.minY, (float) cube.minZ);
-				TOP_LEFT = new Vec3((float) cube.maxX, (float) cube.minY, (float) cube.minZ);
-				BOTTOM_LEFT = new Vec3((float) cube.maxX, (float) cube.minY, (float) cube.maxZ);
-				break;
-		}
-		
-		if (BOTTOM_RIGHT == null)
-			return;
-		
-		addColoredVertex(builder, mtx, argb, BOTTOM_RIGHT);
-		addColoredVertex(builder, mtx, argb, TOP_RIGHT);
-		addColoredVertex(builder, mtx, argb, TOP_LEFT);
-		addColoredVertex(builder, mtx, argb, BOTTOM_LEFT);
-	}
 }

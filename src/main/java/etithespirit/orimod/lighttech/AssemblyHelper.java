@@ -57,9 +57,9 @@ public final class AssemblyHelper {
 	 */
 	public AssemblyHelper(Assembly forAsm, AbstractLightEnergyHub initialHub) {
 		assembly = forAsm;
-		boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("recurse");
+		//boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("recurse");
 		recurse(initialHub.getBlockPos(), true);
-		AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
+		//AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
 	}
 	
 	/**
@@ -87,18 +87,18 @@ public final class AssemblyHelper {
 	 * Forcefully recalculate all connected instances of {@link AbstractLightEnergyLink} and {@link AbstractLightEnergyHub}.
 	 */
 	public void forceRecalculateConnections() {
-		boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("forceRecalculateConnections");
+		//boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("forceRecalculateConnections");
 		
 		AbstractLightEnergyHub mainTile = assembly.getCore(); // Get this beforehand as getCore() looks at connectedHubs.
 		connectedHubs.clear();
 		connectedLinks.clear();
 		skipPos.clear();
 		
-		AssemblyCodeProfiler.push("recurse");
+		//AssemblyCodeProfiler.push("recurse");
 		recurse(mainTile.getBlockPos(), true);
-		AssemblyCodeProfiler.pop();
+		//AssemblyCodeProfiler.pop();
 		
-		AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
+		//AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
 	}
 	
 	/**

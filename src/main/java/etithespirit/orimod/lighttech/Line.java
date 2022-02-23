@@ -118,7 +118,7 @@ public final class Line {
 	 */
 	public static List<Line> constructFrom(Assembly parent, AssemblyHelper helper) {
 		//UniProfiler.push(Line.class, "constructFrom", "populate");
-		boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("constructFrom");
+		//boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("constructFrom");
 		
 		List<AbstractLightEnergyLink> alreadyCovered = new ArrayList<>();
 		List<Line> lines = new ArrayList<>();
@@ -130,7 +130,7 @@ public final class Line {
 			populate(lines, currentLine, alreadyCovered, null, conduit, parent, helper);
 		}
 		
-		AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
+		//AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
 		return lines;
 	}
 	

@@ -24,23 +24,28 @@ displayName="The Ori Mod" #mandatory
 # A URL to query for updates for this mod. See the JSON update specification https://mcforge.readthedocs.io/en/latest/gettingstarted/autoupdate/
 #updateJSONURL="https://change.me.example.invalid/updates.json" #optional
 # A URL for the "homepage" for this mod, displayed in the mod UI
-#displayURL="https://change.me.to.your.mods.homepage.example.invalid/" #optional
+displayURL="https://etithespir.it/minecraft" #optional
 # A file name (in the root of the mod JAR) containing a logo for display
 logoFile="orimod.png" #optional
 # A text field displayed in the mod UI
-credits='''§lMain Stuffs:§r
-- EtiTheSpirit
-- RobotGryphon (some of the debug render overlay code was from Compact Machines)
+credits=''':
+§lThe Main Stuff:§r
+- §bEtiTheSpirit§r - look at me ma
+- §bMoon Studios§r - Open ended lore is what makes stuff like this feel canon.
+§o* Without you, this mod could not work the way it does today! *§r
 
-§1Honorable Mentions (Thanks for the help!):§r
-- Random (Forge Discord)
-- Commable (Forge Discord)
-- gigaherz
-- SizableShrimp
-- McJty
-- Lupicus (Forge Discord)''' #optional
+§lForge Discord Mention Honorarium:§r
+- §bRobotGryphon§r - Made Compact Machines, where I sourced some debug render code from.
+- §bMcJty§r - You have the patience of a saint.
+- §6Random§r
+- §6Commable§r
+- §6gigaherz§r
+- §6SizableShrimp§r
+- §6Lupicus§r
+§o* Thank you all for your help with my endeavor of making this mod! *§r
+''' #optional
 # A text field displayed in the mod UI
-authors="EtiTheSpirit" #optional
+authors="§bEti the Spirit§r AKA §cXan the Dragon§r" #optional
 # The description text for the mod (multi line!) (#mandatory)
 description='''
 Play as a Spirit! This mod aims to append mechanics and objects from the §oOri§r game franchise. It also implements some fanon concepts I wrote.

@@ -6,6 +6,7 @@ import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
 import etithespirit.orimod.config.OriModConfigs;
+import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.lighttech.Assembly;
 import etithespirit.orimod.lighttech.ConnectionHelper;
 import etithespirit.orimod.lighttech.Line;
@@ -16,13 +17,15 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderLevelLastEvent;
 
 import java.util.ArrayList;
 
-import static etithespirit.orimod.client.render.debug.RenderUtil.TOP_LINES;
+import static etithespirit.orimod.client.render.debug.RenderUtil.TRANSLUCENT_SOLID;
 
 /**
  * A utility for {@link AbstractLightEnergyHub} that visualizes all connections.
@@ -33,6 +36,8 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 	public LightHubDebugRenderer(BlockEntityRendererProvider.Context ctx) {
 	
 	}
+	
+	private static final ResourceLocation FORGE_WHITE = new ResourceLocation("forge", "textures/white.png");
 	
 	private static final ArrayList<Assembly> alreadyRendered = new ArrayList<>();
 	
@@ -64,25 +69,53 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 			lineIdx++;
 		}
 		
-		VertexConsumer topLines = bufferProvider.getBuffer(TOP_LINES);
-		VertexConsumer solidLines = bufferProvider.getBuffer(RenderType.LINES);
+		// VertexConsumer topLines = bufferProvider.getBuffer(TOP_LINES);
+		VertexConsumer solidFaces = bufferProvider.getBuffer(TRANSLUCENT_SOLID);
 		int idx = 0;
 		for (Line line : asm.getLines()) {
 			AbstractLightEnergyLink previous = null;
+			int realColor = RenderUtil.randomIndexedRGB(idx);
+			Direction lastDirection = null;
+			BlockPos fullStart = null;
+			BlockPos fullEnd = null;
 			for (AbstractLightEnergyLink link : line.getSegments()) {
 				BlockPos start = previous != null ? previous.getBlockPos() : tile.getBlockPos();
 				//int color = 0xFF_FF00FF;
-				int color = 0xFF_FF0000;
+				// int color = 0xFF_FF0000;
 				if (!ConnectionHelper.areNeighbors(start, link.getBlockPos())) {
 					previous = link;
 					continue;
 					//color = 0xFF_FF0000;
 				}
-				RenderUtil.drawLine(topLines, mtx, color, start, link.getBlockPos());
+				//RenderUtil.drawLine(solidLines, mtx, color, start, link.getBlockPos());
+				
+				if (fullStart == null) {
+					fullStart = start;
+				}
+				
+				BlockPos currentPos = link.getBlockPos();
+				Direction current = SixSidedUtils.getDirectionBetweenBlocks(start, currentPos);
+				if (lastDirection == null) {
+					lastDirection = current;
+				}
+				if (!lastDirection.equals(current)) {
+					//RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart, start, 0.2525);
+					RenderUtil.drawWideCubeSolid(solidFaces, mtx, realColor, 4, fullStart, start, 0.2525);
+					// Above: Do not draw to currentPos, remember, its the result of a direction change. Draw to "start" which is the last good position.
+					fullStart = start;
+				}
+				lastDirection = current;
+				fullEnd = currentPos;
 				previous = link;
 			}
 			
-			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, solidLines, RenderUtil.randomIndexedRGB(idx), 48);
+			//RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart,fullEnd, 0.2525);
+			RenderUtil.drawWideCubeSolid(solidFaces, mtx, realColor, 4, fullStart,fullEnd, 0.2525);
+			
+			
+			VertexConsumer solidLines = bufferProvider.getBuffer(RenderType.lines());
+			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, solidLines, realColor, 4);
+			//RenderUtil.drawCubeFaces(line.getBounds().deflate(0.1), mtx, solidLines, RenderUtil.randomIndexedRGB(idx));
 			idx++;
 		}
 	}
