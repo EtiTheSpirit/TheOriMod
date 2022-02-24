@@ -9,14 +9,21 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
+/**
+ * A universal ticker for all Light-based tile entities.
+ * @param <T> T!
+ */
 public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockEntityTicker<T> {
 	
+	/** The ticker that operates on the clientside. */
 	public static final LightEnergyTicker<? extends BlockEntity> CLIENT = new Client();
+	
+	/** The ticker that operates on the serverside. */
 	public static final LightEnergyTicker<? extends BlockEntity> SERVER = new Server();
 	
 	private LightEnergyTicker() { }
 	
-	public static class Server<T extends BlockEntity> extends LightEnergyTicker<T> {
+	static class Server<T extends BlockEntity> extends LightEnergyTicker<T> {
 		
 		private Server() { }
 		
@@ -31,7 +38,7 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 		}
 	}
 	
-	public static class Client<T extends BlockEntity> extends LightEnergyTicker<T> {
+	static class Client<T extends BlockEntity> extends LightEnergyTicker<T> {
 		
 		private Client() { }
 		

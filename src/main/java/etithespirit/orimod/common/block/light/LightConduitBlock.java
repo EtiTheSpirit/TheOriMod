@@ -48,8 +48,7 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IToo
 		this(BlockBehaviour.Properties.of(Material.STONE));
 	}
 	
-	/***/
-	public LightConduitBlock(Properties props) {
+	private LightConduitBlock(Properties props) {
 		super(props);
 		ConnectableLightTechBlock.autoRegisterDefaultState(this::registerDefaultState, this.stateDefinition);
 	}

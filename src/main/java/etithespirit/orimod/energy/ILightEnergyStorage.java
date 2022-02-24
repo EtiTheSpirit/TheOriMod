@@ -1,15 +1,23 @@
 package etithespirit.orimod.energy;
 
-
+import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.util.valuetypes.LightEnergyAdapter;
 
 import javax.annotation.Nonnull;
 
 /**
  * An energy system similar to (but purposely not directly compatible with) {@link net.minecraftforge.energy.IEnergyStorage IEnergyStorage}.
- * It has a number of unique quirks to it, such as the ability to be affected by {@link etithespirit.orimod.energy.FluxBehavior environmental flux}.<br/><br/>
+ * It has a number of unique quirks to it, such as the ability to be affected by the environment.<br/><br/>
  *
- * Additionally, the mechanics of this storage medium are based off of my custom written lore for Spirit Light.
+ * Additionally, the mechanics of this storage medium are based off of my custom written lore for Spirit Light.<br/>
+ * <br/>
+ * <strong>For other modders, please note:</strong>
+ * <ul>
+ *     <li>The value of the Luxen (a Light unit) is extremely high. It is not like RF where units in the millions are needed. The default conversion ratio is 5000RF = 1 Luxen for a reason!</li>
+ *     <li>You are advised to work with RF if possible. The only time you should use this class is if you are adding new Light technology. It is strongly recommended to <strong>NOT</strong> make a device that implements both energy interfaces as to ensure the energy types are meaningfully isolated.</li>
+ *     <li>Respect configs! There is one adapter block included with the mod by default. You should not need to make any more, but if, for some reason, you must? Leverage the user's or server's configs to get the proper conversion ratios.</li>
+ * </ul>
+ *
  * @author Eti
  */
 public interface ILightEnergyStorage {
@@ -61,6 +69,7 @@ public interface ILightEnergyStorage {
 	boolean canReceiveLight();
 	
 	/**
+	 * Whether or not this storage is a valid candidate for use in the {@link LightEnergyAdapter Light Energy Adapter} (for conversion to RF).
 	 * @return whether or not this can interact with RF (as opposed to Light), which determines its usability in {@link LightEnergyAdapter LightEnergyAdapter}.
 	 */
 	boolean acceptsConversion();
@@ -75,24 +84,19 @@ public interface ILightEnergyStorage {
 	 *            If TRUE, the fluctuations in power will only be simulated.
 	 *
 	 * @return Amount of energy that was (or would have been, if simulated) generated (or sapped) from this device and placed into (or taken from) its own storage.
+	 * @deprecated Flux Behavior is being removed in favor of environmental efficiency.
 	 */
-	double applyEnvFlux(boolean simulate);
+	@Deprecated(forRemoval = true)
+	default double applyEnvFlux(boolean simulate) { return 0; }
 	
 	/**
 	 * The FluxBehavior responsible for returning unfiltered environmental flux values.<br/>
-	 * <strong>NULL IS NOT ACCEPTABLE.</strong> This should always return {@link etithespirit.orimod.energy.FluxBehavior#DISABLED FluxBehavior.DISABLED} if there is no flux.
+	 * <strong>NULL IS NOT ACCEPTABLE.</strong> This should always return {@link FluxBehavior#DISABLED FluxBehavior.DISABLED} if there is no flux.
 	 * @return A FluxBehavior instance describing how flux is applied.
+	 * @deprecated Flux Behavior is being removed in favor of environmental efficiency.
 	 */
+	@Deprecated(forRemoval = true)
 	default @Nonnull FluxBehavior getFluxBehavior() {
 		return FluxBehavior.DISABLED;
 	}
-	
-	/**
-	 * Granted acceptsConversion() returns true, this is the conversion ratio from Light -&gt; RF. This has a default implementation returning 50.
-	 * @return A value that outgoing Light will be multiplied by to get equivalent RF, and a value that incoming RF will be divided by to get equivalent Light.
-	 */
-	default double getLightToRFConversionRatio() {
-		return 50D;
-	}
-	
 }

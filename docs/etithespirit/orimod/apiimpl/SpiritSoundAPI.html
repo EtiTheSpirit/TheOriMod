@@ -113,7 +113,7 @@ implements <a href="../api/ISpiritSoundAPI.html" title="interface in etithespiri
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.spiritmaterial.SpiritMaterial)" class="member-name-link">associateMaterialWith</a><wbr>(net.minecraft.world.level.material.Material&nbsp;material,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)" class="member-name-link">associateMaterialWith</a><wbr>(net.minecraft.world.level.material.Material&nbsp;material,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;spiritMaterial)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Associates the given custom material with a given SpiritMaterial.</div>
@@ -124,13 +124,13 @@ implements <a href="../api/ISpiritSoundAPI.html" title="interface in etithespiri
 <div class="block"><strong>MUST BE CHECKED BEFORE OTHER METHODS ARE USED.</strong></div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.Block&nbsp;entireBlockType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.Block&nbsp;entireBlockType,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Associates all states of the given block with the given material's sound.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.state.BlockState&nbsp;specificState,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.state.BlockState&nbsp;specificState,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Associates the specific block state to the given material's sound.</div>
@@ -206,24 +206,24 @@ implements <a href="../api/ISpiritSoundAPI.html" title="interface in etithespiri
 </section>
 </li>
 <li>
-<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.spiritmaterial.SpiritMaterial)">
+<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">
 <h3>registerSpiritStepSound</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerSpiritStepSound</span><wbr><span class="parameters">(net.minecraft.world.level.block.Block&nbsp;entireBlockType,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</span>
                              throws <span class="exceptions"><a href="../../exception/ArgumentNullException.html" title="class in etithespirit.exception">ArgumentNullException</a>,
 <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.spiritmaterial.SpiritMaterial)">ISpiritSoundAPI</a></code></span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">ISpiritSoundAPI</a></code></span></div>
 <div class="block">Associates all states of the given block with the given material's sound.
  When a player walks on this block, and if they are currently a spirit,
  the sound associated with the given SpiritMaterial will play instead of the vanilla sound.<br/><br/>
 
  Note that setting a block will <em>not</em> override definitions for any of its child states (if they have been defined). This means that setting the
- entire block to a given material with this method, and then calling <a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)"><code>ISpiritSoundAPI.registerSpiritStepSound(BlockState, SpiritMaterial)</code></a>
+ entire block to a given material with this method, and then calling <a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)"><code>ISpiritSoundAPI.registerSpiritStepSound(BlockState, SpiritMaterial)</code></a>
  for a number of specific states of this block, is a perfectly valid method of providing a general default with deviations
  for special cases. The order in which these are called does not matter.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.spiritmaterial.SpiritMaterial)">registerSpiritStepSound</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISpiritSoundAPI.html" title="interface in etithespirit.orimod.api">ISpiritSoundAPI</a></code></dd>
+<dd><code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">registerSpiritStepSound</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISpiritSoundAPI.html" title="interface in etithespirit.orimod.api">ISpiritSoundAPI</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>entireBlockType</code> - The block that will have its sounds replaced for Spirits</dd>
 <dd><code>material</code> - The material dictating the unique sound played.</dd>
@@ -234,19 +234,19 @@ implements <a href="../api/ISpiritSoundAPI.html" title="interface in etithespiri
 </section>
 </li>
 <li>
-<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)">
+<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">
 <h3>registerSpiritStepSound</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">registerSpiritStepSound</span><wbr><span class="parameters">(net.minecraft.world.level.block.state.BlockState&nbsp;specificState,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</span>
                              throws <span class="exceptions"><a href="../../exception/ArgumentNullException.html" title="class in etithespirit.exception">ArgumentNullException</a>,
 <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)">ISpiritSoundAPI</a></code></span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">ISpiritSoundAPI</a></code></span></div>
 <div class="block">Associates the specific block state to the given material's sound.
  When a player walks on this block, and if they are currently a spirit,
  the sound associated with the given SpiritMaterial will play instead of the vanilla sound.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)">registerSpiritStepSound</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISpiritSoundAPI.html" title="interface in etithespirit.orimod.api">ISpiritSoundAPI</a></code></dd>
+<dd><code><a href="../api/ISpiritSoundAPI.html#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">registerSpiritStepSound</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISpiritSoundAPI.html" title="interface in etithespirit.orimod.api">ISpiritSoundAPI</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>specificState</code> - The block in a specific state that will have its sounds replaced for Spirits</dd>
 <dd><code>material</code> - The material dictating the unique sound played.</dd>
@@ -299,18 +299,18 @@ implements <a href="../api/ISpiritSoundAPI.html" title="interface in etithespiri
 </section>
 </li>
 <li>
-<section class="detail" id="associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.spiritmaterial.SpiritMaterial)">
+<section class="detail" id="associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">
 <h3>associateMaterialWith</h3>
 <div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">associateMaterialWith</span><wbr><span class="parameters">(net.minecraft.world.level.material.Material&nbsp;material,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;spiritMaterial)</span>
                            throws <span class="exceptions"><a href="../../exception/ArgumentNullException.html" title="class in etithespirit.exception">ArgumentNullException</a>,
 <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalArgumentException.html" title="class or interface in java.lang" class="external-link">IllegalArgumentException</a>,
 <a href="https://docs.oracle.com/en/java/javase/17/docs/api/java.base/java/lang/IllegalStateException.html" title="class or interface in java.lang" class="external-link">IllegalStateException</a></span></div>
-<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../api/ISpiritSoundAPI.html#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.spiritmaterial.SpiritMaterial)">ISpiritSoundAPI</a></code></span></div>
+<div class="block"><span class="descfrm-type-label">Description copied from interface:&nbsp;<code><a href="../api/ISpiritSoundAPI.html#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">ISpiritSoundAPI</a></code></span></div>
 <div class="block">Associates the given custom material with a given SpiritMaterial.</div>
 <dl class="notes">
 <dt>Specified by:</dt>
-<dd><code><a href="../api/ISpiritSoundAPI.html#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.spiritmaterial.SpiritMaterial)">associateMaterialWith</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISpiritSoundAPI.html" title="interface in etithespirit.orimod.api">ISpiritSoundAPI</a></code></dd>
+<dd><code><a href="../api/ISpiritSoundAPI.html#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">associateMaterialWith</a></code>&nbsp;in interface&nbsp;<code><a href="../api/ISpiritSoundAPI.html" title="interface in etithespirit.orimod.api">ISpiritSoundAPI</a></code></dd>
 <dt>Parameters:</dt>
 <dd><code>material</code> - The material to associate.</dd>
 <dd><code>spiritMaterial</code> - The <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial"><code>SpiritMaterial</code></a> that will be associated with this custom material.</dd>

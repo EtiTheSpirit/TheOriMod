@@ -1,10 +1,10 @@
 package etithespirit.orimod.spiritmaterial;
 
 import etithespirit.orimod.api.delegate.ISpiritMaterialAquisitionFunction;
+import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import etithespirit.orimod.common.block.ExtendedMaterial;
 import etithespirit.orimod.registry.BlockRegistry;
 import etithespirit.orimod.spiritmaterial.defaults.DefaultImplementations;
-import etithespirit.orimod.util.Bit32;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;

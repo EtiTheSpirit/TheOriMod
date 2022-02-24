@@ -7,7 +7,7 @@ import etithespirit.orimod.OriMod;
 import etithespirit.orimod.api.ISpiritSoundAPI;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAquisitionFunction;
 import etithespirit.orimod.spiritmaterial.BlockToMaterialBinding;
-import etithespirit.orimod.spiritmaterial.SpiritMaterial;
+import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;

@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.tile.light;
 
 
-import etithespirit.orimod.energy.FluxBehavior;
+import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundTag;
 
@@ -139,25 +139,6 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	@Override
 	public boolean acceptsConversion() {
 		return allowRFConversion;
-	}
-	
-	@Override
-	public FluxBehavior getFluxBehavior() {
-		return flux;
-	}
-	
-	@Override
-	public double applyEnvFlux(boolean simulate) {
-		double amount = getFluxBehavior().getNextEnvFlux(canExtractLight(), canReceiveLight(), simulate);
-		
-		if (amount > 0) {
-			amount = receiveLight(amount, simulate);
-		} else if (amount < 0) {
-			amount = extractLight(amount, simulate);
-		}
-		
-		if (amount != 0 && markDirty != null && !simulate) markDirty.run();
-		return amount;
 	}
 	
 }

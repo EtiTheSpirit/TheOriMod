@@ -24,7 +24,12 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Level;
 /***/
 public class GenerateBlockModels extends BlockStateProvider {
-	/***/
+	
+	/***
+	 * Create a new instance of the Block Model Generator
+	 * @param gen The generator itself.
+	 * @param exFileHelper A tool to modify files.
+	 */
 	public GenerateBlockModels(DataGenerator gen, ExistingFileHelper exFileHelper) {
 		super(gen, OriMod.MODID, exFileHelper);
 	}
@@ -120,12 +125,12 @@ public class GenerateBlockModels extends BlockStateProvider {
 	private void registerLogBlockAndItem(RegistryObject<Block> block) {
 		this.axisBlockWithStates((RotatedPillarBlock)block.get(), this.blockTexture(block.get()), extend(this.blockTexture(block.get()), "_top"));
 	}
-	/***/
-	public void axisBlockWithStates(RotatedPillarBlock block, ResourceLocation side, ResourceLocation end) {
+	
+	private void axisBlockWithStates(RotatedPillarBlock block, ResourceLocation side, ResourceLocation end) {
 		axisBlockWithStates(block, models().cubeColumn(name(block), side, end), models().cubeColumnHorizontal(name(block) + "_horizontal", side, end));
 	}
-	/***/
-	public void axisBlockWithStates(RotatedPillarBlock block, ModelFile vertical, ModelFile horizontal) {
+	
+	private void axisBlockWithStates(RotatedPillarBlock block, ModelFile vertical, ModelFile horizontal) {
 		
 		for (BlockState fullState : block.getStateDefinition().getPossibleStates()) {
 			

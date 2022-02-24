@@ -37,7 +37,8 @@ public class SpiritShieldModel extends Model {
 		this.bone = root.getChild("bone");
 		ModelPart rotatingParticlesCtr = bone.getChild("RotatingParticles");
 		
-		rotatingParticles = TypeErasure.eraseAndTreatAsGeneric(rotatingParticlesCtr.getAllParts().toArray());
+		
+		rotatingParticles = TypeErasure.translateArray(rotatingParticlesCtr.getAllParts().toArray(), ModelPart.class);
 	}
 	
 	public static LayerDefinition createBodyLayer() {

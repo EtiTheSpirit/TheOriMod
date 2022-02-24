@@ -8,12 +8,17 @@ package etithespirit.exception;
  */
 public class NotImplementedException extends UnsupportedOperationException {
 	
-	/***/
+	/**
+	 * Create a new instance of this exception using the default message, {@code "This method or operation is not implemented."}
+	 */
 	public NotImplementedException() {
-		this("The method or operation is not implemented.");
+		this("This method or operation is not implemented.");
 	}
 	
-	/***/
+	/**
+	 * Create a new instance of this exception, overriding the display message.
+	 * @param message The message to use.
+	 */
 	public NotImplementedException(String message) {
 		super(message);
 	}

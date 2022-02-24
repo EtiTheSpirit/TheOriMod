@@ -32,8 +32,8 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 			     .sound(SoundType.STONE)
 		);
 	}
-	/***/
-	public LightCapacitorBlock(Properties properties) {
+	
+	private LightCapacitorBlock(Properties properties) {
 		super(properties);
 		ConnectableLightTechBlock.autoRegisterDefaultState(this::registerDefaultState, this.stateDefinition);
 	}

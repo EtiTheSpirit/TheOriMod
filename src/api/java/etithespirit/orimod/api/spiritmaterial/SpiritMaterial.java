@@ -1,4 +1,4 @@
-package etithespirit.orimod.spiritmaterial;
+package etithespirit.orimod.api.spiritmaterial;
 
 import javax.annotation.Nullable;
 

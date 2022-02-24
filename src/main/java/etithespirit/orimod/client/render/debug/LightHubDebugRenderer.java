@@ -33,9 +33,11 @@ import static etithespirit.orimod.client.render.debug.RenderUtil.TRANSLUCENT_SOL
  */
 public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightEnergyHub> {
 	
-	public LightHubDebugRenderer(BlockEntityRendererProvider.Context ctx) {
-	
-	}
+	/**
+	 * This dummy ctor exists for the express purpose of making the parent class happy.
+	 * @param ctx The render context.
+	 */
+	public LightHubDebugRenderer(BlockEntityRendererProvider.Context ctx) { }
 	
 	private static final ResourceLocation FORGE_WHITE = new ResourceLocation("forge", "textures/white.png");
 	
@@ -135,6 +137,11 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 	}
 	
 	// Must be registered (of course). Cleans up the already rendered list.
+	
+	/**
+	 * This is used to clean up the list of rendered assemblies.
+	 * @param evt The render event.
+	 */
 	@SuppressWarnings("unused")
 	public static void onWorldFinishedRendering(RenderLevelLastEvent evt) {
 		alreadyRendered.clear();

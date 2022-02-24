@@ -24,7 +24,7 @@ public final class EffectEnforcement {
 	public static final AttributeModifier KNOCKBACK_MOD = new AttributeModifier(SPIRIT_EFFECT_KNOCKBACK_UUID, 1.0D, AttributeModifier.Operation.ADDITION);
 	
 	/** This attribute makes Spirits have only half the health of a player. */
-	public static final AttributeModifier HEALTH_MOD = new AttributeModifier(SPIRIT_EFFECT_MAX_HEALTH_UUID, 0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+	public static final AttributeModifier HEALTH_MOD = new AttributeModifier(SPIRIT_EFFECT_MAX_HEALTH_UUID, -0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL);
 	
 	/**
 	 * Removes the spirit speed, knockback, and health modifications.

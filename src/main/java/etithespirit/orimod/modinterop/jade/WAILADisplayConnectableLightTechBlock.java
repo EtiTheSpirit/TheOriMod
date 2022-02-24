@@ -33,7 +33,7 @@ public final class WAILADisplayConnectableLightTechBlock implements IComponentPr
 			// This should be
 			if (config.get(SHOW_AUTO)) {
 				boolean isAuto = accessor.getBlockState().getValue(ConnectableLightTechBlock.AUTO);
-				addComponentYN(info, "waila.etimod.autoconnect", isAuto);
+				addComponentYN(info, "waila.orimod.autoconnect", isAuto);
 			}
 		}
 	}

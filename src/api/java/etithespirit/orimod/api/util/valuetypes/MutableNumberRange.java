@@ -1,4 +1,4 @@
-package etithespirit.orimod.util.valuetypes;
+package etithespirit.orimod.api.util.valuetypes;
 
 
 import java.util.Random;
@@ -79,5 +79,21 @@ public class MutableNumberRange extends NumberRange {
 	@Override
 	public boolean isMutable() {
 		return true;
+	}
+	
+	/**
+	 * @return A copy of this {@link NumberRange} as an immutable instance.
+	 */
+	@Override
+	public NumberRange immutableCopy() {
+		return new NumberRange(min, max, rng);
+	}
+	
+	/**
+	 * @return A copy of this {@link NumberRange} as a mutable instance.
+	 */
+	@Override
+	public MutableNumberRange mutableCopy() {
+		return new MutableNumberRange(min, max, rng);
 	}
 }

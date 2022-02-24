@@ -31,7 +31,7 @@ public final class Line {
 	public final Assembly parent;
 	
 	/** The {@link AssemblyHelper} that constructs all the recursive pathways and figures out what's connected. */
-	private final AssemblyHelper helper;
+	final AssemblyHelper helper;
 	
 	/** Every conduit that makes up this line. */
 	private final List<AbstractLightEnergyLink> segments = new ArrayList<>();
@@ -41,10 +41,13 @@ public final class Line {
 	
 	private AABB bounds = null;
 	
-	/***/
-	public Line(Assembly parent, AssemblyHelper helper) {
+	/**
+	 * Construct a new line in the given assembly.
+	 * @param parent The assembly this line is a part of.
+	 */
+	public Line(Assembly parent) {
 		this.parent = parent;
-		this.helper = helper;
+		this.helper = parent.helper;
 	}
 	
 	/**
@@ -113,28 +116,27 @@ public final class Line {
 	/**
 	 * Get all lines of the given {@link Assembly}.
 	 * @param parent The assembly to build from.
-	 * @param helper The assembly's assigned helper.
 	 * @return The lines constructed from the connections and their branches, or null if the given {@link AbstractLightEnergyHub} is not in a world.
 	 */
-	public static List<Line> constructFrom(Assembly parent, AssemblyHelper helper) {
+	public static List<Line> constructFrom(Assembly parent) {
 		//UniProfiler.push(Line.class, "constructFrom", "populate");
 		//boolean _shouldEnd = AssemblyCodeProfiler.tryProfileBeginAndPush("constructFrom");
 		
 		List<AbstractLightEnergyLink> alreadyCovered = new ArrayList<>();
 		List<Line> lines = new ArrayList<>();
 		
-		for (AbstractLightEnergyLink conduit : helper.getLinks()) {
+		for (AbstractLightEnergyLink conduit : parent.helper.getLinks()) {
 			if (alreadyCovered.contains(conduit)) continue;
-			Line currentLine = new Line(parent, helper);
+			Line currentLine = new Line(parent);
 			lines.add(currentLine);
-			populate(lines, currentLine, alreadyCovered, null, conduit, parent, helper);
+			populate(lines, currentLine, alreadyCovered, null, conduit, parent);
 		}
 		
 		//AssemblyCodeProfiler.popAndEndIfNeeded(_shouldEnd);
 		return lines;
 	}
 	
-	private static void populate(List<Line> allLines, Line currentLine, List<AbstractLightEnergyLink> alreadyCovered, AbstractLightEnergyLink previous, AbstractLightEnergyLink around, Assembly parent, AssemblyHelper helper) {
+	private static void populate(List<Line> allLines, Line currentLine, List<AbstractLightEnergyLink> alreadyCovered, AbstractLightEnergyLink previous, AbstractLightEnergyLink around, Assembly parent) {
 		currentLine.segments.add(around);
 		if (!alreadyCovered.contains(around)) alreadyCovered.add(around);
 		
@@ -158,7 +160,7 @@ public final class Line {
 					return;
 				}
 				AbstractLightEnergyLink neighbor = neighbors.get(0);
-				populate(allLines, currentLine, alreadyCovered, neighbor, neighbor, parent, helper);
+				populate(allLines, currentLine, alreadyCovered, neighbor, neighbor, parent);
 			} else {
 				// 2 neighbors, mid or end
 				AbstractLightEnergyLink target = neighbors.get(0);
@@ -171,7 +173,7 @@ public final class Line {
 					return;
 				}
 				
-				populate(allLines, currentLine, alreadyCovered, target, target, parent, helper);
+				populate(allLines, currentLine, alreadyCovered, target, target, parent);
 			}
 		} else {
 			if (neighbors.size() != 0) {
@@ -179,9 +181,9 @@ public final class Line {
 				for (AbstractLightEnergyLink neighbor : neighbors) {
 					if (alreadyCovered.contains(neighbor)) continue;
 					
-					Line forBranch = new Line(parent, helper);
+					Line forBranch = new Line(parent);
 					allLines.add(forBranch);
-					populate(allLines, forBranch, alreadyCovered, neighbor, neighbor, parent, helper);
+					populate(allLines, forBranch, alreadyCovered, neighbor, neighbor, parent);
 				}
 			}
 		}

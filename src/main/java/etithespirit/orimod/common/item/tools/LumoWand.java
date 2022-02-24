@@ -1,6 +1,7 @@
 package etithespirit.orimod.common.item.tools;
 
 
+import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.block.light.LightCapacitorBlock;
 import etithespirit.orimod.common.block.light.LightConduitBlock;
@@ -48,7 +49,9 @@ public class LumoWand extends Item {
 				.tab(CreativeModeTab.TAB_TOOLS)
 		);
 	}
-	/***/
+	/**
+	 * @param props The properties of this item.
+	 */
 	public LumoWand(Properties props) {
 		super(props);
 	}
@@ -66,7 +69,7 @@ public class LumoWand extends Item {
 				BlockState oppositeAuto = block.setValue(LightConduitBlock.AUTO, targetState);
 				world.setBlockAndUpdate(ctx.getClickedPos(), oppositeAuto);
 				if (!world.isClientSide()) {
-					message(ctx.getPlayer(), "info.orimod.lumowand.auto" + (targetState ? "on" : "off"));
+					GeneralUtils.message((ServerPlayer)ctx.getPlayer(), "info.orimod.lumowand.auto" + (targetState ? "on" : "off"));
 				}
 			} else {
 				
@@ -117,14 +120,10 @@ public class LumoWand extends Item {
 	
 	@Override
 	public void appendHoverText(@Nullable ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, @Nullable TooltipFlag flagIn) {
-		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.1"));
-		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.2"));
-		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.3"));
-		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.4"));
-		tooltip.add(new TranslatableComponent("tooltip.etimod.lumowand.5"));
-	}
-	
-	private static void message(Player player, String message) {
-		((ServerPlayer)player).sendMessage(new TranslatableComponent(message), ChatType.GAME_INFO, Util.NIL_UUID);
+		tooltip.add(new TranslatableComponent("tooltip.orimod.lumowand.1"));
+		tooltip.add(new TranslatableComponent("tooltip.orimod.lumowand.2"));
+		tooltip.add(new TranslatableComponent("tooltip.orimod.lumowand.3"));
+		tooltip.add(new TranslatableComponent("tooltip.orimod.lumowand.4"));
+		tooltip.add(new TranslatableComponent("tooltip.orimod.lumowand.5"));
 	}
 }

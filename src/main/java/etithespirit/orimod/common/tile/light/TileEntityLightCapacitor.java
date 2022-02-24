@@ -4,31 +4,18 @@ package etithespirit.orimod.common.tile.light;
 import etithespirit.orimod.client.audio.LoopingLightEnergyBlockSound;
 import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
-import etithespirit.orimod.common.tile.IWorldUpdateListener;
-import etithespirit.orimod.energy.FluxBehavior;
+import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.registry.TileEntityRegistry;
-import net.minecraft.BlockUtil;
-import net.minecraft.client.Minecraft;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.Connection;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.level.BlockEventData;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.BlockEntityTicker;
-import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.StructureBlockEntity;
-import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraftforge.event.world.BlockEvent;
-import net.minecraftforge.network.NetworkInstance;
-import org.jetbrains.annotations.Nullable;
 
 public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements IAmbientSoundEmitter {
 	
@@ -132,20 +119,6 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 	@Override
 	public boolean acceptsConversion() {
 		return storage.acceptsConversion();
-	}
-	
-	@Override
-	public FluxBehavior getFluxBehavior() {
-		return storage.getFluxBehavior();
-	}
-	
-	@Override
-	public double applyEnvFlux(boolean simulate) {
-		double amount = storage.applyEnvFlux(simulate);
-		if (amount != 0) {
-			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
-		}
-		return amount;
 	}
 	
 	@Override

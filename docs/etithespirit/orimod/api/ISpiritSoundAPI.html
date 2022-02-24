@@ -95,7 +95,7 @@ loadScripts(document, 'script');</script>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.spiritmaterial.SpiritMaterial)" class="member-name-link">associateMaterialWith</a><wbr>(net.minecraft.world.level.material.Material&nbsp;material,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)" class="member-name-link">associateMaterialWith</a><wbr>(net.minecraft.world.level.material.Material&nbsp;material,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;spiritMaterial)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Associates the given custom material with a given SpiritMaterial.</div>
@@ -106,13 +106,13 @@ loadScripts(document, 'script');</script>
 <div class="block"><strong>MUST BE CHECKED BEFORE OTHER METHODS ARE USED.</strong></div>
 </div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.Block&nbsp;entireBlockType,
+<div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.Block&nbsp;entireBlockType,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Associates all states of the given block with the given material's sound.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.state.BlockState&nbsp;specificState,
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3"><code><a href="#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)" class="member-name-link">registerSpiritStepSound</a><wbr>(net.minecraft.world.level.block.state.BlockState&nbsp;specificState,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab3">
 <div class="block">Associates the specific block state to the given material's sound.</div>
@@ -168,7 +168,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.spiritmaterial.SpiritMaterial)">
+<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.Block,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">
 <h3>registerSpiritStepSound</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">registerSpiritStepSound</span><wbr><span class="parameters">(net.minecraft.world.level.block.Block&nbsp;entireBlockType,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</span>
@@ -179,7 +179,7 @@ loadScripts(document, 'script');</script>
  the sound associated with the given SpiritMaterial will play instead of the vanilla sound.<br/><br/>
 
  Note that setting a block will <em>not</em> override definitions for any of its child states (if they have been defined). This means that setting the
- entire block to a given material with this method, and then calling <a href="#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)"><code>registerSpiritStepSound(BlockState, SpiritMaterial)</code></a>
+ entire block to a given material with this method, and then calling <a href="#registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)"><code>registerSpiritStepSound(BlockState, SpiritMaterial)</code></a>
  for a number of specific states of this block, is a perfectly valid method of providing a general default with deviations
  for special cases. The order in which these are called does not matter.</div>
 <dl class="notes">
@@ -194,7 +194,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.spiritmaterial.SpiritMaterial)">
+<section class="detail" id="registerSpiritStepSound(net.minecraft.world.level.block.state.BlockState,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">
 <h3>registerSpiritStepSound</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">registerSpiritStepSound</span><wbr><span class="parameters">(net.minecraft.world.level.block.state.BlockState&nbsp;specificState,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;material)</span>
@@ -253,7 +253,7 @@ loadScripts(document, 'script');</script>
 </section>
 </li>
 <li>
-<section class="detail" id="associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.spiritmaterial.SpiritMaterial)">
+<section class="detail" id="associateMaterialWith(net.minecraft.world.level.material.Material,etithespirit.orimod.api.spiritmaterial.SpiritMaterial)">
 <h3>associateMaterialWith</h3>
 <div class="member-signature"><span class="return-type">void</span>&nbsp;<span class="element-name">associateMaterialWith</span><wbr><span class="parameters">(net.minecraft.world.level.material.Material&nbsp;material,
  <a href="../spiritmaterial/SpiritMaterial.html" title="enum class in etithespirit.orimod.spiritmaterial">SpiritMaterial</a>&nbsp;spiritMaterial)</span>

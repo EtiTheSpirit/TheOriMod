@@ -16,12 +16,21 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-/***/
+/**
+ * This mixin covers the serverside component of the sound overrides made for Spirits.
+ */
 @Mixin(ServerPlayer.class)
 public abstract class InjectServerPlayerPlaySound extends Player implements ISelfProvider {
-	/***/ public InjectServerPlayerPlaySound(Level p_36114_, BlockPos p_36115_, float p_36116_, GameProfile p_36117_) { super(p_36114_, p_36115_, p_36116_, p_36117_); }
+	private InjectServerPlayerPlaySound(Level p_36114_, BlockPos p_36115_, float p_36116_, GameProfile p_36117_) { super(p_36114_, p_36115_, p_36116_, p_36117_); }
 	
-	/***/
+	/**
+	 * This method is injected to pipe sound events to my custom event handler.
+	 * @param soundIn The sound being played.
+	 * @param category The category this sound is playing in.
+	 * @param volume The volume of this sound.
+	 * @param pitch The pitch of this sound.
+	 * @param ci The Mixin callback info.
+	 */
 	@Inject(method="playNotifySound(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V", at=@At("HEAD"), cancellable = true)
 	public void onPlaySoundCalledWithCategory(SoundEvent soundIn, SoundSource category, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.

@@ -47,7 +47,7 @@ public final class Assembly {
 	// TODO: Should this be something like a multimap? Is tracking the amount of elements in a chunk helpful in any way?
 	
 	/** The {@link AssemblyHelper} that figures out what all connected bits of this assembly exist. */
-	private final AssemblyHelper helper;
+	final AssemblyHelper helper;
 	
 	/** The {@link Level} this {@link Assembly} exists in. */
 	public final Level world;
@@ -135,7 +135,7 @@ public final class Assembly {
 		getAllInstances().add(this);
 		connectHub(hub);
 		
-		lines.addAll(Line.constructFrom(this, helper));
+		lines.addAll(Line.constructFrom(this));
 	}
 	
 	/**

@@ -20,8 +20,8 @@ ba8511bb8409fecc6d9c1a0bde8358324dcc5fcc assets/orimod/models/item/decay_log.jso
 408aa6c300c207c01aca82f80d08a5e7cb4e7f57 assets/orimod/models/item/decay_surface_mycelium.json
 5b97c560d6a961514873c194ec28968419f09239 assets/orimod/models/item/light_capacitor.json
 c3e00ea96146e48d89ce3b52d891a409b37b386e assets/orimod/models/item/light_conduit.json
-bf2be494bb0af342c3a1a5f39d5c98579e2d7c9b assets/orimod/models/item/light_shield.json
-aca1da174001482336db98e895c3b71a70dede3c assets/orimod/models/item/light_shield_blocking.json
-dafb61f0400af38dded0f851f57dcb9f1a0d43c0 assets/orimod/models/item/lumo_wand.json
+6382345475e6c2377202a59a8926a045b6727137 assets/orimod/models/item/lumo_wand.json
+c4fe98659170dd4c82e79c78d4466c1907bdbecf assets/orimod/models/item/shields/light_shield.json
+aca1da174001482336db98e895c3b71a70dede3c assets/orimod/models/item/shields/light_shield_blocking.json
 108f199759e265cf06e5961d0b5e31a02efc93b4 assets/orimod/models/item/stripped_decay_log.json
 c0c687ca2a88ae93019c9bbe1eeda069e4164715 data/minecraft/tags/blocks/mineable/pickaxe.json

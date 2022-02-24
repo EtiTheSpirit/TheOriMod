@@ -8,7 +8,7 @@
       "predicate": {
         "minecraft:blocking": 1.0
       },
-      "model": "orimod:item/light_shield_blocking"
+      "model": "orimod:item/shields/light_shield_blocking"
     }
   ]
 }

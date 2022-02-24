@@ -3,11 +3,12 @@ package etithespirit.orimod.common.tile;
 import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
 
 /**
- * Represents this tile entity as one that has an ambient sound.
+ * Represents this tile entity as one that has an ambient sound that loops.
  */
 public interface IAmbientSoundEmitter {
 	
 	/**
+	 * Returns a reference to the sound(s) that this emits.
 	 * @return A reference to the sound that this emits.
 	 */
 	StartLoopEndBlockSound getSoundInstance();
@@ -18,6 +19,7 @@ public interface IAmbientSoundEmitter {
 	void startSound();
 	
 	/**
+	 * Whether or not the system believes the sound should be playing right now.
 	 * @return Whether or not the sound should be playing right now.
 	 */
 	boolean soundShouldBePlaying();

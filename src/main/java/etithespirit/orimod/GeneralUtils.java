@@ -1,8 +1,14 @@
 package etithespirit.orimod;
 
+import etithespirit.orimod.annotation.ServerUseOnly;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.network.chat.ChatType;
+import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.fml.ModList;
@@ -126,4 +132,13 @@ public final class GeneralUtils {
 		return (value & flag) > 0;
 	}
 	
+	/**
+	 * Shows text at the bottom of the screen like when a new item is equipped.
+	 * @param player The player to show it for.
+	 * @param message The message to display.
+	 */
+	@ServerUseOnly
+	public static void message(ServerPlayer player, String message) {
+		player.sendMessage(new TranslatableComponent(message), ChatType.GAME_INFO, Util.NIL_UUID);
+	}
 }

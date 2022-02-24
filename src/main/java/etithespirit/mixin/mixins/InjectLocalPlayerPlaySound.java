@@ -15,13 +15,21 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-/***/
+
+/**
+ * This class covers the clientside portion of the Spirit sound injector.
+ */
 @Mixin(LocalPlayer.class)
 public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer implements ISelfProvider {
-	/***/
-	public InjectLocalPlayerPlaySound(ClientLevel p_108548_, GameProfile p_108549_) { super(p_108548_, p_108549_); }
+	private InjectLocalPlayerPlaySound(ClientLevel p_108548_, GameProfile p_108549_) { super(p_108548_, p_108549_); }
 	
-	/***/
+	/**
+	 * This method intercepts generic playSound calls and pipes the event through my custom event handler.
+	 * @param soundIn The sound that was played.
+	 * @param volume The volume the sound was played with.
+	 * @param pitch The pitch the sound was played with.
+	 * @param ci The Mixin callback info.
+	 */
 	@Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.
@@ -42,7 +50,14 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 		}
 	}
 	
-	/***/
+	/**
+	 * This method intercepts the more contextual sound method and pipes the event through my custom event handler.
+	 * @param soundIn The sound that was played.
+	 * @param category The category this sound is playing in.
+	 * @param volume The volume the sound was played with.
+	 * @param pitch The pitch the sound was played with.
+	 * @param ci The Mixin callback info.
+	 */
 	@Inject(method = "playNotifySound(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalledWithCategory(SoundEvent soundIn, SoundSource category, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.

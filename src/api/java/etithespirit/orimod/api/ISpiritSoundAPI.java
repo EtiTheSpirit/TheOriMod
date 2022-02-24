@@ -3,7 +3,7 @@ package etithespirit.orimod.api;
 
 import etithespirit.exception.ArgumentNullException;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAquisitionFunction;
-import etithespirit.orimod.spiritmaterial.SpiritMaterial;
+import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;

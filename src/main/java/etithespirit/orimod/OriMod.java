@@ -1,8 +1,10 @@
 package etithespirit.orimod;
 
 
+import etithespirit.orimod.apiimpl.EnvironmentalAffinityAPI;
 import etithespirit.orimod.client.render.debug.LightHubDebugRenderer;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
+import etithespirit.orimod.common.potion.DecayEffect;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
 import etithespirit.orimod.datagen.GenerateBlockModels;
@@ -18,6 +20,8 @@ import etithespirit.orimod.registry.PotionRegistry;
 import etithespirit.orimod.registry.RenderRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.registry.TileEntityRegistry;
+import etithespirit.orimod.spirit.SpiritIdentifier;
+import etithespirit.orimod.spirit.SpiritRestrictions;
 import etithespirit.orimod.spirit.SpiritSize;
 import etithespirit.orimod.spirit.SpiritSounds;
 import etithespirit.orimod.spirit.client.SpiritDash;
@@ -37,8 +41,9 @@ import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.IOException;
-
+/**
+ * The main class for the entire mod.
+ */
 @Mod(OriMod.MODID)
 public final class OriMod {
 
@@ -47,13 +52,15 @@ public final class OriMod {
 	/***/
 	public static final Logger LOG = LogManager.getLogger();
 
-	/** Returns the singleton instance of this mod. */
+	/** Returns the singleton instance of this mod.
+	 * @return The singleton instance of this mod. */
 	public static OriMod getInstance() {
 		return _instance;
 	}
 	private static OriMod _instance;
 	
 	private static boolean isModLoadingComplete = false;
+	
 	/***/
 	public OriMod() {
 		_instance = this;
@@ -73,21 +80,32 @@ public final class OriMod {
 		
 		MinecraftForge.EVENT_BUS.addListener(this::commandInit);
 		
+		etithespirit.orimod.api.spirit.SpiritAccessor._setMethods(SpiritIdentifier::isSpirit, SpiritIdentifier::setSpiritNetworked);
+		
 		BlockRegistry.registerAll();
 		ItemRegistry.registerAll();
 		PotionRegistry.registerAll();
 		SoundRegistry.registerAll();
 		TileEntityRegistry.registerAll();
+		
+		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onPlayerTickEvent);
+		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onWorldTickEvent);
+		
+		MinecraftForge.EVENT_BUS.addListener(SpiritRestrictions::onEat);
 	}
 	
 	/**
 	 * Whether or not the forge mod loading cycle has completed.
+	 * @return Whether or not the forge mod loading cycle has completed.
 	 */
 	public static boolean forgeLoadingComplete() {
 		return isModLoadingComplete;
 	}
 	
-	/***/
+	/**
+	 * Occurs on setup for both the client and server.
+	 * @param event The setup event.
+	 */
 	public void commonInit(final FMLCommonSetupEvent event) {
 		// For TEs
 		MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
@@ -126,7 +144,11 @@ public final class OriMod {
 		CapabilityRegistry.registerAll();
 		*/
 	}
-	/***/
+	
+	/**
+	 * Occurs on setup for the client.
+	 * @param event The setup event.
+	 */
 	public void clientGameBuildInit(final FMLClientSetupEvent event) {
 		//UniProfiler.setProfiler(Minecraft.getInstance().getProfiler(), Dist.CLIENT);
 		
@@ -151,17 +173,29 @@ public final class OriMod {
 
 		MinecraftForge.EVENT_BUS.addListener(RenderPlayerAsSpirit::whenRenderingPlayer);
 	}
-	/***/
+	
+	/**
+	 * Occurs on setup for the server.
+	 * @param event The setup event.
+	 */
 	public void dedicatedServerBuildInit(final FMLDedicatedServerSetupEvent event) {
 		ReplicateSpiritStatus.registerPackets(Dist.DEDICATED_SERVER);
 		EffectModificationReplication.registerPackets(Dist.DEDICATED_SERVER);
 	}
-	/***/
+	
+	/**
+	 * Occurs on setup for the server when registering commands.
+	 * @param event The setup event.
+	 */
 	public void commandInit(final RegisterCommandsEvent event) {
 		//CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
 		//SetSpiritCommand.registerCommand(dispatcher);
 	}
-	/***/
+	
+	/**
+	 * Occurs on execution of the data generator.
+	 * @param dataEvt The setup event.
+	 */
 	public void onDataGenerated(final GatherDataEvent dataEvt) {
 		if (dataEvt.includeClient()) {
 			DataGenerator generator = dataEvt.getGenerator();
@@ -173,9 +207,15 @@ public final class OriMod {
 			generator.addProvider(blockTags);
 		}
 	}
-	/***/
+	
+	/**
+	 * Occurs when mod loading has completed.
+	 * @param evt The mod loading event.
+	 */
 	public void onModLoadingComplete(final FMLLoadCompleteEvent evt) {
 		isModLoadingComplete = true;
+		etithespirit.orimod.api.environment.defaultimpl.DefaultEnvironments.init(PotionRegistry.get(DecayEffect.class));
+		EnvironmentalAffinityAPI.validate();
 	}
 	
 }

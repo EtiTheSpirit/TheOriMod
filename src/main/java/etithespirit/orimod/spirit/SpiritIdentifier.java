@@ -1,6 +1,8 @@
 package etithespirit.orimod.spirit;
 
 import etithespirit.orimod.config.OriModConfigs;
+import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
+import etithespirit.orimod.networking.spirit.SpiritStateReplicationPacket;
 import etithespirit.orimod.server.persistence.SpiritPermissions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
@@ -64,5 +66,24 @@ public final class SpiritIdentifier {
 	public static void setSpirit(UUID playerID, boolean isSpirit) {
 		SPIRIT_BINDINGS.put(playerID, isSpirit);
 	}
+	
+	/**
+	 * Identical to {@link #setSpirit(Player, boolean)}, but this will send the appropriate network request for both sides.
+	 * @param player The player to change.
+	 * @param isSpirit The new spirit state.
+	 */
+	public static void setSpiritNetworked(Player player, boolean isSpirit) {
+		setSpirit(player, isSpirit);
+		if (player.level.isClientSide) {
+			if (!player.isLocalPlayer()) {
+				throw new IllegalArgumentExceptionButItHasAComicallyLargeNameToDrasticallyIncreaseTheIronyPresentInThisReallyTerribleForcedExceptionMethodBecauseYouCalledTheNetworkingMethodWithTheWrongArgument();
+			}
+			ReplicateSpiritStatus.askToSetSpiritStatusAsync(isSpirit);
+		} else {
+			ReplicateSpiritStatus.tellEveryonePlayerSpiritStatus(player, isSpirit);
+		}
+	}
+	
+	private static final class IllegalArgumentExceptionButItHasAComicallyLargeNameToDrasticallyIncreaseTheIronyPresentInThisReallyTerribleForcedExceptionMethodBecauseYouCalledTheNetworkingMethodWithTheWrongArgument extends IllegalArgumentException {}
 	
 }

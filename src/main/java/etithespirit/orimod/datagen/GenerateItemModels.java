@@ -18,7 +18,12 @@ import org.apache.logging.log4j.Level;
  * @author Eti
  */
 public final class GenerateItemModels extends ItemModelProvider {
-	/***/
+	
+	/***
+	 * Create the Item Model Generator
+	 * @param generator The generator itself
+	 * @param existingFileHelper A tool for accessing files.
+	 */
 	public GenerateItemModels(DataGenerator generator, ExistingFileHelper existingFileHelper) {
 		super(generator, OriMod.MODID, existingFileHelper);
 	}
@@ -38,7 +43,7 @@ public final class GenerateItemModels extends ItemModelProvider {
 			id.toString(),
 			new ResourceLocation("item/handheld"),
 			"layer0",
-			new ResourceLocation(id.getNamespace(), "item/" + id.getPath())
+			new ResourceLocation(id.getNamespace(), "item/tools/" + id.getPath())
 		);
 		OriMod.LOG.printf(Level.INFO, "Created simple handheld (tool) item for %s", id.toString());
 	}
@@ -50,7 +55,7 @@ public final class GenerateItemModels extends ItemModelProvider {
 	private void generateShieldItem(RegistryObject<Item> item) {
 		ResourceLocation id = item.getId();
 		ModelFile blocking = withExistingParent(
-			"item/" + id.getPath() + "_blocking",
+			"item/shields/" + id.getPath() + "_blocking",
 			mcLoc("item/shield_blocking")
 		).texture(
 			"particle",
@@ -58,7 +63,7 @@ public final class GenerateItemModels extends ItemModelProvider {
 		);
 		
 		withExistingParent(
-			"item/" + id.getPath(),
+			"item/shields/" + id.getPath(),
 			mcLoc("item/shield")
 		).texture(
 			"particle",

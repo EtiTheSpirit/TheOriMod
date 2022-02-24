@@ -1,7 +1,7 @@
 package etithespirit.orimod.api.delegate;
 
 import etithespirit.exception.ArgumentNullException;
-import etithespirit.orimod.spiritmaterial.SpiritMaterial;
+import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 

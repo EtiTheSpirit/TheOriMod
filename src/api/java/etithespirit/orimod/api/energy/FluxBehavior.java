@@ -1,8 +1,7 @@
-package etithespirit.orimod.energy;
+package etithespirit.orimod.api.energy;
 
-
-import etithespirit.orimod.util.valuetypes.MutableNumberRange;
-import etithespirit.orimod.util.valuetypes.NumberRange;
+import etithespirit.orimod.api.util.valuetypes.MutableNumberRange;
+import etithespirit.orimod.api.util.valuetypes.NumberRange;
 
 import java.util.Random;
 
@@ -11,7 +10,7 @@ import java.util.Random;
  * or removing an arbitrary amount of energy). The exact manner in which this occurs and in what amount is determined by an instance
  * of this class.<br/>
  * <br/>
- * A crude analogy is to call this "a means of applying entropy".
+ * A crude analogy is to call this "a means of applying entropy to systems".
  *
  * @author Eti
  *
@@ -26,13 +25,16 @@ public final class FluxBehavior {
 	public final boolean isDisabledFlux = this == DISABLED;
 	
 	/** The range in which flux can occur. Negative values take energy away, and positive values give energy. */
-	private final NumberRange fluxMagnitude;
+	private NumberRange fluxMagnitude;
 	
 	/** The bias of this flux behavior, which is a value always added to a given random magnitude. */
 	private double bias;
 	
-	/** Whether or not flux is enabled. If false, {@link #getNextEnvFlux(boolean, boolean, boolean)} will always return 0. */
+	/** Whether or not flux is enabled on this specific instance. If false, {@link #getNextEnvFlux(boolean, boolean, boolean)} will always return 0. */
 	private boolean enabled;
+	
+	/** Whether or not this behavior has been finalized. */
+	private boolean finalized;
 	
 	private long iteration;
 	
@@ -66,10 +68,11 @@ public final class FluxBehavior {
 		rng = null;
 		bias = 0;
 		enabled = false;
+		finalized = true;
 	}
 	
 	/**
-	 * Returns the next amount of flux. canExtract and canReceive should reflect the {@link ILightEnergyStorage} this exists for,
+	 * Returns the next amount of flux. canExtract and canReceive should reflect the ILightEnergyStorage this exists for,
 	 * and will set the min (or max) of the randomized energy modifier to 0 accordingly as to not cause unwanted changes.
 	 * This will always return 0 on {@link #DISABLED}.
 	 * @param canExtract Whether or not the element can extract energy.
@@ -115,29 +118,63 @@ public final class FluxBehavior {
 	}
 	
 	/**
-	 * Sets the bias of this behavior. This will always do nothing on {@link #DISABLED}.
+	 * Sets the bias of this behavior..
 	 * @param newBias A new bias to constantly add to this value.
+	 * @throws IllegalStateException If this has been finalized or is the disabled behavior.
 	 */
-	public void setBias(double newBias) {
-		if (isDisabledFlux) return;
+	public void setBias(double newBias) throws IllegalStateException {
+		if (isDisabledFlux || finalized) throw new IllegalStateException("This FluxBehavior is immutable.");
 		bias = newBias;
 	}
 	
 	/**
 	 * @return Whether or not this {@link FluxBehavior} is allowed to alter the storage it is tied to. This will always return false on {@link #DISABLED}.
 	 */
-	public boolean isEnabled() {
-		if (isDisabledFlux) return false;
+	public boolean isEnabled() throws IllegalStateException {
+		if (isDisabledFlux || finalized) return false;
 		return enabled;
 	}
 	
 	/**
-	 * Sets whether or not this {@link FluxBehavior} is allowed to alter the storage it is tied to. This will always do nothing on {@link #DISABLED}.
+	 * Sets whether or not this {@link FluxBehavior} is allowed to alter the storage it is tied to.
 	 * @param enabled Whether or not this can alter the storage it's tied to.
+	 * @throws IllegalStateException If this has been finalized or is the disabled behavior.
 	 */
-	public void setEnabled(boolean enabled) {
-		if (isDisabledFlux) return;
+	public void setEnabled(boolean enabled) throws IllegalStateException {
+		if (isDisabledFlux || finalized) throw new IllegalStateException("This FluxBehavior is immutable.");
 		this.enabled = enabled;
+	}
+	
+	/**
+	 * Returns true if this is immutable or the disabled flux.
+	 * @return True if this is the disabled flux object or has been made immutable, false if not.
+	 */
+	public boolean isImmutable() {
+		return isDisabledFlux || finalized;
+	}
+	
+	/**
+	 * Makes this behavior immutable, which locks its set methods and sets its range instance to an immutable one.
+	 * @throws IllegalStateException If this is the disabled flux, or it has already been made immutable.
+	 */
+	public void makeImmutable() throws IllegalStateException {
+		makeImmutable(false);
+	}
+	
+	
+	/**
+	 * Makes this behavior immutable, which locks its set methods.
+	 * @param leaveNumberRangeAlone If true, the {@link NumberRange} instance backing this flux object will be unchecked, which causes it to potentially remain mutable.
+	 * @throws IllegalStateException If this is the disabled flux, or it has already been made immutable.
+	 */
+	public void makeImmutable(boolean leaveNumberRangeAlone) throws IllegalStateException {
+		if (isDisabledFlux || finalized) throw new IllegalStateException("This FluxBehavior is already immutable.");
+		finalized = true;
+		if (!leaveNumberRangeAlone) {
+			if (fluxMagnitude instanceof MutableNumberRange mutable) {
+				fluxMagnitude = mutable.immutableCopy();
+			}
+		}
 	}
 	
 }

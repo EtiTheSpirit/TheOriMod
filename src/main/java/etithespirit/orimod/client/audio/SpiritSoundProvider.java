@@ -8,7 +8,7 @@ import etithespirit.orimod.client.audio.variation.SpecialAttackType;
 import etithespirit.orimod.combat.ExtendedDamageSource;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.spiritmaterial.BlockToMaterialBinding;
-import etithespirit.orimod.spiritmaterial.SpiritMaterial;
+import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.world.damagesource.DamageSource;

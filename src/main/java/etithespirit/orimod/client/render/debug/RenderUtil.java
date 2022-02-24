@@ -98,7 +98,7 @@ public final class RenderUtil {
 		vtxBuilder
 			.vertex(pose, x, y, z)
 			.color(red(argb) / argbDivisor, green(argb) / argbDivisor, blue(argb) / argbDivisor, alpha(argb) / argbDivisor)
-			.uv2(0, 10) // was 240
+			.uv2(0, 240) // TODO: Why 240?
 			.normal(1, 0, 0)
 			.endVertex();
 		
@@ -121,7 +121,7 @@ public final class RenderUtil {
 		vtxBuilder
 			.vertex(pose, x, y, z) // had pose as first arg
 			.color(red(argb) / argbDivisor, green(argb) / argbDivisor, blue(argb) / argbDivisor, alpha(argb) / argbDivisor)
-			.uv2(0, 240) // was 240
+			.uv2(0, 240) // TODO: Why 240?
 			.normal(nrm.getX(), nrm.getY(), nrm.getZ())
 			.endVertex();
 		
@@ -159,7 +159,7 @@ public final class RenderUtil {
 	}
 	
 	/**
-	 * Returns an AABB containing the two given BlockPos center points (thus making the AABB one dimensional). The size property dictates how much to expand it by on all axes.
+	 * Returns an AABB containing the two given BlockPos center points. The size property dictates how much to expand it by on all axes.
 	 * @param blockStart The start position.
 	 * @param blockEnd The end position.
 	 * @param size The "extra room" given for the AABB. A value of 1 makes it surround both of the blocks on their edges.
@@ -187,7 +187,7 @@ public final class RenderUtil {
 	}
 	
 	/**
-	 * Draw an axis-aligned bounding box's outline. To render an opaque cube,
+	 * Draw an axis-aligned bounding box's outline. To render an opaque cube, use {@link #drawBox(AABB, PoseStack, VertexConsumer, int, float)}/
 	 * @param bounds The bounding box to draw.
 	 * @param mtx The MatrixStack that controls the rendered position.
 	 * @param vtxBuilder The vertex builder that allows drawing the lines.
@@ -219,21 +219,21 @@ public final class RenderUtil {
 	
 	/**
 	 * Draws a box representing the given AABB.
-	 * @param box The box to draw.
+	 * @param bounds The box to draw.
 	 * @param mtx The matrix used to place the vertices.
 	 * @param builder The thing used to actually put the vertices down in the first place.
 	 * @param argb The color of the box in ARGB format.
 	 * @param argbDivisor A divisor applied to all four components of the ARGB value. This should be 255 for floating point colors and 1 for byte colors, but it can really be anything.
 	 */
-	public static void drawBox(AABB box, PoseStack mtx, VertexConsumer builder, int argb, float argbDivisor) {
+	public static void drawBox(AABB bounds, PoseStack mtx, VertexConsumer builder, int argb, float argbDivisor) {
 		float alpha =   alpha(argb) / argbDivisor;
 		float red =     red(argb) / argbDivisor;
 		float green =   green(argb) / argbDivisor;
 		float blue =    blue(argb) / argbDivisor;
 		
 		mtx.pushPose();
-		mtx.translate(box.minX, box.minY, box.minZ);
-		mtx.scale((float)box.getXsize(), (float)box.getYsize(), (float)box.getZsize());
+		mtx.translate(bounds.minX, bounds.minY, bounds.minZ);
+		mtx.scale((float)bounds.getXsize(), (float)bounds.getYsize(), (float)bounds.getZsize());
 		BOX.render(mtx, builder, FULL_BRIGHT_LIGHT, OverlayTexture.NO_OVERLAY, red, green, blue, alpha);
 		mtx.popPose();
 	}
@@ -266,7 +266,7 @@ public final class RenderUtil {
 	}
 	
 	/**
-	 * Renders text in a manner akin to an entity name at the given {@link BlockPos}
+	 * Renders text in a manner akin to an entity name at the given {@link BlockPos}. This will add 1 to the Y component of the given position.
 	 * @param text The text to display.
 	 * @param mtx The matrix stack defining where this text should go.
 	 * @param renderInfo The current player's camera.

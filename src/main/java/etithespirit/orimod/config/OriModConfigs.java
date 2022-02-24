@@ -4,7 +4,6 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParseException;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
-import etithespirit.orimod.spiritmaterial.SpiritMaterial;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
@@ -16,8 +15,6 @@ import net.minecraftforge.fml.config.ModConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -40,6 +37,11 @@ public class OriModConfigs {
 	public static ForgeConfigSpec.DoubleValue LUX_TO_RF_RATIO;
 	public static ForgeConfigSpec.BooleanValue USE_ENV_FLUX;
 	public static ForgeConfigSpec.BooleanValue USE_ENV_POWER;
+	
+	public static ForgeConfigSpec.BooleanValue ONLY_EAT_PLANTS;
+	
+	@Deprecated
+	public static ForgeConfigSpec.DoubleValue HEALTH_TO_LUX_RATIO;
 	
 	@ClientUseOnly
 	public static ForgeConfigSpec.BooleanValue DEBUG_RENDER_ASSEMBLIES;
@@ -159,6 +161,7 @@ public class OriModConfigs {
 		DEFAULT_SPIRIT_STATE = createBoolean(builder, current, "default_state", true);
 		FORCE_STATE = createBoolean(builder, current, "force_state", false);
 		ALLOW_CHANGING_BY_DEFAULT = createBoolean(builder, current, "allow_changes_default", true);
+		ONLY_EAT_PLANTS = createBoolean(builder, current, "only_eat_plants", false);
 		builder.pop();
 		
 		current = "spirit_abilities";
@@ -172,7 +175,7 @@ public class OriModConfigs {
 		
 		current = "light_energy";
 		builder.push(current);
-		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 400, 0.0001D, 10000D);
+		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 5000, 0.0001D, 100000D);
 		USE_ENV_FLUX = createBoolean(builder, current, "env_flux", true);
 		USE_ENV_POWER = createBoolean(builder, current, "env_power", true);
 		builder.pop();

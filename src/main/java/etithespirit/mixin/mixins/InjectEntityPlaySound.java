@@ -12,30 +12,66 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-/***/
+
+/**
+ * This covers the entity-wide sound interception system, for the sake of completeness.
+ */
 @Mixin(Entity.class)
 public abstract class InjectEntityPlaySound extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> implements ISelfProvider {
-	/***/
-	protected InjectEntityPlaySound(Class<Entity> baseClass) { super(baseClass); }
-	/***/
+	private InjectEntityPlaySound(Class<Entity> baseClass) { super(baseClass); }
+	
+	/**
+	 * Shadows {@link Entity#isSilent()}
+	 * @return True if this entity does not play sound.
+	 */
 	@Shadow
 	public abstract boolean isSilent();
-	/***/
+	
+	/**
+	 * Shadows {@link Entity#getX()}
+	 * @return The X component of this entity's position.
+	 */
 	@Shadow
 	public abstract double getX();
-	/***/
+	
+	/**
+	 * Shadows {@link Entity#getY()}
+	 * @return The Y component of this entity's position.
+	 */
 	@Shadow
 	public abstract double getY();
-	/***/
+	
+	/**
+	 * Shadows {@link Entity#getZ()}
+	 * @return The Z component of this entity's position.
+	 */
 	@Shadow
 	public abstract double getZ();
-	/***/
+	
+	/**
+	 * Shadows {@link Entity#getSoundSource()}
+	 * @return The category of sound that this entity emits.
+	 */
 	@Shadow
 	public abstract SoundSource getSoundSource();
-	/***/
+	
+	/**
+	 * Shadows {@link Entity#playSound(SoundEvent, float, float)}
+	 * @param soundIn The sound to play.
+	 * @param volume The volume of the sound.
+	 * @param pitch The pitch of the sound.
+	 */
 	@Shadow
 	public abstract void playSound(SoundEvent soundIn, float volume, float pitch);
-	/***/
+	
+	
+	/**
+	 * This injects into the beginning of {@link Entity#playSound(SoundEvent, float, float)} and pipes the event through my custom event handler.
+	 * @param soundIn The sound that was played.
+	 * @param volume The volume the sound was played with.
+	 * @param pitch The pitch the sound was played with.
+	 * @param ci The Mixin callback info.
+	 */
 	@Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// Now this is probably a really shitty idea, but basically I want to ensure maximum compatibility with other mixins.

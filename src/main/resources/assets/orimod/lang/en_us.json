@@ -39,26 +39,27 @@
 	"death.attack.decay" : "%1$s was lost to The Decay.",
 	"death.attack.decay.player" : "%1$s was lost to The Decay.",
 
+
+	"orimod.spirit_restrictions.no_meat" : "You know you can't eat this. You're a herbivore!",
+
 	"config.orimod.general" : "General Configuration",
-
-
 
 	"config.orimod.spirit_abilities" : "Spirit Abilities",
 
 	"config.orimod.spirit_abilities.air_jumps" : "Air Jump Count",
-	"config.orimod.spirit_abilities.air_jumps.description" : "The amount of jumps a spirit can perform in the air. 1 is double jump, and 2 is triple jump.",
+	"config.orimod.spirit_abilities.air_jumps.description" : "§cThis is not yet functional, and is always set to 2.§r The amount of jumps a spirit can perform in the air. 1 is double jump, and 2 is triple jump.",
 
 	"config.orimod.spirit_abilities.know_double_jump" : "Know Double-Jump By Default",
-	"config.orimod.spirit_abilities.know_double_jump.description" : "Whether or not Spirit players will know how to double jump as soon as becoming one.",
+	"config.orimod.spirit_abilities.know_double_jump.description" : "§cThis is not yet functional, and is always enabled.§r Whether or not Spirit players will know how to double jump as soon as becoming one.",
 
 	"config.orimod.spirit_abilities.know_dash" : "Know Dash By Default",
-	"config.orimod.spirit_abilities.know_dash.description" : "Whether or not Spirit players will know how to dash on land as soon as becoming one.",
+	"config.orimod.spirit_abilities.know_dash.description" : "§cThis is not yet functional, and is always enabled.§r Whether or not Spirit players will know how to dash on land as soon as becoming one.",
 
 	"config.orimod.spirit_abilities.know_air_dash" : "Know Air-Dash By Default",
-	"config.orimod.spirit_abilities.know_air_dash.description" : "§lRequires Dash to use! §rWhether or not Spirit players will know to dash whilst in the air.",
+	"config.orimod.spirit_abilities.know_air_dash.description" : "§cThis is not yet functional, and is always enabled.§r §lRequires Dash to use! §rWhether or not Spirit players will know to dash whilst in the air.",
 
 	"config.orimod.spirit_abilities.know_water_dash" : "Know Water-Dash By Default",
-	"config.orimod.spirit_abilities.know_water_dash.description" : "§lRequires Dash to use! §rWhether or not Spirit players will know to dash whilst in water.",
+	"config.orimod.spirit_abilities.know_water_dash.description" : "§cThis is not yet functional, and is always enabled.§r §lRequires Dash to use! §rWhether or not Spirit players will know to dash whilst in water.",
 
 
 
@@ -74,17 +75,21 @@
 	"config.orimod.spirit_management.allow_changes_default.description" : "Whether or not to allow players to change between Player and Spirit. There is a permissions file that dictates who is explicitly allowed to, and who is explicitly not allowed to, which can be used to override this value per player.",
 
 
+	"config.orimod.spirit_management.only_eat_plants" : "Allow Eating Only Plants",
+	"config.orimod.spirit_management.only_eat_plants.description" : "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
+
+
 
 	"config.orimod.light_energy" : "Luxen Configuration (Light Technology)",
 
 	"config.orimod.light_energy.rf_to_lux" : "RF to Luxen Conversion Ratio",
-	"config.orimod.light_energy.rf_to_lux.description" : "How much §cRF §ris required to get 1 §bLuxen.",
+	"config.orimod.light_energy.rf_to_lux.description" : "§cThis is not yet functional.§r How much §cRF §ris required to get 1 §bLuxen.",
 
 	"config.orimod.light_energy.env_flux" : "Random Environmental Light Flux",
-	"config.orimod.light_energy.env_flux.description" : "If enabled, environments of §5Decay §ror §bLight §rwill passively and randomly remove or add energy from or to Light-based devices, making it harder to store energy in §5Decay §renvironments and easier in §bLight §renvironments.",
+	"config.orimod.light_energy.env_flux.description" : "§cThis is not yet functional, and may be removed as well.§r If enabled, environments of §5Decay §ror §bLight §rwill passively and randomly remove or add energy from or to Light-based devices, making it harder to store energy in §5Decay §renvironments and easier in §bLight §renvironments.",
 
 	"config.orimod.light_energy.env_power" : "Environmental Light Efficiency",
-	"config.orimod.light_energy.env_power.description" : "If enabled, environments of §5Decay §ror §bLight §rwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §renvironments and easier in §bLight §renvironments..",
+	"config.orimod.light_energy.env_power.description" : "§cThis is not yet functional.§r If enabled, environments of §5Decay §ror §bLight §rwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §renvironments and easier in §bLight §renvironments..",
 
 	"config.orimod.rendering" : "Rendering Configuration",
 	"config.orimod.rendering.assembly_debug" : "Render AOS Debug Info",

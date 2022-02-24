@@ -16,7 +16,7 @@ import static etithespirit.orimod.common.block.StaticData.TRUE_POSITION_PREDICAT
 public class HardLightBlock extends Block implements ILightBlockIdentifier, IToolRequirementProvider {
 	/***/
 	public HardLightBlock() {
-		this(
+		super(
 			Properties.of(ExtendedMaterial.LIGHT)
 				.isViewBlocking(FALSE_POSITION_PREDICATE)
 				.emissiveRendering(TRUE_POSITION_PREDICATE)
@@ -25,10 +25,6 @@ public class HardLightBlock extends Block implements ILightBlockIdentifier, IToo
 				.lightLevel((state) -> 15)
 				.sound(SoundType.GLASS)
 		);
-	}
-	/***/
-	public HardLightBlock(Properties properties) {
-		super(properties);
 	}
 	
 	@Override

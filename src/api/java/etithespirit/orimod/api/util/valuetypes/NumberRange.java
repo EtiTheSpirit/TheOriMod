@@ -1,4 +1,4 @@
-package etithespirit.orimod.util.valuetypes;
+package etithespirit.orimod.api.util.valuetypes;
 
 
 import java.util.Random;
@@ -91,10 +91,24 @@ public class NumberRange {
 		return false;
 	}
 	
+	/**
+	 * @return A copy of this {@link NumberRange} as an immutable instance.
+	 */
+	public NumberRange immutableCopy() {
+		return new NumberRange(min, max, rng);
+	}
+	
+	/**
+	 * @return A copy of this {@link NumberRange} as a mutable instance.
+	 */
+	public MutableNumberRange mutableCopy() {
+		return new MutableNumberRange(min, max, rng);
+	}
+	
 	@Override
 	public boolean equals(Object other) {
 		if (other instanceof NumberRange o) {
-			return min == o.min && max == o.max;
+			return min == o.min && max == o.max && rng.equals(o.rng);
 		}
 		return false;
 	}
