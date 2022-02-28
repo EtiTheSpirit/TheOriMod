@@ -748,6 +748,41 @@
 		]
 	},
 	
+	"item.spirit_arc.start" : {
+		"category" : "neutral",
+		"sounds" : [
+			"orimod:light_weapons/arc/draw/bowstart0",
+			"orimod:light_weapons/arc/draw/bowstart1",
+			"orimod:light_weapons/arc/draw/bowstart2",
+			"orimod:light_weapons/arc/draw/bowstart3"
+		]
+	},
+	"item.spirit_arc.charge" : {
+		"category" : "neutral",
+		"sounds" : [
+			"orimod:light_weapons/arc/charge/bowcharge0",
+			"orimod:light_weapons/arc/charge/bowcharge1",
+			"orimod:light_weapons/arc/charge/bowcharge2"
+		]
+	},
+	"item.spirit_arc.shot.base" : {
+		"category" : "neutral",
+		"sounds" : [
+			"orimod:light_weapons/arc/shot/standard/bowstandardshot0",
+			"orimod:light_weapons/arc/shot/standard/bowstandardshot1",
+			"orimod:light_weapons/arc/shot/standard/bowstandardshot2",
+			"orimod:light_weapons/arc/shot/standard/bowstandardshot3",
+			"orimod:light_weapons/arc/shot/standard/bowstandardshot4"
+		]
+	},
+	"item.spirit_arc.shot.charge_overlay" : {
+		"category" : "neutral",
+		"sounds" : [
+			"orimod:light_weapons/arc/shot/charge_overlay/bowchargeshot0",
+			"orimod:light_weapons/arc/shot/charge_overlay/bowchargeshot1",
+			"orimod:light_weapons/arc/shot/charge_overlay/bowchargeshot2"
+		]
+	},
 	
 	"nullsound" : {
 		"category" : "master",

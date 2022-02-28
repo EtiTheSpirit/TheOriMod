@@ -46,12 +46,13 @@ public class GenerateBlockModels extends BlockStateProvider {
 	protected void registerStatesAndModels() {
 		OriMod.LOG.printf(Level.INFO, "Starting block model generation.");
 		
-		registerBlockAndItem(BlockRegistry.DECAY_MYCELIUM);
+		registerBlockAndItem(BlockRegistry.DECAY_DIRT_MYCELIUM);
+		registerBlockAndItem(BlockRegistry.DECAY_PLANTMATTER_MYCELIUM);
 		registerLogBlockAndItem(BlockRegistry.DECAY_LOG);
 		registerLogBlockAndItem(BlockRegistry.DECAY_STRIPPED_LOG);
 		registerInsideOutBlockAndItem(BlockRegistry.DECAY_SURFACE_MYCELIUM);
 		
-		// registerBlockAndItem(BlockRegistry.DECAY_POISON);
+		registerBlockAndItem(BlockRegistry.DECAY_POISON);
 		
 		registerConduitBlock(BlockRegistry.LIGHT_CONDUIT);
 		registerBlockAndItem(BlockRegistry.LIGHT_CAPACITOR);

@@ -1,7 +1,6 @@
 package etithespirit.orimod.common.tile.light;
 
 
-import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundTag;
 
@@ -25,7 +24,6 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	protected double maxExtract;
 	protected boolean allowRFConversion;
 	protected final Runnable markDirty;
-	protected FluxBehavior flux;
 	
 	/**
 	 * If set, this string will be used to save this container's energy to NBT. If left alone, then {@link #ENERGY_KEY} will be used.
@@ -33,23 +31,23 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	public String energyKeyOverride = ENERGY_KEY;
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity) {
-		this(markDirty, capacity, capacity, capacity, null, false, 0);
+		this(markDirty, capacity, capacity, capacity, false, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxTransfer) {
-		this(markDirty, capacity, maxTransfer, maxTransfer, null, false, 0);
+		this(markDirty, capacity, maxTransfer, maxTransfer, false, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxTransfer, boolean allowRFConversion) {
-		this(markDirty, capacity, maxTransfer, maxTransfer, null, allowRFConversion, 0);
+		this(markDirty, capacity, maxTransfer, maxTransfer, allowRFConversion, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract) {
-		this(markDirty, capacity, maxReceive, maxExtract, null, false, 0);
+		this(markDirty, capacity, maxReceive, maxExtract, false, 0);
 	}
 	
 	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion) {
-		this(markDirty, capacity, maxReceive, maxExtract, null, allowRFConversion, 0);
+		this(markDirty, capacity, maxReceive, maxExtract, allowRFConversion, 0);
 	}
 	
 	/**
@@ -58,20 +56,16 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 * @param capacity The maximum amount of energy this storage can containe
 	 * @param maxReceive The maximum amount of energy that can be stored in a single action.
 	 * @param maxExtract The maximum amount of energy that can be extracted in a single action.
-	 * @param flux A NumberRange representing the possible environmental flux. NumberRange.ZERO will disable flux. Note that this is cloned for internal use.
 	 * @param allowRFConversion Whether or not this storage can convert to and from RF
 	 * @param energy The amount of energy within this storage at first.
 	 */
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, FluxBehavior flux, boolean allowRFConversion, double energy) {
-		if (flux == null) flux = FluxBehavior.DISABLED;
-		
+	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion, double energy) {
 		this.capacity = capacity;
 		this.maxReceive = maxReceive;
 		this.maxExtract = maxExtract;
 		this.energy = Math.max(0, Math.min(capacity, energy));
 		this.allowRFConversion = allowRFConversion;
 		this.markDirty = markDirty;
-		this.flux = flux;
 	}
 	
 	/**

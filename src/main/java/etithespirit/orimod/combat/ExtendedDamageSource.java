@@ -12,4 +12,8 @@ public final class ExtendedDamageSource {
 	
 	/** A damage source caused by forces of Decay. */
 	public static final DamageSource DECAY = new DamageSource("decay").bypassArmor();
+	
+	/** A damage source caused by forces of Light. */
+	public static final DamageSource LIGHT = new DamageSource("light").setMagic();
+	
 }

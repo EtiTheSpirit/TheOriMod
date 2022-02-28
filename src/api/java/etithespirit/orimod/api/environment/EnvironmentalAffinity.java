@@ -2,12 +2,13 @@ package etithespirit.orimod.api.environment;
 
 import com.google.common.collect.ImmutableMap;
 import etithespirit.orimod.api.APIProvider;
-import etithespirit.orimod.api.energy.FluxBehavior;
+import etithespirit.orimod.api.util.valuetypes.MutableNumberRange;
 import etithespirit.orimod.api.util.valuetypes.NumberRange;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
+import javax.annotation.Nullable;
 import java.util.Set;
 
 /**
@@ -19,37 +20,45 @@ public abstract class EnvironmentalAffinity {
 	/** The ID of the biome that this affinity object applies to. */
 	public final ResourceLocation biome;
 	
-	/** If the player or server has flux enabled, this is the behavior of this environment on their devices. */
-	public final FluxBehavior flux;
+	/**
+	 * An object describing the efficiency of Light-based devices.
+	 * This should return a value centered around 1 (where 1 means "no change"). It allows randomized interactions.
+	 * This will be null if {@link #efficiencySingular} is in use instead.
+	 */
+	public final @Nullable NumberRange efficiency;
 	
-	/** An object describing the efficiency of Light-based devices. This value is centered around 100% and thus its result should be multiplied directly with the cost of a device. */
-	public final NumberRange efficiency;
-	
-	/** An object describing the efficiency of Light-based devices. This value is centered around 100% and thus its result should be multiplied directly with the cost of a device. */
+	/**
+	 * A double representing the constant efficiency of Light-based devices.
+	 * This can be used if there is no randomization per tick, in order to save computational power when ticking Light tech.
+	 * This will be {@link Double#NaN} if this value is not in use.
+	 */
 	public final double efficiencySingular;
 	
 	/**
 	 * Create a new affinity object for the given biome using the given flux and static efficiency percentage.
 	 * @param biome The biome that this exists for.
-	 * @param flux The flux the environment applies to Light storage devices.
-	 * @param efficiencyPercentage The efficiency boost (or reduction) for all devices as a range of possible values.
+	 * @param efficiencyPercentage The efficiency boost (or reduction) for all devices as a range of possible values. <strong>Note: If this is an immutable number range and it is singular (min == max), then {@link #efficiencySingular} will be set to that value and {@link #efficiency} will be null.</strong>
 	 */
-	public EnvironmentalAffinity(ResourceLocation biome, FluxBehavior flux, NumberRange efficiencyPercentage) {
+	public EnvironmentalAffinity(ResourceLocation biome, NumberRange efficiencyPercentage) {
 		this.biome = biome;
-		this.flux = flux;
-		this.efficiency = efficiencyPercentage;
-		this.efficiencySingular = Double.NaN;
+		if (!(efficiencyPercentage instanceof MutableNumberRange) && efficiencyPercentage.isSingular()) {
+			this.efficiency = null;
+			this.efficiencySingular = efficiencyPercentage.getMin();
+		} else {
+			// Mutable ranges should still do this because they may be edited by the programmer on the fly
+			// (whereas the immutable form cannot be edited, and will always be the same value)
+			this.efficiency = efficiencyPercentage;
+			this.efficiencySingular = Double.NaN;
+		}
 	}
 	
 	/**
 	 * Create a new affinity object for the given biome using the given flux and static efficiency percentage.
 	 * @param biome The biome that this exists for.
-	 * @param flux The flux the environment applies to Light storage devices.
 	 * @param efficiencyPercentage The efficiency boost (or reduction) for all devices as a singular value.
 	 */
-	public EnvironmentalAffinity(ResourceLocation biome, FluxBehavior flux, double efficiencyPercentage) {
+	public EnvironmentalAffinity(ResourceLocation biome, double efficiencyPercentage) {
 		this.biome = biome;
-		this.flux = flux;
 		this.efficiency = null;
 		this.efficiencySingular = efficiencyPercentage;
 	}
@@ -96,7 +105,7 @@ public abstract class EnvironmentalAffinity {
 		} catch (Exception exc) {
 			//LOG.error("An error occurred whilst trying to execute player tick code for biome [{}]: {}", current, exc.getMessage());
 			//throw exc;
-			throw (RuntimeException)new RuntimeException(String.format("An error occurred whilst trying to execute the player tick portion of a Decay/Light Environment Affinity system registered for biome [%s]: %s\n\nThe offending class is located at: %s", current.toString(), exc.getMessage(), latest.getName())).initCause(exc);
+			throw (RuntimeException)new RuntimeException(String.format("An error occurred whilst trying to execute the player tick portion of a Decay/Light Environment Affinity system registered for biome [%s]: %s\nThe offending class is located at: %s", current.toString(), exc.getMessage(), latest.getName())).initCause(exc);
 		}
 	}
 	
@@ -119,7 +128,7 @@ public abstract class EnvironmentalAffinity {
 		} catch (Exception exc) {
 			//LOG.error("An error occurred whilst trying to execute player tick code for biome [{}]: {}", current, exc.getMessage());
 			//throw exc;
-			throw (RuntimeException)new RuntimeException(String.format("An error occurred whilst trying to execute the world tick portion of a Decay/Light Environment Affinity system registered for biome [%s]: %s\n\nThe offending class is located at: %s", current.toString(), exc.getMessage(), latest.getName())).initCause(exc);
+			throw (RuntimeException)new RuntimeException(String.format("An error occurred whilst trying to execute the world tick portion of a Decay/Light Environment Affinity system registered for biome [%s]: %s\nThe offending class is located at: %s", current.toString(), exc.getMessage(), latest.getName())).initCause(exc);
 		}
 	}
 

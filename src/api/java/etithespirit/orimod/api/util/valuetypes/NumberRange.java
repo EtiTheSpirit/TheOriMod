@@ -32,13 +32,13 @@ public class NumberRange {
 		return max;
 	}
 	
-	/** @return Whether or not this has a range of zero. */
+	/** @return Whether or not this has a range of zero, or, min is equal to max. */
 	public boolean isSingular() {
 		return min == max;
 	}
 	
 	/**
-	 * Creates a new range between min and max.
+	 * Creates a new range between min and max, as well as a new randomizer for use in the {@link #random()} method.
 	 * If min is greater than max, an {@link IllegalArgumentException} is thrown.
 	 * @param min The minimum possible value to contain.
 	 * @param max The maximum possible value to contain.
@@ -67,7 +67,7 @@ public class NumberRange {
 	}
 	
 	/**
-	 * Returns the value of this range interpolated to the given percentage.
+	 * Returns the value of this range interpolated to the given percentage. This is unclamped and accepts alpha values outside of the range of 0-1.
 	 * @param alpha The percentage to go from min to max.
 	 * @return A value linearly interpolated from min to max by alpha percent.
 	 */

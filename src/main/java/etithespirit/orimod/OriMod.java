@@ -15,6 +15,8 @@ import etithespirit.orimod.networking.potion.EffectModificationReplication;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.DamageMarshaller;
 import etithespirit.orimod.registry.BlockRegistry;
+import etithespirit.orimod.registry.EntityRegistry;
+import etithespirit.orimod.registry.FluidRegistry;
 import etithespirit.orimod.registry.ItemRegistry;
 import etithespirit.orimod.registry.PotionRegistry;
 import etithespirit.orimod.registry.RenderRegistry;
@@ -26,6 +28,8 @@ import etithespirit.orimod.spirit.SpiritSize;
 import etithespirit.orimod.spirit.SpiritSounds;
 import etithespirit.orimod.spirit.client.SpiritDash;
 import etithespirit.orimod.spirit.client.SpiritJump;
+import net.minecraft.client.renderer.ItemBlockRenderTypes;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
@@ -83,10 +87,12 @@ public final class OriMod {
 		etithespirit.orimod.api.spirit.SpiritAccessor._setMethods(SpiritIdentifier::isSpirit, SpiritIdentifier::setSpiritNetworked);
 		
 		BlockRegistry.registerAll();
+		FluidRegistry.registerAll();
 		ItemRegistry.registerAll();
 		PotionRegistry.registerAll();
 		SoundRegistry.registerAll();
 		TileEntityRegistry.registerAll();
+		EntityRegistry.registerAll();
 		
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onPlayerTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onWorldTickEvent);
@@ -172,6 +178,9 @@ public final class OriMod {
 		ClientRegistry.registerKeyBinding(SpiritJump.CLING_BIND);
 
 		MinecraftForge.EVENT_BUS.addListener(RenderPlayerAsSpirit::whenRenderingPlayer);
+		ItemBlockRenderTypes.setRenderLayer(FluidRegistry.DECAY_FLUID_STATIC.get(), RenderType.translucent());
+		ItemBlockRenderTypes.setRenderLayer(FluidRegistry.DECAY_FLUID_FLOWING.get(), RenderType.translucent());
+		
 	}
 	
 	/**

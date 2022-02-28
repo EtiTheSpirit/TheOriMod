@@ -94,7 +94,7 @@ public final class DecayEffect extends RichEffect {
 		
 		if (amplifier > 4) amplifier = 4;
 		if (amplifier < 0) amplifier = 0;
-		return (int) Mth.lerp(LONGEST_DELAY_TICKS, SHORTEST_DELAY_TICKS, (float)amplifier / Mth.floor(MAX_AMP / 2f));
+		return (int) Mth.lerp((float)amplifier / Mth.floor(MAX_AMP / 2f), LONGEST_DELAY_TICKS, SHORTEST_DELAY_TICKS);
 	}
 	
 	private float getDamageAmount(int amplifier) {
@@ -104,6 +104,6 @@ public final class DecayEffect extends RichEffect {
 		}
 		
 		if (amplifier > MAX_AMP) amplifier = MAX_AMP;
-		return (int)Mth.lerp(MIN_DAMAGE, MAX_DAMAGE, (float)(amplifier-5) / (float)Math.floor(MAX_AMP / 2f));
+		return (int)Mth.lerp((float)(amplifier-5) / (float)Math.floor(MAX_AMP / 2f), MIN_DAMAGE, MAX_DAMAGE);
 	}
 }

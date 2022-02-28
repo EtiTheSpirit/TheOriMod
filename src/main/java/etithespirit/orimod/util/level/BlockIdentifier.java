@@ -1,4 +1,4 @@
-package etithespirit.orimod.util;
+package etithespirit.orimod.util.level;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LeavesBlock;

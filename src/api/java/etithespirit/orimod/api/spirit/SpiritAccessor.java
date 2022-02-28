@@ -65,11 +65,7 @@ public final class SpiritAccessor {
 	@SubscribeEvent
 	public static void onInit(FMLCommonSetupEvent evt) {
 		evt.enqueueWork(() -> {
-			if (locked) {
-				real = true;
-			} else {
-				real = false;
-			}
+			real = locked;
 		});
 	}
 }

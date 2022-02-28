@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.StateHolder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,7 @@ import java.util.Random;
 
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
 import static etithespirit.orimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
+import static etithespirit.orimod.common.block.decay.DecayCommon.DECAY_REPLACEMENT_TARGETS;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 
 /**
@@ -44,13 +46,13 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 		super(spreads ? properties.randomTicks() : properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).setValue(EDGE_DETECTION_RARITY, 1)); // Set this to 1 so that it's a half chance.
 		if (spreads) {
-			List<BlockState> thisBlockReplacements = new ArrayList<>();
+			List<StateHolder<?, ?>> thisBlockReplacements = new ArrayList<>();
 			registerReplacements(thisBlockReplacements);
 			if (thisBlockReplacements.size() == 0) {
 				OriMod.LOG.warn("New Decay block had SPREADS=TRUE but did not register any blocks to spread to! Offender: " + this.getClass().getName());
 			} else {
-				for (BlockState repl : thisBlockReplacements) {
-					BLOCK_REPLACEMENT_TARGETS.put(repl, this.defaultBlockState().setValue(AXIS, repl.getValue(AXIS)));
+				for (StateHolder<?, ?> repl : thisBlockReplacements) {
+					DECAY_REPLACEMENT_TARGETS.put(repl, this.defaultBlockState().setValue(AXIS, repl.getValue(AXIS)));
 				}
 				properties.randomTicks();
 			}

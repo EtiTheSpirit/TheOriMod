@@ -2,22 +2,27 @@ package etithespirit.orimod.common.block.decay;
 
 
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
+import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.potion.DecayEffect;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
 import etithespirit.orimod.registry.PotionRegistry;
+import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.util.EffectConstructors;
 import etithespirit.orimod.util.extension.MobEffectDataStorage;
+import etithespirit.orimod.util.level.StateHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.item.alchemy.Potion;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.StateHolder;
+import net.minecraft.world.level.material.FluidState;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
@@ -25,7 +30,7 @@ import java.util.List;
 import java.util.Random;
 
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
-import static etithespirit.orimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
+import static etithespirit.orimod.common.block.decay.DecayCommon.DECAY_REPLACEMENT_TARGETS;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_TEST_MINIMUM_CHANCE;
 import static etithespirit.orimod.common.block.decay.DecayCommon.MAX_DIAGONAL_TESTS;
@@ -47,43 +52,65 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * @param blocksToReplaceWithSelf This is a list storing all block states that can be replaced by this Decay block.
 	 * @param from All states of this block will be registered as replacable by this Decay block.
 	 */
-	static void registerAllStatesForBlock(List<BlockState> blocksToReplaceWithSelf, Block from) {
-		StateDefinition<Block, BlockState> container = from.getStateDefinition();
-		blocksToReplaceWithSelf.addAll(container.getPossibleStates());
+	static void registerAllStatesFor(List<StateHolder<?, ?>> blocksToReplaceWithSelf, Block from) {
+		blocksToReplaceWithSelf.addAll(from.getStateDefinition().getPossibleStates());
 	}
 	
 	/**
-	 * When Decay blocks are registered, they define which block states they replace, and what state to replace those with.<br>
-	 * This method can be used to look up what a block's replacement is, e.g. pass in {@code Blocks.STONE.getDefaultState()} to receive the Decay-equivalent of stone.<br>
-	 * Returns null if there is no substitute.
+	 * When Decay blocks are registered, they define which block states or fluid states they replace, and what state to replace those with.<br/>
+	 * This method can be used to look up what a block's block replacement is, e.g. pass in {@code Blocks.STONE.getDefaultState()} to receive the Decay-equivalent of stone.<br/>
+	 * Returns null if there is no substitute.<br/>
+	 * <br/>
+	 * This is a per-instance sensitive variant of the function and should always be called if an instance of the spreading Decay block is available.
 	 * @param existingBlock The block that will be replaced.
 	 * @return The replacement blockstate, or null if there is no replacement.
 	 */
-	default @Nullable
-	BlockState getDecayReplacementFor(BlockState existingBlock) {
-		if (BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock)) return BLOCK_REPLACEMENT_TARGETS.get(existingBlock);
+	default @Nullable StateHolder<?, ?> getDecayReplacementFor(StateHolder<?, ?> existingBlock) {
+		return getDefaultDecayReplacementFor(existingBlock);
+	}
+	
+	/**
+	 * When Decay blocks are registered, they define which block or fluid states they replace, and what state to replace those with.<br/>
+	 * This method can be used to look up what a block's replacement is, e.g. pass in {@code Blocks.STONE.getDefaultState()} to receive the Decay-equivalent of stone.<br/>
+	 * Returns null if there is no substitute.<br/>
+	 * <br/>
+	 * This should only be called if there is no spreading Decay block to call the {@link #getDecayReplacementFor(StateHolder)} method on, as this does not
+	 * respect per-block custom behavior.
+	 * @param existingBlock The block that will be replaced.
+	 * @return The replacement blockstate, or null if there is no replacement.
+	 */
+	static @Nullable StateHolder<?, ?> getDefaultDecayReplacementFor(StateHolder<?, ?> existingBlock) {
+		if (DECAY_REPLACEMENT_TARGETS.containsKey(existingBlock)) return DECAY_REPLACEMENT_TARGETS.get(existingBlock);
+		if (existingBlock instanceof FluidState fluid) {
+			for (StateHolder<?, ?> key : DECAY_REPLACEMENT_TARGETS.keySet()) {
+				if (key instanceof FluidState keyFluid) {
+					if (keyFluid.is(fluid.getType())) return DECAY_REPLACEMENT_TARGETS.get(key);
+				}
+			}
+		}
 		return null;
 	}
 	
 	/**
-	 * Returns whether or not a replacement for the given BlockState exists.
+	 * Returns whether or not a replacement for the given state exists. This works for block and fluid states.
 	 * @param worldIn The {@link Level} that this block exists in.
 	 * @param at The location of this block in the world.
 	 * @param existingBlock The block that may be replaced.
 	 * @return Whether or not this block actually has a replacement.
 	 */
-	default boolean hasDecayReplacementFor(Level worldIn, BlockPos at, BlockState existingBlock) {
-		return BLOCK_REPLACEMENT_TARGETS.containsKey(existingBlock);
+	default boolean hasDecayReplacementFor(Level worldIn, BlockPos at, StateHolder<?, ?> existingBlock) {
+		return this.getDecayReplacementFor(existingBlock) != null;
 	}
 	
 	/**
-	 * Returns whether or not this decay block needs to spread because one or more of its adjacent blocks is not a decay block.
+	 * Returns whether or not this decay block needs to spread because one or more of its adjacent blocks is not a decay block. This works for blocks and fluids.
 	 * @param decayBlock The block that should be checked for spreadability.
 	 * @return Whether or not this block should spread.
 	 */
-	default boolean needsToSpread(BlockState decayBlock) {
+	default boolean needsToSpread(StateHolder<?, ?> decayBlock) {
 		return !decayBlock.getValue(ALL_ADJACENT_ARE_DECAY);
 	}
+	
 	
 	/**
 	 * Checks if this tick operation should be changed into an edge check.
@@ -101,9 +128,11 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	/**
 	 * Provides a means of altering the given state. The input state is the state of this block when it replaces a non-decay block.
 	 * @param originalState The default state of this decay block
+	 * @param world The world that the state is being placed into.
+	 * @param replacingBlockAt THe location of the block that is being replaced in the world.
 	 * @return The state of the decay block when replacing a given block.
 	 */
-	default BlockState mutateReplacementState(BlockState originalState) {
+	default StateHolder<?, ?> mutateReplacementState(StateHolder<?, ?> originalState, Level world, BlockPos replacingBlockAt) {
 		return originalState;
 	}
 	
@@ -118,8 +147,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		boolean[] result = new boolean[6];
 		for (int idx = 0; idx < ADJACENTS_IN_ORDER.length; idx++) {
 			BlockPos newPos = pos.offset(ADJACENTS_IN_ORDER[idx]);
-			BlockState neighbor = world.getBlockState(newPos);
-			result[idx] = !hasDecayReplacementFor(world, newPos, neighbor); // It is considered occupied if there is no replacement for it.
+			result[idx] = !hasDecayReplacementFor(world, newPos, StateHelper.getFluidOrBlock(world, newPos)); // It is considered occupied if there is no replacement for it.
 		}
 		return result;
 	}
@@ -159,8 +187,7 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		for (int idx = 0; idx < MAX_DIAGONAL_TESTS; idx++) {
 			int rngIdx = rng.nextInt(DIAGONALS_IN_ORDER.length);
 			BlockPos newPos = originalPos.offset(DIAGONALS_IN_ORDER[rngIdx]);
-			BlockState neighbor = world.getBlockState(newPos);
-			if (hasDecayReplacementFor(world, newPos, neighbor)) {
+			if (hasDecayReplacementFor(world, newPos, StateHelper.getFluidOrBlock(world, newPos))) {
 				return newPos;
 			}
 		}
@@ -197,18 +224,18 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * @param pos The location at which this block exists.
 	 * @param random The pseudorandomizer of this world.
 	 */
-	default void doAdjacentSpread(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+	default void doAdjacentSpread(StateHolder<?, ?> state, ServerLevel worldIn, BlockPos pos, Random random) {
 		BlockPos randomUnoccupied = randomUnoccupiedDirection(worldIn, pos, random);
 		if (randomUnoccupied != null) {
-			BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(randomUnoccupied));
+			StateHolder<?, ?> replacement = this.getDecayReplacementFor(StateHelper.getFluidOrBlock(worldIn, randomUnoccupied));
 			if (replacement != null) {
-				worldIn.setBlockAndUpdate(randomUnoccupied, mutateReplacementState(replacement));
+				StateHelper.setBlockAndUpdateIn(worldIn, randomUnoccupied, mutateReplacementState(replacement, worldIn, randomUnoccupied));
 			} else {
 				throw new IllegalStateException("An unoccupied space was present with no replacement! This should NEVER happen! Did you accidentally explicitly allow a type of block in randomUnoccupiedDirection?");
 			}
 		} else {
 			// No unoccupied blocks!
-			worldIn.setBlockAndUpdate(pos, state.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.TRUE).setValue(EDGE_DETECTION_RARITY, 0));
+			StateHelper.setBlockAndUpdateIn(worldIn, pos, StateHelper.setManyValues(state, ALL_ADJACENT_ARE_DECAY, true, EDGE_DETECTION_RARITY, 0));
 			// Also reset edge detection rarity to promote more.
 		}
 	}
@@ -221,16 +248,16 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * @param pos The location at which this block exists.
 	 * @param random The pseudorandomizer of this world.
 	 */
-	default void doDiagonalSpread(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+	default void doDiagonalSpread(StateHolder<?, ?> state, ServerLevel worldIn, BlockPos pos, Random random) {
 		BlockPos randomUnoccupied = randomUnoccupiedDiagonal(worldIn, pos, random);
 		if (randomUnoccupied != null) {
 			// Could find one. Replace and increase the chance.
-			BlockState replacement = getDecayReplacementFor(worldIn.getBlockState(randomUnoccupied));
+			StateHolder<?, ?> replacement = this.getDecayReplacementFor(StateHelper.getFluidOrBlock(worldIn, randomUnoccupied));
 			if (replacement != null) {
-				worldIn.setBlockAndUpdate(randomUnoccupied, mutateReplacementState(replacement));
+				StateHelper.setBlockAndUpdateIn(worldIn, randomUnoccupied, mutateReplacementState(replacement, worldIn, randomUnoccupied));
 				int currentRarity = state.getValue(EDGE_DETECTION_RARITY);
 				if (currentRarity > 0) {
-					worldIn.setBlockAndUpdate(pos, state.setValue(EDGE_DETECTION_RARITY, currentRarity - 1));
+					StateHelper.setBlockAndUpdateIn(worldIn, pos, StateHelper.setManyValues(state, EDGE_DETECTION_RARITY, currentRarity - 1));
 				}
 				return;
 			}
@@ -238,15 +265,15 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		// Couldn't find one. Reduce the chance.
 		int currentRarity = state.getValue(EDGE_DETECTION_RARITY);
 		if (currentRarity < EDGE_TEST_MINIMUM_CHANCE) {
-			worldIn.setBlockAndUpdate(pos, state.setValue(EDGE_DETECTION_RARITY, currentRarity + 1));
+			StateHelper.setBlockAndUpdateIn(worldIn, pos, StateHelper.setManyValues(state, EDGE_DETECTION_RARITY, currentRarity + 1));
 		}
 	}
 	
 	/**
-	 * Register all of the blocks that this decay block will replace with itself once those blocks are infected.
+	 * Register all of the blocks or fluids that this decay block will replace with itself once those blocks are infected.
 	 * @param blocksToReplaceWithSelf A list of every block that is replaced by this upon infection.
 	 */
-	void registerReplacements(List<BlockState> blocksToReplaceWithSelf);
+	void registerReplacements(List<StateHolder<?, ?>> blocksToReplaceWithSelf);
 	
 	/**
 	 * The default logic for when a neighbor of this decay block is changed.
@@ -260,8 +287,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 */
 	@SuppressWarnings("unused")
 	default void defaultNeighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockState fromState, BlockPos fromPos, boolean isMoving) {
-		BlockState replacement = getDecayReplacementFor(fromState);
-		if (!(blockIn instanceof IDecayBlock) && replacement != null && !(replacement.getBlock() instanceof DecaySurfaceMyceliumBlock)) {
+		StateHolder<?, ?> replacement = getDefaultDecayReplacementFor(fromState);
+		if (!(blockIn instanceof IDecayBlock) && replacement instanceof BlockState blockReplacement && !(blockReplacement.getBlock() instanceof DecaySurfaceMyceliumBlock)) {
 			worldIn.setBlockAndUpdate(pos, state.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE));
 		}
 	}
@@ -274,9 +301,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 */
 	@SuppressWarnings("unused")
 	default void defaultOnEntityWalked(Level worldIn, BlockPos pos, Entity entityIn) {
-		if (!(entityIn instanceof LivingEntity)) return;
+		if (!(entityIn instanceof LivingEntity entity)) return;
 		if (worldIn.isClientSide) return;
-		LivingEntity entity = (LivingEntity)entityIn;
 		if (worldIn.getRandom().nextDouble() > 0.95) {
 			DecayEffect decay = (DecayEffect) PotionRegistry.get(DecayEffect.class);
 			MobEffectInstance existing = entity.getEffect(decay);
@@ -294,6 +320,4 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 			}
 		}
 	}
-	
-	
 }

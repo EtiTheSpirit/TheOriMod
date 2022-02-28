@@ -1,6 +1,5 @@
 package etithespirit.orimod.apiimpl.debug;
 
-import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.api.environment.EnvironmentalAffinity;
 import etithespirit.orimod.api.util.valuetypes.NumberRange;
 import net.minecraft.resources.ResourceLocation;
@@ -12,11 +11,10 @@ public class PurposelyBrokenEnv extends EnvironmentalAffinity {
 	 * Create a new affinity object for the given biome using the given flux and static efficiency percentage.
 	 *
 	 * @param biome                The biome that this exists for.
-	 * @param flux                 The flux the environment applies to Light storage devices.
 	 * @param efficiencyPercentage The efficiency boost (or reduction) for all devices as a range of possible values.
 	 */
-	public PurposelyBrokenEnv(ResourceLocation biome, FluxBehavior flux, NumberRange efficiencyPercentage) {
-		super(biome, flux, efficiencyPercentage);
+	public PurposelyBrokenEnv(ResourceLocation biome, NumberRange efficiencyPercentage) {
+		super(biome, efficiencyPercentage);
 	}
 	
 	/**

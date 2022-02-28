@@ -1,6 +1,8 @@
 package etithespirit.exception;
 
 
+import java.io.Serial;
+
 /**
  * The exception that is thrown when a null reference is passed to a method that does not accept it as a valid argument. It is a more precise alternative to {@link IllegalArgumentException}<br/>
  * <br/>
@@ -10,6 +12,8 @@ package etithespirit.exception;
  *
  */
 public class ArgumentNullException extends NullPointerException {
+	
+	@Serial
 	private static final long serialVersionUID = 148904892384923213L;
 	
 	private final String detailMessage;

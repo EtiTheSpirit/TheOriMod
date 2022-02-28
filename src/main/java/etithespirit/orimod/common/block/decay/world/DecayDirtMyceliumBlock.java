@@ -5,6 +5,7 @@ import etithespirit.orimod.common.block.decay.IDecayBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraft.world.level.material.Material;
 
 import java.util.List;
@@ -14,17 +15,17 @@ import java.util.List;
  * @author Eti
  *
  */
-public class DecayMyceliumBlock extends DecayBlockBase {
+public class DecayDirtMyceliumBlock extends DecayBlockBase {
 	
 	private static final Properties DEFAULT_PROPERTIES = Properties.of(Material.GRASS).sound(SoundType.SLIME_BLOCK).strength(1.2f).friction(0.9995f);
 	/** */
-	public DecayMyceliumBlock() {
+	public DecayDirtMyceliumBlock() {
 		super(DEFAULT_PROPERTIES, true);
 	}
 	
 	@Override
-	public void registerReplacements(List<BlockState> blocksToReplaceWithSelf) {
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.GRASS_BLOCK);
+	public void registerReplacements(List<StateHolder<?, ?>> blocksToReplaceWithSelf) {
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.GRASS_BLOCK);
 		blocksToReplaceWithSelf.add(Blocks.DIRT.defaultBlockState());
 		blocksToReplaceWithSelf.add(Blocks.COARSE_DIRT.defaultBlockState());
 		blocksToReplaceWithSelf.add(Blocks.PODZOL.defaultBlockState());

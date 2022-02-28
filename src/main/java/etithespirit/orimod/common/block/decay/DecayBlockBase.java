@@ -10,13 +10,14 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.block.state.StateHolder;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
-import static etithespirit.orimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
+import static etithespirit.orimod.common.block.decay.DecayCommon.DECAY_REPLACEMENT_TARGETS;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.orimod.info.coordinate.Cardinals.ADJACENTS_IN_ORDER;
 
@@ -46,13 +47,13 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 		super(spreads ? properties.randomTicks() : properties);
 		this.registerDefaultState(this.stateDefinition.any().setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).setValue(EDGE_DETECTION_RARITY, 1)); // Set this to 1 so that it's a half chance.
 		if (spreads) {
-			List<BlockState> thisBlockReplacements = new ArrayList<>();
+			List<StateHolder<?, ?>> thisBlockReplacements = new ArrayList<>();
 			registerReplacements(thisBlockReplacements);
 			if (thisBlockReplacements.size() == 0) {
 				throw new IllegalStateException("New Decay block had SPREADS=TRUE but did not register any blocks to spread to! Offender: " + this.getClass().getName());
 			} else {
-				for (BlockState repl : thisBlockReplacements) {
-					BLOCK_REPLACEMENT_TARGETS.put(repl, this.defaultBlockState());
+				for (StateHolder<?, ?> repl : thisBlockReplacements) {
+					DECAY_REPLACEMENT_TARGETS.put(repl, this.defaultBlockState());
 				}
 				properties.randomTicks();
 			}
@@ -85,7 +86,7 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 		for (int i = 0; i < 6; i++) {
 			Vec3i adj = ADJACENTS_IN_ORDER[i];
 			BlockPos myceliumSpreadPos = pos.offset(adj);
-			if (DecaySurfaceMyceliumBlock.canSpreadTo(worldIn, myceliumSpreadPos, worldIn.getBlockState(myceliumSpreadPos))) {
+			if (DecaySurfaceMyceliumBlock.canSpreadSurfaceMyceliumTo(worldIn, myceliumSpreadPos, worldIn.getBlockState(myceliumSpreadPos))) {
 				worldIn.setBlockAndUpdate(myceliumSpreadPos, BlockRegistry.DECAY_SURFACE_MYCELIUM.get().defaultBlockState()); // It'll update its own state.
 			}
 		}

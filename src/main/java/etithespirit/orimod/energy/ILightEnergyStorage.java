@@ -1,6 +1,5 @@
 package etithespirit.orimod.energy;
 
-import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.util.valuetypes.LightEnergyAdapter;
 
 import javax.annotation.Nonnull;
@@ -73,30 +72,4 @@ public interface ILightEnergyStorage {
 	 * @return whether or not this can interact with RF (as opposed to Light), which determines its usability in {@link LightEnergyAdapter LightEnergyAdapter}.
 	 */
 	boolean acceptsConversion();
-	
-	/**
-	 * Stores or takes an arbitrary amount of energy from no particular source or sink.
-	 * Intended to represent gains or losses from environmental noise.<br/><br/>
-	 *
-	 * Implementors should make use of {@link #getFluxBehavior()} to determine the returned value.
-	 *
-	 * @param simulate
-	 *            If TRUE, the fluctuations in power will only be simulated.
-	 *
-	 * @return Amount of energy that was (or would have been, if simulated) generated (or sapped) from this device and placed into (or taken from) its own storage.
-	 * @deprecated Flux Behavior is being removed in favor of environmental efficiency.
-	 */
-	@Deprecated(forRemoval = true)
-	default double applyEnvFlux(boolean simulate) { return 0; }
-	
-	/**
-	 * The FluxBehavior responsible for returning unfiltered environmental flux values.<br/>
-	 * <strong>NULL IS NOT ACCEPTABLE.</strong> This should always return {@link FluxBehavior#DISABLED FluxBehavior.DISABLED} if there is no flux.
-	 * @return A FluxBehavior instance describing how flux is applied.
-	 * @deprecated Flux Behavior is being removed in favor of environmental efficiency.
-	 */
-	@Deprecated(forRemoval = true)
-	default @Nonnull FluxBehavior getFluxBehavior() {
-		return FluxBehavior.DISABLED;
-	}
 }

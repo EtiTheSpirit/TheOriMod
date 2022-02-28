@@ -4,6 +4,7 @@ import etithespirit.orimod.common.block.decay.IDecayBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateHolder;
 
 import java.util.List;
 
@@ -19,12 +20,12 @@ public class DecayStrippedLogBlock extends DecayLogBase {
 	}
 	
 	@Override
-	public void registerReplacements(List<BlockState> blocksToReplaceWithSelf) {
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.STRIPPED_OAK_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.STRIPPED_BIRCH_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.STRIPPED_SPRUCE_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.STRIPPED_JUNGLE_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.STRIPPED_DARK_OAK_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.STRIPPED_ACACIA_LOG);
+	public void registerReplacements(List<StateHolder<?, ?>> blocksToReplaceWithSelf) {
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.STRIPPED_OAK_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.STRIPPED_BIRCH_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.STRIPPED_SPRUCE_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.STRIPPED_JUNGLE_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.STRIPPED_DARK_OAK_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.STRIPPED_ACACIA_LOG);
 	}
 }

@@ -25,13 +25,16 @@
 	"entity.orimod.spirit.name" : "Spirit",
 	
 	"block.orimod.decay_log" : "§5Petrified Log",
-	"block.orimod.decay_mycelium" : "§5Decay Mycelium",
+	"block.orimod.decay_dirt_mycelium" : "§5Earthy Decay Mycelium",
+	"block.orimod.decay_plantmatter_mycelium" : "§5Planty Decay Mycelium",
 	"block.orimod.stripped_decay_log" : "§5Stripped Petrified Log",
 	"block.orimod.decay_surface_mycelium" : "§5Decay Mycelium Coating",
+	"block.orimod.decay_poison" : "§5Decay Poison",
 	"block.orimod.light_capacitor" : "Light Capacitor",
 	"block.orimod.light_conduit" : "Light Conduit",
 	
-	"item.orimod.lumo_wand" : "Lumo Wand",
+	"item.orimod.lumo_wand" : "§bLumo Wand",
+	"item.orimod.decay_poison_bucket" : "§5Decay Poison Bucket",
 
 	"effect.orimod.decay" : "Decay",
 	"effect.orimod.radiant" : "Radiant",
@@ -39,7 +42,9 @@
 	"death.attack.decay" : "%1$s was lost to The Decay.",
 	"death.attack.decay.player" : "%1$s was lost to The Decay.",
 
-
+	"death.attack.light" : "%1$s was incinerated by Light energy.",
+	"death.attack.light.player" : "%1$s was incinerated by Light energy.",
+	
 	"orimod.spirit_restrictions.no_meat" : "You know you can't eat this. You're a herbivore!",
 
 	"config.orimod.general" : "General Configuration",
@@ -77,8 +82,6 @@
 
 	"config.orimod.spirit_management.only_eat_plants" : "Allow Eating Only Plants",
 	"config.orimod.spirit_management.only_eat_plants.description" : "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
-
-
 
 	"config.orimod.light_energy" : "Luxen Configuration (Light Technology)",
 

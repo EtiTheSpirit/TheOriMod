@@ -3,8 +3,10 @@ package etithespirit.orimod.common.block.decay;
 
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateHolder;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 import etithespirit.orimod.info.coordinate.Cardinals;
@@ -65,7 +67,20 @@ public final class DecayCommon {
 	/**
 	 * A mapping where keys are vanilla BlockStates and values are Decay equivalents.
 	 */
+	@Deprecated(forRemoval = true)
 	public static final Map<BlockState, BlockState> BLOCK_REPLACEMENT_TARGETS = new HashMap<>();
+	
+	
+	/**
+	 * A mapping where keys are origin states and values are Decay equivalents.
+	 */
+	public static final Map<StateHolder<?, ?>, StateHolder<?, ?>> DECAY_REPLACEMENT_TARGETS = new HashMap<>();
+	
+	/**
+	 * A mapping where keys are vanilla FluidStates and values are Decay equivalents.
+	 */
+	@Deprecated(forRemoval = true)
+	public static final Map<FluidState, FluidState> FLUID_REPLACEMENT_TARGETS = new HashMap<>();
 	
 	/**
 	 * Returns true if the block classifies as a decay block.

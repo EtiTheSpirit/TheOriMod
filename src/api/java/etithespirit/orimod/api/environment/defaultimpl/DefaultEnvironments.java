@@ -1,14 +1,12 @@
 package etithespirit.orimod.api.environment.defaultimpl;
 
-import etithespirit.orimod.api.energy.FluxBehavior;
-import etithespirit.orimod.api.util.valuetypes.NumberRange;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffect;
 
 import java.util.function.Function;
 
 /**
- * All default biome types.
+ * All default biome types. This provides a general purpose value that mods can leverage for their biomes if no particularly unique behavior is required.
  */
 public final class DefaultEnvironments {
 	
@@ -53,7 +51,6 @@ public final class DefaultEnvironments {
 	static {
 		VERY_STRONG_DECAY = (biome) -> new AffinityWithFX(
 			biome,
-			new FluxBehavior(new NumberRange(-1, 0.05)),
 			0.25,
 			0.6,
 			0.5,
@@ -63,7 +60,6 @@ public final class DefaultEnvironments {
 		);
 		STRONG_DECAY = (biome) -> new AffinityWithFX(
 			biome,
-			new FluxBehavior(new NumberRange(-0.5, 0.1)),
 			0.5,
 			0.35,
 			0.2,
@@ -73,7 +69,6 @@ public final class DefaultEnvironments {
 		);
 		DECAY = (biome) -> new AffinityWithFX(
 			biome,
-			new FluxBehavior(new NumberRange(-0.25, 0.15)),
 			0.75,
 			0.6,
 			0.5,
@@ -84,7 +79,6 @@ public final class DefaultEnvironments {
 		
 		VERY_STRONG_LIGHT = (biome) -> new AffinityWithFX(
 			biome,
-			new FluxBehavior(new NumberRange(-0.05, 1)),
 			1.25,
 			-0.2,
 			-0.45,
@@ -94,7 +88,6 @@ public final class DefaultEnvironments {
 		);
 		STRONG_LIGHT = (biome) -> new AffinityWithFX(
 			biome,
-			new FluxBehavior(new NumberRange(-0.025, 0.5)),
 			1.50,
 			-0.5,
 			-0.8,
@@ -104,7 +97,6 @@ public final class DefaultEnvironments {
 		);
 		LIGHT = (biome) -> new AffinityWithFX(
 			biome,
-			new FluxBehavior(new NumberRange(-0.00125, 0.25)),
 			2,
 			-0.8,
 			-1,

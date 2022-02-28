@@ -4,6 +4,7 @@ import etithespirit.orimod.common.block.decay.IDecayBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateHolder;
 
 import java.util.List;
 
@@ -17,12 +18,12 @@ public class DecayLogBlock extends DecayLogBase {
 	}
 	
 	@Override
-	public void registerReplacements(List<BlockState> blocksToReplaceWithSelf) {
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.OAK_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.BIRCH_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.SPRUCE_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.JUNGLE_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.DARK_OAK_LOG);
-		IDecayBlock.registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.ACACIA_LOG);
+	public void registerReplacements(List<StateHolder<?, ?>> blocksToReplaceWithSelf) {
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.OAK_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.BIRCH_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.SPRUCE_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.JUNGLE_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.DARK_OAK_LOG);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.ACACIA_LOG);
 	}
 }

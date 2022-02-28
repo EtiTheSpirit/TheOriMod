@@ -4,6 +4,7 @@ import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.client.render.debug.LightHubDebugRenderer;
 import etithespirit.orimod.client.render.debug.RenderUtil;
+import etithespirit.orimod.client.render.entity.SpiritArrowRenderer;
 import etithespirit.orimod.common.tile.light.TileEntityLightCapacitor;
 import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderer;
@@ -22,6 +23,7 @@ public final class RenderRegistry {
 	
 	public static void registerBERenderers(EntityRenderersEvent.RegisterRenderers registerEvt) {
 		registerEvt.registerBlockEntityRenderer(TileEntityRegistry.LIGHT_CAPACITOR.get(), LightHubDebugRenderer::new);
+		registerEvt.registerEntityRenderer(EntityRegistry.SPIRIT_ARROW.get(), SpiritArrowRenderer::new);
 	}
 	
 	public static void registerShaders(RegisterShadersEvent evt) {

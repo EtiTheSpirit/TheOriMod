@@ -4,7 +4,6 @@ package etithespirit.orimod.common.tile.light;
 import etithespirit.orimod.client.audio.LoopingLightEnergyBlockSound;
 import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
-import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.registry.TileEntityRegistry;
 import net.minecraft.core.BlockPos;
@@ -23,7 +22,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 	
 	public TileEntityLightCapacitor(BlockPos at, BlockState state) {
 		super(TileEntityRegistry.LIGHT_CAPACITOR.get(), at, state);
-		this.storage = new PersistentLightEnergyStorage(this::setChanged, 100, 50, 50, FluxBehavior.DISABLED, false, 100);
+		this.storage = new PersistentLightEnergyStorage(this::setChanged, 100, 50, 50, false, 100);
 		this.sound = new StartLoopEndBlockSound(
 			SoundRegistry.get("tile.light_tech.generic.activate"),
 			new LoopingLightEnergyBlockSound(this, SoundRegistry.get("tile.light_tech.generic.active_loop")),

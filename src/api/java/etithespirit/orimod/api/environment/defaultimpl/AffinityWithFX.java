@@ -1,6 +1,5 @@
 package etithespirit.orimod.api.environment.defaultimpl;
 
-import etithespirit.orimod.api.energy.FluxBehavior;
 import etithespirit.orimod.api.environment.EnvironmentalAffinity;
 import etithespirit.orimod.api.spirit.SpiritAccessor;
 import net.minecraft.resources.ResourceLocation;
@@ -40,7 +39,6 @@ public class AffinityWithFX extends EnvironmentalAffinity {
 	/**
 	 * Create a new preset affinity with effects and damage.
 	 * @param biome The biome this affects.
-	 * @param flux The flux applied to Light devices in this biome.
 	 * @param efficiencyPercentage The efficiency of light devices in this biome.
 	 * @param chanceOfCausingDecayPlayer The chance of causing Decay on a normal player. A negative value will switch it to mean the chance of <em>curing</em> Decay instead.
 	 * @param chanceOfCausingDecaySpirit The chance of causing Decay on a Spirit. A negative value will switch it to mean the chance of <em>curing</em> Decay instead.
@@ -48,8 +46,8 @@ public class AffinityWithFX extends EnvironmentalAffinity {
 	 * @param decayDieChanceMult The multiplier applied to any Decay block's death chance.
 	 * @param decaySeverity The amplifier of the Decay effect if it is added.
 	 */
-	public AffinityWithFX(ResourceLocation biome, FluxBehavior flux, double efficiencyPercentage, double chanceOfCausingDecayPlayer, double chanceOfCausingDecaySpirit, double decaySpreadChanceMult, double decayDieChanceMult, int decaySeverity) {
-		super(biome, flux, efficiencyPercentage);
+	public AffinityWithFX(ResourceLocation biome, double efficiencyPercentage, double chanceOfCausingDecayPlayer, double chanceOfCausingDecaySpirit, double decaySpreadChanceMult, double decayDieChanceMult, int decaySeverity) {
+		super(biome, efficiencyPercentage);
 		this.chanceOfCausingDecayPlayer = chanceOfCausingDecayPlayer;
 		this.chanceOfCausingDecaySpirit = chanceOfCausingDecaySpirit;
 		this.decaySpreadChanceMultiplier = decaySpreadChanceMult;

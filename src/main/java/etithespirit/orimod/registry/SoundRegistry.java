@@ -115,6 +115,11 @@ public final class SoundRegistry {
 		
 		registerSound("item.lumo_wand.swapconduitauto");
 		
+		registerSound("item.spirit_arc.start");
+		registerSound("item.spirit_arc.charge");
+		registerSound("item.spirit_arc.shot.base");
+		registerSound("item.spirit_arc.shot.charge_overlay");
+		
 		registerSound("nullsound");
 		
 		// Legacy sounds

@@ -4,10 +4,11 @@ package etithespirit.orimod.info.coordinate;
 import com.google.common.collect.ImmutableMap;
 import com.mojang.datafixers.util.Function3;
 import etithespirit.orimod.util.Bit32;
-import etithespirit.orimod.util.BlockIdentifier;
+import etithespirit.orimod.util.level.BlockIdentifier;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.LevelReader;
@@ -18,7 +19,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 import java.util.HashMap;
@@ -362,6 +362,14 @@ public final class SixSidedUtils {
 			state = state.setValue(prop, (value &  flags) == value);
 		}
 		return state;
+	}
+	
+	public static void setAllBlocksForFlags(ServerLevel level, BlockState state, BlockPos origin, int flags) {
+		for (int i = 0; i < 6; i++) {
+			if (Bit32.hasFlag(flags, 1 << i)) {
+				level.setBlockAndUpdate(origin.offset(ADJACENTS_IN_ORDER[i]), state);
+			}
+		}
 	}
 	
 }
