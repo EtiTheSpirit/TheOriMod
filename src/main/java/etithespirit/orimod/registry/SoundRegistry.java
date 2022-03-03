@@ -119,6 +119,11 @@ public final class SoundRegistry {
 		registerSound("item.spirit_arc.charge");
 		registerSound("item.spirit_arc.shot.base");
 		registerSound("item.spirit_arc.shot.charge_overlay");
+		registerSound("item.spirit_arc.impact.normal");
+		registerSound("item.spirit_arc.impact.crit");
+		registerSound("item.spirit_arc.impact.ricochet");
+		
+		registerSound("block.decay_poison.gurgle");
 		
 		registerSound("nullsound");
 		

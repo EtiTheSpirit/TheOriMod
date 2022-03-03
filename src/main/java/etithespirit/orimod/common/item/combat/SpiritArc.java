@@ -1,13 +1,21 @@
 package etithespirit.orimod.common.item.combat;
 
+import etithespirit.orimod.combat.projectile.SpiritArrow;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.item.ISpiritLightItem;
+import etithespirit.orimod.registry.EntityRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
+import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.Level;
+
+import java.util.function.Predicate;
 
 public class SpiritArc extends BowItem implements ISpiritLightItem {
 	
@@ -38,11 +46,23 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 		if (pTimeLeft > READY_TO_FIRE_AFTER_TICKS) {
 			return;
 		}
+		boolean chargedShot = false;
 		pLivingEntity.playSound(SoundRegistry.get("item.spirit_arc.shot.base"), 0.4f, 1f);
 		if (isCharged(pStack)) {
 			pLivingEntity.playSound(SoundRegistry.get("item.spirit_arc.shot.charge_overlay"), 0.3f, 1f);
 			setCharged(pStack, false);
+			chargedShot = true;
 		}
+		
+		if (!pLevel.isClientSide()) {
+			SpiritArrow projectile = new SpiritArrow(EntityRegistry.SPIRIT_ARROW.get(), pLevel);
+			projectile.setBaseDamage(chargedShot ? 5 : 2);
+			projectile.setCritArrow(chargedShot);
+			projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, chargedShot ? 6f : 1.6f, 0.05f);
+			projectile.setPos(pLivingEntity.getX(), pLivingEntity.getEyeY() - 0.1, pLivingEntity.getZ());
+			pLevel.addFreshEntity(projectile);
+		}
+		if (pLivingEntity instanceof Player player) player.awardStat(Stats.ITEM_USED.get(this));
 	}
 	
 	@Override
@@ -74,6 +94,11 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	
 	public int getUseDuration() {
 		return getUseDuration(null);
+	}
+	
+	@Override
+	public int getDefaultProjectileRange() {
+		return 10;
 	}
 	
 	@Override

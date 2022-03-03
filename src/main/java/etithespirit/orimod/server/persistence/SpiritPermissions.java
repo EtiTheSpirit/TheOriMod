@@ -2,6 +2,7 @@ package etithespirit.orimod.server.persistence;
 
 import com.google.gson.JsonObject;
 import com.mojang.authlib.GameProfile;
+import etithespirit.orimod.config.OriModConfigs;
 import net.minecraft.server.players.StoredUserEntry;
 import net.minecraft.server.players.StoredUserList;
 import net.minecraft.world.entity.player.Player;
@@ -14,7 +15,11 @@ import java.util.UUID;
 public final class SpiritPermissions extends StoredUserList<GameProfile, SpiritPermissions.SpiritEntry> {
 	
 	public static final File SPIRIT_CHANGE_PERMISSIONS = new File("spirit_permissions.json");
-	public static final SpiritPermissions INSTANCE = new SpiritPermissions(SPIRIT_CHANGE_PERMISSIONS);
+	private static final SpiritPermissions INSTANCE = new SpiritPermissions(SPIRIT_CHANGE_PERMISSIONS);
+	
+	public static SpiritPermissions getPermissions() {
+		return INSTANCE;
+	}
 	
 	public SpiritPermissions(File file) {
 		super(file);
@@ -129,7 +134,18 @@ public final class SpiritPermissions extends StoredUserList<GameProfile, SpiritP
 		
 		public final int code;
 		public final boolean persistent;
-		public final boolean canChange;
+		private final boolean canChange;
+		
+		/**
+		 * Returns whether or not this permission state allows changing.
+		 * @return True for {@link #CAN_ALWAYS_CHANGE}, false for {@link #CAN_NEVER_CHANGE}, and the value of {@link OriModConfigs#ALLOW_CHANGING_BY_DEFAULT} for {@link #INHERIT_DEFAULT}.
+		 */
+		public boolean canChange() {
+			if (code == -1) {
+				return OriModConfigs.ALLOW_CHANGING_BY_DEFAULT.get();
+			}
+			return canChange;
+		}
 		
 		ChangePermissions(int code) {
 			this.code = code;

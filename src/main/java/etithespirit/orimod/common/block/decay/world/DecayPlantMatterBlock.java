@@ -22,5 +22,12 @@ public class DecayPlantMatterBlock extends DecayBlockBase {
 	@Override
 	public void registerReplacements(List<StateHolder<?, ?>> blocksToReplaceWithSelf) {
 		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.MOSS_BLOCK);
+		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.HAY_BLOCK);
+	}
+	
+	@Override
+	public BlockState healsInto(BlockState thisState) {
+		// TODO: What block here? There is not a solid podzol block, but if there was, I would use that.
+		return Blocks.PODZOL.defaultBlockState();
 	}
 }

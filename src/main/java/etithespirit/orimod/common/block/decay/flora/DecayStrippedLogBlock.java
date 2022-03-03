@@ -4,7 +4,9 @@ import etithespirit.orimod.common.block.decay.IDecayBlock;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.StateHolder;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import java.util.List;
 

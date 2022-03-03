@@ -1,8 +1,10 @@
 package etithespirit.orimod;
 
 
+import com.mojang.brigadier.CommandDispatcher;
 import etithespirit.orimod.apiimpl.EnvironmentalAffinityAPI;
 import etithespirit.orimod.client.render.debug.LightHubDebugRenderer;
+import etithespirit.orimod.command.SetSpiritCommand;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
 import etithespirit.orimod.common.potion.DecayEffect;
 import etithespirit.orimod.config.OriModConfigs;
@@ -11,6 +13,7 @@ import etithespirit.orimod.datagen.GenerateBlockModels;
 import etithespirit.orimod.datagen.GenerateItemModels;
 import etithespirit.orimod.client.render.RenderPlayerAsSpirit;
 import etithespirit.orimod.common.block.UpdateHelper;
+import etithespirit.orimod.datagen.audio.GenerateSoundsJson;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.DamageMarshaller;
@@ -30,6 +33,7 @@ import etithespirit.orimod.spirit.client.SpiritDash;
 import etithespirit.orimod.spirit.client.SpiritJump;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.data.DataGenerator;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
@@ -44,6 +48,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.forge.event.lifecycle.GatherDataEvent;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+
+import java.io.File;
 
 /**
  * The main class for the entire mod.
@@ -197,23 +203,28 @@ public final class OriMod {
 	 * @param event The setup event.
 	 */
 	public void commandInit(final RegisterCommandsEvent event) {
-		//CommandDispatcher<CommandSource> dispatcher = event.getDispatcher();
-		//SetSpiritCommand.registerCommand(dispatcher);
+		CommandDispatcher<CommandSourceStack> dispatcher = event.getDispatcher();
+		SetSpiritCommand.register(dispatcher);
 	}
 	
 	/**
 	 * Occurs on execution of the data generator.
 	 * @param dataEvt The setup event.
 	 */
-	public void onDataGenerated(final GatherDataEvent dataEvt) {
+	public void onDataGenerated(final GatherDataEvent dataEvt) throws RuntimeException {
 		if (dataEvt.includeClient()) {
 			DataGenerator generator = dataEvt.getGenerator();
 			GenerateBlockModels models = new GenerateBlockModels(generator, dataEvt.getExistingFileHelper());
 			GenerateItemModels items = new GenerateItemModels(generator, dataEvt.getExistingFileHelper());
 			BlockToolRelations blockTags = new BlockToolRelations(generator, dataEvt.getExistingFileHelper());
+			GenerateSoundsJson sounds = new GenerateSoundsJson(OriMod.MODID, new File(".").getAbsoluteFile().getParentFile().getParentFile().getAbsolutePath() + "\\src");
+			
 			generator.addProvider(models);
 			generator.addProvider(items);
 			generator.addProvider(blockTags);
+			generator.addProvider(sounds);
+			//File file = new File(".");
+			
 		}
 	}
 	

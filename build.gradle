@@ -184,7 +184,7 @@ dependencies {
     implementation fg.deobf("curse.maven:configured-457570:3640884")
     //implementation fg.deobf("curse.maven:jade-324717:3614181") // api
     implementation fg.deobf("curse.maven:jade-324717:3614180") // full build
-    implementation fg.deobf("curse.maven:catalogue-459701:3559402")
+    //implementation fg.deobf("curse.maven:catalogue-459701:3559402")
 
     /*
     compileOnly = the dependency's sources are available in your dev environment

@@ -61,7 +61,9 @@ public final class SpiritStateReplicationPacket {
 	 * @return A packet that can be sent to the server to change this player's spirit state.
 	 */
 	public static SpiritStateReplicationPacket toChangeModelOf(Player player, boolean beSpirit) {
-		return new SpiritStateReplicationPacket(EventType.TRY_CHANGE_MODEL, Map.of(player.getUUID(), beSpirit));
+		boolean isClient = player.level.isClientSide;
+		EventType evt = isClient ? EventType.TRY_CHANGE_MODEL : EventType.UPDATE_PLAYER_MODELS;
+		return new SpiritStateReplicationPacket(evt, Map.of(player.getUUID(), beSpirit));
 	}
 	
 	/**

@@ -172,6 +172,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 		registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.VINE);
 		registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.CAVE_VINES);
 		registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.MOSS_CARPET);
+		registerAllStatesForBlock(blocksToReplaceWithSelf, Blocks.SNOW);
 		
 	}
 	
@@ -191,6 +192,11 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 			return true;
 		}
 		return false;
+	}
+	
+	@Override
+	public BlockState healsInto(BlockState thisState) {
+		return Blocks.AIR.defaultBlockState();
 	}
 	
 	@Override

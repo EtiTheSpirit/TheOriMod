@@ -1,0 +1,11 @@
+{
+	"category" : "player",
+	"audioNames" : {
+		"entity.spirit.respawn" : [
+			"respawn.ogg"
+		],
+		"entity.spirit.respawn2" : [
+			"respawnalt.ogg"
+		]
+	}
+}

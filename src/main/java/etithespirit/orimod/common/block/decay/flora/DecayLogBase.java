@@ -11,13 +11,13 @@ import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.StateHolder;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
-import static etithespirit.orimod.common.block.decay.DecayCommon.BLOCK_REPLACEMENT_TARGETS;
 import static etithespirit.orimod.common.block.decay.DecayCommon.DECAY_REPLACEMENT_TARGETS;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 
@@ -28,6 +28,10 @@ import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_
  */
 @SuppressWarnings("unused")
 public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayBlock {
+	
+	
+	public static final BooleanProperty IS_SAFE = BooleanProperty.create("is_safe");
+	
 	
 	/**
 	 * Create a new Decay block that doesn't spread.
@@ -44,7 +48,7 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 	 */
 	public DecayLogBase(Properties properties, boolean spreads) {
 		super(spreads ? properties.randomTicks() : properties);
-		this.registerDefaultState(this.stateDefinition.any().setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).setValue(EDGE_DETECTION_RARITY, 1)); // Set this to 1 so that it's a half chance.
+		this.registerDefaultState(this.stateDefinition.any().setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE).setValue(EDGE_DETECTION_RARITY, 1).setValue(IS_SAFE, false)); // Set this to 1 so that it's a half chance.
 		if (spreads) {
 			List<StateHolder<?, ?>> thisBlockReplacements = new ArrayList<>();
 			registerReplacements(thisBlockReplacements);
@@ -65,7 +69,10 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 		builder.add(AXIS);
 		builder.add(ALL_ADJACENT_ARE_DECAY);
 		builder.add(EDGE_DETECTION_RARITY);
+		builder.add(IS_SAFE);
 	}
+	
+	
 	
 	@SuppressWarnings("deprecation")
 	@Override
@@ -77,6 +84,11 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
 		defaultNeighborChanged(state, worldIn, pos, blockIn, worldIn.getBlockState(fromPos), fromPos, isMoving);
+	}
+	
+	@Override
+	public BlockState healsInto(BlockState thisState) {
+		return thisState.setValue(IS_SAFE, true);
 	}
 	
 }

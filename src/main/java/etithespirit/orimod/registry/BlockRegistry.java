@@ -10,6 +10,7 @@ import etithespirit.orimod.common.block.decay.world.DecayPlantMatterBlock;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
 import etithespirit.orimod.common.block.light.LightCapacitorBlock;
 import etithespirit.orimod.common.block.light.LightConduitBlock;
+import etithespirit.orimod.common.block.light.LightDebuggerBlock;
 import etithespirit.orimod.common.material.ExtendedMaterials;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
@@ -36,7 +37,6 @@ public final class BlockRegistry {
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// DEFERRED REGISTERS PROVIDED BY FORGE
 	private static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, OriMod.MODID);
-	private static final DeferredRegister<Fluid> FLUIDS = DeferredRegister.create(ForgeRegistries.FLUIDS, OriMod.MODID);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS
@@ -51,6 +51,7 @@ public final class BlockRegistry {
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// TILE ENTITY BLOCKS
 	/** */ public static final RegistryObject<Block> LIGHT_CAPACITOR = BLOCKS.register("light_capacitor", LightCapacitorBlock::new);
+	/** */ public static final RegistryObject<Block> LIGHT_DEBUGGER = BLOCKS.register("light_debugger", LightDebuggerBlock::new);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS WRAPPING FLUIDS

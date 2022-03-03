@@ -1,6 +1,7 @@
 package etithespirit.orimod.common.block.decay;
 
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
+import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.registry.BlockRegistry;
 import etithespirit.orimod.registry.FluidRegistry;
 import etithespirit.orimod.util.level.StateHelper;
@@ -82,6 +83,11 @@ public class DecayLiquidBlock extends LiquidBlock implements IDecayBlock {
 		builder.add(EDGE_DETECTION_RARITY);
 	}
 	
+	@Override
+	public BlockState healsInto(BlockState thisState) {
+		return Blocks.WATER.defaultBlockState();
+	}
+	
 	/**
 	 * The default routine for spreading to / infecting adjacent blocks.
 	 * @param state The block that is responsible for the spreading.
@@ -91,6 +97,9 @@ public class DecayLiquidBlock extends LiquidBlock implements IDecayBlock {
 	 */
 	@Override
 	public void doAdjacentSpread(StateHolder<?, ?> state, ServerLevel worldIn, BlockPos pos, Random random) {
+		if (!OriModConfigs.getDecaySpreadBehavior(state).canSpread) return;
+		if (!shouldSpreadByRNG(worldIn, pos)) return;
+		
 		BlockPos randomUnoccupied = randomUnoccupiedDirection(worldIn, pos, random);
 		if (randomUnoccupied != null) {
 			StateHolder<?, ?> replacement = this.getDecayReplacementFor(StateHelper.getFluidOrBlock(worldIn, randomUnoccupied));
@@ -158,16 +167,22 @@ public class DecayLiquidBlock extends LiquidBlock implements IDecayBlock {
 	
 	@Override
 	public void randomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
+		super.randomTick(state, worldIn, pos, random);
+		/*
+		n.b. this does not adequately cause spread behaviors, need to do it manually in the fluid too!
+		 */
 		defaultRandomTick(state, worldIn, pos, random);
 	}
 	
 	@Override
 	public void neighborChanged(BlockState state, Level worldIn, BlockPos pos, Block blockIn, BlockPos fromPos, boolean isMoving) {
+		super.neighborChanged(state, worldIn, pos, blockIn, fromPos, isMoving);
 		defaultNeighborChanged(state, worldIn, pos, blockIn, worldIn.getBlockState(fromPos), fromPos, isMoving);
 	}
 	
 	@Override
 	public void stepOn(Level world, BlockPos at, BlockState state, Entity ent) {
+		super.stepOn(world, at, state, ent);
 		if (world.isClientSide) return;
 		IDecayBlock.super.defaultOnEntityWalked(world, at, ent);
 	}

@@ -32,7 +32,7 @@ public final class GeneralUtils {
 	 * A value that can be passed into packed light parameters to indicate full brightness.
 	 * Lightmaps are a UV graph of two short values packed as an int
 	 */
-	public static final int FULL_BRIGHT_LIGHT = 0xF000F0;
+	public static final int FULL_BRIGHT_LIGHT = 0x00F0_00F0;
 	
 	/**
 	 * Given a mod's ID, this will attempt to locate the mod's user-friendly display name through Forge's mod list. Throws an exception if the mod couldn't be found.

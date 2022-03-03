@@ -27,6 +27,9 @@ public final class TileEntityRegistry {
 	public static final RegistryObject<BlockEntityType<TileEntityLightCapacitor>>
 		LIGHT_CAPACITOR = TILE_ENTITIES.register("light_capacitor", getBuilderFor(TileEntityLightCapacitor::new, BlockRegistry.LIGHT_CAPACITOR));
 	
+	public static final RegistryObject<BlockEntityType<TileEntityLightCapacitor>>
+		LIGHT_DEBUGGER = TILE_ENTITIES.register("light_debugger", getBuilderFor(TileEntityLightCapacitor::new, BlockRegistry.LIGHT_DEBUGGER));
+	
 	public static final RegistryObject<BlockEntityType<TileEntityLightEnergyConduit>>
 		LIGHT_CONDUIT = TILE_ENTITIES.register("light_conduit", getBuilderFor(TileEntityLightEnergyConduit::new, BlockRegistry.LIGHT_CONDUIT));
 	
@@ -40,7 +43,7 @@ public final class TileEntityRegistry {
 	 * @return A supplier for a {@link BlockEntityType}
 	 */
 	private static <T extends BlockEntity> Supplier<BlockEntityType<T>> getBuilderFor(Function2<BlockPos, BlockState, T> ctor, RegistryObject<Block> block) {
-		return () -> BlockEntityType.Builder.of((at, state) -> ctor.apply(at, state), block.get()).build(null);
+		return () -> BlockEntityType.Builder.of(ctor::apply, block.get()).build(null);
 	}
 	
 	public static void registerAll() {

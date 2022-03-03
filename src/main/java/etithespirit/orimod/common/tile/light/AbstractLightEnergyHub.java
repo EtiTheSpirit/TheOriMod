@@ -13,6 +13,10 @@ import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.AABB;
+import org.jetbrains.annotations.NotNull;
+
+import javax.annotation.Nonnull;
+import java.util.function.Supplier;
 
 /**
  * A superclass representing all Light-based energy blocks that manage energy in some way, such as adding it, removing it, or both.<br/>
@@ -26,16 +30,17 @@ public abstract class AbstractLightEnergyHub extends BlockEntity implements IWor
 	protected Assembly assembly = null;
 	
 	/** A container used to store energy. */
-	protected PersistentLightEnergyStorage storage;
+	protected final @Nonnull PersistentLightEnergyStorage storage;
 	
 	/**
-	 * Create a new hub using no storage.
+	 * Create a new hub with the given storage.
 	 * @param tileEntityTypeIn The type of BlockEntity to create.
 	 * @param at The location to create it at.
 	 * @param state The BlockState to create it for.
+	 * @param storageProvider A provicder of the storage object to allow referencing some instance data.
 	 */
-	protected AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state) {
-		this(tileEntityTypeIn, at, state, null);
+	protected AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state, Supplier<PersistentLightEnergyStorage> storageProvider) {
+		this(tileEntityTypeIn, at, state, storageProvider.get());
 	}
 	
 	/**
@@ -45,9 +50,11 @@ public abstract class AbstractLightEnergyHub extends BlockEntity implements IWor
 	 * @param state The BlockState to create it for.
 	 * @param storage The energy storage data to use.
 	 */
-	public AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state, PersistentLightEnergyStorage storage) {
+	public AbstractLightEnergyHub(BlockEntityType<?> tileEntityTypeIn, BlockPos at, BlockState state, @NotNull PersistentLightEnergyStorage storage) {
 		super(tileEntityTypeIn, at, state);
 		this.storage = storage;
+		storage.markDirty = this::setChanged;
+		
 	}
 	
 	@Override
@@ -97,6 +104,38 @@ public abstract class AbstractLightEnergyHub extends BlockEntity implements IWor
 		return INFINITE_EXTENT_AABB;
 	}
 	
+	@Override
+	public double receiveLight(double maxReceive, boolean simulate) {
+		return storage.receiveLight(maxReceive, simulate);
+	}
 	
+	@Override
+	public double extractLight(double maxExtract, boolean simulate) {
+		return storage.extractLight(maxExtract, simulate);
+	}
 	
+	@Override
+	public double getLightStored() {
+		return storage.getLightStored();
+	}
+	
+	@Override
+	public double getMaxLightStored() {
+		return storage.getMaxLightStored();
+	}
+	
+	@Override
+	public boolean canReceiveLight() {
+		return storage.canReceiveLight();
+	}
+	
+	@Override
+	public boolean canExtractLight() {
+		return storage.canExtractLight();
+	}
+	
+	@Override
+	public boolean acceptsConversion() {
+		return storage.acceptsConversion();
+	}
 }

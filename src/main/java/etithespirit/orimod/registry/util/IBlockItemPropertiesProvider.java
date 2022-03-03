@@ -9,7 +9,7 @@ public interface IBlockItemPropertiesProvider {
 	
 	/**
 	 * Returns the properties for this ItemBlock for use in forge registries.
-	 * @return
+	 * @return The properties for this ItemBlock.
 	 */
 	Item.Properties getPropertiesOfItem();
 	

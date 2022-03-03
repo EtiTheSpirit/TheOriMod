@@ -1,13 +1,16 @@
 package etithespirit.orimod.common.block.light.connection;
 
 
+import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
 import etithespirit.orimod.common.tile.light.LightEnergyTicker;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
+import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -42,7 +45,7 @@ import java.util.function.Consumer;
  * @author Eti
  */
 @SuppressWarnings("unused")
-public abstract class ConnectableLightTechBlock extends Block implements EntityBlock {
+public abstract class ConnectableLightTechBlock extends Block implements EntityBlock, IBlockItemPropertiesProvider {
 	
 	/** Whether or not this should automatically connect to neighboring instances of {@link ConnectableLightTechBlock} */
 	public static final BooleanProperty AUTO = BooleanProperty.create("autoconnect");
@@ -99,6 +102,26 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 			                   .setValue(AUTO, true)
 			                   .setValue(ENERGIZED, false)
 		);
+	}
+	
+	/**
+	 * Should be called in the block's constructor {@code registerDefaultState(this::registerDefaultState, this.stateDefinition)}. This will automatically populate the default states.
+	 * @param initializer The method that initializes the valid {@link BlockState}s
+	 * @param stateContainer The {@link StateDefinition} that houses the possible {@link BlockState}s.
+	 * @param addAdditionalStates A callback that can be used to add extra states on top of the defaults.
+	 */
+	public static void autoRegisterDefaultState(Consumer<BlockState> initializer, StateDefinition<Block, BlockState> stateContainer, Consumer<BlockState> addAdditionalStates) {
+		BlockState state = stateContainer.any()
+			.setValue(EAST, false)
+			.setValue(WEST, false)
+			.setValue(UP, false)
+			.setValue(DOWN, false)
+			.setValue(NORTH, false)
+			.setValue(SOUTH, false)
+			.setValue(AUTO, true)
+			.setValue(ENERGIZED, false);
+		addAdditionalStates.accept(state);
+		initializer.accept(state);
 	}
 	
 	/**
@@ -317,6 +340,11 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 		} else {
 			return (BlockEntityTicker<T>)LightEnergyTicker.SERVER;
 		}
+	}
+	
+	@Override
+	public Item.Properties getPropertiesOfItem() {
+		return (new Item.Properties()).tab(OriModCreativeModeTabs.SPIRIT_MACHINERY);
 	}
 	
 }

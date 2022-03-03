@@ -52,8 +52,7 @@ public abstract class AbstractLightEnergyLink extends BlockEntity implements IWo
 	/**
 	 * @return The specific line that this {@link AbstractLightEnergyLink} is a part of in its {@link Assembly}. If this has no assembly, this will return null;
 	 */
-	public @Nullable
-	Line getAssemblyLine() {
+	public @Nullable Line getAssemblyLine() {
 		if (assembly == null) return null;
 		return assembly.getLineContaining(this);
 	}
@@ -61,9 +60,8 @@ public abstract class AbstractLightEnergyLink extends BlockEntity implements IWo
 	@Override
 	public void neighborAddedOrRemoved(BlockState state, Level world, BlockPos at, BlockPos changedAt, BlockEntity replacedTile, boolean isMoving) {
 		BlockEntity newTile = world.getBlockEntity(changedAt);
-		if (newTile instanceof AbstractLightEnergyLink) {
+		if (newTile instanceof AbstractLightEnergyLink link) {
 			if (ConnectionHelper.hasMutualConnectionToOther(world, at, changedAt, true)) {
-				AbstractLightEnergyLink link = (AbstractLightEnergyLink) newTile;
 				
 				Line line = link.getAssemblyLine();
 				if (line != null) {
@@ -89,9 +87,8 @@ public abstract class AbstractLightEnergyLink extends BlockEntity implements IWo
 					// line.spliceAndRebranch(this);
 				}
 			}
-		} else if (replacedTile instanceof AbstractLightEnergyLink) {
-			AbstractLightEnergyLink link = (AbstractLightEnergyLink)replacedTile;
-			
+		} else if (replacedTile instanceof AbstractLightEnergyLink link) {
+		
 		}
 		// Don't care about anything else.
 	}

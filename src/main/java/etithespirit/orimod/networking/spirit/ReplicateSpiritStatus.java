@@ -126,9 +126,9 @@ public final class ReplicateSpiritStatus {
 					);
 				}
 				
-				SpiritPermissions.ChangePermissions changePermissions = SpiritPermissions.INSTANCE.get(sender);
+				SpiritPermissions.ChangePermissions changePermissions = SpiritPermissions.getPermissions().get(sender);
 				boolean desiredState;
-				if (changePermissions.canChange) {
+				if (changePermissions.canChange()) {
 					desiredState = msg.wantsToBeSpirit(sender); // Invert the current state on this side and send that to them.
 				} else {
 					// The player cannot change. Reject it, and inform the client of the necessary change back to their previous state.
@@ -160,6 +160,7 @@ public final class ReplicateSpiritStatus {
 					SpiritIdentifier.setSpirit(uuid, isSpirit);
 					Player player = world.getPlayerByUUID(uuid);
 					if (player != null) {
+						player.refreshDimensions();
 						EffectEnforcement.updatePlayerAttrs(player);
 					}
 				});

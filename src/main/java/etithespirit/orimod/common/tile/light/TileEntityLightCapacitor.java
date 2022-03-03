@@ -21,8 +21,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 	private final StartLoopEndBlockSound sound;
 	
 	public TileEntityLightCapacitor(BlockPos at, BlockState state) {
-		super(TileEntityRegistry.LIGHT_CAPACITOR.get(), at, state);
-		this.storage = new PersistentLightEnergyStorage(this::setChanged, 100, 50, 50, false, 100);
+		super(TileEntityRegistry.LIGHT_CAPACITOR.get(), at, state, new PersistentLightEnergyStorage(null, 100, 50, 50, false, 100));
 		this.sound = new StartLoopEndBlockSound(
 			SoundRegistry.get("tile.light_tech.generic.activate"),
 			new LoopingLightEnergyBlockSound(this, SoundRegistry.get("tile.light_tech.generic.active_loop")),
@@ -79,6 +78,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 	
 	@Override
 	public double receiveLight(double maxReceive, boolean simulate) {
+		if (level == null) return 0;
 		double amount = storage.receiveLight(maxReceive, simulate);
 		if (amount != 0) {
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
@@ -88,36 +88,12 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 	
 	@Override
 	public double extractLight(double maxExtract, boolean simulate) {
+		if (level == null) return 0;
 		double amount = storage.extractLight(maxExtract, simulate);
 		if (amount != 0) {
 			level.sendBlockUpdated(worldPosition, getBlockState(), getBlockState(), Block.UPDATE_CLIENTS);
 		}
 		return amount;
-	}
-	
-	@Override
-	public double getLightStored() {
-		return storage.getLightStored();
-	}
-	
-	@Override
-	public double getMaxLightStored() {
-		return storage.getMaxLightStored();
-	}
-	
-	@Override
-	public boolean canExtractLight() {
-		return storage.canExtractLight();
-	}
-	
-	@Override
-	public boolean canReceiveLight() {
-		return storage.canReceiveLight();
-	}
-	
-	@Override
-	public boolean acceptsConversion() {
-		return storage.acceptsConversion();
 	}
 	
 	@Override

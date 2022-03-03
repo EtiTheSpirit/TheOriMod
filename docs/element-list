@@ -18,8 +18,10 @@ etithespirit.orimod.client.render
 etithespirit.orimod.client.render.debug
 etithespirit.orimod.client.render.entity
 etithespirit.orimod.client.render.item
+etithespirit.orimod.client.render.particle
 etithespirit.orimod.combat
 etithespirit.orimod.combat.projectile
+etithespirit.orimod.command
 etithespirit.orimod.common.block
 etithespirit.orimod.common.block.decay
 etithespirit.orimod.common.block.decay.flora
@@ -39,6 +41,7 @@ etithespirit.orimod.common.tile
 etithespirit.orimod.common.tile.light
 etithespirit.orimod.config
 etithespirit.orimod.datagen
+etithespirit.orimod.datagen.audio
 etithespirit.orimod.energy
 etithespirit.orimod.event
 etithespirit.orimod.info.coordinate
@@ -51,6 +54,7 @@ etithespirit.orimod.player
 etithespirit.orimod.registry
 etithespirit.orimod.registry.util
 etithespirit.orimod.server.persistence
+etithespirit.orimod.server.world
 etithespirit.orimod.spirit
 etithespirit.orimod.spirit.client
 etithespirit.orimod.spiritmaterial

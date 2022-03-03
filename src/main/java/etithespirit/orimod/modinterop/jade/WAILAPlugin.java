@@ -14,11 +14,13 @@ public class WAILAPlugin implements IWailaPlugin {
 	
 	private final WAILADisplayLightStorage storage = new WAILADisplayLightStorage();
 	private final WAILADisplayConnectableLightTechBlock conduit = new WAILADisplayConnectableLightTechBlock();
+	private final WAILADisplayCuredDecayObjects decay = new WAILADisplayCuredDecayObjects();
 	
 	@Override
 	public void register(IRegistrar registrar) {
 		storage.initialize(registrar);
 		conduit.initialize(registrar);
+		decay.initialize(registrar);
 	}
 	
 }

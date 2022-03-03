@@ -30,4 +30,9 @@ public class DecayDirtMyceliumBlock extends DecayBlockBase {
 		blocksToReplaceWithSelf.add(Blocks.COARSE_DIRT.defaultBlockState());
 		blocksToReplaceWithSelf.add(Blocks.PODZOL.defaultBlockState());
 	}
+	
+	@Override
+	public BlockState healsInto(BlockState thisState) {
+		return Blocks.DIRT.defaultBlockState();
+	}
 }

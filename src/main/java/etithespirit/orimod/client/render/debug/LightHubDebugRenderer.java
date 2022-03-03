@@ -117,14 +117,14 @@ public class LightHubDebugRenderer implements BlockEntityRenderer<AbstractLightE
 				previous = link;
 			}
 			
-			
-			bufferProvider.getBuffer(RenderType.lines());
-			RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart,fullEnd, 0.2525);
-			RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, solidLines, realColor, 4);
-			
-			bufferProvider.getBuffer(TRANSLUCENT_SOLID);
-			RenderUtil.drawWideCubeSolid(solidFaces, mtx, realColor, 4, fullStart,fullEnd, 0.2525);
-			
+			if (fullStart != null) {
+				bufferProvider.getBuffer(RenderType.lines());
+				RenderUtil.drawWideCubeFrame(solidLines, mtx, realColor, 4, fullStart, fullEnd, 0.2525);
+				RenderUtil.drawCubeFrame(line.getBounds().deflate(0.1), mtx, solidLines, realColor, 4);
+				
+				bufferProvider.getBuffer(TRANSLUCENT_SOLID);
+				RenderUtil.drawWideCubeSolid(solidFaces, mtx, realColor, 4, fullStart, fullEnd, 0.2525);
+			}
 			
 			//RenderUtil.drawCubeFaces(line.getBounds().deflate(0.1), mtx, solidLines, RenderUtil.randomIndexedRGB(idx));
 			idx++;

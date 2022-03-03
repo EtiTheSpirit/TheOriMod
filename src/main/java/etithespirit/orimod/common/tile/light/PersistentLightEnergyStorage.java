@@ -4,6 +4,8 @@ package etithespirit.orimod.common.tile.light;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundTag;
 
+import javax.annotation.Nullable;
+
 /**
  * An extension to Forge's EnergyStorage that binds to a TileEntity and automatically modifies its NBT and marks it as dirty. This variant is specifically
  * designed for ILightEnergyStorage rather than the standard IEnergyStorage
@@ -23,43 +25,43 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	protected double maxReceive;
 	protected double maxExtract;
 	protected boolean allowRFConversion;
-	protected final Runnable markDirty;
+	Runnable markDirty; // For telling attached block entities that they have changed.
 	
 	/**
 	 * If set, this string will be used to save this container's energy to NBT. If left alone, then {@link #ENERGY_KEY} will be used.
 	 */
 	public String energyKeyOverride = ENERGY_KEY;
 	
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity) {
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity) {
 		this(markDirty, capacity, capacity, capacity, false, 0);
 	}
 	
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxTransfer) {
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxTransfer) {
 		this(markDirty, capacity, maxTransfer, maxTransfer, false, 0);
 	}
 	
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxTransfer, boolean allowRFConversion) {
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxTransfer, boolean allowRFConversion) {
 		this(markDirty, capacity, maxTransfer, maxTransfer, allowRFConversion, 0);
 	}
 	
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract) {
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxReceive, double maxExtract) {
 		this(markDirty, capacity, maxReceive, maxExtract, false, 0);
 	}
 	
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion) {
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion) {
 		this(markDirty, capacity, maxReceive, maxExtract, allowRFConversion, 0);
 	}
 	
 	/**
 	 * Construct a new storage with the given TE's markDirty() method, the given maximum capacity, maximum transfer amounts, and starting energy.
-	 * @param markDirty The markDirty method associated with a TileEntity, or null if this is being used outside of the context of a TileEntity.
+	 * @param markDirty The markDirty method associated with a TileEntity. This will be automatically set if needed.
 	 * @param capacity The maximum amount of energy this storage can containe
 	 * @param maxReceive The maximum amount of energy that can be stored in a single action.
 	 * @param maxExtract The maximum amount of energy that can be extracted in a single action.
 	 * @param allowRFConversion Whether or not this storage can convert to and from RF
 	 * @param energy The amount of energy within this storage at first.
 	 */
-	public PersistentLightEnergyStorage(Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion, double energy) {
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion, double energy) {
 		this.capacity = capacity;
 		this.maxReceive = maxReceive;
 		this.maxExtract = maxExtract;

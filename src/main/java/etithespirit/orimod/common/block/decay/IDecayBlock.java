@@ -4,6 +4,7 @@ package etithespirit.orimod.common.block.decay;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.potion.DecayEffect;
+import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
 import etithespirit.orimod.registry.PotionRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
@@ -13,6 +14,7 @@ import etithespirit.orimod.util.level.StateHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.Difficulty;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -111,6 +113,21 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 		return !decayBlock.getValue(ALL_ADJACENT_ARE_DECAY);
 	}
 	
+	/**
+	 * Returns whether or not this should be allowed to spread in general.
+	 * @param worldIn The world to check in.
+	 * @param at The location of this block.
+	 * @return True if this decay block should spread now, false if it should try again on the next random tick.
+	 */
+	default boolean shouldSpreadByRNG(Level worldIn, BlockPos at) {
+		float partialDifficulty = worldIn.getCurrentDifficultyAt(at).getEffectiveDifficulty();
+		// 0 peaceful, 3 hard
+		if (partialDifficulty <= 0) return false;
+		if (partialDifficulty < 2.5) {
+			return worldIn.getRandom().nextFloat(partialDifficulty) > 0.5f;
+		}
+		return true;
+	}
 	
 	/**
 	 * Checks if this tick operation should be changed into an edge check.
@@ -195,6 +212,12 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	}
 	
 	/**
+	 * When this Decay block is cured, this is the {@link BlockState} (of some vanilla or mod block) that it should heal into.
+	 * @return The vanilla or mod block that this decay block turns into once cured.
+	 */
+	BlockState healsInto(BlockState thisState);
+	
+	/**
 	 * The default behavior that should generally occur on a random tick for a decay block.
 	 * @param state The block that is ticking.
 	 * @param worldIn The {@link Level} that this block is ticking in.
@@ -202,18 +225,25 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 * @param random The pseudorandomizer of this world.
 	 */
 	default void defaultRandomTick(BlockState state, ServerLevel worldIn, BlockPos pos, Random random) {
-		boolean doEdgeCheckInstead = needsToDoEdgeCheck(random, state.getValue(EDGE_DETECTION_RARITY), EDGE_TEST_MINIMUM_CHANCE);
-		boolean needsToSpreadToNewBlock = needsToSpread(state);
-		if (!needsToSpreadToNewBlock) {
-			if (doEdgeCheckInstead) {
-				doDiagonalSpread(state, worldIn, pos, random);
-			}
-		} else {
-			if (doEdgeCheckInstead) {
-				doDiagonalSpread(state, worldIn, pos, random);
+		if (OriModConfigs.getDecaySpreadBehavior(state).canSpread) {
+			if (!shouldSpreadByRNG(worldIn, pos)) return;
+			
+			boolean doEdgeCheckInstead = OriModConfigs.DO_DIAGONAL_SPREAD.get() && needsToDoEdgeCheck(random, state.getValue(EDGE_DETECTION_RARITY), EDGE_TEST_MINIMUM_CHANCE);
+			boolean needsToSpreadToAdjacent = needsToSpread(state);
+			if (!needsToSpreadToAdjacent) {
+				if (doEdgeCheckInstead) {
+					doDiagonalSpread(state, worldIn, pos, random);
+				}
 			} else {
-				doAdjacentSpread(state, worldIn, pos, random);
+				if (doEdgeCheckInstead) {
+					doDiagonalSpread(state, worldIn, pos, random);
+				} else {
+					doAdjacentSpread(state, worldIn, pos, random);
+				}
 			}
+		}
+		if (OriModConfigs.getDecaySpreadBehavior(state).selfDestructs) {
+			worldIn.setBlockAndUpdate(pos, healsInto(state));
 		}
 	}
 	
@@ -301,6 +331,8 @@ public interface IDecayBlock extends IDecayBlockIdentifier {
 	 */
 	@SuppressWarnings("unused")
 	default void defaultOnEntityWalked(Level worldIn, BlockPos pos, Entity entityIn) {
+		if (worldIn.getDifficulty() == Difficulty.PEACEFUL) return;
+		
 		if (!(entityIn instanceof LivingEntity entity)) return;
 		if (worldIn.isClientSide) return;
 		if (worldIn.getRandom().nextDouble() > 0.95) {

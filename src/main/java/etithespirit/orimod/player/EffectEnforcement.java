@@ -17,6 +17,8 @@ public final class EffectEnforcement {
 	private static final String SPIRIT_EFFECT_KNOCKBACK_UUID = "3FB8A8D0-3C6A-436A-BFF8-2ADA5887D3BB";
 	private static final String SPIRIT_EFFECT_MAX_HEALTH_UUID = "39BA687E-176C-11EB-ADC1-0242AC120002";
 	
+	// Looking for jump? SpiritJump.java
+	
 	/** This attribute makes Spirits faster. It is equal to Speed II. */
 	public static final AttributeModifier SPEED_MOD = new AttributeModifier(SPIRIT_EFFECT_SPEED_UUID, 0.0425D, AttributeModifier.Operation.ADDITION);
 	
@@ -48,8 +50,11 @@ public final class EffectEnforcement {
 		AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
 		AttributeInstance knockbackResist = player.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
 		AttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
+
+		maxHealth.removeModifier(HEALTH_MOD);
+		knockbackResist.removeModifier(KNOCKBACK_MOD);
+		speed.removeModifier(SPEED_MOD);
 		
-		resetPlayerAttrs(player);
 		if (SpiritIdentifier.isSpirit(player)) {
 			maxHealth.addTransientModifier(HEALTH_MOD);
 			knockbackResist.addTransientModifier(KNOCKBACK_MOD);

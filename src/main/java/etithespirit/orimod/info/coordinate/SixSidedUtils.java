@@ -364,6 +364,13 @@ public final class SixSidedUtils {
 		return state;
 	}
 	
+	/**
+	 * For each flag in {@code flags} that is set, the neighbor to this block will be changed to the given blockstate.
+	 * @param level The world to change.
+	 * @param state The state to place
+	 * @param origin The origin of the placement, which the neighbors are situated around.
+	 * @param flags Surface flags acquired by this class.
+	 */
 	public static void setAllBlocksForFlags(ServerLevel level, BlockState state, BlockPos origin, int flags) {
 		for (int i = 0; i < 6; i++) {
 			if (Bit32.hasFlag(flags, 1 << i)) {

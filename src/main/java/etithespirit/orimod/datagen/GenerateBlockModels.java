@@ -2,6 +2,7 @@ package etithespirit.orimod.datagen;
 
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.block.decay.DecayCommon;
+import etithespirit.orimod.common.block.decay.flora.DecayLogBase;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.registry.BlockRegistry;
 import net.minecraft.core.Direction;
@@ -23,7 +24,7 @@ import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Level;
 /***/
-public class GenerateBlockModels extends BlockStateProvider {
+public final class GenerateBlockModels extends BlockStateProvider {
 	
 	/***
 	 * Create a new instance of the Block Model Generator
@@ -138,9 +139,10 @@ public class GenerateBlockModels extends BlockStateProvider {
 			Direction.Axis axis = fullState.getValue(RotatedPillarBlock.AXIS);
 			boolean allAdjacentDecayed = fullState.getValue(DecayCommon.ALL_ADJACENT_ARE_DECAY);
 			int edgeSpreadRarity = fullState.getValue(DecayCommon.EDGE_DETECTION_RARITY);
+			boolean isSafe = fullState.getValue(DecayLogBase.IS_SAFE);
 			
 			// Populate the required state.
-			VariantBlockStateBuilder.PartialBlockstate basic = getVariantBuilder(block).partialState().with(DecayCommon.ALL_ADJACENT_ARE_DECAY, allAdjacentDecayed).with(DecayCommon.EDGE_DETECTION_RARITY, edgeSpreadRarity).with(RotatedPillarBlock.AXIS, axis);
+			VariantBlockStateBuilder.PartialBlockstate basic = getVariantBuilder(block).partialState().with(DecayCommon.ALL_ADJACENT_ARE_DECAY, allAdjacentDecayed).with(DecayCommon.EDGE_DETECTION_RARITY, edgeSpreadRarity).with(RotatedPillarBlock.AXIS, axis).with(DecayLogBase.IS_SAFE, isSafe);
 			if (axis == Direction.Axis.Y) {
 				basic.modelForState().modelFile(vertical).addModel();
 			} else if (axis == Direction.Axis.Z) {
@@ -149,9 +151,10 @@ public class GenerateBlockModels extends BlockStateProvider {
 				basic.modelForState().modelFile(horizontal).rotationX(90).rotationY(90).addModel();
 			}
 			
-			OriMod.LOG.printf(Level.INFO, "Generating special log block state where %s = %s, %s = %s | axis = %s at %s / %s",
+			OriMod.LOG.printf(Level.INFO, "Generating special log block state where %s = %s, %s = %s, %s = %s | axis = %s at %s / %s",
 			                  DecayCommon.ALL_ADJACENT_ARE_DECAY.getName(), allAdjacentDecayed,
 			                  DecayCommon.EDGE_DETECTION_RARITY.getName(), edgeSpreadRarity,
+			                  DecayLogBase.IS_SAFE.getName(), isSafe,
 			                  axis.getName(),
 			                  vertical.getLocation(), horizontal.getLocation()
 			);

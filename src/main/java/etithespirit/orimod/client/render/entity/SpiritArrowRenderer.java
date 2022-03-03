@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Matrix3f;
 import com.mojang.math.Matrix4f;
 import com.mojang.math.Vector3f;
+import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.combat.projectile.SpiritArrow;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,6 +22,7 @@ public class SpiritArrowRenderer<T extends SpiritArrow> extends ArrowRenderer<T>
 	}
 	
 	public void render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
+		pPackedLight = GeneralUtils.FULL_BRIGHT_LIGHT;
 		pMatrixStack.pushPose();
 		pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90.0F));
 		pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot())));
