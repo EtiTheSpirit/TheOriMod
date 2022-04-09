@@ -1,4 +1,4 @@
-package etithespirit.orimod.lighttech;
+package etithespirit.orimod.aos;
 
 import etithespirit.exception.ArgumentNullException;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;

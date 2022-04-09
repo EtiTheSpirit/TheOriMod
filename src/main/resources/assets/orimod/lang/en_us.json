@@ -112,9 +112,9 @@
 	"config.orimod.world.decay.diagonal_spread.description" : "If enabled, §5Decay §fblocks can spread diagonally by one block. This has somewhat of a performance impact (albeit minor). If disabled, they will only spread to the six direct neighbors to any given block, but can leverage a great performance boost.",
 
 	"config.orimod.assembly_optimization_system.greedy_optimization" : "Greedy Optimization",
-	"config.orimod.assembly_optimization_system.greedy_optimization.description" : "Greedy Optimization can make accessing data about assemblies faster. This provides §aa positive boost in performance §fat the cost of §cincreased memory usage§f. ",
+	"config.orimod.assembly_optimization_system.greedy_optimization.description" : "Greedy Optimization can make accessing data about assemblies faster. This provides §aan extremely positive boost in performance §fat the cost of §cincreased memory usage§f. §bIt is STRONGLY advised that you leave this ON unless your server / world is host to 1k+ Light tech connector blocks§f.",
 	"config.orimod.assembly_optimization_system.keep_chunks_alive" : "Keep Chunks Alive",
-	"config.orimod.assembly_optimization_system.keep_chunks_alive.description" : "This can be used to keep chunks containing functional Light tech (§7meaning they must be doing something with their energy§f) alive. This §aimproves gameplay by allowing tech to operate whilst unattended §fat the cost of §cmore CPU usage (the usage scales with how much is going on)§f. ",
+	"config.orimod.assembly_optimization_system.keep_chunks_alive.description" : "This can be used to keep chunks containing functional Light tech (§7meaning they must be doing something with their energy§f) alive. This §aimproves gameplay by allowing tech to operate whilst unattended §fat the cost of §cmore CPU usage (the usage scales with how much is going on)§f.",
 
 	"waila.orimod.energy" : "Storage: §b%1$s Luxen",
 	"waila.orimod.energy_rf" : "Storage: §b%1$s Luxen (%2$s RF)",

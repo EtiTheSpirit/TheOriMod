@@ -1,8 +1,9 @@
-package etithespirit.orimod.lighttech;
+package etithespirit.orimod.lighttechlgc;
 
 
 import com.google.common.collect.ImmutableList;
 import etithespirit.orimod.OriMod;
+import etithespirit.orimod.aos.ConnectionHelper;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
@@ -23,6 +24,7 @@ import java.util.List;
  * @author Eti
  */
 @SuppressWarnings("unused")
+@Deprecated(forRemoval = true)
 public final class AssemblyHelper {
 	
 	/** A logger used to track this helper's behavior. */
@@ -238,6 +240,19 @@ public final class AssemblyHelper {
 		connectedLinks.clear();
 		connectedHubs.clear();
 		skipPos.clear();
+	}
+	
+	/**
+	 * Internal use only. Tells all connected components known by this helper to reevaluate which assembly they are a part of.
+	 * @param asPartOf The assembly they should be a part of.
+	 */
+	void updateAllComponents(Assembly asPartOf) {
+		for (AbstractLightEnergyHub hub : connectedHubs) {
+			//hub.setAssembly(asPartOf);
+		}
+		for (AbstractLightEnergyLink link : connectedLinks) {
+			//link.setAssembly(asPartOf);
+		}
 	}
 	
 }

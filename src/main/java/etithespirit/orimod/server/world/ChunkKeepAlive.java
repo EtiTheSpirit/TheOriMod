@@ -1,12 +1,15 @@
 package etithespirit.orimod.server.world;
 
+import etithespirit.orimod.OriMod;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.world.level.ChunkPos;
+import net.minecraftforge.common.world.ForgeChunkManager;
 
 /**
  * A utility class to manage the state of chunks being kept alive or not.
+ *
  */
 public final class ChunkKeepAlive {
 	
@@ -36,21 +39,15 @@ public final class ChunkKeepAlive {
 	/**
 	 * Tells the server level that the chunk containing the given {@link BlockPos} should be kept alive.
 	 * @param world The world to modify.
-	 * @param pos The position to modify.
+	 * @param reservedPos The position to modify, which should correspond to a block entity that needs to keep a chunk alive.
 	 * @param alive Whether or not to keep the chunk alive.
 	 */
-	public static void setChunkKeptAlive(ServerLevel world, BlockPos pos, boolean alive) {
-		setChunkKeptAlive(world, new ChunkPos(pos), alive);
+	public static void setChunkKeptAlive(ServerLevel world, BlockPos reservedPos, boolean alive) {
+		ForgeChunkManager.forceChunk(world, OriMod.MODID, reservedPos, toChunkCoord(reservedPos.getX()), toChunkCoord(reservedPos.getY()), alive, true);
 	}
 	
-	/**
-	 * Tells the server level that the chunk at given {@link ChunkPos} should be kept alive.
-	 * @param world The world to modify.
-	 * @param pos The position to modify.
-	 * @param alive Whether or not to keep the chunk alive.
-	 */
-	public static void setChunkKeptAlive(ServerLevel world, ChunkPos pos, boolean alive) {
-		world.setChunkForced(pos.x, pos.z, alive);
+	private static int toChunkCoord(int coord) {
+		return coord >> 4;
 	}
 	
 }

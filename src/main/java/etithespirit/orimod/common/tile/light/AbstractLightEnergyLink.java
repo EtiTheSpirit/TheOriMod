@@ -1,18 +1,21 @@
 package etithespirit.orimod.common.tile.light;
 
 
-import etithespirit.orimod.common.tile.IWorldUpdateListener;
-import etithespirit.orimod.lighttech.Assembly;
-import etithespirit.orimod.lighttech.ConnectionHelper;
-import etithespirit.orimod.lighttech.Line;
+import etithespirit.orimod.common.tile.WorldUpdateListener;
+import etithespirit.orimod.info.coordinate.Cardinals;
+import etithespirit.orimod.lighttechlgc.Assembly;
+import etithespirit.orimod.aos.ConnectionHelper;
+import etithespirit.orimod.lighttechlgc.Line;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Vec3i;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A counterpart to {@link AbstractLightEnergyHub} which represents a {@link BlockEntity} that links two
@@ -20,7 +23,7 @@ import javax.annotation.Nullable;
  *
  * @author Eti
  */
-public abstract class AbstractLightEnergyLink extends BlockEntity implements IWorldUpdateListener {
+public abstract class AbstractLightEnergyLink extends BlockEntity {
 	
 	/**
 	 * Create a new link using the default BlockEntity ctor.
@@ -36,8 +39,7 @@ public abstract class AbstractLightEnergyLink extends BlockEntity implements IWo
 	/**
 	 * @return The {@link Assembly} that this {@link AbstractLightEnergyLink} is a part of.
 	 */
-	public @Nullable
-	Assembly getAssembly() {
+	public @Nullable Assembly getAssembly() {
 		return assembly;
 	}
 	
@@ -57,40 +59,41 @@ public abstract class AbstractLightEnergyLink extends BlockEntity implements IWo
 		return assembly.getLineContaining(this);
 	}
 	
-	@Override
-	public void neighborAddedOrRemoved(BlockState state, Level world, BlockPos at, BlockPos changedAt, BlockEntity replacedTile, boolean isMoving) {
-		BlockEntity newTile = world.getBlockEntity(changedAt);
-		if (newTile instanceof AbstractLightEnergyLink link) {
-			if (ConnectionHelper.hasMutualConnectionToOther(world, at, changedAt, true)) {
-				
-				Line line = link.getAssemblyLine();
-				if (line != null) {
-					// This may have merged two assemblies.
-					if (assembly == line.parent) {
-						// Nope, just interconnected an existing assembly.
-						// TODO: Runtime splicing of lines in this case, because a loop will have been made.
-					} else {
-						// Yes it did.
-						assembly.mergeWith(line.parent, link);
-					}
-				} else {
-					// The new line isn't part of an assembly (yet).
-					if (assembly != null) {
-						// But this one is. Now check if this is the ONLY connection.
-						// If this is, add it, but if it isn't, see if its other neighbors are part of this assembly or another.
-						
-					}
-				}
-				
-				
-				if (ConnectionHelper.getDirectionsWithMutualConnections(world, at, true).length > 2) {
-					// line.spliceAndRebranch(this);
+	
+	/**
+	 * Returns all neighboring links, optionally only connected ones.
+	 * @return All neighbors that are also links, optionally only connected links.
+	 */
+	public AbstractLightEnergyLink[] getNeighboringLinks(boolean connectedOnly) {
+		List<AbstractLightEnergyLink> links = new ArrayList<>();
+		Level world = this.getLevel();
+		BlockPos at = this.getBlockPos();
+		for (int i = 0; i < 6; i++) {
+			Vec3i adj = Cardinals.ADJACENTS_IN_ORDER[i];
+			BlockPos queryPos = at.offset(adj);
+			BlockEntity ent = world.getBlockEntity(queryPos);
+			if (ent instanceof AbstractLightEnergyLink link) {
+				if (!connectedOnly || (connectedOnly && isConnectedTo(link, true))) {
+					links.add(link);
 				}
 			}
-		} else if (replacedTile instanceof AbstractLightEnergyLink link) {
-		
 		}
-		// Don't care about anything else.
+		return links.toArray(new AbstractLightEnergyLink[links.size()]);
+	}
+	
+	/**
+	 * Returns whether or not this link is connected to the given other link. If `directly` is true, then this does a neighbor check, otherwise this will check to see
+	 * if they are a part of the same {@link Assembly}.
+	 * @param other The other link to check.
+	 * @param directly True if a neighbor check should be done, false if the entire assembly should be checked.
+	 * @return Whether or not the two links are connected.
+	 */
+	public boolean isConnectedTo(AbstractLightEnergyLink other, boolean directly) {
+		if (directly) {
+			return ConnectionHelper.hasMutualConnectionToOther(this.getLevel(), this.getBlockPos(), other.getBlockPos(), false);
+		} else {
+			return this.getAssembly().getLineContaining(other) != null;
+		}
 	}
 	
 }

@@ -17,10 +17,6 @@ import java.io.IOException;
 
 public final class RenderRegistry {
 	
-	public static void registerAll() {
-	
-	}
-	
 	public static void registerBERenderers(EntityRenderersEvent.RegisterRenderers registerEvt) {
 		registerEvt.registerBlockEntityRenderer(TileEntityRegistry.LIGHT_CAPACITOR.get(), LightHubDebugRenderer::new);
 		registerEvt.registerEntityRenderer(EntityRegistry.SPIRIT_ARROW.get(), SpiritArrowRenderer::new);

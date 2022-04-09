@@ -13,7 +13,7 @@ public class TileEntityLightEnergyConduit extends AbstractLightEnergyLink {
 	public TileEntityLightEnergyConduit(BlockPos at, BlockState state) {
 		super(TileEntityRegistry.LIGHT_CONDUIT.get(), at, state);
 	}
-	
+	/*
 	@Override
 	public void changed(LevelAccessor world, BlockPos at) {
 	
@@ -23,4 +23,6 @@ public class TileEntityLightEnergyConduit extends AbstractLightEnergyLink {
 	public void tellAllNeighborsAddedOrRemoved(BlockState state, Level world, BlockPos changedAt, BlockEntity replacedTile, boolean isMoving) {
 		super.tellAllNeighborsAddedOrRemoved(state, world, changedAt, replacedTile, isMoving);
 	}
+	
+	 */
 }

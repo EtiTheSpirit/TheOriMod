@@ -3,6 +3,7 @@ package etithespirit.orimod.common.tile.light;
 
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 
 import javax.annotation.Nullable;
 

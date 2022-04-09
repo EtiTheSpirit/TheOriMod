@@ -2,7 +2,7 @@ package etithespirit.orimod.common.tile.light;
 
 import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
-import etithespirit.orimod.lighttech.Assembly;
+import etithespirit.orimod.lighttechlgc.Assembly;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,10 +30,10 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 		@Override
 		public void tick(Level level, BlockPos blockPos, BlockState blockState, BlockEntity be) {
 			if (be instanceof AbstractLightEnergyHub hub) {
-				if (hub.assembly == null) {
+				//if (hub.assembly == null) {
 					// Should always have an assembly.
-					hub.assembly = Assembly.getAssemblyFor(hub);
-				}
+					//hub.assembly = Assembly.getAssemblyFor(hub);
+				//}
 			}
 		}
 	}
@@ -45,10 +45,10 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 		@Override
 		public void tick(Level level, BlockPos blockPos, BlockState blockState, BlockEntity be) {
 			if (be instanceof AbstractLightEnergyHub hub) {
-				if (hub.assembly == null) {
+				//if (hub.assembly == null) {
 					// Should always have an assembly.
-					hub.assembly = Assembly.getAssemblyFor(hub);
-				}
+					//hub.assembly = Assembly.getAssemblyFor(hub);
+				//}
 			}
 			
 			if (be instanceof IAmbientSoundEmitter cap) {

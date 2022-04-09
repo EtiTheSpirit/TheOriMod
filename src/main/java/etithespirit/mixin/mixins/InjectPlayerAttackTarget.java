@@ -1,5 +1,6 @@
 package etithespirit.mixin.mixins;
 
+import etithespirit.exception.ArgumentNullException;
 import etithespirit.mixin.helpers.ISelfProvider;
 import etithespirit.orimod.client.audio.SpiritSoundProvider;
 import etithespirit.orimod.client.audio.variation.DamageLevel;
@@ -69,7 +70,7 @@ public abstract class InjectPlayerAttackTarget extends LivingEntity implements I
 	 * @return A spirit DamageLevel suitable for the sound.
 	 */
 	private static DamageLevel damageLevelFromVanillaSoundEvent(@Nonnull SoundEvent sound) {
-		if (sound == null) throw new NullPointerException();
+		if (sound == null) throw new ArgumentNullException("sound");
 		if (sound.equals(SoundEvents.PLAYER_ATTACK_NODAMAGE)) return DamageLevel.INEFFECTIVE;
 		if (sound.equals(SoundEvents.PLAYER_ATTACK_WEAK)) return DamageLevel.WEAK;
 		if (sound.equals(SoundEvents.PLAYER_ATTACK_STRONG)) return DamageLevel.STRONG;
@@ -83,7 +84,7 @@ public abstract class InjectPlayerAttackTarget extends LivingEntity implements I
 	 * @return A spirit SpecialAttackType suitable for the sound.
 	 */
 	private static SpecialAttackType attackTypeFromVanillaSoundEvent(@Nonnull SoundEvent sound) {
-		if (sound == null) throw new NullPointerException();
+		if (sound == null) throw new ArgumentNullException("sound");
 		if (sound.equals(SoundEvents.PLAYER_ATTACK_KNOCKBACK)) return SpecialAttackType.KNOCKBACK;
 		if (sound.equals(SoundEvents.PLAYER_ATTACK_SWEEP)) return SpecialAttackType.SWEEP;
 		return null;

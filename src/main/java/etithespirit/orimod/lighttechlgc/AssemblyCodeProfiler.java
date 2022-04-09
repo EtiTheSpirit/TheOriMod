@@ -1,4 +1,4 @@
-package etithespirit.orimod.lighttech;
+package etithespirit.orimod.lighttechlgc;
 
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.util.profiling.CriticalProfiler;
@@ -6,6 +6,7 @@ import net.minecraft.Util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+@Deprecated(forRemoval = true)
 final class AssemblyCodeProfiler {
 	
 	private static final String LOGNAME = OriMod.MODID + "::AssemblyCodeProfiler";

@@ -64,7 +64,7 @@ public class TileEntityLightCapacitor extends AbstractLightEnergyHub implements 
 	@Override
 	public Packet<ClientGamePacketListener> getUpdatePacket() {
 		return ClientboundBlockEntityDataPacket.create(this, (blockEntity) -> {
-			CompoundTag tag = getNBTForUpdatePacket(new CompoundTag());
+			CompoundTag tag = storage.writeToNBT(new CompoundTag());
 			tag = storage.writeToNBT(tag);
 			return tag;
 		});

@@ -1,20 +1,15 @@
-package etithespirit.orimod.lighttech;
+package etithespirit.orimod.lighttechlgc;
 
 
 import com.google.common.collect.ImmutableList;
-import com.mojang.math.Vector3d;
-import etithespirit.orimod.OriMod;
+import etithespirit.orimod.aos.ConnectionHelper;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
-import etithespirit.orimod.util.profiling.CriticalProfiler;
-import net.minecraft.Util;
+import etithespirit.orimod.util.collection.Breaker;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.Vec3;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,6 +20,7 @@ import java.util.List;
  * @author Eti
  */
 @SuppressWarnings("unused")
+@Deprecated(forRemoval = true)
 public final class Line {
 	
 	/** The {@link Assembly} that contains this {@link Line}. */
@@ -53,15 +49,84 @@ public final class Line {
 	/**
 	 * Given a {@link AbstractLightEnergyLink} that was modified to have more than two neighbor connections, this will split
 	 * the line that the instance was on into three or more lines that are all reflective of independent paths.
+	 * <strong>This automatically registers all lines.</strong>
 	 * @param multiConnectedConduit The conduit that has a branch of three or more possible directions.
 	 * @throws IllegalArgumentException If the given conduit does not have more than two connections associated with it.
 	 */
-	
-	public void spliceAndRebranch(AbstractLightEnergyLink multiConnectedConduit) {
-		// Known fact, this line will remain in-tact.
-		// The only change is that the new segment will be appended.
-		// Now the thing is, that new segment could have its own segments and potentially even be part of another assembly.
+	public Line[] spliceAndRebranch(AbstractLightEnergyLink multiConnectedConduit) {
+		// Say there are two parallel lines || and they are merged into an H shape
+		// This means that the cut needs to occur where the T joints were created.
 		
+		List<AbstractLightEnergyLink> alreadyCovered = new ArrayList<>();
+		List<Line> lines = new ArrayList<>();
+		List<Line> allowed = new ArrayList<>();
+		
+		allowed.add(this);
+		AbstractLightEnergyLink[] connected = multiConnectedConduit.getNeighboringLinks(true);
+		for (AbstractLightEnergyLink abstractLightEnergyLink : connected) {
+			Line ofNeighbor = abstractLightEnergyLink.getAssemblyLine();
+			if (ofNeighbor == null) continue;
+			
+			if (ofNeighbor.parent != parent) {
+				// Different assembly! Need to merge assemblies.
+				parent.mergeWith(ofNeighbor.parent);
+			}
+			if (!allowed.contains(ofNeighbor)) {
+				allowed.add(ofNeighbor);
+			}
+		}
+		
+		
+		Line dummyReplacesThis = new Line(parent);
+		lines.add(dummyReplacesThis);
+		populateAmong(lines, allowed, dummyReplacesThis, alreadyCovered, null, this.segments.stream().findFirst().get(), parent);
+		
+		this.segments.clear();
+		this.segments.addAll(dummyReplacesThis.segments);
+		List<Line> existingLines = parent.getLines();
+		for (Line line : lines) {
+			if (!existingLines.contains(line)) parent.addLine(line);
+		}
+		return lines.toArray(new Line[lines.size()]);
+	}
+	
+	/**
+	 * Breaks this line in half at the given connection. Lines[0] is this, and Lines[1] is the other line.
+	 * If the block 'at' was removed, it will be neither part of the first or the second half. If it was simply changed
+	 * to lose a connection, it will be a part of the line it is still connected to, unless it is connected to neither.<br/>
+	 * <br/>
+	 * <strong>This will automatically register the two lines into the parent assembly.</strong>
+	 * @return Two lines, one or none containing the given link where appropriate.
+	 * @throws IllegalStateException If the given link is still connected both ahead and behind itself
+	 */
+	public Line[] breakInHalf(AbstractLightEnergyLink at) throws IllegalStateException {
+		AbstractLightEnergyLink previous = null;
+		AbstractLightEnergyLink next = null;
+		int idx = this.segments.indexOf(at);
+		if (idx > 0) previous = this.segments.get(idx - 1);
+		if (idx < this.segments.size() - 1) next = this.segments.get(idx + 1);
+		
+		boolean isPrevConnected = (previous != null && at.isConnectedTo(previous, true));
+		boolean isNextConnected = (next != null && at.isConnectedTo(next, true));
+		
+		if (isPrevConnected && isNextConnected) {
+			throw new IllegalStateException("The given connection is not actually separated, thus making an ambiguous situation! This cannot continue.");
+		}
+		int value = -1;
+		if (isNextConnected) {
+			value = 1;
+		} else if (isPrevConnected) {
+			value = 0;
+		}
+		
+		List<AbstractLightEnergyLink>[] fragmented = Breaker.breakApart(this.segments, at, value);
+		this.segments.clear();
+		this.segments.addAll(fragmented[0]);
+		Line other = new Line(parent);
+		other.segments.addAll(fragmented[1]);
+		
+		parent.addLine(other);
+		return new Line[] { this, other };
 	}
 	
 	/**
@@ -114,6 +179,15 @@ public final class Line {
 	}
 	
 	/**
+	 * Checks if the given link is part of this line.
+	 * @param link The link to check.
+	 * @return True if the link is in this line, false if not.
+	 */
+	public boolean contains(AbstractLightEnergyLink link) {
+		return segments.contains(link);
+	}
+	
+	/**
 	 * Get all lines of the given {@link Assembly}.
 	 * @param parent The assembly to build from.
 	 * @return The lines constructed from the connections and their branches, or null if the given {@link AbstractLightEnergyHub} is not in a world.
@@ -162,7 +236,7 @@ public final class Line {
 				AbstractLightEnergyLink neighbor = neighbors.get(0);
 				populate(allLines, currentLine, alreadyCovered, neighbor, neighbor, parent);
 			} else {
-				// 2 neighbors, mid or end
+				// 2 neighbors, this is mid or end
 				AbstractLightEnergyLink target = neighbors.get(0);
 				if (previous == target || alreadyCovered.contains(target)) {
 					target = neighbors.get(1);
@@ -187,6 +261,68 @@ public final class Line {
 				}
 			}
 		}
+	}
+	
+	private static void populateAmong(List<Line> allLines, List<Line> allowedLines, Line currentLine, List<AbstractLightEnergyLink> alreadyCovered, AbstractLightEnergyLink previous, AbstractLightEnergyLink around, Assembly parent) {
+		currentLine.segments.add(around);
+		if (!alreadyCovered.contains(around)) alreadyCovered.add(around);
+		
+		BlockPos[] neighborBlockPos = ConnectionHelper.getDirectionsWithMutualConnections(parent.world, around.getBlockPos(), false);
+		ArrayList<AbstractLightEnergyLink> neighbors = new ArrayList<>();
+		for (BlockPos pos : neighborBlockPos) {
+			BlockEntity neighborTE = parent.world.getBlockEntity(pos);
+			if (neighborTE instanceof AbstractLightEnergyLink) {
+				AbstractLightEnergyLink link = (AbstractLightEnergyLink)neighborTE;
+				if (!alreadyCovered.contains(link)) {
+					neighbors.add(link);
+				}
+			}
+		}
+		
+		if (neighbors.size() <= 2 && neighbors.size() > 0) {
+			if (neighbors.size() == 1) {
+				// 1 neighbor, only possible at start since the anchor (root) doesn't count as an instance of conduit
+				if (alreadyCovered.contains(neighbors.get(0))) {
+					// allLines.add(currentLine);
+					return;
+				}
+				AbstractLightEnergyLink neighbor = neighbors.get(0);
+				if (isInAllowedList(allowedLines, neighbor)) {
+					populateAmong(allLines, allowedLines, currentLine, alreadyCovered, neighbor, neighbor, parent);
+				}
+			} else {
+				// 2 neighbors, this is mid or end
+				AbstractLightEnergyLink target = neighbors.get(0);
+				if (previous == target || alreadyCovered.contains(target)) {
+					target = neighbors.get(1);
+				}
+				
+				if (alreadyCovered.contains(target)) {
+					// allLines.add(currentLine);
+					return;
+				}
+				
+				if (isInAllowedList(allowedLines, target)) {
+					populateAmong(allLines, allowedLines, currentLine, alreadyCovered, target, target, parent);
+				}
+			}
+		} else {
+			if (neighbors.size() != 0) {
+				// more than 2, this is a joint. 0 neighbors means to just do nothing due to adding the directly registered conduit up above.
+				for (AbstractLightEnergyLink neighbor : neighbors) {
+					if (alreadyCovered.contains(neighbor)) continue;
+					if (!isInAllowedList(allowedLines, neighbor)) continue;
+					
+					Line forBranch = new Line(parent);
+					allLines.add(forBranch);
+					populateAmong(allLines, allowedLines, forBranch, alreadyCovered, neighbor, neighbor, parent);
+				}
+			}
+		}
+	}
+	
+	private static boolean isInAllowedList(List<Line> allowed, AbstractLightEnergyLink check) {
+		return allowed.stream().anyMatch(line -> line.contains(check));
 	}
 	
 }

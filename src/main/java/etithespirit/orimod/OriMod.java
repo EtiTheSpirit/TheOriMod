@@ -2,17 +2,18 @@ package etithespirit.orimod;
 
 
 import com.mojang.brigadier.CommandDispatcher;
+import com.mojang.datafixers.util.Pair;
 import etithespirit.orimod.apiimpl.EnvironmentalAffinityAPI;
 import etithespirit.orimod.client.render.debug.LightHubDebugRenderer;
 import etithespirit.orimod.command.SetSpiritCommand;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
 import etithespirit.orimod.common.potion.DecayEffect;
+import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
 import etithespirit.orimod.datagen.GenerateBlockModels;
 import etithespirit.orimod.datagen.GenerateItemModels;
 import etithespirit.orimod.client.render.RenderPlayerAsSpirit;
-import etithespirit.orimod.common.block.UpdateHelper;
 import etithespirit.orimod.datagen.audio.GenerateSoundsJson;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
@@ -31,13 +32,17 @@ import etithespirit.orimod.spirit.SpiritSize;
 import etithespirit.orimod.spirit.SpiritSounds;
 import etithespirit.orimod.spirit.client.SpiritDash;
 import etithespirit.orimod.spirit.client.SpiritJump;
+import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.core.BlockPos;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.event.RegisterCommandsEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -50,6 +55,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.File;
+import java.util.Map;
 
 /**
  * The main class for the entire mod.
@@ -120,7 +126,7 @@ public final class OriMod {
 	 */
 	public void commonInit(final FMLCommonSetupEvent event) {
 		// For TEs
-		MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
+		// MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
 		
 		
 		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityAttacked);
@@ -155,6 +161,23 @@ public final class OriMod {
 		
 		CapabilityRegistry.registerAll();
 		*/
+		
+		ForgeChunkManager.setForcedChunkLoadingCallback(MODID, (serverLevel, ticketHelper) -> {
+			Map<BlockPos, Pair<LongSet, LongSet>> tickets = ticketHelper.getBlockTickets();
+			// All OriMod tech blocks use ticking live checks, so the second of the pair is the point of interest.
+			for (Map.Entry<BlockPos, Pair<LongSet, LongSet>> data : tickets.entrySet()) {
+				BlockPos at = data.getKey();
+				LongSet chunks = data.getValue().getSecond();
+				if (chunks.size() != 1) {
+					LOG.warn("A Light Assembly block registered more than one chunk with one BlockPos?! This could be a serious problem!");
+				}
+				BlockEntity ent = serverLevel.getBlockEntity(at);
+				if (!(ent instanceof AbstractLightEnergyHub)) {
+					LOG.info("Found a chunk that was being kept alive by what was believed to be a Light Tech block at {}, however there was no Tech Block at that location, so the keep-alive ticket has been removed and this chunk may now rest.", at);
+					ForgeChunkManager.forceChunk(serverLevel, MODID, at, at.getX() >> 4, at.getY() >> 4, false, true);
+				}
+			}
+		});
 	}
 	
 	/**

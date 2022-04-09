@@ -99,7 +99,7 @@ public class OriModConfigs {
 	
 	/**
 	 * Loads the language file for this mod early so that it can be accessed.
-	 * @return
+	 * @return A copy of the language file for the ori mod, en_us.lang specifically as this is the default language.
 	 */
 	private static Language earlyLoadLanguage() {
 		ImmutableMap.Builder<String, String> builder = ImmutableMap.builder();
@@ -143,7 +143,7 @@ public class OriModConfigs {
 			}
 			
 			public FormattedCharSequence getVisualOrder(FormattedText text) {
-				return (p_128132_) -> text.visit((p_177835_, p_177836_) -> StringDecomposer.iterateFormatted(p_177836_, p_177835_, p_128132_) ? Optional.empty() : FormattedText.STOP_ITERATION, Style.EMPTY).isPresent();
+				return (sink) -> text.visit((style, content) -> StringDecomposer.iterateFormatted(content, style, sink) ? Optional.empty() : FormattedText.STOP_ITERATION, Style.EMPTY).isPresent();
 			}
 			
 			@Override
@@ -171,32 +171,40 @@ public class OriModConfigs {
 	 * @param defaultValue The default value for this config.
 	 * @return
 	 */
-	private static ForgeConfigSpec.BooleanValue createBoolean(ForgeConfigSpec.Builder builder, String category, String key, boolean defaultValue) {
+	private static ForgeConfigSpec.BooleanValue createBoolean(ForgeConfigSpec.Builder builder, String category, String key, boolean defaultValue, boolean requireRestart) {
 		String base = "config.orimod." + category + "." + key;
 		String desc = base + ".description";
 		String descUsingStartupLang = ORI_MOD_LANGUAGE.getOrDefault(desc);
-		return builder.translation(base).comment(descUsingStartupLang).define(key, defaultValue);
+		builder = builder.translation(base).comment(descUsingStartupLang);
+		if (requireRestart) builder.worldRestart();
+		return builder.define(key, defaultValue);
 	}
 	
-	private static <T extends Enum<T>> ForgeConfigSpec.EnumValue<T> createEnum(ForgeConfigSpec.Builder builder, String category, String key, T defaultValue) {
+	private static <T extends Enum<T>> ForgeConfigSpec.EnumValue<T> createEnum(ForgeConfigSpec.Builder builder, String category, String key, T defaultValue, boolean requireRestart) {
 		String base = "config.orimod." + category + "." + key;
 		String desc = base + ".description";
 		String descUsingStartupLang = ORI_MOD_LANGUAGE.getOrDefault(desc);
-		return builder.translation(base).comment(descUsingStartupLang).defineEnum(key, defaultValue);
+		builder = builder.translation(base).comment(descUsingStartupLang);
+		if (requireRestart) builder.worldRestart();
+		return builder.defineEnum(key, defaultValue);
 	}
 	
-	private static ForgeConfigSpec.IntValue createIntRange(ForgeConfigSpec.Builder builder, String category, String key, int defaultValue, int min, int max) {
+	private static ForgeConfigSpec.IntValue createIntRange(ForgeConfigSpec.Builder builder, String category, String key, int defaultValue, int min, int max, boolean requireRestart) {
 		String base = "config.orimod." + category + "." + key;
 		String desc = base + ".description";
 		String descUsingStartupLang = ORI_MOD_LANGUAGE.getOrDefault(desc);
-		return builder.translation(base).comment(descUsingStartupLang).defineInRange(key, defaultValue, min, max);
+		builder = builder.translation(base).comment(descUsingStartupLang);
+		if (requireRestart) builder.worldRestart();
+		return builder.defineInRange(key, defaultValue, min, max);
 	}
 	
-	private static ForgeConfigSpec.DoubleValue createDoubleRange(ForgeConfigSpec.Builder builder, String category, String key, double defaultValue, double min, double max) {
+	private static ForgeConfigSpec.DoubleValue createDoubleRange(ForgeConfigSpec.Builder builder, String category, String key, double defaultValue, double min, double max, boolean requireRestart) {
 		String base = "config.orimod." + category + "." + key;
 		String desc = base + ".description";
 		String descUsingStartupLang = ORI_MOD_LANGUAGE.getOrDefault(desc);
-		return builder.translation(base).comment(descUsingStartupLang).defineInRange(key, defaultValue, min, max);
+		builder = builder.translation(base).comment(descUsingStartupLang);
+		if (requireRestart) builder.worldRestart();
+		return builder.defineInRange(key, defaultValue, min, max);
 	}
 	
 	private static void setupClientCfg() {
@@ -204,7 +212,7 @@ public class OriModConfigs {
 		
 		String current = "rendering";
 		builder.push(current);
-		DEBUG_RENDER_ASSEMBLIES = createBoolean(builder, current, "assembly_debug", false);
+		DEBUG_RENDER_ASSEMBLIES = createBoolean(builder, current, "assembly_debug", false, false);
 		
 		CLIENT_ONLY = builder.build();
 	}
@@ -215,38 +223,38 @@ public class OriModConfigs {
 
 		String current = "spirit_management";
 		builder.push(current);
-		DEFAULT_SPIRIT_STATE = createBoolean(builder, current, "default_state", true);
-		FORCE_STATE = createBoolean(builder, current, "force_state", false);
-		ALLOW_CHANGING_BY_DEFAULT = createBoolean(builder, current, "allow_changes_default", true);
-		ONLY_EAT_PLANTS = createBoolean(builder, current, "only_eat_plants", false);
+		DEFAULT_SPIRIT_STATE = createBoolean(builder, current, "default_state", true, false);
+		FORCE_STATE = createBoolean(builder, current, "force_state", false, false);
+		ALLOW_CHANGING_BY_DEFAULT = createBoolean(builder, current, "allow_changes_default", true, false);
+		ONLY_EAT_PLANTS = createBoolean(builder, current, "only_eat_plants", false, false);
 		builder.pop();
 		
 		current = "spirit_abilities";
 		builder.push(current);
-		AIR_JUMP_COUNT = createIntRange(builder, current, "air_jumps", 1, 1, 2);
-		KNOW_DOUBLE_JUMP = createBoolean(builder, current, "know_double_jump", false);
-		KNOW_DASH = createBoolean(builder, current, "know_dash", false);
-		KNOW_AIR_DASH = createBoolean(builder, current, "know_air_dash", false);
-		KNOW_WATER_DASH = createBoolean(builder, current, "know_water_dash", false);
+		AIR_JUMP_COUNT = createIntRange(builder, current, "air_jumps", 1, 1, 2, false);
+		KNOW_DOUBLE_JUMP = createBoolean(builder, current, "know_double_jump", false, false);
+		KNOW_DASH = createBoolean(builder, current, "know_dash", false, false);
+		KNOW_AIR_DASH = createBoolean(builder, current, "know_air_dash", false, false);
+		KNOW_WATER_DASH = createBoolean(builder, current, "know_water_dash", false, false);
 		builder.pop();
 		
 		current = "light_energy";
 		builder.push(current);
-		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 5000, 0.0001D, 100000D);
-		USE_ENV_POWER = createBoolean(builder, current, "env_power", true);
+		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 5000, 0.0001D, 100000D, false);
+		USE_ENV_POWER = createBoolean(builder, current, "env_power", true, false);
 		builder.pop();
 		
 		current = "world.decay";
 		builder.push(current);
-		DECAY_SPREADING = createEnum(builder, current, "spreading", DecayWorldConfigBehavior.ALLOW_SPREADING);
-		DECAY_COATING_SPREADING = createEnum(builder, current, "surface_coating", DecayWorldConfigBehavior.ALLOW_SPREADING);
-		DECAY_FLUID_SPREADING = createEnum(builder, current, "fluid", DecayWorldConfigBehavior.ALLOW_SPREADING);
-		DO_DIAGONAL_SPREAD = createBoolean(builder, current, "diagonal_spread", true);
+		DECAY_SPREADING = createEnum(builder, current, "spreading", DecayWorldConfigBehavior.ALLOW_SPREADING, false);
+		DECAY_COATING_SPREADING = createEnum(builder, current, "surface_coating", DecayWorldConfigBehavior.ALLOW_SPREADING, false);
+		DECAY_FLUID_SPREADING = createEnum(builder, current, "fluid", DecayWorldConfigBehavior.ALLOW_SPREADING, false);
+		DO_DIAGONAL_SPREAD = createBoolean(builder, current, "diagonal_spread", true, false);
 		builder.pop();
 		
 		current = "assembly_optimization_system";
 		builder.push(current);
-		KEEP_CHUNKS_ALIVE = createBoolean(builder, current, "keep_chunks_alive", true);
+		KEEP_CHUNKS_ALIVE = createBoolean(builder, current, "keep_chunks_alive", true, false);
 		builder.pop();
 		
 		SERVER_SYNCED = builder.build();
@@ -257,7 +265,7 @@ public class OriModConfigs {
 		
 		String current = "assembly_optimization_system";
 		builder.push(current);
-		GREEDY_ASSEMBLY_OPTIMIZATION = createBoolean(builder, current, "greedy_optimization", true);
+		GREEDY_ASSEMBLY_OPTIMIZATION = createBoolean(builder, current, "greedy_optimization", true, true);
 		builder.pop();
 		
 		SEPARATE_SIDES = builder.build();

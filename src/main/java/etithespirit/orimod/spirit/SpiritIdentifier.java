@@ -1,5 +1,7 @@
 package etithespirit.orimod.spirit;
 
+import etithespirit.orimod.annotation.NetworkReplicated;
+import etithespirit.orimod.annotation.NotNetworkReplicated;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.networking.spirit.SpiritStateReplicationPacket;
@@ -31,6 +33,7 @@ public final class SpiritIdentifier {
 	 * @param entity The entity to test.
 	 * @return True if the entity is either an instance of the Spirit mob, or is a player who has elected to use the spirit playermodel.
 	 */
+	@NetworkReplicated
 	public static boolean isSpirit(Entity entity) {
 		if (DBG_SPIRIT_ALWAYS_FORCED) return true;
 		boolean defaultState = OriModConfigs.DEFAULT_SPIRIT_STATE.get();
@@ -43,6 +46,7 @@ public final class SpiritIdentifier {
 	 * @param id The UUID to test.
 	 * @return True if the entity is either an instance of the Spirit mob, or is a player who has elected to use the spirit playermodel.
 	 */
+	@NetworkReplicated
 	public static boolean isSpirit(UUID id) {
 		if (DBG_SPIRIT_ALWAYS_FORCED) return true;
 		boolean defaultState = OriModConfigs.DEFAULT_SPIRIT_STATE.get();
@@ -55,6 +59,7 @@ public final class SpiritIdentifier {
 	 * @param player The player to change.
 	 * @param isSpirit The new state, whether or not they are a spirit.
 	 */
+	@NotNetworkReplicated
 	public static void setSpirit(Player player, boolean isSpirit) {
 		SPIRIT_BINDINGS.put(player.getUUID(), isSpirit);
 		player.refreshDimensions();
@@ -66,6 +71,7 @@ public final class SpiritIdentifier {
 	 * @param playerID The UUID of the player to change.
 	 * @param isSpirit The new state, whether or not they are a spirit.
 	 */
+	@NotNetworkReplicated
 	public static void setSpirit(UUID playerID, boolean isSpirit) {
 		SPIRIT_BINDINGS.put(playerID, isSpirit);
 	}
@@ -75,12 +81,13 @@ public final class SpiritIdentifier {
 	 * @param player The player to change.
 	 * @param isSpirit The new spirit state.
 	 */
+	@NetworkReplicated
 	public static void setSpiritNetworked(Player player, boolean isSpirit) {
 		if (player.level.isClientSide) {
 			if (!player.isLocalPlayer()) {
 				throw new IllegalArgumentExceptionButItHasAComicallyLargeNameToDrasticallyIncreaseTheIronyPresentInThisReallyTerribleForcedExceptionMethodBecauseYouCalledTheNetworkingMethodWithTheWrongArgument();
 			}
-			setSpirit(player, isSpirit);
+			setSpirit(player.getUUID(), isSpirit);
 			ReplicateSpiritStatus.askToSetSpiritStatusAsync(isSpirit);
 		} else {
 			ReplicateSpiritStatus.tellEveryonePlayerSpiritStatus(player, isSpirit);

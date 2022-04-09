@@ -140,7 +140,7 @@ public final class ReplicateSpiritStatus {
 				response.type = EventType.UPDATE_PLAYER_MODELS;
 				response.playerSpiritStateMappings.put(sender.getUUID(), desiredState);
 				INSTANCE.send(PacketDistributor.PLAYER.with(() -> sender), response);
-				SpiritIdentifier.setSpirit(sender, desiredState);
+				SpiritIdentifier.setSpirit(sender.getUUID(), desiredState);
 			});
 		}
 		
@@ -177,7 +177,7 @@ public final class ReplicateSpiritStatus {
 	 */
 	@ServerUseOnly
 	public static void tellEveryonePlayerSpiritStatus(Player player, boolean isSpirit) {
-		SpiritIdentifier.setSpirit(player, isSpirit);
+		SpiritIdentifier.setSpirit(player.getUUID(), isSpirit);
 		INSTANCE.send(PacketDistributor.ALL.noArg(), SpiritStateReplicationPacket.toChangeModelOf(player, isSpirit));
 	}
 	
@@ -188,7 +188,7 @@ public final class ReplicateSpiritStatus {
 	@ClientUseOnly
 	public static void askToSetSpiritStatusAsync(boolean isSpirit) {
 		LocalPlayer client = Minecraft.getInstance().player;
-		SpiritIdentifier.setSpirit(client, isSpirit);
+		SpiritIdentifier.setSpirit(client.getUUID(), isSpirit);
 		INSTANCE.send(PacketDistributor.SERVER.noArg(), SpiritStateReplicationPacket.toChangeModelOf(client, isSpirit));
 	}
 	

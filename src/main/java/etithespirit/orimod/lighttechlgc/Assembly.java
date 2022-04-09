@@ -1,10 +1,11 @@
-package etithespirit.orimod.lighttech;
+package etithespirit.orimod.lighttechlgc;
 
 
 import com.google.common.collect.ImmutableList;
 import etithespirit.orimod.annotation.NotNetworkReplicated;
 import etithespirit.exception.NotImplementedException;
 import etithespirit.orimod.OriMod;
+import etithespirit.orimod.aos.ConnectionHelper;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyHub;
 import etithespirit.orimod.common.tile.light.AbstractLightEnergyLink;
 import etithespirit.orimod.util.collection.SidedListProvider;
@@ -20,23 +21,25 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
 /**
  * Represents an arbitrary, scalable layout of connected objects that may have loops and/or forks. It is composed of
  * any number of {@link Line}s.
  *
+ * Assemblies are not replicated over the network due to their innate complexity. They are instead calculated independently.
+ *
  * @author Eti
  */
 @SuppressWarnings("unused")
+@NotNetworkReplicated
+@Deprecated(forRemoval = true)
 public final class Assembly {
 	
-	@NotNetworkReplicated
 	private static int currentDebugID = 0;
 	
 	private static final Logger LOG = LogManager.getLogger(OriMod.MODID + "::Assembly");
 	
-	/** Every instantiated assembly on this side of the game. */
+	/** Every instantiated assembly on this side of the game by ID. This is sided due to the list being static. */
 	private static final SidedListProvider<Assembly> ALL_ASM_CACHE = new SidedListProvider<>();
 	
 	/** All lines that form this assembly. */
@@ -55,13 +58,8 @@ public final class Assembly {
 	/**
 	 * An ID for debugging this assembly. This is for use in clientside rendering.
 	 */
-	@NotNetworkReplicated
 	public final int _id;
 	
-	/**
-	 * A synchronized unique identifier for this assembly that is safe for network replication.
-	 */
-	public final UUID assemblyId = UUID.randomUUID();
 	
 	/**
 	 * Returns a new assembly for the given {@link AbstractLightEnergyHub}, or if another assembly already
@@ -113,8 +111,7 @@ public final class Assembly {
 	 * @param link The node to search for.
 	 * @return An {@link Assembly} containing the given {@link AbstractLightEnergyLink}, or null if no such assembly exists.
 	 */
-	public static @Nullable
-	Assembly findAssemblyContainingNode(AbstractLightEnergyLink link) {
+	public static @Nullable Assembly findAssemblyContainingNode(AbstractLightEnergyLink link) {
 		List<Assembly> assemblies = ALL_ASM_CACHE.getListForSide(link.getLevel().isClientSide);
 		
 		for (Assembly assembly : assemblies) {
@@ -157,18 +154,9 @@ public final class Assembly {
 	/**
 	 * Assuming this assembly has just connected with the given other assembly, this merges the other assembly into this.
 	 * @param other The other assembly that will be merged into this.
-	 * @param cause If this was caused by the addition of a link, this is the link that caused it.
 	 */
-	public void mergeWith(Assembly other, AbstractLightEnergyLink cause) {
-		// In a merge, whatever conduit made the merge has three possibilities
-		// #1: It was a new block added to the end of a line, extending its length (for at least one of both sides. the other side may have a T joint or it may be straight)
-		// If this is the case, then that block goes to that line, and then every line is copied over because they are valid.
-		// #2: It was a new block added to the side of a line, causing a T joint and a line fragment (importantly, for both sides at once)
-		// That block should be added as a new line instance containing only that block.
-		// #3: It was two lines that were next to eachother in some way, and their connection state was changed, causing a connection to form.
-		// The lines should remain completely unchanged, with the exception of the lines that it is connected to.
-		
-		throw new NotImplementedException();
+	public void mergeWith(Assembly other) {
+		other.moveAllLinesAndHubsInto(this);
 	}
 	
 	/**
@@ -176,7 +164,7 @@ public final class Assembly {
 	 * occurred, resize this assembly to what parts remain, and create a new assembly out of the parts that were disconnected.
 	 * @return This assembly in index #0, and the new assembly from the disconnected parts in the remaining indices.
 	 */
-	public Assembly[] fragment() {
+	public Assembly[] fragment(Line breakOccurredIn) {
 		throw new NotImplementedException();
 	}
 	
@@ -315,4 +303,33 @@ public final class Assembly {
 		helper.dispose();
 		getAllInstances().remove(this);
 	}
+	
+	/**
+	 * For internal use. Removes the given line from the registry of lines in this assembly.
+	 * @param line The line to remove.
+	 */
+	void removeLine(Line line) {
+		this.lines.remove(line);
+	}
+	
+	/**
+	 * For internal use. Adds the given line to the registry of lines in this assembly.
+	 * @param line The line to add.
+	 */
+	void addLine(Line line) {
+		this.lines.add(line);
+	}
+	
+	/**
+	 * For internal use only. Translates all data of this assembly into the given other assembly, then disposes of this assembly.
+	 * @param other The assembly to move into.
+	 */
+	void moveAllLinesAndHubsInto(Assembly other) {
+		other.lines.addAll(this.lines);
+		other.helper.mergeWith(this.helper);
+		this.helper.updateAllComponents(other);
+		this.helper.dispose();
+		this.dispose();
+	}
+	
 }

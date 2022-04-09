@@ -93,7 +93,7 @@ loadScripts(document, 'script');</script>
 <span class="extends-implements">extends net.minecraft.world.level.block.entity.BlockEntity
 implements <a href="../IWorldUpdateListener.html" title="interface in etithespirit.orimod.common.tile">IWorldUpdateListener</a></span></div>
 <div class="block">A counterpart to <a href="AbstractLightEnergyHub.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyHub</code></a> which represents a <code>BlockEntity</code> that links two
- or more <a href="AbstractLightEnergyHub.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyHub</code></a>s together. These form the fundamental components of a <a href="../../../lighttech/Line.html" title="class in etithespirit.orimod.lighttech"><code>Line</code></a>.</div>
+ or more <a href="AbstractLightEnergyHub.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyHub</code></a>s together. These form the fundamental components of a <a href="../../../lighttech/Line.html" title="class in etithespirit.orimod.lighttechlgc"><code>Line</code></a>.</div>
 </section>
 <section class="summary">
 <ul class="summary-list">
@@ -115,10 +115,10 @@ implements <a href="../IWorldUpdateListener.html" title="interface in etithespir
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Field</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color"><code>protected <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech">Assembly</a></code></div>
+<div class="col-first even-row-color"><code>protected <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc">Assembly</a></code></div>
 <div class="col-second even-row-color"><code><a href="#assembly" class="member-name-link">assembly</a></code></div>
 <div class="col-last even-row-color">
-<div class="block">The <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech"><code>Assembly</code></a> that this is a part of.</div>
+<div class="block">The <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc"><code>Assembly</code></a> that this is a part of.</div>
 </div>
 </div>
 <div class="inherited-list">
@@ -157,10 +157,10 @@ implements <a href="../IWorldUpdateListener.html" title="interface in etithespir
 <div class="table-header col-first">Modifier and Type</div>
 <div class="table-header col-second">Method</div>
 <div class="table-header col-last">Description</div>
-<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech">Assembly</a></code></div>
+<div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc">Assembly</a></code></div>
 <div class="col-second even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssembly()" class="member-name-link">getAssembly</a>()</code></div>
 <div class="col-last even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
-<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../lighttech/Line.html" title="class in etithespirit.orimod.lighttech">Line</a></code></div>
+<div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="../../../lighttech/Line.html" title="class in etithespirit.orimod.lighttechlgc">Line</a></code></div>
 <div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#getAssemblyLine()" class="member-name-link">getAssemblyLine</a>()</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">&nbsp;</div>
 <div class="col-first even-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
@@ -174,7 +174,7 @@ implements <a href="../IWorldUpdateListener.html" title="interface in etithespir
 <div class="block">Occurs when a <a href="../IWorldUpdateListener.html" title="interface in etithespirit.orimod.common.tile"><code>IWorldUpdateListener</code></a> adjacent to this <code>BlockEntity</code> is added, replaced, or removed.</div>
 </div>
 <div class="col-first odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code>void</code></div>
-<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAssembly(etithespirit.orimod.lighttech.Assembly)" class="member-name-link">setAssembly</a><wbr>(<a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech">Assembly</a>&nbsp;assembly)</code></div>
+<div class="col-second odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4"><code><a href="#setAssembly(etithespirit.orimod.lighttechlgc.Assembly)" class="member-name-link">setAssembly</a><wbr>(<a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc">Assembly</a>&nbsp;assembly)</code></div>
 <div class="col-last odd-row-color method-summary-table method-summary-table-tab2 method-summary-table-tab4">
 <div class="block">Intended for internal use only.</div>
 </div>
@@ -197,7 +197,7 @@ implements <a href="../IWorldUpdateListener.html" title="interface in etithespir
 <h3 id="methods-inherited-from-class-net.minecraftforge.common.extensions.IForgeBlockEntity">Methods inherited from interface&nbsp;net.minecraftforge.common.extensions.IForgeBlockEntity</h3>
 <code>deserializeNBT, getModelData, getRenderBoundingBox, handleUpdateTag, onDataPacket, onLoad, requestModelDataUpdate, serializeNBT</code></div>
 <div class="inherited-list">
-<h3 id="methods-inherited-from-class-etithespirit.orimod.common.tile.IWorldUpdateListener">Methods inherited from interface&nbsp;etithespirit.orimod.common.tile.<a href="../IWorldUpdateListener.html" title="interface in etithespirit.orimod.common.tile">IWorldUpdateListener</a></h3>
+<h3 id="methods-inherited-from-class-etithespirit.orimod.common.tile.WorldUpdateListener">Methods inherited from interface&nbsp;etithespirit.orimod.common.tile.<a href="../IWorldUpdateListener.html" title="interface in etithespirit.orimod.common.tile">IWorldUpdateListener</a></h3>
 <code><a href="../IWorldUpdateListener.html#changed(net.minecraft.world.level.LevelAccessor,net.minecraft.core.BlockPos)">changed</a>, <a href="../IWorldUpdateListener.html#tellAllNeighborsAddedOrRemoved(net.minecraft.world.level.block.state.BlockState,net.minecraft.world.level.Level,net.minecraft.core.BlockPos,net.minecraft.world.level.block.entity.BlockEntity,boolean)">tellAllNeighborsAddedOrRemoved</a></code></div>
 </section>
 </li>
@@ -213,8 +213,8 @@ implements <a href="../IWorldUpdateListener.html" title="interface in etithespir
 <li>
 <section class="detail" id="assembly">
 <h3>assembly</h3>
-<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech">Assembly</a></span>&nbsp;<span class="element-name">assembly</span></div>
-<div class="block">The <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech"><code>Assembly</code></a> that this is a part of.</div>
+<div class="member-signature"><span class="modifiers">protected</span>&nbsp;<span class="return-type"><a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc">Assembly</a></span>&nbsp;<span class="element-name">assembly</span></div>
+<div class="block">The <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc"><code>Assembly</code></a> that this is a part of.</div>
 </section>
 </li>
 </ul>
@@ -252,18 +252,18 @@ implements <a href="../IWorldUpdateListener.html" title="interface in etithespir
 <section class="detail" id="getAssembly()">
 <h3>getAssembly</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech">Assembly</a></span>&nbsp;<span class="element-name">getAssembly</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc">Assembly</a></span>&nbsp;<span class="element-name">getAssembly</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>The <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech"><code>Assembly</code></a> that this <a href="AbstractLightEnergyLink.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyLink</code></a> is a part of.</dd>
+<dd>The <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc"><code>Assembly</code></a> that this <a href="AbstractLightEnergyLink.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyLink</code></a> is a part of.</dd>
 </dl>
 </section>
 </li>
 <li>
-<section class="detail" id="setAssembly(etithespirit.orimod.lighttech.Assembly)">
+<section class="detail" id="setAssembly(etithespirit.orimod.lighttechlgc.Assembly)">
 <h3>setAssembly</h3>
-<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAssembly</span><wbr><span class="parameters">(<a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech">Assembly</a>&nbsp;assembly)</span></div>
-<div class="block">Intended for internal use only. Sets the <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech"><code>Assembly</code></a> associated with this <a href="AbstractLightEnergyLink.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyLink</code></a></div>
+<div class="member-signature"><span class="modifiers">public</span>&nbsp;<span class="return-type">void</span>&nbsp;<span class="element-name">setAssembly</span><wbr><span class="parameters">(<a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc">Assembly</a>&nbsp;assembly)</span></div>
+<div class="block">Intended for internal use only. Sets the <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc"><code>Assembly</code></a> associated with this <a href="AbstractLightEnergyLink.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyLink</code></a></div>
 <dl class="notes">
 <dt>Parameters:</dt>
 <dd><code>assembly</code> - The assembly associated with this line.</dd>
@@ -274,10 +274,10 @@ implements <a href="../IWorldUpdateListener.html" title="interface in etithespir
 <section class="detail" id="getAssemblyLine()">
 <h3>getAssemblyLine</h3>
 <div class="member-signature"><span class="annotations">@Nullable
-</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../lighttech/Line.html" title="class in etithespirit.orimod.lighttech">Line</a></span>&nbsp;<span class="element-name">getAssemblyLine</span>()</div>
+</span><span class="modifiers">public</span>&nbsp;<span class="return-type"><a href="../../../lighttech/Line.html" title="class in etithespirit.orimod.lighttechlgc">Line</a></span>&nbsp;<span class="element-name">getAssemblyLine</span>()</div>
 <dl class="notes">
 <dt>Returns:</dt>
-<dd>The specific line that this <a href="AbstractLightEnergyLink.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyLink</code></a> is a part of in its <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttech"><code>Assembly</code></a>. If this has no assembly, this will return null;</dd>
+<dd>The specific line that this <a href="AbstractLightEnergyLink.html" title="class in etithespirit.orimod.common.tile.light"><code>AbstractLightEnergyLink</code></a> is a part of in its <a href="../../../lighttech/Assembly.html" title="class in etithespirit.orimod.lighttechlgc"><code>Assembly</code></a>. If this has no assembly, this will return null;</dd>
 </dl>
 </section>
 </li>

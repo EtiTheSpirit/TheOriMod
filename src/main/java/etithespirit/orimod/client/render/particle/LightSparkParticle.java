@@ -33,13 +33,14 @@ public abstract class LightSparkParticle extends Particle {
 		public void begin(BufferBuilder pBuilder, TextureManager pTextureManager) {
 			RenderSystem.depthMask(true);
 			RenderSystem.enableBlend();
-			pTextureManager.bindForSetup(FORGE_WHITE);
+			RenderSystem.disableTexture();
 			RenderSystem.blendFunc(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA);
 			pBuilder.begin(VertexFormat.Mode.QUADS, DefaultVertexFormat.PARTICLE);
 		}
 		
 		@Override
 		public void end(Tesselator pTesselator) {
+			RenderSystem.enableTexture();
 			pTesselator.end();
 		}
 	};
