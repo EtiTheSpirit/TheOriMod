@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "textures": {
+    "end": "orimod:block/stripped_decay_log_top",
+    "side": "orimod:block/stripped_decay_log"
+  }
+}

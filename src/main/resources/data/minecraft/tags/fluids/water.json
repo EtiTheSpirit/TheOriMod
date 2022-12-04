@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "orimod:decay_poison",
+    "orimod:flowing_decay_poison"
+  ]
+}

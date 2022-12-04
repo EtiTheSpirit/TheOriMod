@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "orimod:block/decay_log_top",
+    "side": "orimod:block/decay_log"
+  }
+}

@@ -1,0 +1,292 @@
+{
+  "variants": {
+    "adjacent_filled=false,axis=x,edge_test_rarity=0,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=0,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=1,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=1,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=2,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=2,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=3,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=3,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=4,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=4,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=5,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=x,edge_test_rarity=5,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=0,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=0,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=1,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=1,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=2,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=2,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=3,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=3,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=4,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=4,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=5,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=y,edge_test_rarity=5,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=0,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=0,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=1,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=1,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=2,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=2,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=3,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=3,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=4,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=4,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=5,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=false,axis=z,edge_test_rarity=5,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=0,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=0,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=1,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=1,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=2,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=2,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=3,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=3,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=4,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=4,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=5,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=x,edge_test_rarity=5,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90,
+      "y": 90
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=0,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=0,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=1,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=1,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=2,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=2,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=3,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=3,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=4,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=4,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=5,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=y,edge_test_rarity=5,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log"
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=0,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=0,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=1,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=1,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=2,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=2,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=3,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=3,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=4,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=4,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=5,is_safe=false": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    },
+    "adjacent_filled=true,axis=z,edge_test_rarity=5,is_safe=true": {
+      "model": "orimod:block/stripped_decay_log_horizontal",
+      "x": 90
+    }
+  }
+}

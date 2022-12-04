@@ -1,0 +1,813 @@
+{
+  "entity.spirit.step.gravel.snowy": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel1",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel2",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel0",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel9",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel7",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel8",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel5",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel6",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel3",
+      "orimod:spirit/step/gravel/snowy/stepsnowygravel4"
+    ]
+  },
+  "entity.spirit.aquatic.swim": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/aquatic/swim/swim3",
+      "orimod:spirit/aquatic/swim/swim2",
+      "orimod:spirit/aquatic/swim/swim1",
+      "orimod:spirit/aquatic/swim/swim0"
+    ]
+  },
+  "item.spirit_arc.shot.charge_overlay": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_weapons/arc/shot/charge_overlay/bowchargeshot0",
+      "orimod:light_weapons/arc/shot/charge_overlay/bowchargeshot1",
+      "orimod:light_weapons/arc/shot/charge_overlay/bowchargeshot2"
+    ]
+  },
+  "tile.light_tech.generic.active_loop": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/generic/ambient"
+    ]
+  },
+  "block.decay_poison.gurgle": {
+    "category": "master",
+    "sounds": [
+      "orimod:world/decay/poison/decaypoison3",
+      "orimod:world/decay/poison/decaypoison1",
+      "orimod:world/decay/poison/decaypoison2",
+      "orimod:world/decay/poison/decaypoison0"
+    ]
+  },
+  "entity.spirit.death.drown": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/death/drown/deathdrown1",
+      "orimod:spirit/death/drown/deathdrown0",
+      "orimod:spirit/death/drown/deathdrown2"
+    ]
+  },
+  "entity.spirit.respawn2": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/respawn/respawnalt"
+    ]
+  },
+  "entity.spirit.step.ice": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/ice/stepice8",
+      "orimod:spirit/step/ice/stepice9",
+      "orimod:spirit/step/ice/stepice4",
+      "orimod:spirit/step/ice/stepice5",
+      "orimod:spirit/step/ice/stepice6",
+      "orimod:spirit/step/ice/stepice7",
+      "orimod:spirit/step/ice/stepice0",
+      "orimod:spirit/step/ice/stepice1",
+      "orimod:spirit/step/ice/stepice2",
+      "orimod:spirit/step/ice/stepice3"
+    ]
+  },
+  "entity.spirit.step.wood.wet": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/wood/wet/stepwetwood5",
+      "orimod:spirit/step/wood/wet/stepwetwood6",
+      "orimod:spirit/step/wood/wet/stepwetwood3",
+      "orimod:spirit/step/wood/wet/stepwetwood4",
+      "orimod:spirit/step/wood/wet/stepwetwood1",
+      "orimod:spirit/step/wood/wet/stepwetwood2",
+      "orimod:spirit/step/wood/wet/stepwetwood0"
+    ]
+  },
+  "entity.spirit.aquatic.swim_above": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/aquatic/swim_above/swimsurface0",
+      "orimod:spirit/aquatic/swim_above/swimsurface2",
+      "orimod:spirit/aquatic/swim_above/swimsurface1",
+      "orimod:spirit/aquatic/swim_above/swimsurface3"
+    ]
+  },
+  "entity.light_vessel.drop": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_vessel/drop"
+    ]
+  },
+  "entity.spirit.step.ash": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/ash/stepash9",
+      "orimod:spirit/step/ash/stepash8",
+      "orimod:spirit/step/ash/stepash7",
+      "orimod:spirit/step/ash/stepash6",
+      "orimod:spirit/step/ash/stepash1",
+      "orimod:spirit/step/ash/stepash0",
+      "orimod:spirit/step/ash/stepash5",
+      "orimod:spirit/step/ash/stepash4",
+      "orimod:spirit/step/ash/stepash3",
+      "orimod:spirit/step/ash/stepash2"
+    ]
+  },
+  "entity.spirit.attack.sweep": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/attack/sweep/sweep2",
+      "orimod:spirit/attack/sweep/sweep0",
+      "orimod:spirit/attack/sweep/sweep1"
+    ]
+  },
+  "entity.spirit.step.organic": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/organic/steporganic2",
+      "orimod:spirit/step/organic/steporganic3",
+      "orimod:spirit/step/organic/steporganic0",
+      "orimod:spirit/step/organic/steporganic1",
+      "orimod:spirit/step/organic/steporganic6",
+      "orimod:spirit/step/organic/steporganic7",
+      "orimod:spirit/step/organic/steporganic4",
+      "orimod:spirit/step/organic/steporganic5",
+      "orimod:spirit/step/organic/steporganic8",
+      "orimod:spirit/step/organic/steporganic9"
+    ]
+  },
+  "entity.spirit.step.chitin": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/chitin/stepchitin9",
+      "orimod:spirit/step/chitin/stepchitin8",
+      "orimod:spirit/step/chitin/stepchitin7",
+      "orimod:spirit/step/chitin/stepchitin6",
+      "orimod:spirit/step/chitin/stepchitin5",
+      "orimod:spirit/step/chitin/stepchitin4",
+      "orimod:spirit/step/chitin/stepchitin3",
+      "orimod:spirit/step/chitin/stepchitin2",
+      "orimod:spirit/step/chitin/stepchitin1",
+      "orimod:spirit/step/chitin/stepchitin0"
+    ]
+  },
+  "entity.spirit.attack.crit": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/attack/crit/crit1",
+      "orimod:spirit/attack/crit/crit0",
+      "orimod:spirit/attack/crit/crit2"
+    ]
+  },
+  "item.spirit_arc.charge": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_weapons/arc/charge/bowcharge0",
+      "orimod:light_weapons/arc/charge/bowcharge2",
+      "orimod:light_weapons/arc/charge/bowcharge1"
+    ]
+  },
+  "tile.light_tech.generic.activate": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/generic/activate"
+    ]
+  },
+  "tile.light_tech.ambientfield.deactivate": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/ambientfield/deactivate/deactivate2",
+      "orimod:light_equipment/ambientfield/deactivate/deactivate3",
+      "orimod:light_equipment/ambientfield/deactivate/deactivate4",
+      "orimod:light_equipment/ambientfield/deactivate/deactivate5",
+      "orimod:light_equipment/ambientfield/deactivate/deactivate0",
+      "orimod:light_equipment/ambientfield/deactivate/deactivate1"
+    ]
+  },
+  "entity.spirit.step.wood.mossy": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/wood/mossy/stepmossywood0",
+      "orimod:spirit/step/wood/mossy/stepmossywood3",
+      "orimod:spirit/step/wood/mossy/stepmossywood4",
+      "orimod:spirit/step/wood/mossy/stepmossywood1",
+      "orimod:spirit/step/wood/mossy/stepmossywood2"
+    ]
+  },
+  "entity.spirit.jump.double": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/jump/double/doublejump4",
+      "orimod:spirit/jump/double/doublejump1",
+      "orimod:spirit/jump/double/doublejump0",
+      "orimod:spirit/jump/double/doublejump3",
+      "orimod:spirit/jump/double/doublejump2"
+    ]
+  },
+  "entity.spirit.step.gravel.wet": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/gravel/wet/stepwetgravel2",
+      "orimod:spirit/step/gravel/wet/stepwetgravel1",
+      "orimod:spirit/step/gravel/wet/stepwetgravel0",
+      "orimod:spirit/step/gravel/wet/stepwetgravel6",
+      "orimod:spirit/step/gravel/wet/stepwetgravel5",
+      "orimod:spirit/step/gravel/wet/stepwetgravel4",
+      "orimod:spirit/step/gravel/wet/stepwetgravel3"
+    ]
+  },
+  "item.light_shield.impact": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/shield/impact/impact2",
+      "orimod:spirit/shield/impact/impact1",
+      "orimod:spirit/shield/impact/impact0"
+    ]
+  },
+  "tile.light_tech.ambientfield.activate": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/ambientfield/activate/activate1",
+      "orimod:light_equipment/ambientfield/activate/activate0",
+      "orimod:light_equipment/ambientfield/activate/activate3",
+      "orimod:light_equipment/ambientfield/activate/activate2",
+      "orimod:light_equipment/ambientfield/activate/activate5",
+      "orimod:light_equipment/ambientfield/activate/activate4"
+    ]
+  },
+  "entity.spirit.step.slimy": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/slimy/stepslimy1",
+      "orimod:spirit/step/slimy/stepslimy0",
+      "orimod:spirit/step/slimy/stepslimy6",
+      "orimod:spirit/step/slimy/stepslimy3",
+      "orimod:spirit/step/slimy/stepslimy2",
+      "orimod:spirit/step/slimy/stepslimy5",
+      "orimod:spirit/step/slimy/stepslimy4"
+    ]
+  },
+  "item.light_shield.break": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/shield/break/break0",
+      "orimod:spirit/shield/break/break1",
+      "orimod:spirit/shield/break/break2"
+    ]
+  },
+  "entity.spirit.hurt.takedamage": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/hurt/takedamage/takedamage4",
+      "orimod:spirit/hurt/takedamage/takedamage3",
+      "orimod:spirit/hurt/takedamage/takedamage2",
+      "orimod:spirit/hurt/takedamage/takedamage1",
+      "orimod:spirit/hurt/takedamage/takedamage0"
+    ]
+  },
+  "entity.spirit.hurt": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/hurt/merged/hurt4",
+      "orimod:spirit/hurt/merged/hurt3",
+      "orimod:spirit/hurt/merged/hurt2",
+      "orimod:spirit/hurt/merged/hurt1",
+      "orimod:spirit/hurt/merged/hurt0"
+    ]
+  },
+  "entity.spirit.dash": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/dash/action/oridash4",
+      "orimod:spirit/dash/action/oridash2",
+      "orimod:spirit/dash/action/oridash3",
+      "orimod:spirit/dash/action/oridash0",
+      "orimod:spirit/dash/action/oridash1"
+    ]
+  },
+  "nullsound": {
+    "category": "master",
+    "sounds": [
+      "orimod:nullsound"
+    ]
+  },
+  "entity.spirit.step.shroom": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/shroom/stepshroom4",
+      "orimod:spirit/step/shroom/stepshroom0",
+      "orimod:spirit/step/shroom/stepshroom1",
+      "orimod:spirit/step/shroom/stepshroom2",
+      "orimod:spirit/step/shroom/stepshroom3"
+    ]
+  },
+  "entity.spirit.step.sand": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/sand/stepsand8",
+      "orimod:spirit/step/sand/stepsand9",
+      "orimod:spirit/step/sand/stepsand6",
+      "orimod:spirit/step/sand/stepsand7",
+      "orimod:spirit/step/sand/stepsand4",
+      "orimod:spirit/step/sand/stepsand5",
+      "orimod:spirit/step/sand/stepsand2",
+      "orimod:spirit/step/sand/stepsand3",
+      "orimod:spirit/step/sand/stepsand0",
+      "orimod:spirit/step/sand/stepsand1"
+    ]
+  },
+  "entity.spirit.dash.impactwall": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/dash/impact/hitwall0",
+      "orimod:spirit/dash/impact/hitwall2",
+      "orimod:spirit/dash/impact/hitwall1"
+    ]
+  },
+  "music.abilitygained.marsh_low": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/ability/fanfare/ability01_marsh"
+    ]
+  },
+  "entity.spirit.death.decay": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/death/decay/deathdecay6",
+      "orimod:spirit/death/decay/deathdecay7",
+      "orimod:spirit/death/decay/deathdecay4",
+      "orimod:spirit/death/decay/deathdecay5",
+      "orimod:spirit/death/decay/deathdecay2",
+      "orimod:spirit/death/decay/deathdecay3",
+      "orimod:spirit/death/decay/deathdecay0",
+      "orimod:spirit/death/decay/deathdecay1"
+    ]
+  },
+  "tile.light_tech.activate_large_b": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/activate_large_b"
+    ]
+  },
+  "item.lumo_wand.swapconduitauto": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_tools/lumo_wand/swapauto5",
+      "orimod:light_tools/lumo_wand/swapauto4",
+      "orimod:light_tools/lumo_wand/swapauto1",
+      "orimod:light_tools/lumo_wand/swapauto0",
+      "orimod:light_tools/lumo_wand/swapauto3",
+      "orimod:light_tools/lumo_wand/swapauto2"
+    ]
+  },
+  "tile.light_tech.activate_large_a": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/activate_large_a"
+    ]
+  },
+  "entity.spirit.step.snow": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/snow/stepsnow7",
+      "orimod:spirit/step/snow/stepsnow6",
+      "orimod:spirit/step/snow/stepsnow5",
+      "orimod:spirit/step/snow/stepsnow4",
+      "orimod:spirit/step/snow/stepsnow3",
+      "orimod:spirit/step/snow/stepsnow2",
+      "orimod:spirit/step/snow/stepsnow1",
+      "orimod:spirit/step/snow/stepsnow0",
+      "orimod:spirit/step/snow/stepsnow9",
+      "orimod:spirit/step/snow/stepsnow8"
+    ]
+  },
+  "item.spirit_arc.shot.base": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_weapons/arc/shot/standard/bowstandardshot2",
+      "orimod:light_weapons/arc/shot/standard/bowstandardshot3",
+      "orimod:light_weapons/arc/shot/standard/bowstandardshot0",
+      "orimod:light_weapons/arc/shot/standard/bowstandardshot1",
+      "orimod:light_weapons/arc/shot/standard/bowstandardshot4"
+    ]
+  },
+  "music.abilitygained.marsh_high": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/ability/fanfare/ability04_marsh"
+    ]
+  },
+  "item.spirit_arc.start": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_weapons/arc/draw/bowstart2",
+      "orimod:light_weapons/arc/draw/bowstart1",
+      "orimod:light_weapons/arc/draw/bowstart0",
+      "orimod:light_weapons/arc/draw/bowstart3"
+    ]
+  },
+  "entity.spirit.step.grass.hard": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/grass_hard/stephardgrass8",
+      "orimod:spirit/step/grass_hard/stephardgrass7",
+      "orimod:spirit/step/grass_hard/stephardgrass9",
+      "orimod:spirit/step/grass_hard/stephardgrass4",
+      "orimod:spirit/step/grass_hard/stephardgrass3",
+      "orimod:spirit/step/grass_hard/stephardgrass10",
+      "orimod:spirit/step/grass_hard/stephardgrass6",
+      "orimod:spirit/step/grass_hard/stephardgrass5",
+      "orimod:spirit/step/grass_hard/stephardgrass0",
+      "orimod:spirit/step/grass_hard/stephardgrass2",
+      "orimod:spirit/step/grass_hard/stephardgrass1"
+    ]
+  },
+  "tile.light_tech.generic.deactivate": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/generic/deactivate"
+    ]
+  },
+  "item.spirit_arc.impact.ricochet": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_weapons/arc/impact/ricochet/spiritarrowbounce1",
+      "orimod:light_weapons/arc/impact/ricochet/spiritarrowbounce2",
+      "orimod:light_weapons/arc/impact/ricochet/spiritarrowbounce0"
+    ]
+  },
+  "entity.spirit.death.vo": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/death/vo/deathvo0",
+      "orimod:spirit/death/vo/deathvo1",
+      "orimod:spirit/death/vo/deathvo2",
+      "orimod:spirit/death/vo/deathvo3"
+    ]
+  },
+  "entity.spirit.jump.triple": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/jump/triple/triplejump0",
+      "orimod:spirit/jump/triple/triplejump1",
+      "orimod:spirit/jump/triple/triplejump2",
+      "orimod:spirit/jump/triple/triplejump3",
+      "orimod:spirit/jump/triple/triplejump4"
+    ]
+  },
+  "music.abilitygained.any": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/ability/fanfare/ability03_generic"
+    ]
+  },
+  "entity.spirit.aquatic.breath.little": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/aquatic/breath/little/breathlittle2",
+      "orimod:spirit/aquatic/breath/little/breathlittle1",
+      "orimod:spirit/aquatic/breath/little/breathlittle4",
+      "orimod:spirit/aquatic/breath/little/breathlittle3",
+      "orimod:spirit/aquatic/breath/little/breathlittle0"
+    ]
+  },
+  "entity.spirit.step.bone": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/bone/stepbone8",
+      "orimod:spirit/step/bone/stepbone9",
+      "orimod:spirit/step/bone/stepbone2",
+      "orimod:spirit/step/bone/stepbone3",
+      "orimod:spirit/step/bone/stepbone0",
+      "orimod:spirit/step/bone/stepbone1",
+      "orimod:spirit/step/bone/stepbone6",
+      "orimod:spirit/step/bone/stepbone7",
+      "orimod:spirit/step/bone/stepbone4",
+      "orimod:spirit/step/bone/stepbone5"
+    ]
+  },
+  "entity.light_vessel.create": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_vessel/create"
+    ]
+  },
+  "player.ability_absorb": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/ability/fx/abilityabsorb"
+    ]
+  },
+  "entity.spirit.death.burn": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/death/burn/deathburn2",
+      "orimod:spirit/death/burn/deathburn3",
+      "orimod:spirit/death/burn/deathburn4",
+      "orimod:spirit/death/burn/deathburn0",
+      "orimod:spirit/death/burn/deathburn1"
+    ]
+  },
+  "entity.light_vessel.spawn": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_vessel/spawn"
+    ]
+  },
+  "item.spirit_arc.impact.normal": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_weapons/arc/impact/normal/bowhitsmall0",
+      "orimod:light_weapons/arc/impact/normal/bowhitsmall2",
+      "orimod:light_weapons/arc/impact/normal/bowhitsmall1",
+      "orimod:light_weapons/arc/impact/normal/bowhitsmall4",
+      "orimod:light_weapons/arc/impact/normal/bowhitsmall3"
+    ]
+  },
+  "entity.spirit.aquatic.breath.medium": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/aquatic/breath/medium/breathmed4",
+      "orimod:spirit/aquatic/breath/medium/breathmed0",
+      "orimod:spirit/aquatic/breath/medium/breathmed1",
+      "orimod:spirit/aquatic/breath/medium/breathmed2",
+      "orimod:spirit/aquatic/breath/medium/breathmed3"
+    ]
+  },
+  "entity.light_vessel.ambient": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_vessel/ambient"
+    ]
+  },
+  "entity.spirit.step.rock": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/rock/stepdryrock9",
+      "orimod:spirit/step/rock/stepdryrock8",
+      "orimod:spirit/step/rock/stepdryrock7",
+      "orimod:spirit/step/rock/stepdryrock6",
+      "orimod:spirit/step/rock/stepdryrock5",
+      "orimod:spirit/step/rock/stepdryrock4",
+      "orimod:spirit/step/rock/stepdryrock3",
+      "orimod:spirit/step/rock/stepdryrock2",
+      "orimod:spirit/step/rock/stepdryrock1",
+      "orimod:spirit/step/rock/stepdryrock0"
+    ]
+  },
+  "entity.spirit.hurt.vo": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/hurt/vo/hurtvo4",
+      "orimod:spirit/hurt/vo/hurtvo2",
+      "orimod:spirit/hurt/vo/hurtvo3",
+      "orimod:spirit/hurt/vo/hurtvo0",
+      "orimod:spirit/hurt/vo/hurtvo1"
+    ]
+  },
+  "entity.spirit.step.glass": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/glass/stepglass2",
+      "orimod:spirit/step/glass/stepglass1",
+      "orimod:spirit/step/glass/stepglass0"
+    ]
+  },
+  "entity.spirit.death.generic": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/death/generic/death0",
+      "orimod:spirit/death/generic/death1",
+      "orimod:spirit/death/generic/death2",
+      "orimod:spirit/death/generic/death3",
+      "orimod:spirit/death/generic/death4"
+    ]
+  },
+  "item.spirit_arc.impact.crit": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_weapons/arc/impact/crit/spiritarrowhitcrit0",
+      "orimod:light_weapons/arc/impact/crit/spiritarrowhitcrit1",
+      "orimod:light_weapons/arc/impact/crit/spiritarrowhitcrit2",
+      "orimod:light_weapons/arc/impact/crit/spiritarrowhitcrit3",
+      "orimod:light_weapons/arc/impact/crit/spiritarrowhitcrit4"
+    ]
+  },
+  "entity.spirit.step.wood.snowy": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/wood/snowy/stepsnowywood2",
+      "orimod:spirit/step/wood/snowy/stepsnowywood1",
+      "orimod:spirit/step/wood/snowy/stepsnowywood0",
+      "orimod:spirit/step/wood/snowy/stepsnowywood6",
+      "orimod:spirit/step/wood/snowy/stepsnowywood5",
+      "orimod:spirit/step/wood/snowy/stepsnowywood4",
+      "orimod:spirit/step/wood/snowy/stepsnowywood3",
+      "orimod:spirit/step/wood/snowy/stepsnowywood9",
+      "orimod:spirit/step/wood/snowy/stepsnowywood8",
+      "orimod:spirit/step/wood/snowy/stepsnowywood7"
+    ]
+  },
+  "tile.light_tech.energize": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/energize/energize0",
+      "orimod:light_equipment/energize/energize1",
+      "orimod:light_equipment/energize/energize2",
+      "orimod:light_equipment/energize/energize3",
+      "orimod:light_equipment/energize/energize4",
+      "orimod:light_equipment/energize/energize5"
+    ]
+  },
+  "entity.spirit.step.wood.dry": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/wood/dry/stepdrywood4",
+      "orimod:spirit/step/wood/dry/stepdrywood3",
+      "orimod:spirit/step/wood/dry/stepdrywood2",
+      "orimod:spirit/step/wood/dry/stepdrywood1",
+      "orimod:spirit/step/wood/dry/stepdrywood0"
+    ]
+  },
+  "entity.spirit.step.water.shallow": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/water/shallow/stepwater2",
+      "orimod:spirit/step/water/shallow/stepwater1",
+      "orimod:spirit/step/water/shallow/stepwater3",
+      "orimod:spirit/step/water/shallow/stepwater0"
+    ]
+  },
+  "entity.spirit.step.grass.soft": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/grass_soft/stepsoftgrass8",
+      "orimod:spirit/step/grass_soft/stepsoftgrass7",
+      "orimod:spirit/step/grass_soft/stepsoftgrass9",
+      "orimod:spirit/step/grass_soft/stepsoftgrass4",
+      "orimod:spirit/step/grass_soft/stepsoftgrass3",
+      "orimod:spirit/step/grass_soft/stepsoftgrass6",
+      "orimod:spirit/step/grass_soft/stepsoftgrass5",
+      "orimod:spirit/step/grass_soft/stepsoftgrass0",
+      "orimod:spirit/step/grass_soft/stepsoftgrass2",
+      "orimod:spirit/step/grass_soft/stepsoftgrass1"
+    ]
+  },
+  "entity.spirit.step.wool": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/wool/stepwool0",
+      "orimod:spirit/step/wool/stepwool1"
+    ]
+  },
+  "entity.spirit.jump.single": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/jump/single/singlejump4",
+      "orimod:spirit/jump/single/singlejump2",
+      "orimod:spirit/jump/single/singlejump3",
+      "orimod:spirit/jump/single/singlejump0",
+      "orimod:spirit/jump/single/singlejump1"
+    ]
+  },
+  "entity.spirit.jump.wall": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/jump/wall/walljump1",
+      "orimod:spirit/jump/wall/walljump0",
+      "orimod:spirit/jump/wall/walljump3",
+      "orimod:spirit/jump/wall/walljump2",
+      "orimod:spirit/jump/wall/walljump4"
+    ]
+  },
+  "tile.light_tech.ambientfield.loop_magic": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_equipment/ambientfield/loop/loopcrystal"
+    ]
+  },
+  "entity.spirit.step.ceramic.broken": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic0",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic1",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic2",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic3",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic4",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic5",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic6",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic7",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic8",
+      "orimod:spirit/step/ceramic/broken/stepbrokenceramic9"
+    ]
+  },
+  "player.ability_done_absorbing": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/ability/fx/abilitydone"
+    ]
+  },
+  "entity.light_vessel.scrape": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_vessel/collision2",
+      "orimod:light_vessel/collision3",
+      "orimod:light_vessel/collision0",
+      "orimod:light_vessel/collision1"
+    ]
+  },
+  "entity.spirit.step.water.deep": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/water/deep/stepdeeppuddle1",
+      "orimod:spirit/step/water/deep/stepdeeppuddle0",
+      "orimod:spirit/step/water/deep/stepdeeppuddle3",
+      "orimod:spirit/step/water/deep/stepdeeppuddle2",
+      "orimod:spirit/step/water/deep/stepdeeppuddle5",
+      "orimod:spirit/step/water/deep/stepdeeppuddle4",
+      "orimod:spirit/step/water/deep/stepdeeppuddle7",
+      "orimod:spirit/step/water/deep/stepdeeppuddle6",
+      "orimod:spirit/step/water/deep/stepdeeppuddle9",
+      "orimod:spirit/step/water/deep/stepdeeppuddle8"
+    ]
+  },
+  "entity.spirit.step.gravel.dry": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/gravel/dry/stepdrygravel2",
+      "orimod:spirit/step/gravel/dry/stepdrygravel1",
+      "orimod:spirit/step/gravel/dry/stepdrygravel4",
+      "orimod:spirit/step/gravel/dry/stepdrygravel3",
+      "orimod:spirit/step/gravel/dry/stepdrygravel0"
+    ]
+  },
+  "music.abilitygained.aqua": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/ability/fanfare/ability02_aqua"
+    ]
+  },
+  "entity.spirit.attack.knockback": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/attack/knockback/knockback2",
+      "orimod:spirit/attack/knockback/knockback1",
+      "orimod:spirit/attack/knockback/knockback0"
+    ]
+  },
+  "entity.spirit.step.metal": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/metal/stepmetal9",
+      "orimod:spirit/step/metal/stepmetal8",
+      "orimod:spirit/step/metal/stepmetal5",
+      "orimod:spirit/step/metal/stepmetal4",
+      "orimod:spirit/step/metal/stepmetal7",
+      "orimod:spirit/step/metal/stepmetal6",
+      "orimod:spirit/step/metal/stepmetal1",
+      "orimod:spirit/step/metal/stepmetal0",
+      "orimod:spirit/step/metal/stepmetal3",
+      "orimod:spirit/step/metal/stepmetal2"
+    ]
+  },
+  "entity.spirit.respawn": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/respawn/respawn"
+    ]
+  },
+  "entity.spirit.step.ceramic.solid": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic7",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic8",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic9",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic3",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic4",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic5",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic6",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic0",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic1",
+      "orimod:spirit/step/ceramic/solid/stepsolidceramic2"
+    ]
+  },
+  "music.abilitygained.desert": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/ability/fanfare/ability05_desert"
+    ]
+  },
+  "entity.spirit.aquatic.breath.big": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/aquatic/breath/big/breathbig3",
+      "orimod:spirit/aquatic/breath/big/breathbig0",
+      "orimod:spirit/aquatic/breath/big/breathbig2",
+      "orimod:spirit/aquatic/breath/big/breathbig1"
+    ]
+  }
+}

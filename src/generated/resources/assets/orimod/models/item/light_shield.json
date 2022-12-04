@@ -1,0 +1,14 @@
+{
+  "parent": "minecraft:item/shield",
+  "overrides": [
+    {
+      "model": "orimod:item/light_shield_blocking",
+      "predicate": {
+        "minecraft:blocking": 1.0
+      }
+    }
+  ],
+  "textures": {
+    "particle": "minecraft:block/glass"
+  }
+}

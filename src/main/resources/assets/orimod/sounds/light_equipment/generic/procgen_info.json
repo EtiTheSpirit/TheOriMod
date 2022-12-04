@@ -1,0 +1,14 @@
+{
+	"category" : "block",
+	"audioNames" : {
+		"tile.light_tech.generic.activate" : [
+			"activate.ogg"
+		],
+		"tile.light_tech.generic.deactivate" : [
+			"deactivate.ogg"
+		],
+		"tile.light_tech.generic.active_loop" : [
+			"ambient.ogg"
+		]
+	}
+}

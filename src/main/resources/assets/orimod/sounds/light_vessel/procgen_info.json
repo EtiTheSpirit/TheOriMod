@@ -1,0 +1,23 @@
+{
+	"category" : "block",
+	"audioNames" : {
+		"entity.light_vessel.spawn" : [
+			"spawn.ogg"
+		],
+		"entity.light_vessel.create" : [
+			"create.ogg"
+		],
+		"entity.light_vessel.ambient" : [
+			"ambient.ogg"
+		],
+		"entity.light_vessel.drop" : [
+			"drop.ogg"
+		],
+		"entity.light_vessel.scrape" : [
+			"collision0.ogg",
+			"collision1.ogg",
+			"collision2.ogg",
+			"collision3.ogg"
+		]
+	}
+}

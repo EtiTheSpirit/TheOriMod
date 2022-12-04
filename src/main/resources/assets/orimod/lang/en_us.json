@@ -1,0 +1,152 @@
+{
+	"item.orimod.spiritglow.name" : "Spirit Glow",
+	"item.orimod.lifecell.name" : "Life Cell",
+
+	"item.orimod.light_omnitool" : "Spirit Omni-Tool",
+	"item.orimod.light_shield" : "Spirit Shield",
+	"item.orimod.spirit_arc" : "Spirit Arc",
+	
+	"item.orimod.armor.light_helmet" : "§bHard-Light Helmet",
+	"item.orimod.armor.light_chestplate" : "§bHard-Light Chestplate",
+	"item.orimod.armor.light_leggings" : "§bHard-Light Leggings",
+	"item.orimod.armor.light_boots" : "§bHard-Light Boots",
+
+	"tooltip.orimod.focuslight.1" : "§3Sneak and hold RMB",
+	"tooltip.orimod.focuslight.2" : "§3to focus your §bLight",
+	"tooltip.orimod.focuslight.3" : "§3and repair this item!",
+
+	"tooltip.orimod.lumowand.1" : "§3Press Sneak+Use to set",
+	"tooltip.orimod.lumowand.2" : "§3the auto-connect mode",
+	"tooltip.orimod.lumowand.3" : "§3of a conduit, or press",
+	"tooltip.orimod.lumowand.4" : "§3Use to set if a side",
+	"tooltip.orimod.lumowand.5" : "§3has an output on it.",
+
+	"info.orimod.lumowand.autoon" : "Automatic Connections: On",
+	"info.orimod.lumowand.autooff" : "Automatic Connections: Off",
+
+	"input.orimod.dash" : "Dash",
+	"input.orimod.climb" : "Climb",
+	"input.orimod.cling" : "Wall Cling",
+
+	"entity.orimod.spirit.name" : "Spirit",
+	
+	"itemGroup.orimod.spirit_combat" : "Spirit Combat",
+	"itemGroup.orimod.spirit_tools" : "Spirit Tools",
+	"itemGroup.orimod.spirit_machinery" : "Luxen Machinery",
+	"itemGroup.orimod.spirit_machinery_parts" : "Luxen Machinery Parts",
+	"itemGroup.orimod.decay" : "Decay-Infected Blocks",
+
+	"block.orimod.decay_log" : "§5Decaying Petrified Log",
+	"block.orimod.decay_dirt_mycelium" : "§5Earthy Decay Mycelium",
+	"block.orimod.decay_plantmatter_mycelium" : "§5Planty Decay Mycelium",
+	"block.orimod.stripped_decay_log" : "§5Stripped Decaying Petrified Log",
+	"block.orimod.decay_surface_mycelium" : "§5Decay Mycelium Coating",
+	"block.orimod.decay_log_cured" : "Petrified Log",
+	"block.orimod.stripped_decay_log_cured" : "Stripped Petrified Log",
+	"block.orimod.decay_poison" : "§5Decay Poison",
+	
+	"block.orimod.light_capacitor" : "§bLight Capacitor",
+	"block.orimod.light_conduit" : "§bLight Conduit",
+
+	"item.orimod.lumo_wand" : "§bLumo Wand",
+	"item.orimod.decay_poison_bucket" : "§5Decay Poison Bucket",
+
+	"effect.orimod.decay" : "Decay",
+	"effect.orimod.radiant" : "Radiant",
+
+	"death.attack.decay" : "%1$s was lost to The Decay.",
+	"death.attack.decay.player" : "%1$s was lost to The Decay.",
+
+	"death.attack.light" : "%1$s was incinerated by Light energy.",
+	"death.attack.light.player" : "%1$s was incinerated by Light energy.",
+
+	"death.attack.spirit_arc" : "%1$s was pierced by hard light.",
+	"death.attack.spirit_arc.player" : "%1$s was pierced by hard light.",
+
+	"orimod.spirit_restrictions.no_meat" : "You know you can't eat this. You're a herbivore!",
+
+	"config.orimod.general" : "General Configuration",
+
+	"config.orimod.spirit_abilities" : "Spirit Abilities",
+
+	"config.orimod.spirit_abilities.air_jumps" : "Air Jump Count",
+	"config.orimod.spirit_abilities.air_jumps.description" : "§cThis is not yet functional, and is always set to 2.§f The amount of jumps a spirit can perform whilst in the air. 1 is double jump, and 2 is triple jump.",
+
+	"config.orimod.spirit_abilities.know_double_jump" : "Know Double-Jump By Default",
+	"config.orimod.spirit_abilities.know_double_jump.description" : "§cThis is not yet functional, and is always enabled.§f Whether or not Spirit players will know how to double jump as soon as becoming one.",
+
+	"config.orimod.spirit_abilities.know_dash" : "Know Dash By Default",
+	"config.orimod.spirit_abilities.know_dash.description" : "§cThis is not yet functional, and is always enabled.§f Whether or not Spirit players will know how to dash on land as soon as becoming one.",
+
+	"config.orimod.spirit_abilities.know_air_dash" : "Know Air-Dash By Default",
+	"config.orimod.spirit_abilities.know_air_dash.description" : "§cThis is not yet functional, and is always enabled.§f §lRequires Dash to use! §fWhether or not Spirit players will know to dash whilst in the air.",
+
+	"config.orimod.spirit_abilities.know_water_dash" : "Know Water-Dash By Default",
+	"config.orimod.spirit_abilities.know_water_dash.description" : "§cThis is not yet functional, and is always enabled.§f §lRequires Dash to use! §fWhether or not Spirit players will know to dash whilst in water.",
+
+
+
+	"config.orimod.spirit_management" : "Spirit State Management",
+
+	"config.orimod.spirit_management.default_state" : "Default State",
+	"config.orimod.spirit_management.default_state.description" : "The Default State mandates whether or not new saves (or new players, on servers) will start out as a Spirit by default.",
+
+	"config.orimod.spirit_management.force_state" : "Forcefully Use the Default State",
+	"config.orimod.spirit_management.force_state.description" : "If enabled, all players, including those that have the permission to change whether or not they are a Spirit, will be forced to either be a Player or a Spirit based on the Default State.",
+
+	"config.orimod.spirit_management.allow_changes_default" : "Allow Changing State",
+	"config.orimod.spirit_management.allow_changes_default.description" : "Whether or not to allow players to change between Player and Spirit. There is a permissions file that dictates who is explicitly allowed to, and who is explicitly not allowed to, which can be used to override this value per player.",
+
+	"config.orimod.spirit_management.only_eat_plants" : "Allow Eating Only Plants",
+	"config.orimod.spirit_management.only_eat_plants.description" : "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
+
+	"config.orimod.light_energy" : "Luxen Configuration (Light Technology)",
+
+	"config.orimod.light_energy.rf_to_lux" : "RF to Luxen Conversion Ratio",
+	"config.orimod.light_energy.rf_to_lux.description" : "§cThis is not yet functional.§f How much §cRF §fis required to get 1 §bLuxen.",
+
+	"config.orimod.light_energy.env_power" : "Environmental Light Efficiency",
+	"config.orimod.light_energy.env_power.description" : "§cThis is not yet functional.§f If enabled, environments of §5Decay §for §bLight §fwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §fenvironments and easier in §bLight §fenvironments..",
+
+	"config.orimod.rendering" : "Rendering Configuration",
+	"config.orimod.rendering.assembly_debug" : "Render AOS Debug Info",
+	"config.orimod.rendering.assembly_debug.description" : "The §bA§fssembly §bO§fptimization §bS§fystem is responsible for allowing excessively large machines to have low CPU usage. This option will cause debugging info for the AOS to show when the debug menu (F3) is open. §cThis feature can make the debug menu very laggy!§f",
+	"config.orimod.rendering.override_health_rendering" : "Override Health Renderer",
+	"config.orimod.rendering.override_health_rendering.description" : "§cThis method is not recommended and may cause bugs! §rIf enabled, render calls to draw vanilla health are intercepted and the texture for hearts is replaced on the fly. If false, an alternate technique will be used that quietly overlays on top of the existing graphics.",
+
+	"config.orimod.world" : "World Configuration",
+	"config.orimod.world.spirit_materials" : "Spirit Step Sound Bindings",
+	"config.orimod.world.spirit_materials.description" : "Binds blocks or block states to a specific SpiritMaterial, which changes the sound when stepping on a block of that material.",
+	"config.orimod.world.decay.spreading" : "General Decay Spreading",
+	"config.orimod.world.decay.spreading.description" : "Dictates how all §5Decay §fspreads in the world. It can either spread (spreads on random ticks, replaces blocks it can infect), not spread, or flat out not exist (it will cure or remove itself on random ticks)",
+	"config.orimod.world.decay.surface_coating" : "Decay Surface Mycelium Spreading",
+	"config.orimod.world.decay.surface_coating.description" : "Dictates how all §5Decay Surface Mycelium §fspreads in the world. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+	"config.orimod.world.decay.fluid" : "Decay Poison Spreading",
+	"config.orimod.world.decay.fluid.description" : "Dictates how all §5Decay Poison §fspreads in the world. This block is particularly aggressive in that it infects and replaces water. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+	"config.orimod.world.decay.diagonal_spread" : "Allow Diagonal Spreading",
+	"config.orimod.world.decay.diagonal_spread.description" : "If enabled, §5Decay §fblocks can spread diagonally by one block. This has somewhat of a performance impact (albeit minor). If disabled, they will only spread to the six direct neighbors to any given block, but can leverage a performance boost.",
+
+	"config.orimod.assembly_optimization_system.greedy_optimization" : "Greedy Optimization",
+	"config.orimod.assembly_optimization_system.greedy_optimization.description" : "Greedy Optimization can make accessing data about assemblies faster. This provides §aan extremely positive boost in performance §fat the cost of §cincreased memory usage§f. §bIt is STRONGLY advised that you leave this ON unless your server / world is host to excessive amounts (thousands) of Light tech connector blocks§f.",
+	"config.orimod.assembly_optimization_system.keep_chunks_alive" : "Keep Chunks Alive",
+	"config.orimod.assembly_optimization_system.keep_chunks_alive.description" : "This can be used to keep chunks containing functional Light tech (§7meaning they must be doing something with their energy§f) alive. This §aimproves gameplay by allowing tech to operate whilst unattended §fat the cost of §cmore CPU usage (the usage scales with how much is going on)§f.",
+
+	"waila.orimod.energy" : "Storage: §b%1$s Luxen",
+	"waila.orimod.energy_rf" : "Storage: §b%1$s Luxen (%2$s RF)",
+	"waila.orimod.env_flux" : "§3Affected by Environmental Flux",
+	"waila.orimod.autoconnecttrue" : "Automatic Connections: §aYes",
+	"waila.orimod.autoconnectfalse" : "Automatic Connections: §cNo",
+	"waila.orimod.decaysafetrue" : "Actively Decaying: §bNo §a(Safe!)",
+	"waila.orimod.decaysafefalse" : "Actively Decaying: §5Yes §c(Danger!)",
+
+	"config.waila.plugin_orimod.show_auto" : "Display autoconnection state of tech",
+	"config.waila.plugin_orimod.show_decay_state" : "Show safety of petrified blocks",
+	"config.waila.plugin_orimod.show_energy" : "Show stored Luxen in tech blocks",
+
+	"command.orimod.setspirit.success" : "Success! Player %1$s has been updated. Their state of being a Spirit has changed to: %2$s",
+	"command.orimod.setspirit.success_self" : "Success! Your state of being a Spirit has changed to: %1$s",
+	"command.orimod.getspirit.status" : "Player %1$s has a spirit state of: %2$s",
+	"command.orimod.setspirit.failure_insufficent_permissions_self" : "§cYou do not have permission to change your own state.",
+	"command.orimod.setspirit.failure_insufficent_permissions_others" : "§cYou do not have permission to modify the state of others.",
+	"command.orimod.setspirit.failure_server_forces_state" : "§cThe server is currently enforcing that all players use the default state, and nobody (including ops) can change."
+}
