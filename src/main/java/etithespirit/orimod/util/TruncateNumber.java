@@ -15,7 +15,7 @@ public final class TruncateNumber {
 	// Prevent instances
 	private TruncateNumber() { throw new UnsupportedOperationException("Attempt to create new instance of static class " + this.getClass().getSimpleName()); }
 	
-	private static final String[] TRUNCATE_LABELS = {"K", "M", "B", "T", "P"};
+	private static final String[] TRUNCATE_LABELS = {"k", "M", "B", "T", "P"};
 	
 	/**
 	 * Returns the number 10^value
@@ -27,13 +27,30 @@ public final class TruncateNumber {
 	}
 	
 	/**
+	 * A variant of {@link #tenToPowerOf(double)} that runs much faster for values 0-5 via a LUT instead of using math.pow
+	 * @param value
+	 * @return
+	 */
+	private static double tenToPowerOfFast(int value) {
+		return switch (value) {
+			case 0 -> 1D;
+			case 1 -> 10D;
+			case 2 -> 100D;
+			case 3 -> 1000D;
+			case 4 -> 10000D;
+			case 5 -> 100000D;
+			default -> Math.pow(10, value);
+		};
+	}
+	
+	/**
 	 * Rounds the given number and preserves the given number of places in the decimals.
 	 * @param value The value to round.
 	 * @param places The number of places to preserve.
 	 * @return The given value rounded down to the number of places.
 	 */
 	private static double roundPlaces(double value, int places) {
-		double e = tenToPowerOf(places);
+		double e = tenToPowerOfFast(places);
 		return Math.round(value * e) / e;
 	}
 	
@@ -53,11 +70,14 @@ public final class TruncateNumber {
 	 * @return A string representing this value truncated with SI endings, down to the given amount of decimal places of accuracy.
 	 */
 	public static String truncateNumber(double number, int placeCount) {
+		if (Double.isNaN(number)) return "NaN";
+		if (Double.isInfinite(number)) return number > 0 ? "Infinity" : "Negative Infinity";
+		
 		int div = 3; // The 10^div factor that this number will be tested to fit into.
 		int count = 0;
 		// int letterCount = 0; // If we're over the limit of the truncate letter pool, this will increase, allowing for things like "1KY" for 1000Y. It is tested by Count.
 		
-		double resultingValue = number / tenToPowerOf(div);
+		double resultingValue = number / tenToPowerOfFast(div);
 		if (resultingValue < 1) {
 			return String.valueOf(roundPlaces(number, placeCount));
 		}
@@ -66,7 +86,7 @@ public final class TruncateNumber {
 			// letterCount = (int) (1 + Math.floor(count / TRUNCATE_LABELS.length));
 			div += 3;
 			count += 1;
-			resultingValue = number / tenToPowerOf(div);
+			resultingValue = number / tenToPowerOfFast(div);
 		}
 		String letterChain = "";
 		resultingValue = roundPlaces(resultingValue * 1000, placeCount);

@@ -1,40 +1,40 @@
 {
   "variants": {
     "adjacent_filled=false,edge_test_rarity=0": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=false,edge_test_rarity=1": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=false,edge_test_rarity=2": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=false,edge_test_rarity=3": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=false,edge_test_rarity=4": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=false,edge_test_rarity=5": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=true,edge_test_rarity=0": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=true,edge_test_rarity=1": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=true,edge_test_rarity=2": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=true,edge_test_rarity=3": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=true,edge_test_rarity=4": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     },
     "adjacent_filled=true,edge_test_rarity=5": {
-      "model": "orimod:block/decay_plantmatter_mycelium"
+      "model": "orimod:block/decay/generic/decay_plantmatter_mycelium"
     }
   }
 }

@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "orimod:block/forlorn_stone/omni/forlorn_stone_omni-base"
+  }
+}

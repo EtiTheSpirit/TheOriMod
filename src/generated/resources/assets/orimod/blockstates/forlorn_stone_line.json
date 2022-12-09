@@ -1,0 +1,52 @@
+{
+  "variants": {
+    "axis=x,blue=false,powered=false": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_base",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,blue=false,powered=true": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_orange",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,blue=true,powered=false": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_base",
+      "x": 90,
+      "y": 90
+    },
+    "axis=x,blue=true,powered=true": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_blue",
+      "x": 90,
+      "y": 90
+    },
+    "axis=y,blue=false,powered=false": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_base"
+    },
+    "axis=y,blue=false,powered=true": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_orange"
+    },
+    "axis=y,blue=true,powered=false": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_base"
+    },
+    "axis=y,blue=true,powered=true": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_blue"
+    },
+    "axis=z,blue=false,powered=false": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_base",
+      "x": 90
+    },
+    "axis=z,blue=false,powered=true": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_orange",
+      "x": 90
+    },
+    "axis=z,blue=true,powered=false": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_base",
+      "x": 90
+    },
+    "axis=z,blue=true,powered=true": {
+      "model": "orimod:block/forlorn_stone/line/forlorn_stone_line_horizontal_blue",
+      "x": 90
+    }
+  }
+}

@@ -1,0 +1,78 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "ambientocclusion": false,
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            0.1,
+            0.1
+          ]
+        },
+        "north": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            0.1,
+            0.1
+          ]
+        },
+        "south": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            0.1,
+            0.1
+          ]
+        },
+        "up": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#all",
+          "uv": [
+            0.0,
+            0.0,
+            0.1,
+            0.1
+          ]
+        }
+      },
+      "from": [
+        -0.1,
+        0,
+        -0.1
+      ],
+      "shade": false,
+      "to": [
+        16.1,
+        0.1,
+        16.1
+      ]
+    }
+  ],
+  "textures": {
+    "all": "orimod:block/decay/generic/decay_surface_mycelium"
+  }
+}

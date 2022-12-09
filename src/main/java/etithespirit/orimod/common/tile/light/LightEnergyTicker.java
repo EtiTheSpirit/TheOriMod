@@ -1,7 +1,9 @@
 package etithespirit.orimod.common.tile.light;
 
-import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
+import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
+import etithespirit.orimod.config.OriModConfigs;
+import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -30,12 +32,73 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 		
 		@Override
 		public void tick(Level level, BlockPos blockPos, BlockState blockState, BlockEntity be) {
-			//if (be instanceof AbstractLightEnergyHub hub) {
-				//if (hub.assembly == null) {
-					// Should always have an assembly.
-					//hub.assembly = Assembly.getAssemblyFor(hub);
-				//}
-			//}
+			int remainingBranches = OriModConfigs.MAX_ASSEMBLY_ITERATIONS.get();
+			
+			if (be instanceof LightEnergyTile eTile) {
+				eTile.neighbors(); // Populate!
+			}
+			
+			if (be instanceof LightEnergyStorageTile thisStorage) {
+				boolean rx = thisStorage.canReceiveLight();
+				boolean tx = thisStorage.canExtractLightFrom();
+				LightEnergyTile[] tiles = thisStorage.getAllConnectedStorage(remainingBranches);
+				if (rx && tx) {
+					// can do both, try to reach equilibrium
+					for (LightEnergyTile tile : tiles) {
+						if (tile == be) continue; // Skip if this is affecting itself.
+						
+						if (tile instanceof LightEnergyStorageTile otherStorage) {
+							boolean otherRx = otherStorage.canReceiveLight();
+							boolean otherTx = otherStorage.canExtractLightFrom();
+							double otherDifference = otherStorage.getLightStored() - thisStorage.getLightStored();
+							if (otherRx && otherTx) {
+								// Other can do both, nice
+								// Cut in half to reach eq
+								otherDifference /= 2;
+								if (otherDifference > 0) {
+									// other has more, I take some
+									ILightEnergyStorage.transferLight(otherStorage, thisStorage, otherDifference, false);
+								} else if (otherDifference < 0) {
+									// I have more, I give some (invert otherDifference)
+									ILightEnergyStorage.transferLight(thisStorage, otherStorage, -otherDifference, false);
+								}
+							} else if (otherRx) {
+								// other can receive, transfer iff other has less
+								if (otherDifference < 0) {
+									// I have more, I give some (invert otherDifference)
+									ILightEnergyStorage.transferLight(thisStorage, otherStorage, -otherDifference, false);
+								}
+							} else if (otherTx) {
+								// other can transmit, transfer iff I have less
+								if (otherDifference > 0) {
+									// other has more, I take some
+									ILightEnergyStorage.transferLight(otherStorage, thisStorage, otherDifference, false);
+								}
+							}
+						}
+					}
+				} else if (rx) {
+					// can only receive
+					for (LightEnergyTile tile : tiles) {
+						if (tile instanceof LightEnergyStorageTile otherStorage) {
+							if (otherStorage.canExtractLightFrom()) {
+								// We want to receive, other wants to transmit. We will be greedy and try to take everything.
+								ILightEnergyStorage.transferLight(otherStorage, thisStorage, otherStorage.getLightStored(), false);
+							}
+						}
+					}
+				} else if (tx) {
+					// can only transmit
+					for (LightEnergyTile tile : tiles) {
+						if (tile instanceof LightEnergyStorageTile otherStorage) {
+							if (otherStorage.canReceiveLight()) {
+								// It's first come first serve
+								ILightEnergyStorage.transferLight(thisStorage, otherStorage, thisStorage.getLightStored(), false);
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 	
@@ -48,9 +111,11 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 			
 			// TODO: Fix issue where players can spam the shit out of these blocks and blast really loud looping audio
 			if (be instanceof IAmbientSoundEmitter cap) {
-				StartLoopEndBlockSound sound = cap.getSoundInstance();
-				if (sound.terminated() && cap.soundShouldBePlaying()) {
-					sound.enqueue();
+				LightTechLooper sound = cap.getSoundInstance();
+				if (cap.soundShouldBePlaying()) {
+					sound.play();
+				} else {
+					sound.stop();
 				}
 			}
 		}

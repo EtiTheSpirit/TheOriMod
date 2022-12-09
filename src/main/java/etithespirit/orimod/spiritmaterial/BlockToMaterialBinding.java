@@ -305,7 +305,7 @@ public final class BlockToMaterialBinding {
 		// VANILLA MATERIALS
 		MATERIAL_TO_SPIRIT_MTL.put(Material.AIR, SpiritMaterial.NULL);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.BAMBOO, SpiritMaterial.WOOD_DRY);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.BAMBOO_SAPLING, SpiritMaterial.GRASS_CRISP);
+		MATERIAL_TO_SPIRIT_MTL.put(Material.BAMBOO_SAPLING, SpiritMaterial.GRASS_HARD);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.STRUCTURAL_AIR, SpiritMaterial.INHERITED); // mojmap: STRUCTURAL_AIR
 		MATERIAL_TO_SPIRIT_MTL.put(Material.BUBBLE_COLUMN, SpiritMaterial.INHERITED);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.BARRIER, SpiritMaterial.GLASS);
@@ -330,7 +330,7 @@ public final class BlockToMaterialBinding {
 		MATERIAL_TO_SPIRIT_MTL.put(Material.PISTON, SpiritMaterial.ROCK);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_PLANT, SpiritMaterial.GRASS_SOFT); // mojmap: REPLACEABLE_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.PORTAL, SpiritMaterial.GLASS);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_FIREPROOF_PLANT, SpiritMaterial.GRASS_CRISP); // mojmap: REPLACEABLE_FIREPROOF_PLANT
+		MATERIAL_TO_SPIRIT_MTL.put(Material.REPLACEABLE_FIREPROOF_PLANT, SpiritMaterial.GRASS_HARD); // mojmap: REPLACEABLE_FIREPROOF_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.WATER_PLANT, SpiritMaterial.SHROOM); // mojmap: WATER_PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.SAND, SpiritMaterial.SAND);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.SHULKER_SHELL, SpiritMaterial.ROCK); // mojmap: SHULKER_SHELL
@@ -388,6 +388,28 @@ public final class BlockToMaterialBinding {
 		setSpiritMaterialFor(Blocks.SMOOTH_RED_SANDSTONE, SpiritMaterial.CERAMIC_BROKEN);
 		setSpiritMaterialFor(Blocks.SMOOTH_RED_SANDSTONE_SLAB, SpiritMaterial.CERAMIC_BROKEN);
 		setSpiritMaterialFor(Blocks.SMOOTH_RED_SANDSTONE_STAIRS, SpiritMaterial.CERAMIC_BROKEN);
+		
+		setSpiritMaterialFor(Blocks.REDSTONE_BLOCK, SpiritMaterial.GRAVEL_DRY);
+		
+		try {
+			// lmao
+			Field[] blocks = Blocks.class.getFields();
+			for (Field f : blocks) {
+				if (f.getName().startsWith("GLASS")) {
+					setSpiritMaterialFor((Block)f.get(null), SpiritMaterial.CHITIN);
+				}
+			}
+		} catch (Exception ignored) {}
+		
+		// 1.19.2 added some wack blocks man
+		setSpiritMaterialFor(Blocks.MANGROVE_LOG, SpiritMaterial.WOOD_MOSSY);
+		setSpiritMaterialFor(Blocks.INFESTED_STONE, SpiritMaterial.ROCK);
+		setSpiritMaterialFor(Blocks.INFESTED_CHISELED_STONE_BRICKS, SpiritMaterial.ROCK);
+		setSpiritMaterialFor(Blocks.INFESTED_COBBLESTONE, SpiritMaterial.ROCK);
+		setSpiritMaterialFor(Blocks.INFESTED_DEEPSLATE, SpiritMaterial.ROCK);
+		setSpiritMaterialFor(Blocks.INFESTED_CRACKED_STONE_BRICKS, SpiritMaterial.ROCK);
+		setSpiritMaterialFor(Blocks.INFESTED_MOSSY_STONE_BRICKS, SpiritMaterial.ROCK);
+		setSpiritMaterialFor(Blocks.INFESTED_STONE_BRICKS, SpiritMaterial.ROCK);
 		
 		
 		// Shrooms (there is a fungus among us)
@@ -458,9 +480,9 @@ public final class BlockToMaterialBinding {
 		
 		// outsourced to ungengengingan vilag (twomad home)
 		setSpiritMaterialFor(Blocks.TARGET, SpiritMaterial.WOOL); // from wood -- literal target block (like you shoot arrows at it, not a "goal")
-		setSpiritMaterialFor(Blocks.DRIED_KELP_BLOCK, SpiritMaterial.GRASS_CRISP); // from shroom
+		setSpiritMaterialFor(Blocks.DRIED_KELP_BLOCK, SpiritMaterial.GRASS_HARD); // from shroom
 		setSpiritMaterialFor(Blocks.SMITHING_TABLE, SpiritMaterial.METAL); // from wood
-		setSpiritMaterialFor(Blocks.HAY_BLOCK, SpiritMaterial.GRASS_CRISP); // from ... wool? forgot tbh
+		setSpiritMaterialFor(Blocks.HAY_BLOCK, SpiritMaterial.GRASS_HARD); // from ... wool? forgot tbh
 		setSpiritMaterialFor(Blocks.BLACKSTONE, SpiritMaterial.ASH);
 		setSpiritMaterialFor(Blocks.BLACKSTONE_SLAB, SpiritMaterial.ASH);
 		setSpiritMaterialFor(Blocks.BLACKSTONE_STAIRS, SpiritMaterial.ASH);
@@ -477,6 +499,8 @@ public final class BlockToMaterialBinding {
 		
 		useIfIn(Blocks.SNOW);
 		useIfIn(Blocks.VINE);
+		//useIfIn(Blocks.SLIME_BLOCK);
+		//useIfIn(Blocks.HONEY_BLOCK);
 	}
 	
 	private static List<Material> vanillaMaterials = null;

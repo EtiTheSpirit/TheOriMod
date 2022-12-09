@@ -1,0 +1,128 @@
+{
+  "parent": "minecraft:block/cube_column",
+  "elements": [
+    {
+      "faces": {
+        "east": {
+          "cullface": "east",
+          "emissivity": 15,
+          "texture": "#side"
+        },
+        "north": {
+          "cullface": "north",
+          "emissivity": 15,
+          "texture": "#side"
+        },
+        "south": {
+          "cullface": "south",
+          "emissivity": 15,
+          "texture": "#side"
+        },
+        "west": {
+          "cullface": "west",
+          "emissivity": 15,
+          "texture": "#side"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "emissivity": 15,
+          "texture": "#end"
+        },
+        "up": {
+          "cullface": "up",
+          "emissivity": 15,
+          "texture": "#end"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "east": {
+          "cullface": "east",
+          "emissivity": 15,
+          "texture": "#side_emissive"
+        },
+        "north": {
+          "cullface": "north",
+          "emissivity": 15,
+          "texture": "#side_emissive"
+        },
+        "south": {
+          "cullface": "south",
+          "emissivity": 15,
+          "texture": "#side_emissive"
+        },
+        "west": {
+          "cullface": "west",
+          "emissivity": 15,
+          "texture": "#side_emissive"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "cullface": "down",
+          "emissivity": 15,
+          "texture": "#end_emissive"
+        },
+        "up": {
+          "cullface": "up",
+          "emissivity": 15,
+          "texture": "#end_emissive"
+        }
+      },
+      "from": [
+        0,
+        0,
+        0
+      ],
+      "to": [
+        16,
+        16,
+        16
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "end": "orimod:block/forlorn_stone/line/forlorn_stone_line-base_end",
+    "end_emissive": "orimod:block/forlorn_stone/line/forlorn_stone_line-orange_end",
+    "side": "orimod:block/forlorn_stone/line/forlorn_stone_line-base_side",
+    "side_emissive": "orimod:block/forlorn_stone/line/forlorn_stone_line-orange_side"
+  }
+}

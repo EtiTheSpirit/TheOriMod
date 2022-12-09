@@ -1,8 +1,11 @@
 package etithespirit.orimod.common.block.light.connection;
 
 
+import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
+import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.tile.light.LightEnergyTicker;
+import etithespirit.orimod.common.tile.light.LightEnergyTile;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
@@ -20,6 +23,7 @@ import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.material.PushReaction;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -32,8 +36,6 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 
 import java.util.function.Consumer;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 /**
  * Defines a block that serves as a non-complex means of handling Light energy. This should strictly be
  * used when energy numbers are not a part of this block's function. It should instead be used when
@@ -41,21 +43,19 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
  * to communicate with one-another, for instance, by allowing two storage devices to transfer power through a pipeline.<br/>
  * <br/>
  * Blocks extending this class should always have a {@link net.minecraft.world.level.block.entity.BlockEntity TileEntity} associated with them, where
- * said tile extends {@link AbstractLightEnergyLink} or {@link AbstractLightEnergyHub}
+ * said tile extends {@link etithespirit.orimod.common.tile.light.LightEnergyTile}
  * @author Eti
  */
 @SuppressWarnings("unused")
-public abstract class ConnectableLightTechBlock extends Block implements EntityBlock, IBlockItemPropertiesProvider {
+public abstract class ConnectableLightTechBlock extends Block implements EntityBlock, IBlockItemPropertiesProvider, IForlornBlueOrangeBlock {
 	
 	/** Whether or not this should automatically connect to neighboring instances of {@link ConnectableLightTechBlock} */
 	public static final BooleanProperty AUTO = BooleanProperty.create("autoconnect");
 	
 	/**
-	 * Whether or not this is energized, which is not valid for use on Tile Entity providers implementing {@link ILightEnergyStorage}.
-	 * Instead, this represents whether or not a passive Light-based block is handling Energy indirectly in some way, for instance, if a conduit is permitting transfer between two power sources.
+	 * The desired user skin of this conduit, which can either be blue or orange.
 	 */
-	public static final BooleanProperty ENERGIZED = BooleanProperty.create("in_use");
-	
+	public static final BooleanProperty IS_BLUE = ForlornAppearanceMarshaller.IS_BLUE;
 	/**
 	 * Redirects to Block's ctor.
 	 * @param props The properties of this block.
@@ -100,7 +100,7 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 			                   .setValue(NORTH, false)
 			                   .setValue(SOUTH, false)
 			                   .setValue(AUTO, true)
-			                   .setValue(ENERGIZED, false)
+			                   .setValue(IS_BLUE, true)
 		);
 	}
 	
@@ -119,7 +119,7 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 			.setValue(NORTH, false)
 			.setValue(SOUTH, false)
 			.setValue(AUTO, true)
-			.setValue(ENERGIZED, false);
+			.setValue(IS_BLUE, true);
 		addAdditionalStates.accept(state);
 		initializer.accept(state);
 	}
@@ -154,7 +154,13 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 		builder.add(NORTH);
 		builder.add(SOUTH);
 		builder.add(AUTO);
-		builder.add(ENERGIZED);
+		builder.add(IS_BLUE);
+	}
+	
+	@Override
+	@SuppressWarnings("deprecation")
+	public PushReaction getPistonPushReaction(BlockState pState) {
+		return PushReaction.BLOCK;
 	}
 	
 	/*
@@ -195,39 +201,74 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 		if (isConnectableBlock(thisState)) {
 			// ^ This is connectable
 			BlockState otherState = world.getBlockState(changedAt);
-			boolean isNowConnectable = isConnectableBlock(otherState);
-			boolean wasNotNowIsConnectable = !isConnectableBlock(replacedBlock) && isNowConnectable;
 			
-			if (wasNotNowIsConnectable) {
+			// The other state is currently connectable.
+			boolean isOtherStateConnectable = isConnectableBlock(otherState);
+			
+			// The other state was previously not connectable, but it now is.
+			boolean otherChangedIntoConnectable = !isConnectableBlock(replacedBlock) && isOtherStateConnectable;
+			
+			if (otherChangedIntoConnectable) {
+				// The other state was previously not connectable, but it now is.
 				ConnectableLightTechBlock other = from(otherState);
-				// Next branch: Is this block or the neighboring block one that always connects in all directions no matter what?
-				// Easy test: If both of them are, then that is no problem, in fact we just do nothing
-				if (this.alwaysConnectsWhenPossible() && other.alwaysConnectsWhenPossible()) return;
-				if (isConnectedTo(world, thisLocation, changedAt)) return;
-				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
+				if (this.alwaysConnectsWhenPossible() && other.alwaysConnectsWhenPossible()) {
+					// Both are already autoconnect. A new connection has been created. Tell the systems that the block changed but in no direction.
+					connectionStateChanged(thisState, thisState, thisLocation, world, null, true);
+					return;
+				}
 				
-				if (!shouldBeUpdatedToConnectTo(world, thisState, otherState, dir)) return;
+				if (isConnectedTo(world, thisLocation, changedAt)) {
+					// A connection has been made with the replacement block.
+					connectionStateChanged(thisState, thisState, thisLocation, world, null, true);
+					return;
+				}
+				
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
+				if (!shouldBeUpdatedToConnectTo(world, thisState, otherState, dir)) {
+					connectionStateChanged(thisState, thisState, thisLocation, world, null, true);
+					return;
+				}
 				BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
-				world.setBlockAndUpdate(thisLocation, thisState.setValue(toSet, true));
-			} else if (isNowConnectable) {
+				BlockState thisNewState = thisState.setValue(toSet, true);
+				world.setBlockAndUpdate(thisLocation, thisNewState);
+				connectionStateChanged(thisState, thisNewState, thisLocation, world, toSet, false);
+				
+			} else if (isOtherStateConnectable) {
+				// The other state is currently connectable, and given the build of this if statement, the change was connectable => connectable
 				ConnectableLightTechBlock other = from(otherState);
 				// Next branch: Is this block or the neighboring block one that always connects in all directions no matter what?
 				// Easy test: If both of them are, then that is no problem, in fact we just do nothing
-				if (this.alwaysConnectsWhenPossible() && other.alwaysConnectsWhenPossible()) return;
-				if (isConnectedTo(world, thisLocation, changedAt)) return;
-				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
+				if (this.alwaysConnectsWhenPossible() && other.alwaysConnectsWhenPossible()) {
+					// Do NOT update cache here!
+					return;
+				}
 				
-				if (!shouldBeUpdatedToConnectTo(world, thisState, otherState, dir)) return;
+				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
+				boolean thisShouldUpdateForOther = shouldBeUpdatedToConnectTo(world, thisState, otherState, dir);
+				if (isConnectedTo(world, thisLocation, changedAt))  {
+					// A connection has been made with the replacement block.
+					connectionStateChanged(thisState, thisState, thisLocation, world, null, true);
+					return;
+				}
+				
+				//if (!thisShouldUpdateForOther) return;
+				if (!thisShouldUpdateForOther) {
+					connectionStateChanged(thisState, thisState, thisLocation, world, null, true);
+					return;
+				}
 				if (otherState.getValue(SixSidedUtils.getBlockStateFromDirection(dir.getOpposite()))) {
 					// Other wants to connect to this.
 					BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
-					world.setBlockAndUpdate(thisLocation, thisState.setValue(toSet, true));
+					BlockState thisNewState = thisState.setValue(toSet, true);
+					world.setBlockAndUpdate(thisLocation, thisNewState);
+					connectionStateChanged(thisState, thisNewState, thisLocation, world, toSet, false);
 				}
-				
 			} else {
 				Direction dir = SixSidedUtils.getDirectionBetweenBlocks(thisLocation, changedAt);
 				BooleanProperty toSet = SixSidedUtils.getBlockStateFromDirection(dir);
-				world.setBlockAndUpdate(thisLocation, thisState.setValue(toSet, false));
+				BlockState thisNewState = thisState.setValue(toSet, false);
+				world.setBlockAndUpdate(thisLocation, thisNewState);
+				connectionStateChanged(thisState, thisNewState, thisLocation, world, toSet, false);
 			}
 		}
 	}
@@ -236,8 +277,12 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	 * Executes when the connection state of this block changes, like when connecting to or disconnecting from a neighboring {@link ConnectableLightTechBlock}.
 	 * @param originalState The original state of this block prior to the connection changing.
 	 * @param newState The new state of this block after the connection changed.
+	 * @param at The location of the change.
+	 * @param inWorld The level the change occurred in.
+	 * @param prop The property that was changed. This will be null if an existing connection was changed (see {@code existingConnectionChanged} parameter)
+	 * @param existingConnectionChanged If true, a this occurred because one of the two connected blocks changed into a <em>different</em> connectable block - a connection was not newly created or destroyed, but rather changed.
 	 */
-	public abstract void connectionStateChanged(BlockState originalState, BlockState newState);
+	public abstract void connectionStateChanged(BlockState originalState, BlockState newState, BlockPos at, Level inWorld, @Nullable BooleanProperty prop, boolean existingConnectionChanged);
 	
 	/**
 	 * Tests if this block is set to always connect to any neighbor that is accepting connections in the appropriate direction.
@@ -253,6 +298,13 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	 */
 	public boolean alwaysConnectsWhenPossible() {
 		return false;
+	}
+	
+	/**
+	 * @return A reference to this block's BlockEntity.
+	 */
+	public LightEnergyTile selfBE(BlockGetter world, BlockPos at) {
+		return (LightEnergyTile)world.getBlockEntity(at);
 	}
 	
 	/**

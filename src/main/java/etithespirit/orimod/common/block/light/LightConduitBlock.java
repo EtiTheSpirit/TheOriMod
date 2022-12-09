@@ -3,26 +3,30 @@ package etithespirit.orimod.common.block.light;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
+import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
+import etithespirit.orimod.common.tile.light.LightEnergyTile;
+import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.util.Bit32;
+import etithespirit.orimod.util.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
-import javax.annotation.Nullable;
-import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static etithespirit.orimod.util.Bit32.hasAnyFlag;
 
@@ -93,14 +97,23 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IToo
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext ctx) {
 		BlockPos pos = ctx.getClickedPos();
+		AtomicBoolean foundNeighboringEnergizedTechBlock = new AtomicBoolean(false);
 		int neighborFlags = SixSidedUtils.getFlagsForNeighborsWhere(ctx.getLevel(), pos, (neighborState, currentPos, neighborPos) -> {
 			boolean isConnectable = neighborState.getBlock() instanceof ConnectableLightTechBlock;
 			if (isConnectable) {
 				if (neighborState.getValue(AUTO)) {
+					BlockEntity be = ctx.getLevel().getBlockEntity(neighborPos);
+					if (be instanceof LightEnergyStorageTile storageTile) {
+						if (storageTile.getLightStored() > 0) foundNeighboringEnergizedTechBlock.set(true);
+					}
 					return true;
 				}
 				int neighborOutgoing = SixSidedUtils.getNumberFromSurfaces(neighborState);
 				if (Bit32.hasAnyFlag(neighborOutgoing, SixSidedUtils.neighborFlagForBlockDirection(neighborPos, currentPos))) {
+					BlockEntity be = ctx.getLevel().getBlockEntity(neighborPos);
+					if (be instanceof LightEnergyStorageTile storageTile) {
+						if (storageTile.getLightStored() > 0) foundNeighboringEnergizedTechBlock.set(true);
+					}
 					return true;
 				}
 			}
@@ -109,30 +122,28 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IToo
 		if (neighborFlags != 0) {
 			// Auto-connection was made.
 			// TODO: Only play this if the wires are live when connected, otherwise it just sounds really annoying.
-			ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundSource.BLOCKS, 0.1f, 1f);
+			// ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("item.lumo_wand.swapconduitauto"), SoundSource.BLOCKS, 0.1f, 1f);
+			if (foundNeighboringEnergizedTechBlock.get()) {
+				ctx.getLevel().playSound(null, ctx.getClickedPos(), SoundRegistry.get("tile.light_tech.energize"), SoundSource.BLOCKS, 0.3f, 1f);
+			}
 		}
 		return SixSidedUtils.whereSurfaceFlagsAre(this.defaultBlockState(), neighborFlags);
 		
 	}
 	
 	@Override
-	public void connectionStateChanged(BlockState originalState, BlockState newState) {
-	
+	public void connectionStateChanged(BlockState originalState, BlockState newState, BlockPos at, Level inWorld, BooleanProperty prop, boolean existingConnectionChanged) {
+		selfBE(inWorld, at).markLastKnownNeighborsDirty();
 	}
 	
-	//@Override
-	//public BlockEntity newBlockEntity(BlockPos state, BlockState world) {
-	//	return new TileEntityLightEnergyConduit(state, world);
-	//}
-	
-	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return null;
+		return new LightConduitTile(pos, state);
 	}
+	
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return List.of(BlockTags.MINEABLE_WITH_PICKAXE);
+		return PresetBlockTags.PICKAXE_ONLY;
 	}
 }

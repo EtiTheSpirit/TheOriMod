@@ -1,6 +1,6 @@
 package etithespirit.orimod.common.tile;
 
-import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
+import etithespirit.orimod.client.audio.LightTechLooper;
 
 /**
  * Represents this tile entity as one that has an ambient sound that loops.
@@ -8,15 +8,11 @@ import etithespirit.orimod.client.audio.StartLoopEndBlockSound;
 public interface IAmbientSoundEmitter {
 	
 	/**
-	 * Returns a reference to the sound(s) that this emits.
+	 * Returns a reference to the sound(s) that this emits. This should be cached on creation of the Block Entity,
+	 * and then returned here. Do not create a new instance when this is called.
 	 * @return A reference to the sound that this emits.
 	 */
-	StartLoopEndBlockSound getSoundInstance();
-	
-	/**
-	 * Causes the sound that this emits to begin, refreshing it as if it has just started for the first time.
-	 */
-	void startSound();
+	LightTechLooper getSoundInstance();
 	
 	/**
 	 * Whether or not the system believes the sound should be playing right now.

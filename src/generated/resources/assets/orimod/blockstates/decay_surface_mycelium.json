@@ -2,7 +2,7 @@
   "multipart": [
     {
       "apply": {
-        "model": "orimod:block/decay_surface_mycelium",
+        "model": "orimod:block/decay/generic/decay_surface_mycelium",
         "x": 90,
         "y": 180
       },
@@ -12,7 +12,7 @@
     },
     {
       "apply": {
-        "model": "orimod:block/decay_surface_mycelium",
+        "model": "orimod:block/decay/generic/decay_surface_mycelium",
         "x": 90
       },
       "when": {
@@ -21,7 +21,7 @@
     },
     {
       "apply": {
-        "model": "orimod:block/decay_surface_mycelium",
+        "model": "orimod:block/decay/generic/decay_surface_mycelium",
         "x": 90,
         "y": 270
       },
@@ -31,7 +31,7 @@
     },
     {
       "apply": {
-        "model": "orimod:block/decay_surface_mycelium",
+        "model": "orimod:block/decay/generic/decay_surface_mycelium",
         "x": 90,
         "y": 90
       },
@@ -41,7 +41,7 @@
     },
     {
       "apply": {
-        "model": "orimod:block/decay_surface_mycelium",
+        "model": "orimod:block/decay/generic/decay_surface_mycelium",
         "x": 180
       },
       "when": {
@@ -50,7 +50,7 @@
     },
     {
       "apply": {
-        "model": "orimod:block/decay_surface_mycelium"
+        "model": "orimod:block/decay/generic/decay_surface_mycelium"
       },
       "when": {
         "down": "true"

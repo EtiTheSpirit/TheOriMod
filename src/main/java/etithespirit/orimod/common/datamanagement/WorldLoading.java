@@ -1,6 +1,5 @@
 package etithespirit.orimod.common.datamanagement;
 
-import etithespirit.orimod.aos.ABConnection;
 import etithespirit.orimod.client.audio.SpiritSoundPlayer;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.EffectEnforcement;
@@ -29,17 +28,11 @@ public final class WorldLoading {
 	}
 	
 	public static void onLoggedOutServer(PlayerEvent.PlayerLoggedOutEvent evt) {
-		if (evt.getEntity().getServer() instanceof IntegratedServer integratedServer && integratedServer.isSingleplayer()) {
-			// Only wipe assemblies from the server if it is an integrated server running in singleplayer mode.
-			// If it is done in any other circumstance, it will brick the server.
-			//Assembly.clearAllKnownAssemblies(false);
-			ABConnection._greedySet = false;
-		}
+
 	}
 	
 	public static void onLoggedOutClient(PlayerEvent.PlayerLoggedOutEvent evt) {
-		//Assembly.clearAllKnownAssemblies(true);
-		ABConnection._greedySet = false;
+	
 	}
 	
 	public static void onRespawnedClient(PlayerEvent.PlayerRespawnEvent evt) {

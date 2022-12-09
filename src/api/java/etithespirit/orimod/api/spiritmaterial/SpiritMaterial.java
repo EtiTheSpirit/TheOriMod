@@ -35,7 +35,11 @@ public enum SpiritMaterial {
 	GLASS(),
 	
 	/** Corresponds to crispy foliage materials. */
-	GRASS_CRISP(),
+	@Deprecated(forRemoval = true)
+	GRASS_CRISP("grass.hard"),
+	
+	/** Corresponds to crispy foliage materials. */
+	GRASS_HARD(),
 	
 	/** Corresponds to soft foliage materials. */
 	GRASS_SOFT(),

@@ -11,6 +11,7 @@ import etithespirit.orimod.spiritmaterial.BlockToMaterialBinding;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
@@ -81,6 +82,12 @@ public class SpiritSoundProvider {
 	 */
 	public static SoundEvent getSpiritStepSound(@Nonnull LivingEntity entity, @Nonnull BlockPos on, @Nonnull BlockPos in, @Nullable SoundEvent vanilla) {
 		if (on == null) throw new ArgumentNullException("on");
+		
+		// BUG FIX: Sounds for slabs and other blocks the player sinks into will play the sound of the block beneath it instead of the block they are on.
+		if (Mth.frac(entity.getY()) >= 0.5) {
+			on = on.above();
+			in = in.above();
+		}
 		
 		SpiritMaterial spiritMtl = BlockToMaterialBinding.getMaterialFor(entity, on, in);
 		if (spiritMtl.useVanillaInstead) return vanilla;

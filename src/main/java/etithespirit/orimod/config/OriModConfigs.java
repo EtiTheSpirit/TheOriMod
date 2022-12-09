@@ -4,6 +4,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParseException;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
+import etithespirit.orimod.annotation.ServerUseOnly;
 import etithespirit.orimod.common.block.decay.DecayLiquidBlock;
 import etithespirit.orimod.common.block.decay.DecayWorldConfigBehavior;
 import etithespirit.orimod.common.block.decay.IDecayBlockIdentifier;
@@ -52,9 +53,7 @@ public class OriModConfigs {
 	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_COATING_SPREADING;
 	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_FLUID_SPREADING;
 	
-	public static ForgeConfigSpec.BooleanValue GREEDY_ASSEMBLY_OPTIMIZATION;
 	public static ForgeConfigSpec.BooleanValue KEEP_CHUNKS_ALIVE;
-	
 	public static ForgeConfigSpec.BooleanValue DO_DIAGONAL_SPREAD;
 	
 	@Deprecated
@@ -65,6 +64,9 @@ public class OriModConfigs {
 	
 	@ClientUseOnly
 	public static ForgeConfigSpec.BooleanValue OVERRIDE_HEALTH_RENDERING;
+	
+	@ServerUseOnly
+	public static ForgeConfigSpec.IntValue MAX_ASSEMBLY_ITERATIONS;
 	
 	/**
 	 * Returns the spreading behavior of the given decay block. It should be a BlockState of decay or FluidState of decay.
@@ -259,6 +261,7 @@ public class OriModConfigs {
 		current = "assembly_optimization_system";
 		builder.push(current);
 		KEEP_CHUNKS_ALIVE = createBoolean(builder, current, "keep_chunks_alive", true, false);
+		MAX_ASSEMBLY_ITERATIONS = createIntRange(builder, current, "max_assembly_iterations", 256, 4, 16384, false);
 		builder.pop();
 		
 		SERVER_SYNCED = builder.build();
@@ -266,12 +269,12 @@ public class OriModConfigs {
 	
 	private static void setupSeparatedCfg() {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
-		
+		/*
 		String current = "assembly_optimization_system";
 		builder.push(current);
 		GREEDY_ASSEMBLY_OPTIMIZATION = createBoolean(builder, current, "greedy_optimization", true, true);
 		builder.pop();
-		
+		*/
 		SEPARATE_SIDES = builder.build();
 	}
 	

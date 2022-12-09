@@ -9,29 +9,29 @@ version="${mod_version}"
 displayName="The Ori Mod"
 displayURL="https://etithespir.it/minecraft"
 logoFile="orimod.png"
-credits=''':
-§lThe Main Creds:§r
+credits="Check the description!"
+authors="§bEti the Spirit§r AKA §cXan the Dragon§r"
+description='''
+Play as a Spirit from the Ori franchise! Construct technologically-advanced constructs using Spirit Light! Defend yourself from the forces of Decay!
+
+§lCredits:§r
 - §bEtiTheSpirit§r - look at me ma
-- §bOri Community§r - Your interest fuels my desire to create.
+- §bOri Community§r - Your interest in my work fuels my desire to make it better.
 - §bMoon Studios§r - Open ended lore is what makes stuff like this feel cohesive.
 §o* Without you, this mod could not work the way it does today! *§r
 
 §lForge Discord Mention Honorarium:§r
-These folks in the Forge discord helped me out substantially in the development of the mod.
+These folks in the Forge discord helped me out so much with the development of the mod that it's only fair to list their names here.
+- §cMcJty§r - You have the patience of a saint. Genuinely speechless.
 - §cRobotGryphon§r - Made Compact Machines, where I sourced instrumental debug render code from.
-- §cMcJty§r - Has the patience of a saint. You make the modding process easier for everyone!
-- §bSizableShrimp§r - Makes helpful stuff for Gradle that enables better tooling for the mod.
+- §bSizableShrimp§r - Made some helpful stuff for Gradle that enables better tooling for the mod.
+- §bgigaherz§r - Made GraphLib, which, while unused, was very helpful in figuring out Light tech.
 - §6Random§r
 - §6diesieben07§r
 - §6Commable§r
-- §6gigaherz§r
 - §6Lupicus§r
 - §6XFactHD§r
-§o* Thank you all for your help with my endeavor of making this mod! *§r
-'''
-authors="§bEti the Spirit§r AKA §cXan the Dragon§r"
-description='''
-Play as a Spirit! This mod aims to append mechanics and objects from the §oOri§r game franchise. It also implements some fanon concepts I wrote.
+§o* Thank you all for your help! *§r
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.${mod_id}]] #optional
@@ -56,13 +56,13 @@ Play as a Spirit! This mod aims to append mechanics and objects from the §oOri�
 [[dependencies.${mod_id}]]
     modId="jade"
     mandatory=false
-    versionRange="[8.1.1,)"
+    versionRange="[8.6.0,)"
     ordering="BEFORE"
     side="CLIENT"
 [[dependencies.${mod_id}]]
     modId="configured"
     mandatory=false
-    versionRange="[1.5.8,)"
+    versionRange="[2.0.1,)"
     ordering="BEFORE"
     side="CLIENT"
 [[dependencies.${mod_id}]]
@@ -71,5 +71,5 @@ Play as a Spirit! This mod aims to append mechanics and objects from the §oOri�
     versionRange="[1.6.3,)"
     ordering="BEFORE"
     side="CLIENT"
-[modproperties.orimod]
+[modproperties.${mod_id}]
     configuredBackground="orimod:textures/configured/tintgrass.png"

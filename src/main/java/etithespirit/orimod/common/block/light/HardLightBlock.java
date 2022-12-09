@@ -2,6 +2,7 @@ package etithespirit.orimod.common.block.light;
 
 import etithespirit.orimod.common.block.ExtendedMaterial;
 import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.util.PresetBlockTags;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -31,6 +32,6 @@ public class HardLightBlock extends Block implements ILightBlockIdentifier, IToo
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return Set.of(BlockTags.MINEABLE_WITH_PICKAXE);
+		return PresetBlockTags.PICKAXE_ONLY;
 	}
 }

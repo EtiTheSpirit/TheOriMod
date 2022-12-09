@@ -10,6 +10,9 @@ import etithespirit.orimod.common.block.decay.world.DecayPlantMatterBlock;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
 import etithespirit.orimod.common.block.light.LightCapacitorBlock;
 import etithespirit.orimod.common.block.light.LightConduitBlock;
+import etithespirit.orimod.common.block.light.decoration.ForlornStoneBlock;
+import etithespirit.orimod.common.block.light.decoration.ForlornStoneLineBlock;
+import etithespirit.orimod.common.block.light.decoration.ForlornStoneOmniBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -25,7 +28,7 @@ import java.util.List;
 public final class BlockRegistry {
 	
 	/** Used in the item registry to generate BlockItems. */
-	public static final List<RegistryObject<? extends Block>> BLOCKS_TO_REGISTER = new ArrayList<>();
+	public static final List<RegistryObject<? extends Block>> BLOCKS_TO_REGISTER = new ArrayList<>(64);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// DEFERRED REGISTERS PROVIDED BY FORGE
@@ -39,11 +42,15 @@ public final class BlockRegistry {
 	/** */ public static final RegistryObject<Block> DECAY_STRIPPED_LOG = BLOCKS.register("stripped_decay_log", DecayStrippedLogBlock::new);
 	/** */ public static final RegistryObject<Block> DECAY_SURFACE_MYCELIUM = BLOCKS.register("decay_surface_mycelium", DecaySurfaceMyceliumBlock::new);
 	
-	/** */ //public static final RegistryObject<Block> LIGHT_CONDUIT = BLOCKS.register("light_conduit", LightConduitBlock::new);
+	/** */ public static final RegistryObject<Block> FORLORN_STONE = BLOCKS.register("forlorn_stone", ForlornStoneBlock::new);
+	/** */ public static final RegistryObject<Block> FORLORN_STONE_LINE = BLOCKS.register("forlorn_stone_line", ForlornStoneLineBlock::new);
+	/** */ public static final RegistryObject<Block> FORLORN_STONE_OMNI = BLOCKS.register("forlorn_stone_omni", ForlornStoneOmniBlock::new);
+	
+	/** */ public static final RegistryObject<Block> LIGHT_CONDUIT = BLOCKS.register("light_conduit", LightConduitBlock::new);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// TILE ENTITY BLOCKS
-	/** */ //public static final RegistryObject<Block> LIGHT_CAPACITOR = BLOCKS.register("light_capacitor", LightCapacitorBlock::new);
+	/** */ public static final RegistryObject<Block> LIGHT_CAPACITOR = BLOCKS.register("light_capacitor", LightCapacitorBlock::new);
 	/** */ //public static final RegistryObject<Block> LIGHT_DEBUGGER = BLOCKS.register("light_debugger", LightDebuggerBlock::new);
 	
 	static {
@@ -53,8 +60,12 @@ public final class BlockRegistry {
 		BLOCKS_TO_REGISTER.add(DECAY_STRIPPED_LOG);
 		BLOCKS_TO_REGISTER.add(DECAY_SURFACE_MYCELIUM);
 		
-		//BLOCKS_TO_REGISTER.add(LIGHT_CONDUIT);
-		//BLOCKS_TO_REGISTER.add(LIGHT_CAPACITOR);
+		BLOCKS_TO_REGISTER.add(FORLORN_STONE);
+		BLOCKS_TO_REGISTER.add(FORLORN_STONE_LINE);
+		BLOCKS_TO_REGISTER.add(FORLORN_STONE_OMNI);
+		
+		BLOCKS_TO_REGISTER.add(LIGHT_CONDUIT);
+		BLOCKS_TO_REGISTER.add(LIGHT_CAPACITOR);
 	}
 	
 	/***/

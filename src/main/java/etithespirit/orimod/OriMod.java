@@ -8,9 +8,10 @@ import etithespirit.orimod.client.render.hud.SpiritHealthGui;
 import etithespirit.orimod.command.SetSpiritCommand;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
 import etithespirit.orimod.common.potion.DecayEffect;
+import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
-import etithespirit.orimod.datagen.GenerateBlockModels;
+import etithespirit.orimod.datagen.block.GenerateBlockModels;
 import etithespirit.orimod.datagen.GenerateItemModels;
 import etithespirit.orimod.client.render.RenderPlayerAsSpirit;
 import etithespirit.orimod.datagen.audio.GenerateSoundsJson;
@@ -170,10 +171,10 @@ public final class OriMod {
 					LOG.warn("A Light Assembly block registered more than one chunk with one BlockPos?! This could be a serious problem!");
 				}
 				BlockEntity ent = serverLevel.getBlockEntity(at);
-				//if (!(ent instanceof AbstractLightEnergyHub)) {
-				//	LOG.info("Found a chunk that was being kept alive by what was believed to be a Light Tech block at {}, however there was no Tech Block at that location, so the keep-alive ticket has been removed and this chunk may now rest.", at);
-				//	ForgeChunkManager.forceChunk(serverLevel, MODID, at, at.getX() >> 4, at.getY() >> 4, false, true);
-				//}
+				if (!(ent instanceof LightEnergyStorageTile)) {
+					LOG.info("Found a chunk that was being kept alive by what was believed to be a Light Tech block at {}, however there was no Tech Block at that location, so the keep-alive ticket has been removed and this chunk may now rest.", at);
+					ForgeChunkManager.forceChunk(serverLevel, MODID, at, at.getX() >> 4, at.getY() >> 4, false, true);
+				}
 			}
 		});
 	}

@@ -62,6 +62,10 @@ public final class DefaultImplementations {
 					}
 				}
 			}
+		} else {
+			if (world.isRainingAt(on)) {
+				return SpiritMaterial.WOOD_WET;
+			}
 		}
 		return SpiritMaterial.WOOD_DRY;
 	}

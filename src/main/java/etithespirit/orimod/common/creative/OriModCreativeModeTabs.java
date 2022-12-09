@@ -21,8 +21,7 @@ public final class OriModCreativeModeTabs {
 	public static final CreativeModeTab SPIRIT_TOOLS = new CreativeModeTab("orimod.spirit_tools") {
 		@Override
 		public ItemStack makeIcon() {
-			//return new ItemStack(ItemRegistry.SPIRIT_ARC.get());
-			return ItemStack.EMPTY;
+			return new ItemStack(ItemRegistry.LUMO_WAND.get());
 		}
 	};
 	
@@ -30,8 +29,7 @@ public final class OriModCreativeModeTabs {
 	public static final CreativeModeTab SPIRIT_MACHINERY_COMPLETE = new CreativeModeTab("orimod.spirit_machinery") {
 		@Override
 		public ItemStack makeIcon() {
-			//return new ItemStack(BlockRegistry.LIGHT_CAPACITOR.get().asItem());
-			return ItemStack.EMPTY;
+			return new ItemStack(BlockRegistry.LIGHT_CAPACITOR.get().asItem());
 		}
 	};
 	
@@ -39,8 +37,7 @@ public final class OriModCreativeModeTabs {
 	public static final CreativeModeTab SPIRIT_MACHINERY_PARTS = new CreativeModeTab("orimod.spirit_machinery_parts") {
 		@Override
 		public ItemStack makeIcon() {
-			//return new ItemStack(BlockRegistry.LIGHT_CAPACITOR.get().asItem());
-			return ItemStack.EMPTY;
+			return new ItemStack(BlockRegistry.LIGHT_CAPACITOR.get().asItem());
 		}
 	};
 	
@@ -49,6 +46,15 @@ public final class OriModCreativeModeTabs {
 		@Override
 		public ItemStack makeIcon() {
 			return new ItemStack(BlockRegistry.DECAY_DIRT_MYCELIUM.get().asItem());
+		}
+	};
+	
+	
+	/** A creative tab for decorative blocks. */
+	public static final CreativeModeTab SPIRIT_DECORATION = new CreativeModeTab("orimod.spirit_decoration") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(BlockRegistry.FORLORN_STONE.get().asItem());
 		}
 	};
 	

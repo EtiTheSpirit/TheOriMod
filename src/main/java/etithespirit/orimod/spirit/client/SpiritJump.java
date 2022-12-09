@@ -121,6 +121,7 @@ public final class SpiritJump {
 		if (currentJumps >= MAX_JUMPS) return;
 		if (client.isOnGround()) return; // No special stuffs if we're on the ground.
 		if (getDeltaMovementY(client) > 0.25) return; // Prevent spam
+		if (client.getAbilities().flying) return; // Prevent triggering during flight
 		performJump(client, UPWARD_FORCE, null, false);
 	}
 	
@@ -177,6 +178,8 @@ public final class SpiritJump {
 	private static boolean canWallCling(Player player) {
 		if (player.onClimbable() || getDeltaMovementY(player) > 0.8) return false; // On a ladder or moving up super fast upward
 		if (player.isInWaterOrBubble() || player.isInLava()) return false; // In water, lava, or a bubble column
+		if (player.getAbilities().flying) return false; // When flying, do not allow wall clinging
+		
 		return !collidesWithBlock(player.getCommandSenderWorld(), player.getBoundingBox().move(0, -0.8, 0)); // Too close to the ground.
 	}
 	

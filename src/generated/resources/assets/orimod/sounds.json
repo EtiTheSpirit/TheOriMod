@@ -34,7 +34,7 @@
   "tile.light_tech.generic.active_loop": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/generic/ambient"
+      "orimod:light_tech/generic/ambient"
     ]
   },
   "block.decay_poison.gurgle": {
@@ -174,18 +174,18 @@
   "tile.light_tech.generic.activate": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/generic/activate"
+      "orimod:light_tech/generic/activate"
     ]
   },
   "tile.light_tech.ambientfield.deactivate": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/ambientfield/deactivate/deactivate2",
-      "orimod:light_equipment/ambientfield/deactivate/deactivate3",
-      "orimod:light_equipment/ambientfield/deactivate/deactivate4",
-      "orimod:light_equipment/ambientfield/deactivate/deactivate5",
-      "orimod:light_equipment/ambientfield/deactivate/deactivate0",
-      "orimod:light_equipment/ambientfield/deactivate/deactivate1"
+      "orimod:light_tech/ambientfield/deactivate/deactivate1",
+      "orimod:light_tech/ambientfield/deactivate/deactivate0",
+      "orimod:light_tech/ambientfield/deactivate/deactivate3",
+      "orimod:light_tech/ambientfield/deactivate/deactivate2",
+      "orimod:light_tech/ambientfield/deactivate/deactivate5",
+      "orimod:light_tech/ambientfield/deactivate/deactivate4"
     ]
   },
   "entity.spirit.step.wood.mossy": {
@@ -231,12 +231,12 @@
   "tile.light_tech.ambientfield.activate": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/ambientfield/activate/activate1",
-      "orimod:light_equipment/ambientfield/activate/activate0",
-      "orimod:light_equipment/ambientfield/activate/activate3",
-      "orimod:light_equipment/ambientfield/activate/activate2",
-      "orimod:light_equipment/ambientfield/activate/activate5",
-      "orimod:light_equipment/ambientfield/activate/activate4"
+      "orimod:light_tech/ambientfield/activate/activate4",
+      "orimod:light_tech/ambientfield/activate/activate5",
+      "orimod:light_tech/ambientfield/activate/activate2",
+      "orimod:light_tech/ambientfield/activate/activate3",
+      "orimod:light_tech/ambientfield/activate/activate0",
+      "orimod:light_tech/ambientfield/activate/activate1"
     ]
   },
   "entity.spirit.step.slimy": {
@@ -350,7 +350,7 @@
   "tile.light_tech.activate_large_b": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/activate_large_b"
+      "orimod:light_tech/activate_large_b"
     ]
   },
   "item.lumo_wand.swapconduitauto": {
@@ -367,7 +367,7 @@
   "tile.light_tech.activate_large_a": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/activate_large_a"
+      "orimod:light_tech/activate_large_a"
     ]
   },
   "entity.spirit.step.snow": {
@@ -413,23 +413,23 @@
   "entity.spirit.step.grass.hard": {
     "category": "master",
     "sounds": [
-      "orimod:spirit/step/grass_hard/stephardgrass8",
-      "orimod:spirit/step/grass_hard/stephardgrass7",
-      "orimod:spirit/step/grass_hard/stephardgrass9",
-      "orimod:spirit/step/grass_hard/stephardgrass4",
-      "orimod:spirit/step/grass_hard/stephardgrass3",
-      "orimod:spirit/step/grass_hard/stephardgrass10",
-      "orimod:spirit/step/grass_hard/stephardgrass6",
-      "orimod:spirit/step/grass_hard/stephardgrass5",
-      "orimod:spirit/step/grass_hard/stephardgrass0",
-      "orimod:spirit/step/grass_hard/stephardgrass2",
-      "orimod:spirit/step/grass_hard/stephardgrass1"
+      "orimod:spirit/step/grass/hard/stephardgrass4",
+      "orimod:spirit/step/grass/hard/stephardgrass3",
+      "orimod:spirit/step/grass/hard/stephardgrass6",
+      "orimod:spirit/step/grass/hard/stephardgrass5",
+      "orimod:spirit/step/grass/hard/stephardgrass0",
+      "orimod:spirit/step/grass/hard/stephardgrass2",
+      "orimod:spirit/step/grass/hard/stephardgrass1",
+      "orimod:spirit/step/grass/hard/stephardgrass10",
+      "orimod:spirit/step/grass/hard/stephardgrass8",
+      "orimod:spirit/step/grass/hard/stephardgrass7",
+      "orimod:spirit/step/grass/hard/stephardgrass9"
     ]
   },
   "tile.light_tech.generic.deactivate": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/generic/deactivate"
+      "orimod:light_tech/generic/deactivate"
     ]
   },
   "item.spirit_arc.impact.ricochet": {
@@ -615,12 +615,12 @@
   "tile.light_tech.energize": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/energize/energize0",
-      "orimod:light_equipment/energize/energize1",
-      "orimod:light_equipment/energize/energize2",
-      "orimod:light_equipment/energize/energize3",
-      "orimod:light_equipment/energize/energize4",
-      "orimod:light_equipment/energize/energize5"
+      "orimod:light_tech/energize/energize2",
+      "orimod:light_tech/energize/energize1",
+      "orimod:light_tech/energize/energize4",
+      "orimod:light_tech/energize/energize3",
+      "orimod:light_tech/energize/energize0",
+      "orimod:light_tech/energize/energize5"
     ]
   },
   "entity.spirit.step.wood.dry": {
@@ -645,16 +645,16 @@
   "entity.spirit.step.grass.soft": {
     "category": "master",
     "sounds": [
-      "orimod:spirit/step/grass_soft/stepsoftgrass8",
-      "orimod:spirit/step/grass_soft/stepsoftgrass7",
-      "orimod:spirit/step/grass_soft/stepsoftgrass9",
-      "orimod:spirit/step/grass_soft/stepsoftgrass4",
-      "orimod:spirit/step/grass_soft/stepsoftgrass3",
-      "orimod:spirit/step/grass_soft/stepsoftgrass6",
-      "orimod:spirit/step/grass_soft/stepsoftgrass5",
-      "orimod:spirit/step/grass_soft/stepsoftgrass0",
-      "orimod:spirit/step/grass_soft/stepsoftgrass2",
-      "orimod:spirit/step/grass_soft/stepsoftgrass1"
+      "orimod:spirit/step/grass/soft/stepsoftgrass3",
+      "orimod:spirit/step/grass/soft/stepsoftgrass4",
+      "orimod:spirit/step/grass/soft/stepsoftgrass5",
+      "orimod:spirit/step/grass/soft/stepsoftgrass6",
+      "orimod:spirit/step/grass/soft/stepsoftgrass0",
+      "orimod:spirit/step/grass/soft/stepsoftgrass1",
+      "orimod:spirit/step/grass/soft/stepsoftgrass2",
+      "orimod:spirit/step/grass/soft/stepsoftgrass7",
+      "orimod:spirit/step/grass/soft/stepsoftgrass8",
+      "orimod:spirit/step/grass/soft/stepsoftgrass9"
     ]
   },
   "entity.spirit.step.wool": {
@@ -687,7 +687,7 @@
   "tile.light_tech.ambientfield.loop_magic": {
     "category": "master",
     "sounds": [
-      "orimod:light_equipment/ambientfield/loop/loopcrystal"
+      "orimod:light_tech/ambientfield/loop/loopcrystal"
     ]
   },
   "entity.spirit.step.ceramic.broken": {

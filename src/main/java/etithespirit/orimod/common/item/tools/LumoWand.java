@@ -1,8 +1,16 @@
 package etithespirit.orimod.common.item.tools;
 
 
+import etithespirit.orimod.GeneralUtils;
+import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
+import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
+import etithespirit.orimod.common.block.light.decoration.LitForlornStoneBlockBase;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
+import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
+import etithespirit.orimod.common.tile.light.implementations.LightCapacitorTile;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -16,6 +24,8 @@ import javax.annotation.Nullable;
 import java.util.List;
 
 import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.state.BlockState;
 
 /**
  * The Lumo-Wand, a tool designed for Light-based circuitry.
@@ -38,8 +48,31 @@ public class LumoWand extends Item {
 		super(props);
 	}
 	
+
+	@Override
+	public int getMaxStackSize(ItemStack stack) {
+		return 1;
+	}
+	
 	@Override
 	public InteractionResult useOn(UseOnContext ctx) {
+		Level world = ctx.getLevel();
+		BlockPos at = ctx.getClickedPos();
+		BlockState block = world.getBlockState(at);
+		if (block.getBlock() instanceof IForlornBlueOrangeBlock forlornBlock && !ctx.isSecondaryUseActive()) {
+			forlornBlock.switchLuxenColor(world, at);
+			if (!world.isClientSide()) {
+				GeneralUtils.message((ServerPlayer) ctx.getPlayer(), "info.orimod.lumowand.colorswap." + (block.getValue(ForlornAppearanceMarshaller.IS_BLUE) ? "orange" : "blue")); // purposely inverted!
+			}
+			return InteractionResult.SUCCESS;
+		}
+		BlockEntity ent = world.getBlockEntity(at);
+		if (ent instanceof LightCapacitorTile capTile) {
+			if (!world.isClientSide()) {
+				GeneralUtils.message((ServerPlayer) ctx.getPlayer(), "info.orimod.lumowand.dbg_charge");
+				capTile.dbg_ChangeEnergy();
+			}
+		}
 		/*
 		Level world = ctx.getLevel();
 		BlockPos at = ctx.getClickedPos();
@@ -106,6 +139,5 @@ public class LumoWand extends Item {
 		tooltip.add(Component.translatable("tooltip.orimod.lumowand.2"));
 		tooltip.add(Component.translatable("tooltip.orimod.lumowand.3"));
 		tooltip.add(Component.translatable("tooltip.orimod.lumowand.4"));
-		tooltip.add(Component.translatable("tooltip.orimod.lumowand.5"));
 	}
 }

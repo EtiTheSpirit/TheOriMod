@@ -35,6 +35,11 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 		super(pProperties);
 	}
 	
+	@Override
+	public int getMaxStackSize(ItemStack stack) {
+		return 1;
+	}
+	
 	protected static void setCharged(ItemStack onStack, boolean isCharged) {
 		onStack.getOrCreateTag().putBoolean(IS_CHARGED_KEY, isCharged);
 	}

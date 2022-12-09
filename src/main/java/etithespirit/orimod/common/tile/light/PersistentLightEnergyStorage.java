@@ -3,7 +3,6 @@ package etithespirit.orimod.common.tile.light;
 
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.util.Mth;
 
 import javax.annotation.Nullable;
 
@@ -102,8 +101,8 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	}
 	
 	@Override
-	public double extractLight(double maxExtract, boolean simulate) {
-		if (!canExtractLight()) return 0;
+	public double extractLightFrom(double maxExtract, boolean simulate) {
+		if (!canExtractLightFrom()) return 0;
 		
 		double energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 		if (!simulate) {
@@ -124,7 +123,7 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	}
 	
 	@Override
-	public boolean canExtractLight() {
+	public boolean canExtractLightFrom() {
 		return maxExtract > 0;
 	}
 	

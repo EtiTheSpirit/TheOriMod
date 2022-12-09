@@ -2,13 +2,17 @@ package etithespirit.orimod.common.block.light;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
+import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
+import etithespirit.orimod.util.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.Material;
 
 import javax.annotation.Nullable;
@@ -26,15 +30,9 @@ public class SolidLightConduitBlock extends ConnectableLightTechBlock implements
 		ConnectableLightTechBlock.autoRegisterDefaultState(this::registerDefaultState, this.stateDefinition);
 	}
 	
-	/**
-	 * Executes when the connection state of this block changes, like when connecting to or disconnecting from a neighboring {@link ConnectableLightTechBlock}.
-	 *
-	 * @param originalState The original state of this block prior to the connection changing.
-	 * @param newState      The new state of this block after the connection changed.
-	 */
 	@Override
-	public void connectionStateChanged(BlockState originalState, BlockState newState) {
-	
+	public void connectionStateChanged(BlockState originalState, BlockState newState, BlockPos at, Level inWorld, BooleanProperty prop, boolean existingConnectionChanged) {
+		selfBE(inWorld, at).markLastKnownNeighborsDirty();
 	}
 	
 	@Override
@@ -45,11 +43,11 @@ public class SolidLightConduitBlock extends ConnectableLightTechBlock implements
 	@Nullable
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
-		return null;
+		return new LightConduitTile(pos, state);
 	}
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return List.of(BlockTags.MINEABLE_WITH_PICKAXE);
+		return PresetBlockTags.PICKAXE_ONLY;
 	}
 }

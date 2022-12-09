@@ -45,7 +45,7 @@ public final class ConnectionHelper {
 	
 	/**
 	 * Returns whether or not the block {@code at} is able to establish a connection in the direction of {@code dir}.
-	 * This ignores the state or block type of the neighbor in that direction.<br/>
+	 * This ignores the state or block type of the neighbor in that direction. To check the neighbor, use {@link #hasMutualConnectionInDirection(BlockGetter, BlockPos, Direction, boolean)}.<br/>
 	 * Note that if this is called when the block is placed or before all neighbor updates have completed, it may return false
 	 * despite auto-connecting. This can be partly remedied by setting {@code anticipateAuto} to true if this method is used
 	 * when the block is placed.
@@ -108,8 +108,8 @@ public final class ConnectionHelper {
 	public static boolean hasMutualConnectionToOther(BlockGetter reader, BlockPos at, BlockPos other, boolean anticipateWithAuto) throws ArgumentNullException, IllegalArgumentException {
 		Direction dir = fromBlockPos(at, other, true);
 		boolean fromAt = hasOutgoingConnectionInDirection(reader, at, dir, anticipateWithAuto);
-		boolean toAt = hasOutgoingConnectionInDirection(reader, at.offset(dir.getNormal()), dir.getOpposite(), anticipateWithAuto);
-		return fromAt && toAt;
+		if (!fromAt) return false;
+		return hasOutgoingConnectionInDirection(reader, at.offset(dir.getNormal()), dir.getOpposite(), anticipateWithAuto);
 	}
 	
 	/**
@@ -117,6 +117,7 @@ public final class ConnectionHelper {
 	 * @param from The origin.
 	 * @param to The destination.
 	 * @param strictAdjacentOnly If true, this will throw {@link IllegalArgumentException} if the given {@link BlockPos} instances are not neighbors.
+	 *                           This incurs a performance cost so it should not be used if the developer already knows the blocks will be neighbors.
 	 * @return A {@link Direction} representing the way to get from origin to destination.
 	 * @throws IllegalArgumentException If {@code strictAdjacentOnly} is true and the two {@link BlockPos} instances are not neighbors.
 	 */
@@ -151,7 +152,7 @@ public final class ConnectionHelper {
 	 * @return A list of up to six {@link BlockPos} instances representing directions where a mutual connection is made.
 	 */
 	public static BlockPos[] getDirectionsWithMutualConnections(BlockGetter reader, BlockPos around, boolean anticipateWithAuto) {
-		ArrayList<BlockPos> result = new ArrayList<>();
+		ArrayList<BlockPos> result = new ArrayList<>(6);
 		for (Vec3i adj : Cardinals.ADJACENTS_IN_ORDER) {
 			BlockPos neighbor = around.offset(adj);
 			BlockState neighborState = reader.getBlockState(neighbor);

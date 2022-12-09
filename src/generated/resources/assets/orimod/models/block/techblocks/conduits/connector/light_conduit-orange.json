@@ -1,0 +1,166 @@
+{
+  "parent": "minecraft:block/cube",
+  "elements": [
+    {
+      "faces": {
+        "down": {
+          "rotation": 90,
+          "texture": "#down",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "texture": "#east",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "texture": "#north",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "texture": "#south",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "rotation": 90,
+          "texture": "#up",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "texture": "#west",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        4,
+        4,
+        0
+      ],
+      "to": [
+        12,
+        12,
+        4
+      ]
+    },
+    {
+      "faces": {
+        "down": {
+          "emissivity": 15,
+          "rotation": 90,
+          "texture": "#downglow",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "east": {
+          "emissivity": 15,
+          "texture": "#eastglow",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "north": {
+          "emissivity": 15,
+          "texture": "#northglow",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "south": {
+          "emissivity": 15,
+          "texture": "#southglow",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "up": {
+          "emissivity": 15,
+          "rotation": 90,
+          "texture": "#upglow",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        },
+        "west": {
+          "emissivity": 15,
+          "texture": "#westglow",
+          "uv": [
+            0.0,
+            0.0,
+            16.0,
+            16.0
+          ]
+        }
+      },
+      "from": [
+        4,
+        4,
+        0
+      ],
+      "to": [
+        12,
+        12,
+        4
+      ]
+    }
+  ],
+  "render_type": "minecraft:cutout",
+  "textures": {
+    "down": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side",
+    "downglow": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side-orange",
+    "east": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side",
+    "eastglow": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side-orange",
+    "north": "orimod:block/techblocks/conduits/connector/light_conduit-connector-core",
+    "northglow": "orimod:block/techblocks/conduits/connector/light_conduit-connector-core-orange",
+    "south": "orimod:block/techblocks/conduits/connector/light_conduit-connector-core",
+    "southglow": "orimod:block/techblocks/conduits/connector/light_conduit-connector-core-orange",
+    "up": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side",
+    "upglow": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side-orange",
+    "west": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side",
+    "westglow": "orimod:block/techblocks/conduits/connector/light_conduit-connector-side-orange"
+  }
+}

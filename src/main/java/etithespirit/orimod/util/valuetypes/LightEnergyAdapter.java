@@ -31,13 +31,13 @@ public final class LightEnergyAdapter {
 			return new EnergyTransactionResult(0, 0, conversionRatio, direction, simulate);
 		}
 		if (direction == EnergyTransactionDirection.FROM_LIGHT_TO_RF) {
-			if (!lightContainer.canExtractLight() || !rfContainer.canReceive()) {
+			if (!lightContainer.canExtractLightFrom() || !rfContainer.canReceive()) {
 				return new EnergyTransactionResult(0, 0, conversionRatio, direction, simulate);
 			}
 			
 			// The amount of Light we initially extracted from our Light container. This might not necessarily be the amount we can use.
 			// Because of this, we ALWAYS simulate this action.
-			final double lightInitiallyExtracted = lightContainer.extractLight(amount, true);
+			final double lightInitiallyExtracted = lightContainer.extractLightFrom(amount, true);
 			
 			// Now, let's try to see how much RF we can receive. There's a good chance that while we were able to get a given amount of Light, we were
 			// NOT able to translate all of it into RF for this container (maybe this container is too full?)
@@ -50,7 +50,7 @@ public final class LightEnergyAdapter {
 			// So now we need to figure out how much Light that equates to before anything else. RF device was able to store (r)
 			// so what is (r) in (L)?
 			final double lightReceivedByRF = rfReceived / conversionRatio;
-			final double lightActuallyExtracted = lightContainer.extractLight(lightReceivedByRF, simulate);
+			final double lightActuallyExtracted = lightContainer.extractLightFrom(lightReceivedByRF, simulate);
 			
 			return new EnergyTransactionResult(lightActuallyExtracted, rfReceived, conversionRatio, direction, simulate);
 		} else {

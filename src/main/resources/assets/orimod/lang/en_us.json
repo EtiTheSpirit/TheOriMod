@@ -15,14 +15,18 @@
 	"tooltip.orimod.focuslight.2" : "§3to focus your §bLight",
 	"tooltip.orimod.focuslight.3" : "§3and repair this item!",
 
-	"tooltip.orimod.lumowand.1" : "§3Press Sneak+Use to set",
-	"tooltip.orimod.lumowand.2" : "§3the auto-connect mode",
-	"tooltip.orimod.lumowand.3" : "§3of a conduit, or press",
-	"tooltip.orimod.lumowand.4" : "§3Use to set if a side",
-	"tooltip.orimod.lumowand.5" : "§3has an output on it.",
+	"tooltip.orimod.lumowand.1" : "§3Press Use to swap the",
+	"tooltip.orimod.lumowand.2" : "§3color of a block that",
+	"tooltip.orimod.lumowand.3" : "§3(appears to) use Light",
+	"tooltip.orimod.lumowand.4" : "§3energy.",
 
 	"info.orimod.lumowand.autoon" : "Automatic Connections: On",
 	"info.orimod.lumowand.autooff" : "Automatic Connections: Off",
+
+	"info.orimod.lumowand.colorswap.blue" : "Color: Blue",
+	"info.orimod.lumowand.colorswap.orange" : "Color: Orange",
+
+	"info.orimod.lumowand.dbg_charge" : "DEBUG: Applied/Removed charge to this block.",
 
 	"input.orimod.dash" : "Dash",
 	"input.orimod.climb" : "Climb",
@@ -34,6 +38,7 @@
 	"itemGroup.orimod.spirit_tools" : "Spirit Tools",
 	"itemGroup.orimod.spirit_machinery" : "Luxen Machinery",
 	"itemGroup.orimod.spirit_machinery_parts" : "Luxen Machinery Parts",
+	"itemGroup.orimod.spirit_decoration" : "Decorative Luxen Parts",
 	"itemGroup.orimod.decay" : "Decay-Infected Blocks",
 
 	"block.orimod.decay_log" : "§5Decaying Petrified Log",
@@ -47,6 +52,10 @@
 	
 	"block.orimod.light_capacitor" : "§bLight Capacitor",
 	"block.orimod.light_conduit" : "§bLight Conduit",
+
+	"block.orimod.forlorn_stone" : "Forlorn Stone",
+	"block.orimod.forlorn_stone_line" : "Forlorn Stone (Line)",
+	"block.orimod.forlorn_stone_omni" : "Forlorn Stone (Center)",
 
 	"item.orimod.lumo_wand" : "§bLumo Wand",
 	"item.orimod.decay_poison_bucket" : "§5Decay Poison Bucket",
@@ -103,7 +112,7 @@
 	"config.orimod.light_energy" : "Luxen Configuration (Light Technology)",
 
 	"config.orimod.light_energy.rf_to_lux" : "RF to Luxen Conversion Ratio",
-	"config.orimod.light_energy.rf_to_lux.description" : "§cThis is not yet functional.§f How much §cRF §fis required to get 1 §bLuxen.",
+	"config.orimod.light_energy.rf_to_lux.description" : "How much §cRF §fis required to get 1 §bLuxen.",
 
 	"config.orimod.light_energy.env_power" : "Environmental Light Efficiency",
 	"config.orimod.light_energy.env_power.description" : "§cThis is not yet functional.§f If enabled, environments of §5Decay §for §bLight §fwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §fenvironments and easier in §bLight §fenvironments..",
@@ -126,10 +135,10 @@
 	"config.orimod.world.decay.diagonal_spread" : "Allow Diagonal Spreading",
 	"config.orimod.world.decay.diagonal_spread.description" : "If enabled, §5Decay §fblocks can spread diagonally by one block. This has somewhat of a performance impact (albeit minor). If disabled, they will only spread to the six direct neighbors to any given block, but can leverage a performance boost.",
 
-	"config.orimod.assembly_optimization_system.greedy_optimization" : "Greedy Optimization",
-	"config.orimod.assembly_optimization_system.greedy_optimization.description" : "Greedy Optimization can make accessing data about assemblies faster. This provides §aan extremely positive boost in performance §fat the cost of §cincreased memory usage§f. §bIt is STRONGLY advised that you leave this ON unless your server / world is host to excessive amounts (thousands) of Light tech connector blocks§f.",
 	"config.orimod.assembly_optimization_system.keep_chunks_alive" : "Keep Chunks Alive",
 	"config.orimod.assembly_optimization_system.keep_chunks_alive.description" : "This can be used to keep chunks containing functional Light tech (§7meaning they must be doing something with their energy§f) alive. This §aimproves gameplay by allowing tech to operate whilst unattended §fat the cost of §cmore CPU usage (the usage scales with how much is going on)§f.",
+	"config.orimod.assembly_optimization_system.max_assembly_iterations" : "Maximum Assembly Branches",
+	"config.orimod.assembly_optimization_system.max_assembly_iterations.description" : "Big sets of wires and devices are complicated. This setting decides how many + or T shaped wire joints the system can go through when searching for connected technology blocks. If there's too many branches, the system determines the assembly to be too complicated and gives up partway through. Higher values allow more largely interconnected machines, but also introduce a significant amount of server lag when changing the wiring (thankfully, there is not lag from the system existing, only from it changing).",
 
 	"waila.orimod.energy" : "Storage: §b%1$s Luxen",
 	"waila.orimod.energy_rf" : "Storage: §b%1$s Luxen (%2$s RF)",
@@ -138,10 +147,14 @@
 	"waila.orimod.autoconnectfalse" : "Automatic Connections: §cNo",
 	"waila.orimod.decaysafetrue" : "Actively Decaying: §bNo §a(Safe!)",
 	"waila.orimod.decaysafefalse" : "Actively Decaying: §5Yes §c(Danger!)",
+	"waila.orimod.forlorn_blue" : "Skin: ",
+	"waila.orimod.forlorn_blue.blue" : "Blue",
+	"waila.orimod.forlorn_blue.orange" : "Orange",
 
-	"config.waila.plugin_orimod.show_auto" : "Display autoconnection state of tech",
-	"config.waila.plugin_orimod.show_decay_state" : "Show safety of petrified blocks",
-	"config.waila.plugin_orimod.show_energy" : "Show stored Luxen in tech blocks",
+	"config.jade.plugin_orimod.show_auto" : "Display autoconnection state of tech",
+	"config.jade.plugin_orimod.show_decay_state" : "Show safety of petrified blocks",
+	"config.jade.plugin_orimod.show_forlorn_skin" : "Show whether a Forlorn-style block is Blue or Orange",
+	"config.jade.plugin_orimod.show_energy" : "Show stored Luxen in tech blocks",
 
 	"command.orimod.setspirit.success" : "Success! Player %1$s has been updated. Their state of being a Spirit has changed to: %2$s",
 	"command.orimod.setspirit.success_self" : "Success! Your state of being a Spirit has changed to: %1$s",

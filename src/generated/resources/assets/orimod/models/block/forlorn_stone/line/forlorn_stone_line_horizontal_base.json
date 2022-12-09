@@ -1,0 +1,7 @@
+{
+  "parent": "minecraft:block/cube_column_horizontal",
+  "textures": {
+    "end": "orimod:block/forlorn_stone/line/forlorn_stone_line-base_end",
+    "side": "orimod:block/forlorn_stone/line/forlorn_stone_line-base_side"
+  }
+}

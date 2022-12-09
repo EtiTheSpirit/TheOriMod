@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "blue=false,powered=false": {
+      "model": "orimod:block/forlorn_stone/omni/forlorn_stone_omni_base"
+    },
+    "blue=false,powered=true": {
+      "model": "orimod:block/forlorn_stone/omni/forlorn_stone_omni_orange"
+    },
+    "blue=true,powered=false": {
+      "model": "orimod:block/forlorn_stone/omni/forlorn_stone_omni_base"
+    },
+    "blue=true,powered=true": {
+      "model": "orimod:block/forlorn_stone/omni/forlorn_stone_omni_blue"
+    }
+  }
+}
