@@ -1,7 +1,6 @@
 package etithespirit.orimod.combat.projectile;
 
 import com.google.common.collect.Lists;
-import etithespirit.orimod.client.render.particle.LightSparkParticle;
 import etithespirit.orimod.combat.ExtendedDamageSource;
 import etithespirit.orimod.registry.SoundRegistry;
 import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
@@ -38,19 +37,11 @@ public class SpiritArrow extends AbstractArrow {
 	
 	@Override
 	protected ItemStack getPickupItem() {
-		return null;
+		return ItemStack.EMPTY;
 	}
 	
 	private void playSoundFromCharge() {
 		this.playSound(this.isCritArrow() ? SoundRegistry.get("item.spirit_arc.impact.crit") : SoundRegistry.get("item.spirit_arc.impact.normal"), 1f, this.random.nextFloat() * 0.05F + 0.975F);
-	}
-	
-	private void spawnPoofParticle(Vec3i normal) {
-		if (this.level instanceof ClientLevel clientLevel) {
-			for (int idx = 0; idx < 15; idx++) {
-				Minecraft.getInstance().particleEngine.add(new LightSparkParticle.SpiritArcArrowImpactParticle(clientLevel, this.position(), new Vec3(normal.getX(), normal.getY(), normal.getZ())));
-			}
-		}
 	}
 	
 	@Override
@@ -65,7 +56,7 @@ public class SpiritArrow extends AbstractArrow {
 		this.setCritArrow(false);
 		this.setPierceLevel((byte)0);
 		this.setShotFromCrossbow(false);
-		spawnPoofParticle(result.getDirection().getNormal());
+		// spawnPoofParticle(result.getDirection().getNormal());
 		this.discard();
 	}
 	
@@ -90,7 +81,7 @@ public class SpiritArrow extends AbstractArrow {
 		} else {
 			this.playSound(SoundRegistry.get("item.spirit_arc.impact.ricochet"), 0.6f, this.random.nextFloat() * 0.05F + 0.975F);
 		}
-		spawnPoofParticle(new Vec3i(0, 1, 0));
+		// spawnPoofParticle(new Vec3i(0, 1, 0));
 		this.discard();
 		
 	}

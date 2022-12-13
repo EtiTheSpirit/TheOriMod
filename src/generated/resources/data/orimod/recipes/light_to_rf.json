@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "F": {
+      "item": "orimod:forlorn_stone"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "FCF",
+    "CSC",
+    "FCF"
+  ],
+  "result": {
+    "count": 2,
+    "item": "orimod:light_to_rf"
+  }
+}

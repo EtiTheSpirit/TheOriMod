@@ -3,7 +3,7 @@ package etithespirit.orimod.spiritmaterial;
 import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAcquisitionFunction;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
-import etithespirit.orimod.common.block.ExtendedMaterial;
+import etithespirit.orimod.common.material.ExtendedMaterials;
 import etithespirit.orimod.registry.BlockRegistry;
 import etithespirit.orimod.spiritmaterial.defaults.DefaultImplementations;
 import net.minecraft.core.BlockPos;
@@ -318,7 +318,7 @@ public final class BlockToMaterialBinding {
 		MATERIAL_TO_SPIRIT_MTL.put(Material.EGG, SpiritMaterial.ICE); // mojmap: EGG
 		MATERIAL_TO_SPIRIT_MTL.put(Material.EXPLOSIVE, SpiritMaterial.SAND); // mojmap: EXPLOSIVE
 		MATERIAL_TO_SPIRIT_MTL.put(Material.FIRE, SpiritMaterial.INHERITED);
-		MATERIAL_TO_SPIRIT_MTL.put(Material.GLASS, SpiritMaterial.GLASS);
+		MATERIAL_TO_SPIRIT_MTL.put(Material.GLASS, SpiritMaterial.CHITIN);
 		MATERIAL_TO_SPIRIT_MTL.put(Material.PLANT, SpiritMaterial.GRASS_SOFT); // mojmap: PLANT
 		MATERIAL_TO_SPIRIT_MTL.put(Material.HEAVY_METAL, SpiritMaterial.METAL); // mojmap: HEAVY_METAL
 		MATERIAL_TO_SPIRIT_MTL.put(Material.ICE, SpiritMaterial.ICE);
@@ -346,7 +346,7 @@ public final class BlockToMaterialBinding {
 		MATERIAL_TO_SPIRIT_MTL.put(Material.WOOL, SpiritMaterial.WOOL);
 		
 		// MY MATERIALS
-		MATERIAL_TO_SPIRIT_MTL.put(ExtendedMaterial.LIGHT, SpiritMaterial.GLASS);
+		MATERIAL_TO_SPIRIT_MTL.put(ExtendedMaterials.LIGHT, SpiritMaterial.GLASS);
 		
 		// CUSTOM MATERIAL PREDICATES
 		MATERIAL_CONDITIONAL_MATERIAL_OVERRIDES.put(Material.NETHER_WOOD, DefaultImplementations::getWoodMaterial);
@@ -388,18 +388,7 @@ public final class BlockToMaterialBinding {
 		setSpiritMaterialFor(Blocks.SMOOTH_RED_SANDSTONE, SpiritMaterial.CERAMIC_BROKEN);
 		setSpiritMaterialFor(Blocks.SMOOTH_RED_SANDSTONE_SLAB, SpiritMaterial.CERAMIC_BROKEN);
 		setSpiritMaterialFor(Blocks.SMOOTH_RED_SANDSTONE_STAIRS, SpiritMaterial.CERAMIC_BROKEN);
-		
 		setSpiritMaterialFor(Blocks.REDSTONE_BLOCK, SpiritMaterial.GRAVEL_DRY);
-		
-		try {
-			// lmao
-			Field[] blocks = Blocks.class.getFields();
-			for (Field f : blocks) {
-				if (f.getName().startsWith("GLASS")) {
-					setSpiritMaterialFor((Block)f.get(null), SpiritMaterial.CHITIN);
-				}
-			}
-		} catch (Exception ignored) {}
 		
 		// 1.19.2 added some wack blocks man
 		setSpiritMaterialFor(Blocks.MANGROVE_LOG, SpiritMaterial.WOOD_MOSSY);

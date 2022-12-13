@@ -1,0 +1,36 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "orimod:light_shield"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "main_action": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:player"
+            }
+          }
+        ]
+      },
+      "trigger": "orimod:become_spirit"
+    }
+  },
+  "requirements": [
+    [
+      "main_action",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "orimod:light_shield"
+    ]
+  }
+}

@@ -4,6 +4,7 @@ package etithespirit.orimod;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.datafixers.util.Pair;
 import etithespirit.orimod.apiimpl.EnvironmentalAffinityAPI;
+import etithespirit.orimod.client.gui.LightRepairDeviceScreen;
 import etithespirit.orimod.client.render.hud.SpiritHealthGui;
 import etithespirit.orimod.command.SetSpiritCommand;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
@@ -11,17 +12,22 @@ import etithespirit.orimod.common.potion.DecayEffect;
 import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
+import etithespirit.orimod.datagen.advancements.GenerateAdvancements;
 import etithespirit.orimod.datagen.block.GenerateBlockModels;
 import etithespirit.orimod.datagen.GenerateItemModels;
 import etithespirit.orimod.client.render.RenderPlayerAsSpirit;
 import etithespirit.orimod.datagen.audio.GenerateSoundsJson;
+import etithespirit.orimod.datagen.recipe.GenerateRecipes;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
+import etithespirit.orimod.networking.spirit.ClientSpiritStateComponent;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.DamageMarshaller;
+import etithespirit.orimod.registry.AdvancementRegistry;
 import etithespirit.orimod.registry.BlockRegistry;
 import etithespirit.orimod.registry.EntityRegistry;
 import etithespirit.orimod.registry.FluidRegistry;
 import etithespirit.orimod.registry.ItemRegistry;
+import etithespirit.orimod.registry.MenuRegistry;
 import etithespirit.orimod.registry.PotionRegistry;
 import etithespirit.orimod.registry.RenderRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
@@ -33,6 +39,7 @@ import etithespirit.orimod.spirit.SpiritSounds;
 import etithespirit.orimod.spirit.client.SpiritDash;
 import etithespirit.orimod.spirit.client.SpiritJump;
 import it.unimi.dsi.fastutil.longs.LongSet;
+import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
@@ -104,6 +111,7 @@ public final class OriMod {
 		SoundRegistry.registerAll();
 		TileEntityRegistry.registerAll();
 		EntityRegistry.registerAll();
+		MenuRegistry.registerAll();
 		
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onPlayerTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onWorldTickEvent);
@@ -143,7 +151,8 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityHurt);
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityDied);
 		
-		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onEntityJumped);
+		event.enqueueWork(AdvancementRegistry::registerAll);
+		// event.enqueueWork(MenuRegistry::registerAll);
 		
 		/*
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityRegistry::attachCapabilities);
@@ -198,12 +207,17 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutClient);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onRespawnedClient);
 		
-		ReplicateSpiritStatus.registerPackets(Dist.CLIENT);
-		EffectModificationReplication.registerPackets(Dist.CLIENT);
+		ClientSpiritStateComponent.registerClientPackets();
+		EffectModificationReplication.registerClientPackets();
 		
 		//OnRegisterKeyMappings?
 		//ClientRegistry.registerKeyBinding(SpiritDash.DASH_BIND);
 		//ClientRegistry.registerKeyBinding(SpiritJump.CLING_BIND);
+		
+		event.enqueueWork(() -> {
+			MenuScreens.register(MenuRegistry.LIGHT_REPAIR_DEVICE.get(), LightRepairDeviceScreen::new);
+		});
+		
 
 		MinecraftForge.EVENT_BUS.addListener(RenderPlayerAsSpirit::whenRenderingPlayer);
 		ItemBlockRenderTypes.setRenderLayer(FluidRegistry.DECAY_FLUID_STATIC.get(), RenderType.translucent());
@@ -216,8 +230,8 @@ public final class OriMod {
 	 * @param event The setup event.
 	 */
 	public void dedicatedServerBuildInit(final FMLDedicatedServerSetupEvent event) {
-		ReplicateSpiritStatus.registerPackets(Dist.DEDICATED_SERVER);
-		EffectModificationReplication.registerPackets(Dist.DEDICATED_SERVER);
+		ReplicateSpiritStatus.registerServerPackets();
+		EffectModificationReplication.registerServerPackets();
 	}
 	
 	/**
@@ -239,6 +253,8 @@ public final class OriMod {
 			GenerateBlockModels models = new GenerateBlockModels(generator, dataEvt.getExistingFileHelper());
 			GenerateItemModels items = new GenerateItemModels(generator, dataEvt.getExistingFileHelper());
 			BlockToolRelations blockTags = new BlockToolRelations(generator, dataEvt.getExistingFileHelper());
+			GenerateAdvancements advancements = new GenerateAdvancements(generator, dataEvt.getExistingFileHelper());
+			GenerateRecipes recipes = new GenerateRecipes(generator);
 			
 			File modProjectRoot = new File(".").getAbsoluteFile().getParentFile().getParentFile();
 			File srcFolder = new File(modProjectRoot, "src");
@@ -250,6 +266,8 @@ public final class OriMod {
 			generator.addProvider(true, items);
 			generator.addProvider(true, blockTags);
 			generator.addProvider(true, sounds);
+			generator.addProvider(true, advancements);
+			generator.addProvider(true, recipes);
 			//File file = new File(".");
 			
 		}

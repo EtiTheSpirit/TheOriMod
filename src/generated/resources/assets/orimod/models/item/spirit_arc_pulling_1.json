@@ -1,6 +1,6 @@
 {
   "parent": "orimod:item/spirit_arc",
   "textures": {
-    "layer0": "orimod:item/tools/spirit_arc_pulling_1"
+    "layer0": "orimod:item/combat/spirit_arc_pulling_1"
   }
 }

@@ -6,6 +6,7 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.OriMod;
+import etithespirit.orimod.common.item.ISpiritLightItem;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.PlayerModel;
@@ -176,6 +177,8 @@ public class RenderPlayerAsSpirit {
 						
 						ARMOR.renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, r, g, b, 1);
 					} else {
+						float alpha = 1;
+						if (item.getItem() instanceof ISpiritLightItem) alpha = 0.5f;
 						ARMOR.renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, 1, 1, 1, 1);
 					}
 				}

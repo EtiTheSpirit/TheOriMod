@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "orimod:binding_essence"
+    },
+    "F": {
+      "item": "orimod:forlorn_stone"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "S",
+    "B",
+    "F"
+  ],
+  "result": {
+    "item": "orimod:lumo_wand"
+  }
+}

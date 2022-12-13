@@ -1,0 +1,22 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "orimod:binding_essence"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "SDS",
+    "BDB",
+    "SDS"
+  ],
+  "result": {
+    "item": "orimod:light_shield"
+  }
+}

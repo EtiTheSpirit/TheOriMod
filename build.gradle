@@ -14,7 +14,7 @@ apply plugin: 'org.spongepowered.mixin'
 
 version = "${mod_version}"
 group = "${mod_base}.${mod_id}"
-archivesBaseName = mod_id
+archivesBaseName = "${mod_id}-${minecraft_version}"
 
 // Mojang ships Java 17 to end users in 1.18+, so your mod should target Java 17.
 java.toolchain.languageVersion = JavaLanguageVersion.of(17)
@@ -195,7 +195,7 @@ dependencies {
     // Examples using mod jars from ./libs
     // implementation fg.deobf("blank:coolmod-${mc_version}:${coolmod_version}")
 
-    compileOnly fg.deobf("curse.maven:configured-457570:4011355")
+    implementation fg.deobf("curse.maven:configured-457570:4011355")
     compileOnly fg.deobf("curse.maven:catalogue-459701:3873264")
     implementation fg.deobf("curse.maven:jade-324717:4096513") // full build
 

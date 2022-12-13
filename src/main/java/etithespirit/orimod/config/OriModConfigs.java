@@ -4,11 +4,12 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.JsonParseException;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
-import etithespirit.orimod.annotation.ServerUseOnly;
+import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import etithespirit.orimod.common.block.decay.DecayLiquidBlock;
 import etithespirit.orimod.common.block.decay.DecayWorldConfigBehavior;
 import etithespirit.orimod.common.block.decay.IDecayBlockIdentifier;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
+import etithespirit.orimod.common.item.ISpiritLightItem;
 import etithespirit.orimod.registry.FluidRegistry;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
@@ -24,15 +25,21 @@ import net.minecraftforge.fml.config.ModConfig;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 
 public class OriModConfigs {
 	
+	/** Corresponds to {@link ModConfig.Type#CLIENT} -- This exists explicitly on the client and should control render options and other similar behaviors. */
 	public static ForgeConfigSpec CLIENT_ONLY;
+	
+	/** Corresponds to {@link ModConfig.Type#SERVER} -- This exists on both dedicated and integrated servers. It synchronizes to clients upon connection. */
 	public static ForgeConfigSpec SERVER_SYNCED;
-	public static ForgeConfigSpec SEPARATE_SIDES;
+	
+	/** Corresponds to {@link ModConfig.Type#COMMON} -- This exists <em>independently</em> on both client and server; not replicated in multiplayer environments. */
+	public static ForgeConfigSpec NOT_REPLICATED;
 	
 	public static ForgeConfigSpec.IntValue AIR_JUMP_COUNT;
 	public static ForgeConfigSpec.BooleanValue KNOW_DOUBLE_JUMP;
@@ -46,8 +53,13 @@ public class OriModConfigs {
 	
 	public static ForgeConfigSpec.DoubleValue LUX_TO_RF_RATIO;
 	public static ForgeConfigSpec.BooleanValue USE_ENV_POWER;
+	// public static ForgeConfigSpec.EnumValue<LightEnergyComponentProvider.ShowRFType> SHOW_RF_WHEN;
 	
 	public static ForgeConfigSpec.BooleanValue ONLY_EAT_PLANTS;
+	public static ForgeConfigSpec.EnumValue<ISpiritLightItem.SelfRepairLimit> SELF_REPAIR_LIMITS;
+	public static ForgeConfigSpec.BooleanValue ANYONE_CAN_SELF_REPAIR;
+	public static ForgeConfigSpec.DoubleValue SELF_REPAIR_DAMAGE;
+	public static ForgeConfigSpec.IntValue SELF_REPAIR_EARNINGS;
 	
 	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_SPREADING;
 	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_COATING_SPREADING;
@@ -56,22 +68,19 @@ public class OriModConfigs {
 	public static ForgeConfigSpec.BooleanValue KEEP_CHUNKS_ALIVE;
 	public static ForgeConfigSpec.BooleanValue DO_DIAGONAL_SPREAD;
 	
-	@Deprecated
-	public static ForgeConfigSpec.DoubleValue HEALTH_TO_LUX_RATIO;
-	
-	@ClientUseOnly
-	public static ForgeConfigSpec.BooleanValue DEBUG_RENDER_ASSEMBLIES;
+	public static ForgeConfigSpec.IntValue MAX_ASSEMBLY_ITERATIONS;
 	
 	@ClientUseOnly
 	public static ForgeConfigSpec.BooleanValue OVERRIDE_HEALTH_RENDERING;
 	
-	@ServerUseOnly
-	public static ForgeConfigSpec.IntValue MAX_ASSEMBLY_ITERATIONS;
+	@ClientUseOnly
+	/** This is not ready yet. */
+	private static Map<SpiritMaterial, ForgeConfigSpec.ConfigValue<List<String>>> USER_DEFINED_SPIRIT_MATERIALS;
 	
 	/**
 	 * Returns the spreading behavior of the given decay block. It should be a BlockState of decay or FluidState of decay.
-	 * @param state
-	 * @return
+	 * @param state The state to check.
+	 * @return The default spreading behavior of this block, limited by the permissiveness of the user settings.
 	 * @throws IllegalArgumentException If the given block is not a decay block.
 	 */
 	public static DecayWorldConfigBehavior getDecaySpreadBehavior(StateHolder<?, ?> state) throws IllegalArgumentException {
@@ -165,7 +174,7 @@ public class OriModConfigs {
 		
 		ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, CLIENT_ONLY);
 		ModLoadingContext.get().registerConfig(ModConfig.Type.SERVER, SERVER_SYNCED);
-		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, SEPARATE_SIDES);
+		ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, NOT_REPLICATED);
 	}
 	
 	/**
@@ -212,13 +221,30 @@ public class OriModConfigs {
 		return builder.defineInRange(key, defaultValue, min, max);
 	}
 	
+	@SuppressWarnings("unchecked")
 	private static void setupClientCfg() {
 		ForgeConfigSpec.Builder builder = new ForgeConfigSpec.Builder();
 		
 		String current = "rendering";
 		builder.push(current);
-		DEBUG_RENDER_ASSEMBLIES = createBoolean(builder, current, "assembly_debug", false, false);
+		// DEBUG_RENDER_ASSEMBLIES = createBoolean(builder, current, "assembly_debug", false, false);
 		OVERRIDE_HEALTH_RENDERING = createBoolean(builder, current, "override_health_rendering", false, false);
+		builder.pop();
+		
+		/*
+		builder.push("spirit_materials");
+		for (SpiritMaterial mtl : SpiritMaterial.values()) {
+			if (mtl == SpiritMaterial.INHERITED || mtl == SpiritMaterial.NULL || mtl.deprecated()) continue;
+			String name = mtl.toString();
+			builder.push(name);
+			builder.comment("Blocks in this list will be added to the " + name + " material. §cRequires a full game restart due to how the registry works.");
+			
+			USER_DEFINED_SPIRIT_MATERIALS.put(mtl, (ForgeConfigSpec.ConfigValue<List<String>>)(Object)builder.defineListAllowEmpty(List.of(name), List::<String>of, element -> ResourceLocation.tryParse((String)element) != null));
+			builder.pop();
+			
+		}
+		builder.pop();
+		*/
 		
 		CLIENT_ONLY = builder.build();
 	}
@@ -233,6 +259,10 @@ public class OriModConfigs {
 		FORCE_STATE = createBoolean(builder, current, "force_state", false, false);
 		ALLOW_CHANGING_BY_DEFAULT = createBoolean(builder, current, "allow_changes_default", true, false);
 		ONLY_EAT_PLANTS = createBoolean(builder, current, "only_eat_plants", false, false);
+		SELF_REPAIR_LIMITS = createEnum(builder, current, "self_repair_limits", ISpiritLightItem.SelfRepairLimit.NOT_ALLOWED, false);
+		ANYONE_CAN_SELF_REPAIR = createBoolean(builder, current, "anyone_can_self_repair", false, false);
+		SELF_REPAIR_DAMAGE = createDoubleRange(builder, current, "self_repair_damage", 3, 0, Double.POSITIVE_INFINITY, false);
+		SELF_REPAIR_EARNINGS = createIntRange(builder, current, "self_repair_earnings", 50, 0, 65535, false);
 		builder.pop();
 		
 		current = "spirit_abilities";
@@ -246,8 +276,9 @@ public class OriModConfigs {
 		
 		current = "light_energy";
 		builder.push(current);
-		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 5000, 0.0001D, 100000D, false);
+		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 100, 0.0001D, 100000D, false);
 		USE_ENV_POWER = createBoolean(builder, current, "env_power", true, false);
+		// SHOW_RF_WHEN = createEnum(builder, current, "show_rf", LightEnergyComponentProvider.ShowRFType.ONLY_WHEN_SNEAKING, false);
 		builder.pop();
 		
 		current = "world.decay";
@@ -275,7 +306,7 @@ public class OriModConfigs {
 		GREEDY_ASSEMBLY_OPTIMIZATION = createBoolean(builder, current, "greedy_optimization", true, true);
 		builder.pop();
 		*/
-		SEPARATE_SIDES = builder.build();
+		NOT_REPLICATED = builder.build();
 	}
 	
 }

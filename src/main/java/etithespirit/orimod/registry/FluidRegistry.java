@@ -31,7 +31,7 @@ public final class FluidRegistry {
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS WRAPPING FLUIDS
-	public static final RegistryObject<LiquidBlock> DECAY_POISON = BLOCKS.register("decay_poison", () -> new DecayLiquidBlock(() -> (FlowingFluid)FluidRegistry.DECAY_FLUID_STATIC.get(), BlockBehaviour.Properties.of(ExtendedMaterials.DECAY).noCollission().strength(100).noLootTable(), true));
+	public static final RegistryObject<LiquidBlock> DECAY_POISON = BLOCKS.register("decay_poison", () -> new DecayLiquidBlock(() -> (FlowingFluid)FluidRegistry.DECAY_FLUID_STATIC.get(), BlockBehaviour.Properties.of(ExtendedMaterials.DECAY_LIQUID).noCollission().strength(100).noLootTable(), true));
 	public static final RegistryObject<FluidType> DECAY_POISON_TYPE = FLUID_TYPES.register("decay_poison", DecayPoisonFluid.DECAY_POISON_FLUID_TYPE);
 	
 	static {

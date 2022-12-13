@@ -2,20 +2,15 @@ package etithespirit.orimod.networking.spirit;
 
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.annotation.ServerUseOnly;
 import etithespirit.orimod.networking.ReplicationData;
-import etithespirit.orimod.player.EffectEnforcement;
+import etithespirit.orimod.registry.AdvancementRegistry;
 import etithespirit.orimod.server.persistence.SpiritPermissions;
 import etithespirit.orimod.spirit.SpiritIdentifier;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.network.NetworkEvent;
 import net.minecraftforge.network.NetworkRegistry;
 import net.minecraftforge.network.PacketDistributor;
@@ -35,8 +30,8 @@ import java.util.function.Supplier;
  */
 public final class ReplicateSpiritStatus {
 	
-	private static final Function<FriendlyByteBuf, SpiritStateReplicationPacket> BUFFER_TO_PACKET = ReplicateSpiritStatus::bufferToPacket;
-	private static final BiConsumer<SpiritStateReplicationPacket, FriendlyByteBuf> PACKET_TO_BUFFER = ReplicateSpiritStatus::packetToBuffer;
+	public static final Function<FriendlyByteBuf, SpiritStateReplicationPacket> BUFFER_TO_PACKET = ReplicateSpiritStatus::bufferToPacket;
+	public static final BiConsumer<SpiritStateReplicationPacket, FriendlyByteBuf> PACKET_TO_BUFFER = ReplicateSpiritStatus::packetToBuffer;
 	
 	public static final SimpleChannel INSTANCE = NetworkRegistry.newSimpleChannel(
 		new ResourceLocation(OriMod.MODID, "spirit_state_replicator"),
@@ -45,12 +40,8 @@ public final class ReplicateSpiritStatus {
 		ReplicationData.PROTOCOL_VERSION::equals
 	);
 	
-	public static void registerPackets(Dist side) {
-		if (side.isClient()) {
-			INSTANCE.registerMessage(ReplicationData.nextID(), SpiritStateReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateSpiritStatus::onClientEvent);
-		} else {
-			INSTANCE.registerMessage(ReplicationData.nextID(), SpiritStateReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateSpiritStatus::onServerEvent);
-		}
+	public static void registerServerPackets() {
+		INSTANCE.registerMessage(ReplicationData.nextID(), SpiritStateReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateSpiritStatus::onServerEvent);
 	}
 	
 	/**
@@ -148,28 +139,6 @@ public final class ReplicateSpiritStatus {
 		context.setPacketHandled(true);
 	}
 	
-	private static void onClientEvent(SpiritStateReplicationPacket msg, Supplier<NetworkEvent.Context> ctx) {
-		Level world = Minecraft.getInstance().level;
-		
-		if (msg.type == EventType.UPDATE_PLAYER_MODELS) {
-			ctx.get().enqueueWork(() -> {
-				// We've received word from the server of one or more players' models changing.
-				// Let's update our data.
-				// The server sent this, so it's safe to assume the value is acceptable.
-				msg.playerSpiritStateMappings.forEach((uuid, isSpirit) -> {
-					SpiritIdentifier.setSpirit(uuid, isSpirit);
-					Player player = world.getPlayerByUUID(uuid);
-					if (player != null) {
-						player.refreshDimensions();
-						EffectEnforcement.updatePlayerAttrs(player);
-					}
-				});
-			});
-		}
-		
-		ctx.get().setPacketHandled(true);
-	}
-	
 	/**
 	 * Relays a message to all players whether or not the given player is a spirit.
 	 * @param player The player who changed.
@@ -179,24 +148,6 @@ public final class ReplicateSpiritStatus {
 	public static void tellEveryonePlayerSpiritStatus(Player player, boolean isSpirit) {
 		SpiritIdentifier.setSpirit(player.getUUID(), isSpirit);
 		INSTANCE.send(PacketDistributor.ALL.noArg(), SpiritStateReplicationPacket.toChangeModelOf(player, isSpirit));
-	}
-	
-	/**
-	 * Politely asks the server if I can become a spirit (or no longer be one).
-	 * @param isSpirit Whether or not I want to be a spirit.
-	 */
-	@ClientUseOnly
-	public static void askToSetSpiritStatusAsync(boolean isSpirit) {
-		LocalPlayer client = Minecraft.getInstance().player;
-		SpiritIdentifier.setSpirit(client.getUUID(), isSpirit);
-		INSTANCE.send(PacketDistributor.SERVER.noArg(), SpiritStateReplicationPacket.toChangeModelOf(client, isSpirit));
-	}
-	
-	/**
-	 * Politely asks the server which people are spirits right now.
-	 */
-	@ClientUseOnly
-	public static void askWhoIsASpiritAsync() {
-		INSTANCE.send(PacketDistributor.SERVER.noArg(), SpiritStateReplicationPacket.toGetModelsOfAll());
+		AdvancementRegistry.BECOME_SPIRIT.trigger((ServerPlayer)player);
 	}
 }

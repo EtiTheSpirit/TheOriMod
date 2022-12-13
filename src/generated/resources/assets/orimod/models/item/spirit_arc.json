@@ -59,6 +59,6 @@
     }
   ],
   "textures": {
-    "layer0": "orimod:item/tools/spirit_arc"
+    "layer0": "orimod:item/combat/spirit_arc"
   }
 }

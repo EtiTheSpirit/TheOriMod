@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "orimod:block/techblocks/storage/infinite_light_source-base"
+  }
+}

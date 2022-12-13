@@ -71,7 +71,7 @@ public final class TruncateNumber {
 	 */
 	public static String truncateNumber(double number, int placeCount) {
 		if (Double.isNaN(number)) return "NaN";
-		if (Double.isInfinite(number)) return number > 0 ? "Infinity" : "Negative Infinity";
+		if (Double.isInfinite(number)) return number > 0 ? "∞" : "-∞";
 		
 		int div = 3; // The 10^div factor that this number will be tested to fit into.
 		int count = 0;

@@ -91,7 +91,7 @@ public abstract class InjectEntityPlaySound extends net.minecraftforge.common.ca
 		
 		// Run it though my custom event provider. This is designed to mimic PR #7491 behaviorally,
 		// The big difference is that it's just self-implemented in my own mod code rather than as a patch to vanilla MC.
-		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(selfProvider$self(), null, this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
+		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(selfProvider$entity(), null, this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
 			return;

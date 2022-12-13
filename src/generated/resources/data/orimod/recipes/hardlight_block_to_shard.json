@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "orimod:hardlight_block"
+    }
+  ],
+  "result": {
+    "count": 9,
+    "item": "orimod:hardlight_shard"
+  }
+}

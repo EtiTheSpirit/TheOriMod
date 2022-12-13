@@ -1,7 +1,12 @@
 package etithespirit.orimod.common.tile.light;
 
 import etithespirit.orimod.client.audio.LightTechLooper;
+import etithespirit.orimod.common.block.StaticData;
+import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
+import etithespirit.orimod.common.tile.IClientUpdatingTile;
+import etithespirit.orimod.common.tile.IServerUpdatingTile;
+import etithespirit.orimod.common.tile.light.implementations.LightRepairBoxTile;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.core.BlockPos;
@@ -50,7 +55,7 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 						if (tile instanceof LightEnergyStorageTile otherStorage) {
 							boolean otherRx = otherStorage.canReceiveLight();
 							boolean otherTx = otherStorage.canExtractLightFrom();
-							double otherDifference = otherStorage.getLightStored() - thisStorage.getLightStored();
+							float otherDifference = otherStorage.getLightStored() - thisStorage.getLightStored();
 							if (otherRx && otherTx) {
 								// Other can do both, nice
 								// Cut in half to reach eq
@@ -98,6 +103,19 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 						}
 					}
 				}
+				
+				if (!thisStorage.skipAutomaticPoweredBlockstate()) {
+					boolean appearsPowered = be.getBlockState().getValue(ForlornAppearanceMarshaller.POWERED);
+					boolean isActuallyPowered = thisStorage.getLightStored() > 0;
+					if (appearsPowered != isActuallyPowered) {
+						level.setBlock(be.getBlockPos(), be.getBlockState().setValue(ForlornAppearanceMarshaller.POWERED, isActuallyPowered), StaticData.REPLICATE_CHANGE | StaticData.DO_NOT_NOTIFY_NEIGHBORS);
+					}
+				}
+			}
+			
+			
+			if (be instanceof IServerUpdatingTile updating) {
+				updating.updateServer(level, blockPos, blockState);
 			}
 		}
 	}
@@ -108,6 +126,10 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 		
 		@Override
 		public void tick(Level level, BlockPos blockPos, BlockState blockState, BlockEntity be) {
+			
+			if (be instanceof IClientUpdatingTile updating) {
+				updating.updateClient(level, blockPos, blockState);
+			}
 			
 			// TODO: Fix issue where players can spam the shit out of these blocks and blast really loud looping audio
 			if (be instanceof IAmbientSoundEmitter cap) {

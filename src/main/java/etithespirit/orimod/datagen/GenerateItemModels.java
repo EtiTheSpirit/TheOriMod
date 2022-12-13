@@ -10,9 +10,12 @@ import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
 import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
+import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Level;
+
+import javax.annotation.Nullable;
 
 /**
  * Generates models associated with items.
@@ -33,31 +36,57 @@ public final class GenerateItemModels extends ItemModelProvider {
 	protected void registerModels() {
 		OriMod.LOG.printf(Level.INFO, "Starting item model generation.");
 		//generateToolItem(ItemRegistry.LIGHT_TOOL);
-		generateToolItem(ItemRegistry.LUMO_WAND);
-		generateShieldItem(ItemRegistry.LIGHT_SHIELD);
-		generateItem(ItemRegistry.POISON_BUCKET);
-		generateBowItem(ItemRegistry.SPIRIT_ARC);
+		generateToolItem(ItemRegistry.LUMO_WAND, "tools");
+		generateShieldItem(ItemRegistry.LIGHT_SHIELD, "combat");
+		generateItem(ItemRegistry.POISON_BUCKET, "fluid");
+		generateBowItem(ItemRegistry.SPIRIT_ARC, "combat");
+		generateToolItem(ItemRegistry.LIGHT_SWORD, "combat");
+		generateToolItem(ItemRegistry.LIGHT_PICKAXE, "tools");
+		generateToolItem(ItemRegistry.LIGHT_SHOVEL, "tools");
+		generateToolItem(ItemRegistry.LIGHT_AXE, "tools");
+		generateToolItem(ItemRegistry.LIGHT_HOE, "tools");
+		generateItem(ItemRegistry.HARDLIGHT_SHARD, "crafting");
+		generateItem(ItemRegistry.BINDING_ESSENCE, "crafting");
+		generateItem(ItemRegistry.LARGE_LIGHT_LENS, "crafting");
+		
+		generateItem(ItemRegistry.LIGHT_HELMET, "armor");
+		generateItem(ItemRegistry.LIGHT_CHESTPLATE, "armor");
+		generateItem(ItemRegistry.LIGHT_LEGS, "armor");
+		generateItem(ItemRegistry.LIGHT_BOOTS, "armor");
+		
 		OriMod.LOG.printf(Level.INFO, "Item models registered!");
 	}
 	
-	private void generateToolItem(RegistryObject<Item> item) {
+	private void generateToolItem(RegistryObject<Item> item, @Nullable String subPath) {
 		ResourceLocation id = item.getId();
+		if (subPath != null) {
+			subPath += '/';
+		} else {
+			subPath = "";
+		}
 		singleTexture(
+			//id.getNamespace() + ':' + ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath(),
 			id.toString(),
-			new ResourceLocation("item/handheld"),
+			new ResourceLocation(ModelProvider.ITEM_FOLDER + "/handheld"),
 			"layer0",
-			new ResourceLocation(id.getNamespace(), "item/tools/" + id.getPath())
+			new ResourceLocation(id.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath())
 		);
 		OriMod.LOG.printf(Level.INFO, "Created simple handheld (tool) item for %s", id.toString());
 	}
 	
-	private void generateItem(RegistryObject<Item> item) {
+	private void generateItem(RegistryObject<Item> item, @Nullable String subPath) {
 		ResourceLocation id = item.getId();
+		if (subPath != null) {
+			subPath += '/';
+		} else {
+			subPath = "";
+		}
 		singleTexture(
+			//id.getNamespace() + ':' + ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath(),
 			id.toString(),
-			new ResourceLocation("item/generated"),
+			new ResourceLocation(ModelProvider.ITEM_FOLDER + "/generated"),
 			"layer0",
-			new ResourceLocation(id.getNamespace(), "item/" + id.getPath())
+			new ResourceLocation(id.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath())
 		);
 		OriMod.LOG.printf(Level.INFO, "Created generic generated item for %s", id.toString());
 	}
@@ -66,19 +95,26 @@ public final class GenerateItemModels extends ItemModelProvider {
 	 * Given a RegistryObject&lt;Item&gt; for a shield, this will create its model.
 	 * @param item The item to create.
 	 */
-	private void generateShieldItem(RegistryObject<Item> item) {
+	private void generateShieldItem(RegistryObject<Item> item, @Nullable String subPath) {
 		ResourceLocation id = item.getId();
+		if (subPath != null) {
+			subPath += '/';
+		} else {
+			subPath = "";
+		}
 		ModelFile blocking = withExistingParent(
-			"item/" + id.getPath() + "_blocking",
-			mcLoc("item/shield_blocking")
+			//ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath() + "_blocking",
+			id.getPath() + "_blocking",
+			mcLoc(ModelProvider.ITEM_FOLDER + "/shield_blocking")
 		).texture(
 			"particle",
 			mcLoc("block/glass")
 		);
 		
 		withExistingParent(
-			"item/" + id.getPath(),
-			mcLoc("item/shield")
+			//ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath(),
+			id.getPath(),
+			mcLoc(ModelProvider.ITEM_FOLDER + "/shield")
 		).texture(
 			"particle",
 			mcLoc("block/glass")
@@ -90,22 +126,32 @@ public final class GenerateItemModels extends ItemModelProvider {
 		OriMod.LOG.printf(Level.INFO, "Created shield model for %s", id.toString());
 	}
 	
-	private ModelFile generateBowItem$pulling(ResourceLocation id, int pullIndex) {
+	private ModelFile generateBowItem$pulling(ResourceLocation id, int pullIndex, String subPath) {
 		return singleTexture(
+			//id.getNamespace() + ':' + ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath() + "_pulling_" + pullIndex,
 			id.toString() + "_pulling_" + pullIndex,
-			modLoc("item/" + id.getPath()),
+			//modLoc(ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath()),
+			modLoc(id.getPath()),
 			"layer0",
-			new ResourceLocation(id.getNamespace(), "item/tools/" + id.getPath() + "_pulling_" + pullIndex)
+			new ResourceLocation(id.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath() + "_pulling_" + pullIndex)
 		);
 	}
 	
-	private void generateBowItem(RegistryObject<Item> item) {
+	private void generateBowItem(RegistryObject<Item> item, @Nullable String subPath) {
 		ResourceLocation id = item.getId();
+		if (subPath != null) {
+			subPath += '/';
+		} else {
+			subPath = "";
+		}
 		
-		singleTexture(id.toString(),
-		              new ResourceLocation("item/generated"),
-		              "layer0",
-		              new ResourceLocation(id.getNamespace(), "item/tools/" + id.getPath()))
+		singleTexture(
+			//ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath(),
+			id.getPath(),
+	              new ResourceLocation(ModelProvider.ITEM_FOLDER + "/generated"),
+	              "layer0",
+	              new ResourceLocation(id.getNamespace(), ModelProvider.ITEM_FOLDER + "/" + subPath + id.getPath())
+			)
 			.transforms()
 			.transform(ItemTransforms.TransformType.FIRST_PERSON_RIGHT_HAND)
 			.rotation(-80f, 260f, -40f)
@@ -126,17 +172,17 @@ public final class GenerateItemModels extends ItemModelProvider {
 			.end()
 			.override()
 			.predicate(mcLoc("pulling"), 1)
-			.model(generateBowItem$pulling(id, 0))
+			.model(generateBowItem$pulling(id, 0, subPath))
 			.end()
 			.override()
 			.predicate(mcLoc("pulling"), 1)
 			.predicate(mcLoc("pull"), 0.25f)
-			.model(generateBowItem$pulling(id, 1))
+			.model(generateBowItem$pulling(id, 1, subPath))
 			.end()
 			.override()
 			.predicate(mcLoc("pulling"), 1)
 			.predicate(mcLoc("pull"), 0.4f)
-			.model(generateBowItem$pulling(id, 2))
+			.model(generateBowItem$pulling(id, 2, subPath))
 			.end();
 		
 	}

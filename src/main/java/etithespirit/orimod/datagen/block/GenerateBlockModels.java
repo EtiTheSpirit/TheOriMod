@@ -65,11 +65,20 @@ public final class GenerateBlockModels extends BlockStateProvider {
 		BlockGenerationTools.Common.registerBlockAndItem(this, FluidRegistry.DECAY_POISON, null);
 		
 		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.FORLORN_STONE, "forlorn_stone/base");
+		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.FORLORN_STONE_BRICKS, "forlorn_stone/base");
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.FORLORN_STONE_OMNI, "forlorn_stone/omni");
 		BlockGenerationTools.ForlornDecorativeBlockCode.pillarBlockAndItem(this, BlockRegistry.FORLORN_STONE_LINE, "forlorn_stone/line");
 		
+		BlockGenerationTools.SpecializedCommon.registerBlockAndItemWithRenderType(this, BlockRegistry.HARDLIGHT_GLASS, "light", "translucent");
+		
 		BlockGenerationTools.LightTechBlockCode.registerConduitBlock(this, BlockRegistry.LIGHT_CONDUIT, "techblocks/conduits/connector", "techblocks/conduits/core");
+		BlockGenerationTools.LightTechBlockCode.registerAirtightConduitBlock(this, BlockRegistry.SOLID_LIGHT_CONDUIT, "techblocks/conduits/solidconnector", "techblocks/conduits/solidcore");
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.LIGHT_CAPACITOR, "techblocks/storage");
+		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.INFINITE_LIGHT_SOURCE, "techblocks/storage");
+		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.LIGHT_TO_RF, "techblocks/conversion");
+		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.LIGHT_TO_REDSTONE_SIGNAL, "techblocks/conversion");
+		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.SOLAR_ENERGY_BLOCK, "techblocks/conversion");
+		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.LIGHT_REPAIR_BOX, "techblocks/conversion");
 		
 		OriMod.LOG.printf(Level.INFO, "Block models registered!");
 	}

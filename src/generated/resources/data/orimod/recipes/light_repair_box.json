@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "orimod:forlorn_stone"
+    },
+    "G": {
+      "item": "orimod:hardlight_block"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FGF",
+    "FFF"
+  ],
+  "result": {
+    "item": "orimod:light_repair_box"
+  }
+}

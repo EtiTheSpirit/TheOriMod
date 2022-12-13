@@ -5,9 +5,11 @@ import etithespirit.orimod.common.block.decay.DecayCommon;
 import etithespirit.orimod.common.block.decay.flora.DecayLogBase;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
@@ -160,8 +162,13 @@ public final class BlockGenerationTools {
 			VariantBlockStateBuilder builder = provider.getVariantBuilder(block);
 			builder.forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(model)});
 			
-			provider.simpleBlockItem(block, model);
+			simpleBlockItem(provider, block, model);
 			OriMod.LOG.printf(Level.INFO, "Generated simple block and block-item at %s", model.getLocation().toString());
+		}
+		
+		public static void simpleBlockItem(BlockStateProvider provider, Block block, ModelFile model) {
+			//provider.itemModels().getBuilder(ModelProvider.ITEM_FOLDER + "/" + ModelProvider.BLOCK_FOLDER + "/" + Assets.key(block).getPath()).parent(model);
+			provider.simpleBlockItem(block, model);
 		}
 		
 	}
@@ -199,8 +206,25 @@ public final class BlockGenerationTools {
 				.part().modelFile(model).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).end();
 			
 			ModelFile fullCube = Models.cubeAll(provider, block.get(), textureSubPath);
-			provider.simpleBlockItem(block.get(), fullCube);
+			Common.simpleBlockItem(provider, block.get(), fullCube);
 			OriMod.LOG.printf(Level.INFO, "Generated inside out block at %s", model.getLocation().toString());
+		}
+		
+		/**
+		 * Registers a default full block model as well as an item for that block in a single method.
+		 *
+		 * @param provider       The BlockStateProvider used in datagen.
+		 * @param blockReg       The block registry object to create.
+		 * @param textureSubPath If the texture for this block is in a subfolder, this is the subfolder(s). Individual folders are separated with /, but the string should not begin nor end with /
+		 */
+		public static void registerBlockAndItemWithRenderType(BlockStateProvider provider, RegistryObject<? extends Block> blockReg, @Nullable String textureSubPath, String type) {
+			Block block = blockReg.get();
+			ModelFile model = Models.cubeAllWithRenderType(provider, block, type, textureSubPath);
+			VariantBlockStateBuilder builder = provider.getVariantBuilder(block);
+			builder.forAllStates(state -> new ConfiguredModel[] {new ConfiguredModel(model)});
+			
+			Common.simpleBlockItem(provider, block, model);
+			OriMod.LOG.printf(Level.INFO, "Generated simple block and block-item at %s", model.getLocation().toString());
 		}
 		
 	}
@@ -247,7 +271,7 @@ public final class BlockGenerationTools {
 			}
 			
 			OriMod.LOG.printf(Level.INFO, "Creating item for Decay log block.");
-			provider.simpleBlockItem(block, baseVertical);
+			Common.simpleBlockItem(provider, block, baseVertical);
 			
 		}
 	}
@@ -285,7 +309,39 @@ public final class BlockGenerationTools {
 				.part().modelFile(connectorBlue).rotationX(270).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end()
 				.part().modelFile(connectorBlue).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end();
 			
-			provider.simpleBlockItem(block.get(), coreOrange);
+			Common.simpleBlockItem(provider, block.get(), coreBlue);
+			OriMod.LOG.printf(Level.INFO, "Generated conduit block at [Blue=%s|%s, Orange=%s|%s]", coreBlue.getLocation().toString(), connectorBlue.getLocation().toString(), coreOrange.getLocation().toString(), connectorOrange.getLocation().toString());
+		}
+		
+		public static void registerAirtightConduitBlock(BlockStateProvider provider, RegistryObject<Block> block, @Nullable String connectorSubPath, @Nullable String coreSubPath) {
+			MultiPartBlockStateBuilder multiPart = provider.getMultipartBuilder(block.get());
+			ModelFile coreBlue = Models.get8CoreModel(provider, block, true, coreSubPath);
+			ModelFile connectorBlue = Models.get8CoreConnectorModel(provider, block, true, connectorSubPath);
+			ModelFile coreOrange = Models.get8CoreModel(provider, block, false, coreSubPath);
+			ModelFile connectorOrange = Models.get8CoreConnectorModel(provider, block, false, connectorSubPath);
+			ModelFile glaalg = provider.models().cubeAll("glass", Assets.mcLoc(ModelProvider.BLOCK_FOLDER + "/glass")).renderType("translucent");//Models.cubeAll(provider, Blocks.GLASS);
+			// glass? who gives a shit about glaalg? no im gonna talk about taaaalkin aabout coks, and eh, frankly the word cock sounds amazing coming out of scouts voice. cock. lemme just say it again. cock. lemme say it a little closer to the microphone. C O C K.
+			
+			multiPart
+				.part().modelFile(glaalg).addModel().end();
+			multiPart
+				.part().modelFile(coreOrange).addModel().condition(ConnectableLightTechBlock.IS_BLUE, false).end()
+				.part().modelFile(connectorOrange).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.NORTH, true).condition(ConnectableLightTechBlock.IS_BLUE, false).end()
+				.part().modelFile(connectorOrange).rotationX(  0).rotationY(180).addModel().condition(BlockStateProperties.SOUTH, true).condition(ConnectableLightTechBlock.IS_BLUE, false).end()
+				.part().modelFile(connectorOrange).rotationX(  0).rotationY(270).addModel().condition(BlockStateProperties.WEST, true).condition(ConnectableLightTechBlock.IS_BLUE, false).end()
+				.part().modelFile(connectorOrange).rotationX(  0).rotationY( 90).addModel().condition(BlockStateProperties.EAST, true).condition(ConnectableLightTechBlock.IS_BLUE, false).end()
+				.part().modelFile(connectorOrange).rotationX(270).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).condition(ConnectableLightTechBlock.IS_BLUE, false).end()
+				.part().modelFile(connectorOrange).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).condition(ConnectableLightTechBlock.IS_BLUE, false).end();
+			multiPart
+				.part().modelFile(coreBlue).addModel().condition(ConnectableLightTechBlock.IS_BLUE, true).end()
+				.part().modelFile(connectorBlue).rotationX(  0).rotationY(  0).addModel().condition(BlockStateProperties.NORTH, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end()
+				.part().modelFile(connectorBlue).rotationX(  0).rotationY(180).addModel().condition(BlockStateProperties.SOUTH, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end()
+				.part().modelFile(connectorBlue).rotationX(  0).rotationY(270).addModel().condition(BlockStateProperties.WEST, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end()
+				.part().modelFile(connectorBlue).rotationX(  0).rotationY( 90).addModel().condition(BlockStateProperties.EAST, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end()
+				.part().modelFile(connectorBlue).rotationX(270).rotationY(  0).addModel().condition(BlockStateProperties.UP, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end()
+				.part().modelFile(connectorBlue).rotationX( 90).rotationY(  0).addModel().condition(BlockStateProperties.DOWN, true).condition(ConnectableLightTechBlock.IS_BLUE, true).end();
+			
+			Common.simpleBlockItem(provider, block.get(), coreBlue);
 			OriMod.LOG.printf(Level.INFO, "Generated conduit block at [Blue=%s|%s, Orange=%s|%s]", coreBlue.getLocation().toString(), connectorBlue.getLocation().toString(), coreOrange.getLocation().toString(), connectorOrange.getLocation().toString());
 		}
 		
@@ -342,7 +398,7 @@ public final class BlockGenerationTools {
 					variantBuilder.modelForState().modelFile(base).addModel();
 				}
 			}
-			provider.simpleBlockItem(blockReg.get(), orangeActive);
+			Common.simpleBlockItem(provider, blockReg.get(), blueActive);
 			OriMod.LOG.printf(Level.INFO, "Generated Forlorn Blocks at %s | %s | %s", base.getLocation().toString(), blueActive.getLocation().toString(), orangeActive.getLocation().toString());
 			
 		}
@@ -444,7 +500,7 @@ public final class BlockGenerationTools {
 				);
 			}
 			OriMod.LOG.printf(Level.INFO, "Creating item for Forlorn pillar block.");
-			provider.simpleBlockItem(block, orangeVertical);
+			Common.simpleBlockItem(provider, block, blueVertical);
 		}
 	}
 	
@@ -701,6 +757,14 @@ public final class BlockGenerationTools {
 		
 		public static ModelFile cubeAll(BlockStateProvider provider, Block block) {
 			return provider.cubeAll(block);
+		}
+		
+		public static ModelFile cubeAllWithRenderType(BlockStateProvider provider, Block block, String type, @Nullable String textureSubPath) {
+			return provider.models().cubeAll(Assets.name(block, textureSubPath), Assets.blockTexture(block, textureSubPath)).renderType(type);
+		}
+		
+		public static ModelFile cubeAllWithRenderType(BlockStateProvider provider, Block block, String type) {
+			return cubeAllWithRenderType(provider, block, type, null);
 		}
 		
 		public static ModelFile cubeColumn(BlockStateProvider provider, Block block, @Nullable String textureSubPath) {

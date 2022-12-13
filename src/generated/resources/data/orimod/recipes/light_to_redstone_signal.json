@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "orimod:forlorn_stone"
+    },
+    "R": {
+      "item": "minecraft:redstone"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "FRF",
+    "RSR",
+    "FRF"
+  ],
+  "result": {
+    "count": 4,
+    "item": "orimod:light_to_redstone_signal"
+  }
+}

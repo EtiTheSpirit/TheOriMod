@@ -1,9 +1,16 @@
 {
   "values": [
     "orimod:forlorn_stone",
+    "orimod:forlorn_stone_bricks",
     "orimod:forlorn_stone_line",
     "orimod:forlorn_stone_omni",
+    "orimod:hardlight_block",
+    "orimod:light_repair_box",
+    "orimod:light_capacitor",
     "orimod:light_conduit",
-    "orimod:light_capacitor"
+    "orimod:solid_light_conduit",
+    "orimod:light_to_rf",
+    "orimod:infinite_light_source",
+    "orimod:solar_generator"
   ]
 }

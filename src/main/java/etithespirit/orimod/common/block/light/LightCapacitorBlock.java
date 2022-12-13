@@ -37,7 +37,11 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class LightCapacitorBlock extends ConnectableLightTechBlock implements ILightBlockIdentifier, IToolRequirementProvider, IForlornBlueOrangeBlock, EntityBlock {
 	/***/
 	public LightCapacitorBlock() {
-		this(Properties.of(Material.STONE).sound(SoundType.STONE).lightLevel(state -> state.getValue(ForlornAppearanceMarshaller.POWERED) ? ForlornAppearanceMarshaller.LIGHT_LEVEL : 0));
+		this(
+			Properties.of(Material.STONE)
+			.strength(1f, 100f)
+			.lightLevel(state -> state.getValue(ForlornAppearanceMarshaller.POWERED) ? ForlornAppearanceMarshaller.LIGHT_LEVEL : 0)
+		);
 	}
 	
 	private LightCapacitorBlock(Properties properties) {
@@ -64,11 +68,6 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IL
 	@Override
 	public boolean alwaysConnectsWhenPossible() {
 		return true;
-	}
-	
-	@Override
-	public void connectionStateChanged(BlockState originalState, BlockState newState, BlockPos at, Level inWorld, BooleanProperty prop, boolean existingConnectionChanged) {
-		selfBE(inWorld, at).markLastKnownNeighborsDirty();
 	}
 	
 	@Nullable

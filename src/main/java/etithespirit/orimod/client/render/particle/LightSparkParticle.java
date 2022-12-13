@@ -10,13 +10,16 @@ import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import etithespirit.orimod.GeneralUtils;
+import etithespirit.orimod.combat.projectile.SpiritArrow;
 import net.minecraft.client.Camera;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.particle.Particle;
 import net.minecraft.client.particle.ParticleRenderType;
 import net.minecraft.client.particle.SingleQuadParticle;
 import net.minecraft.client.renderer.texture.TextureAtlas;
 import net.minecraft.client.renderer.texture.TextureManager;
+import net.minecraft.core.Vec3i;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import net.minecraft.world.phys.Vec3;
@@ -24,6 +27,14 @@ import net.minecraft.world.phys.Vec3;
 import java.util.Random;
 
 public abstract class LightSparkParticle extends Particle {
+	
+	private void spawnPoofParticle(SpiritArrow arrow, Vec3i normal) {
+		if (arrow.level instanceof ClientLevel clientLevel) {
+			for (int idx = 0; idx < 15; idx++) {
+				Minecraft.getInstance().particleEngine.add(new etithespirit.orimod.client.render.particle.LightSparkParticle.SpiritArcArrowImpactParticle(clientLevel, arrow.position(), new Vec3(normal.getX(), normal.getY(), normal.getZ())));
+			}
+		}
+	}
 	
 	private static final ParticleRenderType TRANSLUCENT_SOLID_COLOR = new ParticleRenderType() {
 		

@@ -20,7 +20,7 @@ public class LightCapacitorTile extends LightEnergyStorageTile {//implements IAm
 	//private LightTechLooper SOUND;
 	
 	public LightCapacitorTile(BlockPos pWorldPosition, BlockState pBlockState) {
-		super(TileEntityRegistry.LIGHT_ENERGY_STORAGE_TILE.get(), pWorldPosition, pBlockState, new PersistentLightEnergyStorage(null, 100, 20, 20, true));
+		super(TileEntityRegistry.LIGHT_ENERGY_STORAGE_TILE.get(), pWorldPosition, pBlockState, new PersistentLightEnergyStorage(null, 100, 20, 20));
 	}
 	
 	@Override
@@ -65,9 +65,9 @@ public class LightCapacitorTile extends LightEnergyStorageTile {//implements IAm
 	//}
 	
 	@Override
-	public double receiveLight(double maxReceive, boolean simulate) {
-		double prev = this.getLightStored();
-		double amt = super.receiveLight(maxReceive, simulate);
+	public float receiveLight(float maxReceive, boolean simulate) {
+		float prev = this.getLightStored();
+		float amt = super.receiveLight(maxReceive, simulate);
 		if (prev == 0 && this.getLightStored() > 0) {
 			// was not powered, now it is
 			if (level != null) {
@@ -78,9 +78,9 @@ public class LightCapacitorTile extends LightEnergyStorageTile {//implements IAm
 	}
 	
 	@Override
-	public double extractLightFrom(double maxExtract, boolean simulate) {
-		double prev = this.getLightStored();
-		double amt = super.extractLightFrom(maxExtract, simulate);
+	public float extractLightFrom(float maxExtract, boolean simulate) {
+		float prev = this.getLightStored();
+		float amt = super.extractLightFrom(maxExtract, simulate);
 		if (prev > 0 && this.getLightStored() == 0) {
 			// was powered, now it is not
 			if (level != null) {

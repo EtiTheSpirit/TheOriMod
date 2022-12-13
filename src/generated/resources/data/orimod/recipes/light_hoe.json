@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "orimod:binding_essence"
+    },
+    "P": {
+      "item": "minecraft:diamond_hoe"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "BSB",
+    "SPS"
+  ],
+  "result": {
+    "item": "orimod:light_hoe"
+  }
+}

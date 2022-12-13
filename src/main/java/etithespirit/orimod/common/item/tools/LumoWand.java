@@ -59,13 +59,14 @@ public class LumoWand extends Item {
 		Level world = ctx.getLevel();
 		BlockPos at = ctx.getClickedPos();
 		BlockState block = world.getBlockState(at);
-		if (block.getBlock() instanceof IForlornBlueOrangeBlock forlornBlock && !ctx.isSecondaryUseActive()) {
+		if (block.getBlock() instanceof IForlornBlueOrangeBlock forlornBlock) {
 			forlornBlock.switchLuxenColor(world, at);
 			if (!world.isClientSide()) {
 				GeneralUtils.message((ServerPlayer) ctx.getPlayer(), "info.orimod.lumowand.colorswap." + (block.getValue(ForlornAppearanceMarshaller.IS_BLUE) ? "orange" : "blue")); // purposely inverted!
 			}
 			return InteractionResult.SUCCESS;
 		}
+		/*
 		BlockEntity ent = world.getBlockEntity(at);
 		if (ent instanceof LightCapacitorTile capTile) {
 			if (!world.isClientSide()) {
@@ -73,6 +74,7 @@ public class LumoWand extends Item {
 				capTile.dbg_ChangeEnergy();
 			}
 		}
+		*/
 		/*
 		Level world = ctx.getLevel();
 		BlockPos at = ctx.getClickedPos();

@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "orimod:forlorn_stone"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "FFF",
+    "FSF",
+    "FFF"
+  ],
+  "result": {
+    "item": "orimod:light_capacitor"
+  }
+}

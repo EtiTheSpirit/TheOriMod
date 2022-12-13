@@ -1,6 +1,7 @@
 package etithespirit.orimod.api.spiritmaterial;
 
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 
 /**
  * All materials that are associated with Spirits walking on something. Their little hooves tend to make a wide array
@@ -107,6 +108,8 @@ public enum SpiritMaterial {
 	/** The sound used when stepping on this material. Only null in {@link #INHERITED}. */
 	public final @Nullable String stepSoundKey;
 	
+	int isDeprecated = -1;
+	
 	SpiritMaterial() {
 		this(false, null);
 	}
@@ -134,5 +137,47 @@ public enum SpiritMaterial {
 		this.useVanillaInstead = useVanillaInstead;
 		fallSoundKey = useVanillaInstead ? null : "nullsound";
 		stepSoundKey = useVanillaInstead ? null : "nullsound";
+	}
+	
+	/**
+	 * Mostly for use in configuration builders, this determines if the sound is deprecated. This can be used by anyone for all I care though.
+	 * @return True if this option is deprecated, false if it is not.
+	 */
+	public boolean deprecated() {
+		if (isDeprecated == -1) {
+			try {
+				Field f = SpiritMaterial.class.getDeclaredField(name());
+				if (f.getAnnotation(Deprecated.class) != null) {
+					isDeprecated = 1;
+				} else {
+					isDeprecated = 0;
+				}
+			} catch (Exception ignored) {
+				isDeprecated = 0;
+			}
+		}
+		return isDeprecated == 1;
+	}
+	
+	private static String toHumanFriendly(String strIn) {
+		int length = strIn.length();
+		if (length >= 2) {
+			return strIn.substring(0, 1).toUpperCase() + strIn.substring(1).toLowerCase();
+		}
+		return strIn.toUpperCase();
+	}
+	
+	@Override
+	public String toString() {
+		String baseName = name();
+		if (baseName.contains("_")) {
+			String[] components = baseName.split("_", 2);
+			if (components.length == 2) {
+				return toHumanFriendly(components[1]) + ' ' + toHumanFriendly(components[0]);
+			} else {
+				throw new IllegalStateException("Eti screwed up and had an enum name with more than one underscore in it for SpiritMaterial. Point and laugh! Also please report this bug at https://github.com/EtiTheSpirit/TheOriMod/issues/new?assignees=&labels=bug&template=bug-report.md&title=SpiritMaterial%20enum%20has%20an%20invalid%20name");
+			}
+		}
+		return toHumanFriendly(baseName);
 	}
 }

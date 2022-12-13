@@ -1,10 +1,16 @@
 package etithespirit.orimod.registry;
 
 import etithespirit.orimod.OriMod;
+import etithespirit.orimod.common.block.light.creative.InfiniteSourceLightBlock;
 import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
 import etithespirit.orimod.common.tile.light.LightEnergyTile;
 import etithespirit.orimod.common.tile.light.implementations.LightCapacitorTile;
 import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
+import etithespirit.orimod.common.tile.light.implementations.LightInfiniteSourceTile;
+import etithespirit.orimod.common.tile.light.implementations.LightRepairBoxTile;
+import etithespirit.orimod.common.tile.light.implementations.LightToRFTile;
+import etithespirit.orimod.common.tile.light.implementations.LightToRedstoneSignalTile;
+import etithespirit.orimod.common.tile.light.implementations.SolarGeneratorTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
@@ -39,21 +45,73 @@ public final class TileEntityRegistry {
 	*/
 	
 	
-	public static final RegistryObject<BlockEntityType<LightEnergyStorageTile>>
+	public static final RegistryObject<BlockEntityType<LightCapacitorTile>>
 		LIGHT_ENERGY_STORAGE_TILE = TILE_ENTITIES.register(
-		"light_capacitor",
-		getBuilderFor(
-			LightCapacitorTile::new,
-			BlockRegistry.LIGHT_CAPACITOR
-		));
+			"light_capacitor",
+			getBuilderFor(
+				LightCapacitorTile::new,
+				BlockRegistry.LIGHT_CAPACITOR
+			)
+		);
 	
-	public static final RegistryObject<BlockEntityType<LightEnergyTile>>
+	public static final RegistryObject<BlockEntityType<LightConduitTile>>
 		LIGHT_ENERGY_TILE = TILE_ENTITIES.register(
 			"light_conduit",
 			getBuilderFor(
 				LightConduitTile::new,
-				BlockRegistry.LIGHT_CONDUIT
-			));
+				BlockRegistry.LIGHT_CONDUIT,
+				BlockRegistry.SOLID_LIGHT_CONDUIT
+			)
+		);
+	
+	
+	public static final RegistryObject<BlockEntityType<LightToRFTile>>
+		LIGHT_TO_RF_TILE = TILE_ENTITIES.register(
+			"light_to_rf",
+			getBuilderFor(
+				LightToRFTile::new,
+				BlockRegistry.LIGHT_TO_RF
+			)
+		);
+	
+	public static final RegistryObject<BlockEntityType<LightInfiniteSourceTile>>
+		LIGHT_INFINITE_SOURCE_TILE = TILE_ENTITIES.register(
+		"infinite_light_source",
+		getBuilderFor(
+			LightInfiniteSourceTile::new,
+			BlockRegistry.INFINITE_LIGHT_SOURCE
+		)
+	);
+	
+	public static final RegistryObject<BlockEntityType<LightToRedstoneSignalTile>>
+		LIGHT_TO_REDSTONE_SIGNAL_TILE = TILE_ENTITIES.register(
+		"light_to_redstone_signal",
+		getBuilderFor(
+			LightToRedstoneSignalTile::new,
+			BlockRegistry.LIGHT_TO_REDSTONE_SIGNAL
+		)
+	);
+	
+	
+	public static final RegistryObject<BlockEntityType<SolarGeneratorTile>>
+		SOLAR_GENERATOR = TILE_ENTITIES.register(
+		"solar_generator",
+		getBuilderFor(
+			SolarGeneratorTile::new,
+			BlockRegistry.SOLAR_ENERGY_BLOCK
+		)
+	);
+	
+	
+	
+	public static final RegistryObject<BlockEntityType<LightRepairBoxTile>>
+		LIGHT_REPAIR_BOX = TILE_ENTITIES.register(
+		"light_repair_box",
+		getBuilderFor(
+			LightRepairBoxTile::new,
+			BlockRegistry.LIGHT_REPAIR_BOX
+		)
+	);
 	
 	/**
 	 * An alias method that quickly constructs a supplier for the given tile entity class,

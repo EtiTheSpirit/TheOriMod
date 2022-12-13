@@ -11,9 +11,27 @@
 	"item.orimod.armor.light_leggings" : "§bHard-Light Leggings",
 	"item.orimod.armor.light_boots" : "§bHard-Light Boots",
 
-	"tooltip.orimod.focuslight.1" : "§3Sneak and hold RMB",
-	"tooltip.orimod.focuslight.2" : "§3to focus your §bLight",
-	"tooltip.orimod.focuslight.3" : "§3and repair this item!",
+	"item.orimod.light_pickaxe" : "§bHardlight Pickaxe",
+	"item.orimod.light_shovel" : "§bHardlight Shovel",
+	"item.orimod.light_axe" : "§bHardlight Axe",
+	"item.orimod.light_sword" : "§bHardlight Sword",
+	"item.orimod.light_hoe" : "§bHardlight Hoe",
+
+	"item.orimod.binding_essence" : "§bBinding Essence",
+	"item.orimod.large_light_lens" : "§bLarge Luxen Lens",
+	"item.orimod.hardlight_shard" : "§bHardlight Shard",
+	"item.orimod.light_focal_hub" : "§bFocal Hub",
+
+	"item.orimod.light_helmet" : "§bHardlight Helmet",
+	"item.orimod.light_chestplate" : "§bHardlight Chestplate",
+	"item.orimod.light_leggings" : "§bHardlight Leggings",
+	"item.orimod.light_boots" : "§bHardlight Boots",
+
+	"tooltip.orimod.focuslight.1" : "§3This tool can be repaired",
+	"tooltip.orimod.focuslight.2" : "§3in a Luxen Reconstructor.",
+	"tooltip.orimod.focuslight.3" : "§3Spirits can also §bsneak+use",
+	"tooltip.orimod.focuslight.4" : "§3to give up §b%1$s health §3and",
+	"tooltip.orimod.focuslight.5" : "§3hunger for §b+%1$s durability§3.",
 
 	"tooltip.orimod.lumowand.1" : "§3Press Use to swap the",
 	"tooltip.orimod.lumowand.2" : "§3color of a block that",
@@ -33,7 +51,12 @@
 	"input.orimod.cling" : "Wall Cling",
 
 	"entity.orimod.spirit.name" : "Spirit",
-	
+	"entity.orimod.spirit_arrow.name" : "Spirit Arc Bolt",
+
+	"advancement.orimod.become_spirit" : "Born from The Light",
+	"advancement.orimod.become_spirit.description" : "Become a Spirit.",
+
+
 	"itemGroup.orimod.spirit_combat" : "Spirit Combat",
 	"itemGroup.orimod.spirit_tools" : "Spirit Tools",
 	"itemGroup.orimod.spirit_machinery" : "Luxen Machinery",
@@ -52,10 +75,23 @@
 	
 	"block.orimod.light_capacitor" : "§bLight Capacitor",
 	"block.orimod.light_conduit" : "§bLight Conduit",
+	"block.orimod.solid_light_conduit" : "§bAirtight Light Conduit",
+	"block.orimod.light_to_redstone_signal" : "§bLuxen Detector",
+	"block.orimod.light_to_rf" : "§bLuxen Flux Inducer",
+	"block.orimod.infinite_light_source" : "§bInfinite Luxen Source",
+
+	"block.orimod.solar_generator" : "§bSolar Luxen Generator",
+	"block.orimod.solar_generator.tip" : "§3Converts Sky light into Luxen",
+	"block.orimod.light_repair_box" : "§bLuxen Reconstructor",
+	"block.orimod.light_repair_box.tip" : "§3Consumes Luxen to repair hardlight items.",
+	"container.orimod.light_repair_device" : "Luxen Reconstructor",
 
 	"block.orimod.forlorn_stone" : "Forlorn Stone",
+	"block.orimod.forlorn_stone_bricks" : "Forlorn Stone Bricks",
 	"block.orimod.forlorn_stone_line" : "Forlorn Stone (Line)",
 	"block.orimod.forlorn_stone_omni" : "Forlorn Stone (Center)",
+
+	"block.orimod.hardlight_block" : "§bHardlight Block",
 
 	"item.orimod.lumo_wand" : "§bLumo Wand",
 	"item.orimod.decay_poison_bucket" : "§5Decay Poison Bucket",
@@ -71,6 +107,9 @@
 
 	"death.attack.spirit_arc" : "%1$s was pierced by hard light.",
 	"death.attack.spirit_arc.player" : "%1$s was pierced by hard light.",
+
+	"death.attack.self_energy" : "%1$s decided that an object was worth more than their life.",
+	"death.attack.self_energy.player" : "%1$s decided that an object was worth more than their life.",
 
 	"orimod.spirit_restrictions.no_meat" : "You know you can't eat this. You're a herbivore!",
 
@@ -109,13 +148,28 @@
 	"config.orimod.spirit_management.only_eat_plants" : "Allow Eating Only Plants",
 	"config.orimod.spirit_management.only_eat_plants.description" : "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
 
+	"config.orimod.spirit_management.self_repair_limits" : "Spirit Self-Powered Light Tools",
+	"config.orimod.spirit_management.self_repair_limits.description" : "Some tools and devices allow Spirits to use their own life energy as a means of repair. This determines the extent in which that is possible.",
+
+	"config.orimod.spirit_management.anyone_can_self_repair" : "Allow Normal Players To Self-Repair Light Tools",
+	"config.orimod.spirit_management.anyone_can_self_repair.description" : "Under normal circumstances, non-spirit players cannot use their life to repair hardlight tools. If this is true, this limitation is bypassed.",
+
+	"config.orimod.spirit_management.self_repair_damage" : "Spirit Self-Powered Repair Cost",
+	"config.orimod.spirit_management.self_repair_damage.description" : "How much health does a single self-powered repair take? Note that 2 health is 1 heart.",
+
+	"config.orimod.spirit_management.self_repair_earnings" : "Spirit Self-Powered Repair Amount",
+	"config.orimod.spirit_management.self_repair_earnings.description" : "How much durability gets restored when repairing with your own energy?",
+
 	"config.orimod.light_energy" : "Luxen Configuration (Light Technology)",
 
 	"config.orimod.light_energy.rf_to_lux" : "RF to Luxen Conversion Ratio",
 	"config.orimod.light_energy.rf_to_lux.description" : "How much §cRF §fis required to get 1 §bLuxen.",
 
 	"config.orimod.light_energy.env_power" : "Environmental Light Efficiency",
-	"config.orimod.light_energy.env_power.description" : "§cThis is not yet functional.§f If enabled, environments of §5Decay §for §bLight §fwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §fenvironments and easier in §bLight §fenvironments..",
+	"config.orimod.light_energy.env_power.description" : "§cThis is not yet functional.§f If enabled, environments of §5Decay §for §bLight §fwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §fenvironments and easier in §bLight §fenvironments.",
+
+	"config.orimod.light_energy.show_rf" : "RF Equivalent Display",
+	"config.orimod.light_energy.show_rf.description" : "§dRequires mod: Jade §r-- This determines when to display the RF equivalent of any given amount of Luxen.",
 
 	"config.orimod.rendering" : "Rendering Configuration",
 	"config.orimod.rendering.assembly_debug" : "Render AOS Debug Info",
@@ -140,16 +194,26 @@
 	"config.orimod.assembly_optimization_system.max_assembly_iterations" : "Maximum Assembly Branches",
 	"config.orimod.assembly_optimization_system.max_assembly_iterations.description" : "Big sets of wires and devices are complicated. This setting decides how many + or T shaped wire joints the system can go through when searching for connected technology blocks. If there's too many branches, the system determines the assembly to be too complicated and gives up partway through. Higher values allow more largely interconnected machines, but also introduce a significant amount of server lag when changing the wiring (thankfully, there is not lag from the system existing, only from it changing).",
 
-	"waila.orimod.energy" : "Storage: §b%1$s Luxen",
-	"waila.orimod.energy_rf" : "Storage: §b%1$s Luxen (%2$s RF)",
-	"waila.orimod.env_flux" : "§3Affected by Environmental Flux",
-	"waila.orimod.autoconnecttrue" : "Automatic Connections: §aYes",
-	"waila.orimod.autoconnectfalse" : "Automatic Connections: §cNo",
+	"waila.orimod.energy.word_storage" : "Storage",
+	"waila.orimod.energy.luxen_amount" : "%1$s Luxen",
+	"waila.orimod.energy.lum_amount" : "%1$s Lum",
+	"waila.orimod.energy.rf_amount" : "%1$s RF",
+
+	"waila.orimod.energy.word_output" : "Output",
+	"waila.orimod.energy.word_draw" : "Power Draw",
+	"waila.orimod.energy.word_tick" : "tick",
+
+	"waila.orimod.forlorn.word_skin" : "Skin",
+	"waila.orimod.forlorn.word_blue" : "Blue",
+	"waila.orimod.forlorn.word_orange" : "Orange",
+
+	"waila.orimod.energy.word_conversion" : "Conversion Note",
+	"waila.orimod.energy.word_warning" : "Warning",
+	"waila.orimod.energy.overload" : "System overloaded! Not enough power!",
+
+	"waila.orimod.env_flux" : "Affected by Environmental Flux",
 	"waila.orimod.decaysafetrue" : "Actively Decaying: §bNo §a(Safe!)",
 	"waila.orimod.decaysafefalse" : "Actively Decaying: §5Yes §c(Danger!)",
-	"waila.orimod.forlorn_blue" : "Skin: ",
-	"waila.orimod.forlorn_blue.blue" : "Blue",
-	"waila.orimod.forlorn_blue.orange" : "Orange",
 
 	"config.jade.plugin_orimod.show_auto" : "Display autoconnection state of tech",
 	"config.jade.plugin_orimod.show_decay_state" : "Show safety of petrified blocks",

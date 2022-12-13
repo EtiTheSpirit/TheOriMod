@@ -84,7 +84,8 @@ public class SpiritSoundProvider {
 		if (on == null) throw new ArgumentNullException("on");
 		
 		// BUG FIX: Sounds for slabs and other blocks the player sinks into will play the sound of the block beneath it instead of the block they are on.
-		if (Mth.frac(entity.getY()) >= 0.5) {
+		if (Mth.frac(entity.getY()) >= 0.0620) {
+			// Just under 1/16th of a block, this is the width of a carpet block, the thinnest block.
 			on = on.above();
 			in = in.above();
 		}

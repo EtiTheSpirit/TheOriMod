@@ -3,6 +3,7 @@ package etithespirit.orimod.common.tile.light;
 
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.util.Mth;
 
 import javax.annotation.Nullable;
 
@@ -20,11 +21,10 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 */
 	public static final String ENERGY_KEY = "lightEnergy";
 	
-	protected double energy;
-	protected double capacity;
-	protected double maxReceive;
-	protected double maxExtract;
-	protected boolean allowRFConversion;
+	protected float energy;
+	protected float capacity;
+	protected float maxReceive;
+	protected float maxExtract;
 	Runnable markDirty; // For telling attached block entities that they have changed.
 	
 	/**
@@ -32,24 +32,16 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 */
 	public String energyKeyOverride = ENERGY_KEY;
 	
-	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity) {
-		this(markDirty, capacity, capacity, capacity, false, 0);
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, float capacity) {
+		this(markDirty, capacity, capacity, capacity, 0);
 	}
 	
-	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxTransfer) {
-		this(markDirty, capacity, maxTransfer, maxTransfer, false, 0);
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, float capacity, float maxTransfer) {
+		this(markDirty, capacity, maxTransfer, maxTransfer, 0);
 	}
 	
-	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxTransfer, boolean allowRFConversion) {
-		this(markDirty, capacity, maxTransfer, maxTransfer, allowRFConversion, 0);
-	}
-	
-	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxReceive, double maxExtract) {
-		this(markDirty, capacity, maxReceive, maxExtract, false, 0);
-	}
-	
-	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion) {
-		this(markDirty, capacity, maxReceive, maxExtract, allowRFConversion, 0);
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, float capacity, float maxReceive, float maxExtract) {
+		this(markDirty, capacity, maxReceive, maxExtract, 0);
 	}
 	
 	/**
@@ -58,15 +50,13 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 * @param capacity The maximum amount of energy this storage can containe
 	 * @param maxReceive The maximum amount of energy that can be stored in a single action.
 	 * @param maxExtract The maximum amount of energy that can be extracted in a single action.
-	 * @param allowRFConversion Whether or not this storage can convert to and from RF
 	 * @param energy The amount of energy within this storage at first.
 	 */
-	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, double capacity, double maxReceive, double maxExtract, boolean allowRFConversion, double energy) {
+	public PersistentLightEnergyStorage(@Nullable Runnable markDirty, float capacity, float maxReceive, float maxExtract, float energy) {
 		this.capacity = capacity;
 		this.maxReceive = maxReceive;
 		this.maxExtract = maxExtract;
 		this.energy = Math.max(0, Math.min(capacity, energy));
-		this.allowRFConversion = allowRFConversion;
 		this.markDirty = markDirty;
 	}
 	
@@ -75,7 +65,7 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 * @param nbt The NBT tag to read from.
 	 */
 	public void readFromNBT(CompoundTag nbt) {
-		this.energy = Math.max(Math.min(capacity, nbt.getDouble(energyKeyOverride)), 0);
+		this.energy = Math.max(Math.min(capacity, nbt.getFloat(energyKeyOverride)), 0);
 	}
 	
 	/**
@@ -84,15 +74,15 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	 * @return The modified NBT tag.
 	 */
 	public CompoundTag writeToNBT(CompoundTag nbt) {
-		nbt.putDouble(energyKeyOverride, energy);
+		nbt.putFloat(energyKeyOverride, energy);
 		return nbt;
 	}
 	
 	@Override
-	public double receiveLight(double maxReceive, boolean simulate) {
+	public float receiveLight(float maxReceive, boolean simulate) {
 		if (!canReceiveLight()) return 0;
 		
-		double energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
+		float energyReceived = Math.min(capacity - energy, Math.min(this.maxReceive, maxReceive));
 		if (!simulate) {
 			energy += energyReceived;
 			if (energyReceived > 0 && markDirty != null) markDirty.run();
@@ -101,10 +91,10 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 	}
 	
 	@Override
-	public double extractLightFrom(double maxExtract, boolean simulate) {
+	public float extractLightFrom(float maxExtract, boolean simulate) {
 		if (!canExtractLightFrom()) return 0;
 		
-		double energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
+		float energyExtracted = Math.min(energy, Math.min(this.maxExtract, maxExtract));
 		if (!simulate) {
 			energy -= energyExtracted;
 			if (energyExtracted > 0 && markDirty != null) markDirty.run();
@@ -112,13 +102,58 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 		return energyExtracted;
 	}
 	
+	/**
+	 * Attempts to remove the given amount of energy from this storage (with the intent of using or "spending" this energy).<br/>
+	 * Most notably, this bypasses {@link #canExtractLightFrom()}, and is intended for when a device uses its own energy rather
+	 * than in the transfer of energy. To transfer energy, use {@link #extractLightFrom(float, boolean)}.<br/>
+	 * <br/>
+	 * This respects the maximum extraction rate, unless it is 0 from which no rate limit is imposed. Attempting to extract
+	 * an amount larger than the maximum extraction rate will fail.
+	 * @param amount The amount to try to remove.
+	 * @param simulate If true, the energy is not actually taken out.
+	 * @return True if the desired amount could be taken, false if not.
+	 */
+	public boolean trySpendEnergy(float amount, boolean simulate) {
+		if (amount < 0) return false;
+		if (canExtractLightFrom()) {
+			if (amount > maxExtract) return false;
+		}
+		if (energy < amount) return false;
+		if (simulate) return true;
+		energy -= amount;
+		if (markDirty != null) markDirty.run();
+		return true;
+	}
+	
+	/**
+	 * The opposite of {@link #trySpendEnergy(float, boolean)}, this method attempts to create energy out of nothing with the intent
+	 * of a block generating it (you know, like a generator does). This bypasses the receiver limits, and as such, should not be used for
+	 * transfer. To transfer energy, use {@link #receiveLight(float, boolean)}.
+	 * @param amount The amount to try to generate.
+	 * @param simulate If true, the energy is not actually added.
+	 * @return The actual amount of energy that was added to the machine.
+	 */
+	public float generateEnergy(float amount, boolean simulate) {
+		if (amount < 0) return 0;
+		if (canReceiveLight()) {
+			if (amount > maxReceive) amount = maxReceive;
+		}
+		float possible = capacity - energy;
+		if (amount > possible) amount = possible;
+		if (possible <= 0) return 0;
+		if (simulate) return amount;
+		energy += amount;
+		if (markDirty != null) markDirty.run();
+		return amount;
+	}
+	
 	@Override
-	public double getLightStored() {
+	public float getLightStored() {
 		return energy;
 	}
 	
 	@Override
-	public double getMaxLightStored() {
+	public float getMaxLightStored() {
 		return capacity;
 	}
 	
@@ -132,9 +167,20 @@ public class PersistentLightEnergyStorage implements ILightEnergyStorage {
 		return maxReceive > 0;
 	}
 	
-	@Override
-	public boolean acceptsConversion() {
-		return allowRFConversion;
+	/**
+	 * For use in generators, this value describes the maximum power output per tick.
+	 * @return The maximum power output per tick.
+	 */
+	public float getMaxPowerDraw() {
+		return maxExtract;
+	}
+	
+	/**
+	 * For use in machinery, this value describes the maximum power input per tick.
+	 * @return The maximum power input per tick.
+	 */
+	public float getMaxChargeRate() {
+		return maxReceive;
 	}
 	
 }

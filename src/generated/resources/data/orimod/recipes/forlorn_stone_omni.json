@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "orimod:forlorn_stone"
+    },
+    "G": {
+      "item": "minecraft:glass"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "FGF",
+    "GSG",
+    "FGF"
+  ],
+  "result": {
+    "count": 8,
+    "item": "orimod:forlorn_stone_omni"
+  }
+}

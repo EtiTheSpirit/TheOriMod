@@ -1,6 +1,7 @@
 package etithespirit.orimod.spirit.client;
 
 
+import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.client.audio.SpiritSoundPlayer;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.KeyMapping;
@@ -23,15 +24,17 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import javax.annotation.Nullable;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.function.Supplier;
 
 /**
  * Manages all behaviors pertaining to how spirits jump.
  *
  * @author Eti
  */
+@ClientUseOnly
 public final class SpiritJump {
 	
-	//public static final KeyBinding CLIMB_BIND = new KeyBinding("input.etimod.climb", 340, "key.categories.movement"); // Bind climb to l-shift
+	//public static final KeyMapping CLIMB_BIND = new KeyMapping("input.etimod.climb", 340, "key.categories.movement"); // Bind climb to l-shift
 	public static final KeyMapping CLING_BIND = new KeyMapping("input.etimod.cling", 32, "key.categories.movement"); // Bind cling to space
 	
 	/* Whether or not the player is currently clinging to a wall. */
@@ -98,7 +101,7 @@ public final class SpiritJump {
 	 * @param player The player to perform with.
 	 * @return Whether or not the wall jump was actually performed.
 	 */
-	public static boolean performWallJump(LocalPlayer player) {
+	public static boolean performWallJump(Player player) {
 		if (!canWallCling(player)) return false;
 		updateWalls(player);
 		
@@ -117,7 +120,7 @@ public final class SpiritJump {
 	 * Attempts to perform a multi-jump.
 	 * @param client The client performing this action.
 	 */
-	private static void performMultiJump(LocalPlayer client) {
+	private static void performMultiJump(Player client) {
 		if (currentJumps >= MAX_JUMPS) return;
 		if (client.isOnGround()) return; // No special stuffs if we're on the ground.
 		if (getDeltaMovementY(client) > 0.25) return; // Prevent spam
@@ -230,9 +233,10 @@ public final class SpiritJump {
 	 * @param up The upward force.
 	 * @param isWallJump Whether or not this jump was prompted by a wall jump.
 	 */
-	public static void performJump(LocalPlayer player, float up, @Nullable BlockPos wallPos, boolean isWallJump) {
-		float strafe = Math.signum(player.input.leftImpulse) * up * up;
-		float forward = Math.signum(player.input.forwardImpulse) * up * up;
+	public static void performJump(Player player, float up, @Nullable BlockPos wallPos, boolean isWallJump) {
+		
+		float strafe = Math.signum(((LocalPlayer)player).input.leftImpulse) * up * up;
+		float forward = Math.signum(((LocalPlayer)player).input.forwardImpulse) * up * up;
 		
 		float f = 1.0F / Mth.sqrt(strafe * strafe + up * up + forward * forward);
 		
@@ -261,7 +265,7 @@ public final class SpiritJump {
 	
 	public static void onKeyPressed(MovementInputUpdateEvent evt) {
 		Minecraft minecraft = Minecraft.getInstance();
-		LocalPlayer player = minecraft.player;
+		Player player = minecraft.player;
 		if (player == null) return;
 		if (!SpiritIdentifier.isSpirit(player)) return;
 		

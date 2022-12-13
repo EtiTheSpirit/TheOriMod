@@ -8,10 +8,12 @@ import etithespirit.orimod.common.tile.light.LightEnergyTicker;
 import etithespirit.orimod.common.tile.light.LightEnergyTile;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
+import etithespirit.orimod.registry.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
@@ -24,6 +26,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.level.storage.loot.LootContext;
 import org.jetbrains.annotations.Nullable;
 
 
@@ -34,6 +37,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.NORTH;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.SOUTH;
 
+import java.util.List;
 import java.util.function.Consumer;
 
 /**
@@ -282,7 +286,9 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	 * @param prop The property that was changed. This will be null if an existing connection was changed (see {@code existingConnectionChanged} parameter)
 	 * @param existingConnectionChanged If true, a this occurred because one of the two connected blocks changed into a <em>different</em> connectable block - a connection was not newly created or destroyed, but rather changed.
 	 */
-	public abstract void connectionStateChanged(BlockState originalState, BlockState newState, BlockPos at, Level inWorld, @Nullable BooleanProperty prop, boolean existingConnectionChanged);
+	public void connectionStateChanged(BlockState originalState, BlockState newState, BlockPos at, Level inWorld, @Nullable BooleanProperty prop, boolean existingConnectionChanged) {
+		selfBE(inWorld, at).markLastKnownNeighborsDirty();
+	}
 	
 	/**
 	 * Tests if this block is set to always connect to any neighbor that is accepting connections in the appropriate direction.
@@ -397,6 +403,13 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	@Override
 	public Item.Properties getPropertiesOfItem() {
 		return (new Item.Properties()).tab(OriModCreativeModeTabs.SPIRIT_MACHINERY_COMPLETE);
+	}
+	
+	
+	@Override
+	@SuppressWarnings("deprecation")
+	public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
+		return List.of(new ItemStack(ItemRegistry.getBlockItemOf(this)));
 	}
 	
 }

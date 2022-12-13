@@ -1,6 +1,6 @@
 {
   "parent": "minecraft:item/generated",
   "textures": {
-    "layer0": "orimod:item/decay_poison_bucket"
+    "layer0": "orimod:item/fluid/decay_poison_bucket"
   }
 }

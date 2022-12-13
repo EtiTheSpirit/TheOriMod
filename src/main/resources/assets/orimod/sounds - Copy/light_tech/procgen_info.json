@@ -1,0 +1,11 @@
+{
+	"category" : "block",
+	"audioNames" : {
+		"tile.light_tech.activate_large_a" : [
+			"activate_large_a.ogg"
+		],
+		"tile.light_tech.activate_large_b" : [
+			"activate_large_b.ogg"
+		]
+	}
+}

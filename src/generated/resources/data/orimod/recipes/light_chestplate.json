@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "orimod:binding_essence"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "S S",
+    "BSB",
+    "SSS"
+  ],
+  "result": {
+    "item": "orimod:light_chestplate"
+  }
+}

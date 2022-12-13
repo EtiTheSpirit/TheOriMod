@@ -35,7 +35,7 @@ public abstract class InjectPlayerPlaySound extends LivingEntity implements ISel
 			return;
 		}
 		
-		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(selfProvider$self(), null, this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
+		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(selfProvider$entity(), null, this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
 			return;

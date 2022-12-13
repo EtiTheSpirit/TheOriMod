@@ -1,0 +1,143 @@
+{
+  "multipart": [
+    {
+      "apply": {
+        "model": "orimod:block/glass"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidcore/solid_light_conduit-core-orange"
+      },
+      "when": {
+        "blue": "false"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-orange"
+      },
+      "when": {
+        "blue": "false",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-orange",
+        "y": 180
+      },
+      "when": {
+        "blue": "false",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-orange",
+        "y": 270
+      },
+      "when": {
+        "blue": "false",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-orange",
+        "y": 90
+      },
+      "when": {
+        "blue": "false",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-orange",
+        "x": 270
+      },
+      "when": {
+        "blue": "false",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-orange",
+        "x": 90
+      },
+      "when": {
+        "blue": "false",
+        "down": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidcore/solid_light_conduit-core-blue"
+      },
+      "when": {
+        "blue": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-blue"
+      },
+      "when": {
+        "blue": "true",
+        "north": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-blue",
+        "y": 180
+      },
+      "when": {
+        "blue": "true",
+        "south": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-blue",
+        "y": 270
+      },
+      "when": {
+        "blue": "true",
+        "west": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-blue",
+        "y": 90
+      },
+      "when": {
+        "blue": "true",
+        "east": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-blue",
+        "x": 270
+      },
+      "when": {
+        "blue": "true",
+        "up": "true"
+      }
+    },
+    {
+      "apply": {
+        "model": "orimod:block/techblocks/conduits/solidconnector/solid_light_conduit-blue",
+        "x": 90
+      },
+      "when": {
+        "blue": "true",
+        "down": "true"
+      }
+    }
+  ]
+}

@@ -1,7 +1,6 @@
 package etithespirit.orimod.energy;
 
 import etithespirit.orimod.config.OriModConfigs;
-import etithespirit.orimod.util.valuetypes.LightEnergyAdapter;
 
 /**
  * An energy system similar to (but purposely not directly compatible with) {@link net.minecraftforge.energy.IEnergyStorage IEnergyStorage}.
@@ -20,6 +19,11 @@ import etithespirit.orimod.util.valuetypes.LightEnergyAdapter;
  */
 public interface ILightEnergyStorage {
 	
+	/** The amount of Lum required to make one Luxen. Please keep this as a whole number. */
+	float LUM_PER_LUX = 1024f;
+	float LUM_UNIT_SIZE = 1 / LUM_PER_LUX;
+	
+	
 	/**
 	 * A default helper method to perform a transfer of energy. If the amount is negative, the sender and receiver are swapped.
 	 * @param sender The object sending energy.
@@ -28,13 +32,13 @@ public interface ILightEnergyStorage {
 	 * @param simulate If TRUE, the transfer will only be simulated.
 	 * @return The amount that was transferred (or that would be transferred, if simulated).
 	 */
-	static double transferLight(ILightEnergyStorage sender, ILightEnergyStorage receiver, double amount, boolean simulate) {
+	static float transferLight(ILightEnergyStorage sender, ILightEnergyStorage receiver, float amount, boolean simulate) {
 		if (amount < 0) return transferLight(receiver, sender, -amount, simulate);
 		if (amount == 0) return 0;
 		
 		if (sender.canExtractLightFrom() && receiver.canReceiveLight()) {
-			double realAmountTaken = sender.extractLightFrom(amount, true);
-			double realAmountReceived = receiver.receiveLight(realAmountTaken, true);
+			float realAmountTaken = sender.extractLightFrom(amount, true);
+			float realAmountReceived = receiver.receiveLight(realAmountTaken, true);
 			
 			// In a sane scenario, and for a scenario where only losses occur, amount will be larger than realAmountTaken, which will be larger than realAmountReceived
 			// thus, realAmountReceived is the grand representation of the actual transfer.
@@ -52,8 +56,8 @@ public interface ILightEnergyStorage {
 	 * @param luxen The amount of Luxen to convert.
 	 * @return The equivalent amount of RF.
 	 */
-	static double luxenToRedstoneFlux(double luxen) {
-		return luxen * OriModConfigs.LUX_TO_RF_RATIO.get();
+	static int luxenToRedstoneFlux(float luxen) {
+		return Math.round(luxen * (float)OriModConfigs.LUX_TO_RF_RATIO.get().doubleValue());
 	}
 	
 	/**
@@ -61,9 +65,9 @@ public interface ILightEnergyStorage {
 	 * @param rf The amount of RF to convert.
 	 * @return The equivalent amount of Luxen.
 	 */
-	static double redstoneFluxToLuxen(double rf) {
+	static float redstoneFluxToLuxen(int rf) {
 		if (rf == 0) return 0;
-		return rf / OriModConfigs.LUX_TO_RF_RATIO.get();
+		return (float)rf / (float)OriModConfigs.LUX_TO_RF_RATIO.get().doubleValue();
 	}
 	
 	/**
@@ -75,7 +79,7 @@ public interface ILightEnergyStorage {
 	 *            If TRUE, the insertion will only be simulated.
 	 * @return Amount of energy that was (or would have been, if simulated) accepted by the storage.
 	 */
-	double receiveLight(double maxReceive, boolean simulate);
+	float receiveLight(float maxReceive, boolean simulate);
 	
 	/**
 	 * Removes energy from the storage. Returns quantity of energy that was removed.
@@ -86,17 +90,17 @@ public interface ILightEnergyStorage {
 	 *            If TRUE, the extraction will only be simulated.
 	 * @return Amount of energy that was (or would have been, if simulated) extracted from the storage.
 	 */
-	double extractLightFrom(double maxExtract, boolean simulate);
+	float extractLightFrom(float maxExtract, boolean simulate);
 	
 	/**
 	 * @return The amount of energy currently stored.
 	 */
-	double getLightStored();
+	float getLightStored();
 	
 	/**
 	 * @return The maximum amount of energy that can be stored.
 	 */
-	double getMaxLightStored();
+	float getMaxLightStored();
 	
 	/**
 	 * Returns if this storage can have energy extracted.
@@ -112,9 +116,4 @@ public interface ILightEnergyStorage {
 	 */
 	boolean canReceiveLight();
 	
-	/**
-	 * Whether or not this storage is a valid candidate for use in the {@link LightEnergyAdapter Light Energy Adapter} (for conversion to RF).
-	 * @return whether or not this can interact with RF (as opposed to Light), which determines its usability in {@link LightEnergyAdapter LightEnergyAdapter}.
-	 */
-	boolean acceptsConversion();
 }

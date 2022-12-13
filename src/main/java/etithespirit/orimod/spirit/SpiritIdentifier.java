@@ -3,10 +3,9 @@ package etithespirit.orimod.spirit;
 import etithespirit.orimod.annotation.NetworkReplicated;
 import etithespirit.orimod.annotation.NotNetworkReplicated;
 import etithespirit.orimod.config.OriModConfigs;
+import etithespirit.orimod.networking.spirit.ClientSpiritStateComponent;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
-import etithespirit.orimod.networking.spirit.SpiritStateReplicationPacket;
 import etithespirit.orimod.player.EffectEnforcement;
-import etithespirit.orimod.server.persistence.SpiritPermissions;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 
@@ -88,7 +87,7 @@ public final class SpiritIdentifier {
 				throw new IllegalArgumentExceptionButItHasAComicallyLargeNameToDrasticallyIncreaseTheIronyPresentInThisReallyTerribleForcedExceptionMethodBecauseYouCalledTheNetworkingMethodWithTheWrongArgument();
 			}
 			setSpirit(player.getUUID(), isSpirit);
-			ReplicateSpiritStatus.askToSetSpiritStatusAsync(isSpirit);
+			ClientSpiritStateComponent.askToSetSpiritStatusAsync(isSpirit);
 		} else {
 			ReplicateSpiritStatus.tellEveryonePlayerSpiritStatus(player, isSpirit);
 		}

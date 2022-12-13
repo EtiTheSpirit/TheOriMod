@@ -5,7 +5,7 @@ package etithespirit.orimod.common.block.decay;
  */
 public enum DecayWorldConfigBehavior {
 	
-	/** This decay block is allowed to spread completely unlimited. Extremely dangerous in this state. */
+	/** This decay block is allowed to spread completely unlimited. Very dangerous in this state. */
 	ALLOW_SPREADING(true, false, 2),
 	
 	/** This decay block can exist in the world, but cannot spread or infect nearby blocks. It can still afflict entities with the Decay effect. */
@@ -24,15 +24,6 @@ public enum DecayWorldConfigBehavior {
 		this.permissiveness = permissiveness;
 	}
 	
-	
-	/**
-	 * Returns the name of this enum constant, as contained in the
-	 * declaration.  This method may be overridden, though it typically
-	 * isn't necessary or desirable.  An enum class should override this
-	 * method when a more "programmer-friendly" string form exists.
-	 *
-	 * @return the name of this enum constant
-	 */
 	@Override
 	public String toString() {
 		return switch (this) {

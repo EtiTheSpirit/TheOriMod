@@ -1,0 +1,25 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "B": {
+      "item": "orimod:binding_essence"
+    },
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    },
+    "|": {
+      "item": "minecraft:string"
+    }
+  },
+  "pattern": [
+    " SB",
+    "D |",
+    " SB"
+  ],
+  "result": {
+    "item": "orimod:spirit_arc"
+  }
+}

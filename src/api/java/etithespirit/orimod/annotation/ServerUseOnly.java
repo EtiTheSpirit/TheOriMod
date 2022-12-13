@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
 
 /**
  * The {@link ServerUseOnly @ServerUseOnly} annotation signifies that the associated item relies on classes that only
- * exist on the server, and thus using it on the client will cause a crash or exception.
+ * exist on the server, and thus using it on the client will cause a crash, an exception, or have unexpected behavior.
  */
 @Retention (RetentionPolicy.CLASS)
 @Documented

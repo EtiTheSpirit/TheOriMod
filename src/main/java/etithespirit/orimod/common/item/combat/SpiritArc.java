@@ -6,6 +6,7 @@ import etithespirit.orimod.common.item.ISpiritLightItem;
 import etithespirit.orimod.registry.EntityRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.LivingEntity;
@@ -13,6 +14,8 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
+import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 
 import java.util.function.Predicate;
@@ -28,7 +31,7 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	private static final int CHARGED_AFTER_TICKS = USE_TIME - 20;
 	
 	public SpiritArc() {
-		this(new Properties().rarity(Rarity.EPIC).stacksTo(1).durability(1561).tab(OriModCreativeModeTabs.SPIRIT_COMBAT).setNoRepair());
+		this(new Properties().rarity(Rarity.EPIC).stacksTo(1).durability(1000).tab(OriModCreativeModeTabs.SPIRIT_COMBAT).setNoRepair());
 	}
 	
 	private SpiritArc(Properties pProperties) {
@@ -63,13 +66,30 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 		
 		if (!pLevel.isClientSide()) {
 			SpiritArrow projectile = new SpiritArrow(EntityRegistry.SPIRIT_ARROW.get(), pLevel);
-			projectile.setBaseDamage(chargedShot ? 5 : 2);
+			
+			float damage = chargedShot ? 5 : 2;
+			int power = pStack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
+			if (power > 0) {
+				damage += (power / 2f) + 0.5f;
+			}
+			
+			int punch = pStack.getEnchantmentLevel(Enchantments.PUNCH_ARROWS);
+			if (punch > 0) {
+				projectile.setKnockback(punch);
+			}
+			
+			if (pStack.getEnchantmentLevel(Enchantments.FLAMING_ARROWS) > 0) {
+				projectile.setSecondsOnFire(100);
+			}
+			
+			projectile.setBaseDamage(damage);
 			projectile.setCritArrow(chargedShot);
-			projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, chargedShot ? 6f : 1.6f, 0.05f);
 			projectile.setPos(pLivingEntity.getX(), pLivingEntity.getEyeY() - 0.1, pLivingEntity.getZ());
+			projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, chargedShot ? 5f : 1.6f, chargedShot ? 0 : 0.1f);
 			pLevel.addFreshEntity(projectile);
 		}
 		if (pLivingEntity instanceof Player player) player.awardStat(Stats.ITEM_USED.get(this));
+		pStack.hurtAndBreak(chargedShot ? 1 : 2, pLivingEntity, item -> {});
 	}
 	
 	@Override
@@ -85,6 +105,7 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 		}
 	}
 	
+	
 	@Override
 	public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
 		this.releaseUsing(pStack, pLevel, pLivingEntity, 0);
@@ -99,6 +120,13 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 		return USE_TIME;
 	}
 	
+	@Override
+	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pHand) {
+		ItemStack itemstack = pPlayer.getItemInHand(pHand);
+		pPlayer.startUsingItem(pHand);
+		return InteractionResultHolder.success(itemstack);
+	}
+	
 	public int getUseDuration() {
 		return getUseDuration(null);
 	}
@@ -109,7 +137,8 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	}
 	
 	@Override
-	public boolean canRepairAtLuxForge(ItemStack stack) {
-		return true;
+	public int getBarColor(ItemStack pStack) {
+		return ISpiritLightItem.super.getBarColor(pStack);
 	}
+	
 }

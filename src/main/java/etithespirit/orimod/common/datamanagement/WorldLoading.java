@@ -1,6 +1,7 @@
 package etithespirit.orimod.common.datamanagement;
 
 import etithespirit.orimod.client.audio.SpiritSoundPlayer;
+import etithespirit.orimod.networking.spirit.ClientSpiritStateComponent;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.EffectEnforcement;
 import etithespirit.orimod.registry.SoundRegistry;
@@ -18,11 +19,12 @@ public final class WorldLoading {
 		ReplicateSpiritStatus.tellEveryonePlayerSpiritStatus(player, SpiritIdentifier.isSpirit(player));
 		player.refreshDimensions();
 		EffectEnforcement.updatePlayerAttrs(player);
+		
 	}
 	
 	public static void onLoggedInClient(PlayerEvent.PlayerLoggedInEvent evt) {
 		if (!Minecraft.getInstance().hasSingleplayerServer()) {
-			ReplicateSpiritStatus.askWhoIsASpiritAsync(); // The server will reply to this on its own accord.
+			ClientSpiritStateComponent.askWhoIsASpiritAsync(); // The server will reply to this on its own accord.
 		}
 		EffectEnforcement.updatePlayerAttrs(evt.getEntity());
 	}

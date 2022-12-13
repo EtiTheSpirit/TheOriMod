@@ -1,6 +1,5 @@
 package etithespirit.orimod.common.tile.light;
 
-import etithespirit.orimod.OriMod;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
@@ -17,13 +16,10 @@ import java.util.Set;
 public abstract class LightEnergyStorageTile extends LightEnergyTile implements ILightEnergyStorage {
 	
 	/** A container used to store energy. */
-	protected final @Nonnull PersistentLightEnergyStorage storage;
+	private final @Nonnull PersistentLightEnergyStorage storage;
 	
 	/** A cache of every connected, valid storage unit connected to this one, including this one. This is a reference so that it may be shared (and cleared) across all instances of this BE in a world. */
-	private Container<LightEnergyStorageTile> allValidOtherStorages = new Container<>();
-	
-	/** This is used to know when to send an update message out to all neighboring tiles to redraw conduits in their active (energized) or inactive state. */
-	protected boolean lastHadEnergy = false;
+	private ArrayContainer<LightEnergyStorageTile> allValidOtherStorages = new ArrayContainer<>();
 	
 	protected LightEnergyStorageTile(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState, @Nonnull PersistentLightEnergyStorage storageProvider) {
 		super(pType, pWorldPosition, pBlockState);
@@ -96,7 +92,7 @@ public abstract class LightEnergyStorageTile extends LightEnergyTile implements 
 			known.add(this); // Prevent it from iterating back over itself
 			iterateOver(known, knownJunctions, remainingIter, this);
 			
-			allValidOtherStorages = new Container<>();
+			allValidOtherStorages = new ArrayContainer<>();
 			allValidOtherStorages.array = known.toArray(new LightEnergyStorageTile[0]);
 			for (int index = 0; index < allValidOtherStorages.array.length; index++) {
 				LightEnergyStorageTile tile = allValidOtherStorages.array[index];
@@ -110,7 +106,9 @@ public abstract class LightEnergyStorageTile extends LightEnergyTile implements 
 	@Override
 	public void setLevel(Level pLevel) {
 		super.setLevel(pLevel);
-		allValidOtherStorages.array = null;
+		if (allValidOtherStorages != null) {
+			allValidOtherStorages.array = null;
+		}
 		allValidOtherStorages = null;
 		super.markLastKnownNeighborsDirty();
 	}
@@ -135,22 +133,22 @@ public abstract class LightEnergyStorageTile extends LightEnergyTile implements 
 	}
 	
 	@Override
-	public double receiveLight(double maxReceive, boolean simulate) {
+	public float receiveLight(float maxReceive, boolean simulate) {
 		return storage.receiveLight(maxReceive, simulate);
 	}
 	
 	@Override
-	public double extractLightFrom(double maxExtract, boolean simulate) {
+	public float extractLightFrom(float maxExtract, boolean simulate) {
 		return storage.extractLightFrom(maxExtract, simulate);
 	}
 	
 	@Override
-	public double getLightStored() {
+	public float getLightStored() {
 		return storage.getLightStored();
 	}
 	
 	@Override
-	public double getMaxLightStored() {
+	public float getMaxLightStored() {
 		return storage.getMaxLightStored();
 	}
 	
@@ -164,9 +162,75 @@ public abstract class LightEnergyStorageTile extends LightEnergyTile implements 
 		return storage.canExtractLightFrom();
 	}
 	
-	@Override
-	public boolean acceptsConversion() {
-		return storage.acceptsConversion();
+	/**
+	 * Attempts to remove the given amount of energy from this storage (with the intent of using or "spending" this energy).<br/>
+	 * Most notably, this bypasses {@link #canExtractLightFrom()}, and is intended for when a device uses its own energy rather
+	 * than in the transfer of energy. To transfer energy, use {@link #extractLightFrom(float, boolean)}.<br/>
+	 * <br/>
+	 * This respects the maximum extraction rate, unless it is 0 from which no rate limit is imposed. Attempting to extract
+	 * an amount larger than the maximum extraction rate will fail.
+	 * @param amount The amount to try to remove.
+	 * @param simulate If true, the energy is not actually taken out.
+	 * @return True if the desired amount could be taken, false if not.
+	 */
+	public boolean trySpendEnergy(float amount, boolean simulate) {
+		return storage.trySpendEnergy(amount, simulate);
 	}
 	
+	/**
+	 * The opposite of {@link #trySpendEnergy(float, boolean)}, this method attempts to create energy out of nothing with the intent
+	 * of a block generating it (you know, like a generator does). This bypasses the receiver limits, and as such, should not be used for
+	 * transfer. To transfer energy, use {@link #receiveLight(float, boolean)}.
+	 * @param amount The amount to try to generate.
+	 * @param simulate If true, the energy is not actually added.
+	 * @return The actual amount of energy that was added to the machine.
+	 */
+	public float generateEnergy(float amount, boolean simulate) {
+		return storage.generateEnergy(amount, simulate);
+	}
+	
+	/**
+	 * For use in generators, this value describes the maximum power output per tick.
+	 * @return The maximum power output per tick.
+	 */
+	public float getMaxPowerDraw() {
+		return storage.getMaxPowerDraw();
+	}
+	
+	/**
+	 * For use in generators, this value describes the maximum power input per tick.
+	 * @return The maximum power input per tick.
+	 */
+	public float getMaxChargeRate() {
+		return storage.getMaxChargeRate();
+	}
+	
+	/**
+	 * If true, the Powered state will not be managed by the ticker and must be manually set by the implementor.
+	 * @return False to automatically handle the Powered state based on if there is energy incoming, True to manually handle it per implementor.
+	 */
+	public boolean skipAutomaticPoweredBlockstate() {
+		return false;
+	}
+	
+	/** Denotes the inherited class as a generator, which changes how it displays in Jade */
+	public interface ILuxenGenerator {
+		
+		float getLuxGeneratedPerTick();
+		
+	}
+	
+	
+	/** Denotes the inherited class as a consumer, which changes how it displays in Jade */
+	public interface ILuxenConsumer {
+		
+		float getLuxConsumedPerTick();
+		
+		/**
+		 * Returns whether or not this block should be consuming more power than it has available.
+		 * @return
+		 */
+		boolean isOverdrawn();
+		
+	}
 }

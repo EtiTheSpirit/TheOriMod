@@ -43,16 +43,12 @@ public class EffectModificationReplication {
 		ReplicationData.PROTOCOL_VERSION::equals
 	);
 	
-	/**
-	 * Register the packets for the given logical side.
-	 * @param side The side that this packet exists on.
-	 */
-	public static void registerPackets(Dist side) {
-		if (side.isClient()) {
-			INSTANCE.registerMessage(ReplicationData.nextID(), EffectReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, EffectModificationReplication::onClientEvent);
-		} else {
-			INSTANCE.registerMessage(ReplicationData.nextID(), EffectReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, EffectModificationReplication::onServerEvent);
-		}
+	public static void registerServerPackets() {
+		INSTANCE.registerMessage(ReplicationData.nextID(), EffectReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, EffectModificationReplication::onServerEvent);
+	}
+	
+	public static void registerClientPackets() {
+		INSTANCE.registerMessage(ReplicationData.nextID(), EffectReplicationPacket.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, EffectModificationReplication::onClientEvent);
 	}
 	
 	private static EffectReplicationPacket bufferToPacket(FriendlyByteBuf buffer) {

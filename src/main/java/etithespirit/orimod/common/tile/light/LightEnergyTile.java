@@ -175,7 +175,7 @@ public abstract class LightEnergyTile extends BlockEntity {
 	
 	
 	
-	protected static class Container<T extends LightEnergyTile> {
+	protected static class ArrayContainer<T extends LightEnergyTile> {
 		
 		public T[] array = null;
 		
