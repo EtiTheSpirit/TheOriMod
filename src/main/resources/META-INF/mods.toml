@@ -1,7 +1,7 @@
 modLoader="javafml"
 loaderVersion="[43,)"
 license="LGPL 2.1"
-issueTrackerURL="https://github.com/EtiTheSpirit/TheOriMod/issues/new/choose"
+issueTrackerURL="https://github.com/EtiTheSpirit/TheOriMod/issues"
 
 [[mods]]
 modId="${mod_id}"
@@ -16,7 +16,7 @@ description='''
 ${mod_desc}
 
 §lCredits:§r
-- §bEtiTheSpirit§r - look at me ma
+- §bEtiTheSpirit§r - yall know that meme of obama giving himself a medal?
 - §bOri Community§r - Your interest in my work fuels my desire to make it better.
 - §bMoon Studios§r - Open ended lore is what makes stuff like this feel cohesive.
 §o* Without you, this mod could not work the way it does today! *§r
