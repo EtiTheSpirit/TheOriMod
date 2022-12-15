@@ -18,3 +18,6 @@ Just a simple yes or no here should be fine.
 
 **What version of the mod are you on?**
 This should be easy for you to find.
+
+**Log file**
+Go to your minecraft directory (`.minecraft`) and open the logs folder. Drag debug.log here. Make sure IT IS FROM THE LATEST RUN. This log file keeps track of everything that happened the last time you launched the game, so if you restarted it after crashing and it worked fine this time, your log will not contain helpful information!
