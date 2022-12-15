@@ -1,9 +1,9 @@
 ---
 name: Feature Request
 about: Suggest a new feature or tweak to the mod
-title: ''
+title: 'Briefly describe your idea here...'
 labels: enhancement
-assignees: ''
+assignees: 'EtiTheSpirit'
 
 ---
 
