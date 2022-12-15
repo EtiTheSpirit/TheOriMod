@@ -17,4 +17,4 @@ Write down the steps to cause this bug. If it's weird or requires specific steps
 Just a simple yes or no here should be fine. This helps me to judge how important it is that I get a fix out sooner than later.
 
 **Log file**
-Go to your minecraft directory (`.minecraft`) and open the logs folder. Drag debug.log here. Make sure IT IS FROM THE LATEST RUN. This log file keeps track of everything that happened the last time you launched the game, so if you restarted it after crashing and it worked fine this time, your log will not contain helpful information!
+Go to your minecraft directory (`.minecraft`) and open the logs folder. Drag debug.log here. REMEMBER: debug.log tells me about what happened the last time you ran the game. You need to link the file only after causing the bug you are reporting here.
