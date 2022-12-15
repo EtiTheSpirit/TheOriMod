@@ -5,9 +5,13 @@ import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlo
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tile.light.implementations.LightToRFTile;
-import etithespirit.orimod.util.PresetBlockTags;
+import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -15,13 +19,16 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Material;
 import org.jetbrains.annotations.Nullable;
 
-public class LightToRFGeneratorBlock extends ConnectableLightTechBlock implements ILightBlockIdentifier, IToolRequirementProvider, IForlornBlueOrangeBlock {
+import java.util.List;
+
+public class LightToRFGeneratorBlock extends ConnectableLightTechBlock implements IToolRequirementProvider, IForlornBlueOrangeBlock {
 	
 	public LightToRFGeneratorBlock() {
 		this(
 			Properties.of(Material.STONE)
 			.strength(1f, 100f)
 			.lightLevel(state -> state.getValue(ForlornAppearanceMarshaller.POWERED) ? ForlornAppearanceMarshaller.LIGHT_LEVEL : 0)
+			.requiresCorrectToolForDrops()
 		);
 	}
 	
@@ -55,6 +62,12 @@ public class LightToRFGeneratorBlock extends ConnectableLightTechBlock implement
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+	}
+	
+	@Override
+	public void appendHoverText(ItemStack pStack, @org.jetbrains.annotations.Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
+		super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
+		pTooltip.add(Component.translatable("block.orimod.light_to_rf.tip"));
 	}
 }

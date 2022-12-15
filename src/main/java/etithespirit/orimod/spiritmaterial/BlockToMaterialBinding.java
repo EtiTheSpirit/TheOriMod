@@ -1,6 +1,7 @@
 package etithespirit.orimod.spiritmaterial;
 
 import etithespirit.orimod.GeneralUtils;
+import etithespirit.orimod.OriMod;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAcquisitionFunction;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import etithespirit.orimod.common.material.ExtendedMaterials;
@@ -8,6 +9,7 @@ import etithespirit.orimod.registry.BlockRegistry;
 import etithespirit.orimod.spiritmaterial.defaults.DefaultImplementations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
@@ -40,6 +42,16 @@ public final class BlockToMaterialBinding {
 	 * A lookup to access spirit materials from vanilla materials.
 	 */
 	private static final Map<Material, SpiritMaterial> MATERIAL_TO_SPIRIT_MTL = new HashMap<>();
+	
+	/**
+	 * A lookup to access TagKeys created during runtime.
+	 */
+	private static final Map<ResourceLocation, TagKey<Block>> RUNTIME_BLOCK_TAGS = new HashMap<>();
+	
+	/**
+	 * A lookup from arbitrary object (Block, BlockState, Material, ResourceLocation) to mod ID. Used to blame someone for sound mistakes.
+	 */
+	private static final Map<Object, String> BLAME = new HashMap<>();
 	
 	/////////////////////////////////////////////////////////
 	/// CONSTANT BINDINGS
@@ -240,6 +252,15 @@ public final class BlockToMaterialBinding {
 	 */
 	public static void setSpiritMaterialForArbitrary(ResourceLocation loc, SpiritMaterial mtl) {
 		ARB_BLOCK_TO_SPIRIT_MTL.put(loc, mtl);
+	}
+	
+	/**
+	 * Registers an entire block tag with a material. This is best suited for modded tags as tags are among the most broad classifications possible.
+	 * @param block
+	 * @param mtl
+	 */
+	public static void setSpiritMaterialForTag(TagKey<Block> block, SpiritMaterial mtl) {
+	
 	}
 	
 	/**
@@ -485,11 +506,19 @@ public final class BlockToMaterialBinding {
 		setSpiritMaterialFor(Blocks.CHISELED_POLISHED_BLACKSTONE, SpiritMaterial.ASH);
 		setSpiritMaterialFor(Blocks.CRACKED_POLISHED_BLACKSTONE_BRICKS, SpiritMaterial.ASH);
 		setSpiritMaterialFor(Blocks.GILDED_BLACKSTONE, SpiritMaterial.ASH);
+		setSpiritMaterialFor(Blocks.GRINDSTONE, SpiritMaterial.ROCK); // For some reason this was metal by default.
+		
+		// MY BLOCKS
+		setEffectiveMaterialForRegistryObject(BlockRegistry.DECAY_SURFACE_MYCELIUM, SpiritMaterial.SHROOM);
+		useIfIn(BlockRegistry.DECAY_SURFACE_MYCELIUM);
+		
+		// MOD BLOCKS (INCLUDED AHEAD OF TIME)
+		setSpiritMaterialForArbitrary(new ResourceLocation("biomesoplenty", "flesh"), SpiritMaterial.SHROOM);
+		setSpiritMaterialForArbitrary(new ResourceLocation("biomesoplenty", "glowshroom"), SpiritMaterial.SHROOM);
+		// TODO: Not hardcode these and allow them to be set via configuration.
 		
 		useIfIn(Blocks.SNOW);
 		useIfIn(Blocks.VINE);
-		//useIfIn(Blocks.SLIME_BLOCK);
-		//useIfIn(Blocks.HONEY_BLOCK);
 	}
 	
 	private static List<Material> vanillaMaterials = null;
@@ -538,6 +567,10 @@ public final class BlockToMaterialBinding {
 		return vanillaBlocks.contains(block);
 	}
 	
+	public static void dbgPrintAllBindings() {
+		OriMod.LOG.debug("Ori Mod Debug: Dumping all bindings!");
+	}
+	
 	static {
 		// Default material bindings.
 		populateMaterialToSpiritMtl();
@@ -545,12 +578,6 @@ public final class BlockToMaterialBinding {
 		// Default block bindings.
 		populateEffectiveMaterialsForBlocks();
 		
-		// MY BLOCKS
-		setEffectiveMaterialForRegistryObject(BlockRegistry.DECAY_SURFACE_MYCELIUM, SpiritMaterial.SHROOM);
-		useIfIn(BlockRegistry.DECAY_SURFACE_MYCELIUM);
 		
-		// MOD BLOCKS (INCLUDED AHEAD OF TIME)
-		setSpiritMaterialForArbitrary(new ResourceLocation("biomesoplenty", "flesh"), SpiritMaterial.SHROOM);
-		// TODO: Not hardcode these and allow them to be set via configuration.
 	}
 }

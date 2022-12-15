@@ -8,6 +8,7 @@ import etithespirit.orimod.api.interfaces.ISpiritSoundAPI;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAcquisitionFunction;
 import etithespirit.orimod.spiritmaterial.BlockToMaterialBinding;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
@@ -43,6 +44,11 @@ public class SpiritSoundAPI implements ISpiritSoundAPI {
 		ArgumentNullException.throwIfNull(specificState, "specificState");
 		ArgumentNullException.throwIfNull(material, "material");
 		BlockToMaterialBinding.setSpiritMaterialForState(specificState, material);
+	}
+	
+	@Override
+	public void registerSpiritStepSound(TagKey<Block> blockTag, SpiritMaterial material) throws ArgumentNullException, IllegalArgumentException, IllegalStateException {
+		throw new UnsupportedOperationException();
 	}
 	
 	@Override

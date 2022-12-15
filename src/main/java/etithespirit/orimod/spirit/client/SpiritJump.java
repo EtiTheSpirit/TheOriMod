@@ -1,6 +1,7 @@
 package etithespirit.orimod.spirit.client;
 
 
+import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.client.audio.SpiritSoundPlayer;
 import etithespirit.orimod.spirit.SpiritIdentifier;
@@ -258,6 +259,7 @@ public final class SpiritJump {
 		if (isWallJump) {
 			SpiritSoundPlayer.playWallJumpSound(player, wallPos);
 		} else {
+			if (currentJumps == 0) currentJumps++; // Bump that up. This method only executes when in the air.
 			currentJumps++;
 			SpiritSoundPlayer.playJumpSound(player, currentJumps);
 		}
@@ -305,6 +307,8 @@ public final class SpiritJump {
 	public static void onEntityJumped(LivingEvent.LivingJumpEvent event) {
 		LivingEntity entity = event.getEntity();
 		if (entity instanceof Player player) {
+			
+			OriMod.LOG.info("Entity jumped! Current: {}", currentJumps);
 			if (SpiritIdentifier.isSpirit(player) && currentJumps == 0) {
 				currentJumps++;
 				player.push(0, 0.2, 0);

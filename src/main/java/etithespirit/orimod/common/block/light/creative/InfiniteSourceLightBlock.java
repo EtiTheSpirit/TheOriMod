@@ -5,8 +5,7 @@ import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlo
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tile.light.implementations.LightInfiniteSourceTile;
-import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
-import etithespirit.orimod.util.PresetBlockTags;
+import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
@@ -43,6 +42,6 @@ public class InfiniteSourceLightBlock extends ConnectableLightTechBlock implemen
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
 	}
 }

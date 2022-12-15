@@ -8,7 +8,11 @@ import net.minecraft.world.entity.Entity;
 import javax.annotation.Nonnull;
 
 /**
- * A function used to acquire a SpiritMaterial.
+ * A function used to acquire a SpiritMaterial. This receives an entity, the block position the entity is standing on top of, the block position the entity is standing inside of,
+ * and whether or not the system considers them to be inside of the block (to determine which block to sample from).
+ * Note that "standing on top of" includes a -15/16th meter bias (1 pixel on the default block texture, same height as a carpet) "buffer" so that walking on carpets, slabs,
+ * trapdoors, and other thin blocks counts as walking on top of them rather than inside of them. When this occurs, the block the entity is standing inside of goes up by one block
+ * as well. This can be tested by using the entity's precise position.
  * @author Eti
  *
  */

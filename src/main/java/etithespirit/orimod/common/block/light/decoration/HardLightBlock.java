@@ -1,40 +1,34 @@
 package etithespirit.orimod.common.block.light.decoration;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
-import etithespirit.orimod.common.block.StaticData;
-import etithespirit.orimod.common.block.light.ILightBlockIdentifier;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.material.ExtendedMaterials;
 import etithespirit.orimod.registry.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
-import etithespirit.orimod.util.PresetBlockTags;
+import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 
 import java.util.List;
-import java.util.Set;
 
 import static etithespirit.orimod.common.block.StaticData.FALSE_POSITION_PREDICATE;
 import static etithespirit.orimod.common.block.StaticData.TRUE_POSITION_PREDICATE;
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
+
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.minecraftforge.common.Tags;
 
 /***/
 @SuppressWarnings("unused")
-public class HardLightBlock extends Block implements ILightBlockIdentifier, IToolRequirementProvider, IBlockItemPropertiesProvider {
+public class HardLightBlock extends Block implements IToolRequirementProvider, IBlockItemPropertiesProvider {
 	/***/
 	public HardLightBlock() {
 		super(
@@ -72,9 +66,10 @@ public class HardLightBlock extends Block implements ILightBlockIdentifier, IToo
 		return true;
 	}
 	
+	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
 	}
 	
 	/**

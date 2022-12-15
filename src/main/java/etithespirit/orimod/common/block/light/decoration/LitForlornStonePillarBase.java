@@ -2,11 +2,10 @@ package etithespirit.orimod.common.block.light.decoration;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.StaticData;
-import etithespirit.orimod.common.block.light.ILightBlockIdentifier;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.registry.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
-import etithespirit.orimod.util.PresetBlockTags;
+import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerLevel;
@@ -29,7 +28,7 @@ import java.util.List;
 import static etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller.IS_BLUE;
 import static etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller.POWERED;
 
-public abstract class LitForlornStonePillarBase extends RotatedPillarBlock implements IForlornBlueOrangeBlock, ILightBlockIdentifier, IToolRequirementProvider, IBlockItemPropertiesProvider {
+public abstract class LitForlornStonePillarBase extends RotatedPillarBlock implements IForlornBlueOrangeBlock, IToolRequirementProvider, IBlockItemPropertiesProvider {
 	
 	// TODO: Six sided stuff? There is no way to automate the creation of the block models for that, so I better be ready to make 64 variants manually
 	
@@ -77,9 +76,10 @@ public abstract class LitForlornStonePillarBase extends RotatedPillarBlock imple
 		return this.defaultBlockState().setValue(AXIS, pContext.getClickedFace().getAxis()).setValue(POWERED, pContext.getLevel().hasNeighborSignal(pContext.getClickedPos())).setValue(ForlornAppearanceMarshaller.IS_BLUE, true);
 	}
 	
+	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
 	}
 	
 	@Override

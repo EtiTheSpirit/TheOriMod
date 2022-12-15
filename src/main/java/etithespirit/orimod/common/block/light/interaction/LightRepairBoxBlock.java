@@ -1,15 +1,13 @@
 package etithespirit.orimod.common.block.light.interaction;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
-import etithespirit.orimod.common.block.light.ILightBlockIdentifier;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tile.light.implementations.LightRepairBoxTile;
-import etithespirit.orimod.util.PresetBlockTags;
+import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.stats.Stats;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Containers;
@@ -22,8 +20,6 @@ import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.entity.DispenserBlockEntity;
-import net.minecraft.world.level.block.entity.DropperBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.Material;
@@ -32,7 +28,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightRepairBoxBlock extends ConnectableLightTechBlock implements ILightBlockIdentifier, IForlornBlueOrangeBlock, IToolRequirementProvider {
+public class LightRepairBoxBlock extends ConnectableLightTechBlock implements IForlornBlueOrangeBlock, IToolRequirementProvider {
 	
 	public LightRepairBoxBlock() {
 		super(Block.Properties.of(Material.STONE).strength(0.8f, 80f));
@@ -56,15 +52,9 @@ public class LightRepairBoxBlock extends ConnectableLightTechBlock implements IL
 		return new LightRepairBoxTile(pPos, pState);
 	}
 	
-	/**
-	 * Returns all tags that this block should be added to. The tags must come from {@link BlockTags}.
-	 * Reminder to self: Because it keeps eluding you, this is not a MC method. This is your method.
-	 *
-	 * @return A list of tags that this block must use.
-	 */
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
 	}
 	
 	@Override
@@ -99,4 +89,6 @@ public class LightRepairBoxBlock extends ConnectableLightTechBlock implements IL
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
 		pTooltip.add(Component.translatable("block.orimod.light_repair_box.tip"));
 	}
+	
+	
 }

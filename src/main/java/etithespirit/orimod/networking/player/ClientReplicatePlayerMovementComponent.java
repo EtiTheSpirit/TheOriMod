@@ -1,2 +1,4 @@
-package etithespirit.orimod.networking.player;public class ClientReplicatePlayerMovementComponent {
+package etithespirit.orimod.networking.player;
+
+public class ClientReplicatePlayerMovementComponent {
 }

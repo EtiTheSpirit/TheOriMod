@@ -2,11 +2,10 @@ package etithespirit.orimod.common.block.light.decoration;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.StaticData;
-import etithespirit.orimod.common.block.light.ILightBlockIdentifier;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.registry.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
-import etithespirit.orimod.util.PresetBlockTags;
+import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
@@ -25,7 +24,7 @@ import java.util.List;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public abstract class LitForlornStoneBlockBase extends Block implements IForlornBlueOrangeBlock, ILightBlockIdentifier, IToolRequirementProvider, IBlockItemPropertiesProvider {
+public abstract class LitForlornStoneBlockBase extends Block implements IForlornBlueOrangeBlock, IToolRequirementProvider, IBlockItemPropertiesProvider {
 	
 	// TODO: Six sided stuff? There is no way to automate the creation of the block models for that, so I better be ready to make 64 variants manually
 	
@@ -77,7 +76,7 @@ public abstract class LitForlornStoneBlockBase extends Block implements IForlorn
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
 	}
 	
 	@Override

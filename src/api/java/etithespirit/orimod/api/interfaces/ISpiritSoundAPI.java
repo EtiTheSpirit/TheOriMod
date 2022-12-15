@@ -4,12 +4,29 @@ package etithespirit.orimod.api.interfaces;
 import etithespirit.exception.ArgumentNullException;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAcquisitionFunction;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 
 /**
- * An API providing a means of registering custom sounds for when a spirit walks on your blocks or materials.
+ * An API providing a means of registering custom sounds for when a spirit walks on your blocks or materials.<br/>
+ * <br/>
+ * An example of when to use this is when looking at a block such as {@code biomesoplenty:flesh}.
+ * Its defined material for its Block class makes it use {@link SpiritMaterial#WOOL} as per the default mapping,
+ * which is not fitting. This API could be used to set it to something like {@link SpiritMaterial#SHROOM}, which
+ * would match the intended material of the block far better than its vanilla material.<br/>
+ * <br/>
+ * The test order for material overrides is: <ol>
+ * <li>Block -&gt; {@link ISpiritMaterialAcquisitionFunction SpiritMaterial Conditional Overrides}</li>
+ * <li>Custom Material -&gt; {@link ISpiritMaterialAcquisitionFunction SpiritMaterial Conditional Overrides}</li>
+ * <li>BlockState -&gt; SpiritMaterial Bindings</li>
+ * <li>Block -&gt; SpiritMaterial Bindings</li>
+ * <li>Tag -&gt; SpiritMaterial Bindings</li>
+ * <li>Custom Material -&gt; SpiritMaterial Bindings</li>
+ * <li>Vanilla Material -&gt; SpiritMaterial Bindings</li>
+ * </ol>
+ * The first one to yield a result is used. If none of these yield a result, the vanilla sound will be passed through.
  * @author Eti
  */
 @SuppressWarnings("unused")
@@ -32,7 +49,7 @@ public interface ISpiritSoundAPI {
 	 *
 	 * @param entireBlockType The block that will have its sounds replaced for Spirits
 	 * @param material The material dictating the unique sound played.
-	 * @throws IllegalArgumentException If the input block or material is null.
+	 * @throws ArgumentNullException If the input block or material is null.
 	 * @throws IllegalStateException If mod initialization has completed, or if {@link #isInstalled()} returns false. This MUST be called before mod loading is complete.
 	 */
 	void registerSpiritStepSound(Block entireBlockType, SpiritMaterial material) throws ArgumentNullException, IllegalStateException;
@@ -44,29 +61,51 @@ public interface ISpiritSoundAPI {
 	 *
 	 * @param specificState The block in a specific state that will have its sounds replaced for Spirits
 	 * @param material The material dictating the unique sound played.
-	 * @throws IllegalArgumentException If the input state or material is null.
+	 * @throws ArgumentNullException If the input state or material is null.
 	 * @throws IllegalStateException If mod initialization has completed, or if {@link #isInstalled()} returns false. This MUST be called before mod loading is complete.
 	 */
 	void registerSpiritStepSound(BlockState specificState, SpiritMaterial material) throws ArgumentNullException, IllegalStateException;
 	
 	/**
+	 * Associates the specific block tag (and all child tags, assuming the tag's inheritence was made properly by you the modder) with the given material.
+	 * Tags are a great way to generalize entire classifications of blocks as they tend to follow stricter rules than materials, but should be handled
+	 * with care.<br/>
+	 * <br/>
+	 * <strong>Note:</strong> You <em>can not register</em> vanilla tags nor forge tags! They are already bound by this mod. Consider registering your own tags instead.
+	 * Please note: A "forge tag" is constituted by what is present in {@link net.minecraftforge.common.Tags}. Many mods implement tags in the forge namespace (for collections
+	 * like <a href="https://forge.gemwire.uk/wiki/Tags#Community_Tags">Forge Community Tags</a>) which, while they have the forge namespace, do not count as forge tags.
+	 * <strong>Overriding a tag that has already been registered will display a warning. Be on the lookout!</strong>
+	 *
+	 * @param blockTag
+	 * @param material
+	 * @throws ArgumentNullException If the input tag or block is null.
+	 * @throws IllegalArgumentException If the tag is vanilla or defined by forge in {@link net.minecraftforge.common.Tags Tags}.
+	 * @throws IllegalStateException
+	 */
+	void registerSpiritStepSound(TagKey<Block> blockTag, SpiritMaterial material) throws ArgumentNullException, IllegalArgumentException, IllegalStateException;
+	
+	/**
 	 * If called, then all states of the given block will play their custom step sound if the
-	 * player is walking <em>in</em> the same BlockPos rather than on top of it. This is useful for things like snow layer blocks,
-	 * which should cause the player to sound like they are walking in snow.
+	 * player is walking <em>in</em> the same BlockPos rather than on top of it. This is useful for blocks without collisions.<br/>
+	 * <br/>
+	 * <strong>Note:</strong> This is <em>no longer acceptable</em> to use for thin blocks (i.e. carpet, snow) as the bug
+	 * causing incorrect detection of these blocks was fixed in mod ver. 1.19.2-1.2.0
 	 *
 	 * @param entireBlockType The block from which all states will be tested for occupancy rather than being stepped on.
-	 * @throws IllegalArgumentException If the input block is null.
+	 * @throws ArgumentNullException If the input block is null.
 	 * @throws IllegalStateException If mod initialization has completed, or if {@link #isInstalled()} returns false. This MUST be called before mod loading is complete.
 	 */
 	void setUseIfIn(Block entireBlockType) throws ArgumentNullException, IllegalStateException;
 	
 	/**
 	 * If called, then the specific BlockState will play its custom step sound if the player is walking
-	 * <em>in</em> the same BlockPos rather than on top of it. This is useful for things like snow layer blocks,
-	 * which should cause the player to sound like they are walking in snow.
+	 * <em>in</em> the same BlockPos rather than on top of it. This is useful for blocks without collisions.<br/>
+	 * <br/>
+	 * <strong>Note:</strong> This is <em>no longer acceptable</em> to use for thin blocks (i.e. carpet, snow) as the bug
+	 * causing incorrect detection of these blocks was fixed in mod ver. 1.19.2-1.2.0
 	 *
 	 * @param specificState The BlockState that will be tested for occupancy rather than being stepped on.
-	 * @throws IllegalArgumentException If the input block is null.
+	 * @throws ArgumentNullException If the input block is null.
 	 * @throws IllegalStateException If mod initialization has completed, or if {@link #isInstalled()} returns false. This MUST be called before mod loading is complete.
 	 */
 	void setUseIfIn(BlockState specificState) throws ArgumentNullException, IllegalStateException;

@@ -6,7 +6,7 @@ import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.client.render.hud.LightRepairDeviceMenu;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
-import etithespirit.orimod.common.item.OriModItemTags;
+import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
 import etithespirit.orimod.common.tile.IServerUpdatingTile;
 import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;

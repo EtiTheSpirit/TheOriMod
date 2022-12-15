@@ -1,5 +1,6 @@
 package etithespirit.orimod.networking.spirit;
 
+import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.annotation.ServerUseOnly;
 import net.minecraft.client.Minecraft;
@@ -83,6 +84,10 @@ public final class SpiritStateReplicationPacket {
 	 */
 	@ClientUseOnly
 	public static SpiritStateReplicationPacket toGetModelsOf(UUID... players) {
+		if (players.length == 0) {
+			OriMod.LOG.debug("Something called SpiritStateReplicationPacket::toGetModelsOf with no arguments! Use toGetModelsOfAll instead.");
+			return toGetModelsOfAll();
+		}
 		HashMap<UUID, Boolean> map = new HashMap<>();
 		for (UUID player : players) {
 			map.put(player, false);
@@ -98,6 +103,10 @@ public final class SpiritStateReplicationPacket {
 	 */
 	@ClientUseOnly
 	public static SpiritStateReplicationPacket toGetModelsOf(Player... players) {
+		if (players.length == 0) {
+			OriMod.LOG.debug("Something called SpiritStateReplicationPacket::toGetModelsOf with no arguments! Use toGetModelsOfAll instead.");
+			return toGetModelsOfAll();
+		}
 		HashMap<UUID, Boolean> map = new HashMap<>();
 		for (Player player : players) {
 			map.put(player.getUUID(), false);
@@ -140,10 +149,12 @@ public final class SpiritStateReplicationPacket {
 		 * @throws IllegalArgumentException If this is called on {@link #INVALID}.
 		 */
 		public byte toByte() throws IllegalArgumentException {
-			if (this == TRY_CHANGE_MODEL) return 0;
-			if (this == REQUEST_PLAYER_MODELS) return 1;
-			if (this == UPDATE_PLAYER_MODELS) return 2;
-			throw new IllegalArgumentException("Cannot convert EventType.Invalid to byte.");
+			return switch(this) {
+				case TRY_CHANGE_MODEL -> (byte)0;
+				case REQUEST_PLAYER_MODELS -> (byte)1;
+				case UPDATE_PLAYER_MODELS -> (byte)2;
+				default -> throw new IllegalArgumentException("Cannot convert EventType.Invalid to byte.");
+			};
 		}
 		
 		/**
@@ -152,10 +163,12 @@ public final class SpiritStateReplicationPacket {
 		 * @return The equivalent enum item, or {@link #INVALID} if the value does not have a known association.
 		 */
 		public static EventType fromByte(byte b) {
-			if (b == 0) return TRY_CHANGE_MODEL;
-			if (b == 1) return REQUEST_PLAYER_MODELS;
-			if (b == 2) return UPDATE_PLAYER_MODELS;
-			return INVALID;
+			return switch(b) {
+				case 0 -> TRY_CHANGE_MODEL;
+				case 1 -> REQUEST_PLAYER_MODELS;
+				case 2 -> UPDATE_PLAYER_MODELS;
+				default -> INVALID;
+			};
 		}
 	}
 	

@@ -37,10 +37,10 @@ public enum SpiritTiers implements Tier {
 	*/
 	
 	/** Weak light tools. */
-	SIMPLE_LIGHT(3, 500, 7f, 2.2f, 18, () -> Ingredient.of(ItemRegistry.HARDLIGHT_SHARD.get())),
+	SIMPLE_LIGHT(3, 500, 7f, 2.2f, 18, () -> Ingredient.EMPTY),
 	
 	/** Strong light tools. */
-	COMPLEX_LIGHT(5, 1000, 9.5f, 3.5f, 24, () -> Ingredient.of(ItemRegistry.HARDLIGHT_SHARD.get()));
+	COMPLEX_LIGHT(5, 1000, 9.5f, 3.5f, 24, () -> Ingredient.EMPTY);
 	
 	
 	private final int level;

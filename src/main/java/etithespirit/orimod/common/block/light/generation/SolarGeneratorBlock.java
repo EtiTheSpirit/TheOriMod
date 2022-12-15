@@ -1,12 +1,11 @@
 package etithespirit.orimod.common.block.light.generation;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
-import etithespirit.orimod.common.block.light.ILightBlockIdentifier;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tile.light.implementations.SolarGeneratorTile;
-import etithespirit.orimod.util.PresetBlockTags;
+import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
@@ -23,7 +22,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SolarGeneratorBlock extends ConnectableLightTechBlock implements ILightBlockIdentifier, IToolRequirementProvider, IForlornBlueOrangeBlock {
+public class SolarGeneratorBlock extends ConnectableLightTechBlock implements IToolRequirementProvider, IForlornBlueOrangeBlock {
 	
 	public SolarGeneratorBlock() {
 		super(Block.Properties.of(Material.STONE).strength(0.8f, 80f));
@@ -54,14 +53,9 @@ public class SolarGeneratorBlock extends ConnectableLightTechBlock implements IL
 		return new SolarGeneratorTile(pPos, pState);
 	}
 	
-	/**
-	 * Returns all tags that this block should be added to. The tags must come from {@link BlockTags}.
-	 * Reminder to self: Because it keeps eluding you, this is not a MC method. This is your method.
-	 *
-	 * @return A list of tags that this block must use.
-	 */
+	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
 	}
 }
