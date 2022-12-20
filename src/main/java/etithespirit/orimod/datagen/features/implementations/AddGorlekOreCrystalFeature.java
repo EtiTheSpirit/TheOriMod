@@ -11,13 +11,13 @@ import net.minecraft.world.level.levelgen.placement.PlacedFeature;
 import net.minecraftforge.common.world.BiomeModifier;
 import net.minecraftforge.common.world.ModifiableBiomeInfo;
 
-public record AddGorlekOreCrystalFeature(Holder<PlacedFeature> feature) implements BiomeModifier {
+public record AddGorlekOreCrystalFeature(HolderSet<Biome> biomes, Holder<PlacedFeature> feature) implements BiomeModifier {
 	
 	@Override
 	public void modify(Holder<Biome> biome, Phase phase, ModifiableBiomeInfo.BiomeInfo.Builder builder) {
 		if (phase == Phase.ADD) {
 			builder.getGenerationSettings().addFeature(
-				GenerationStep.Decoration.UNDERGROUND_DECORATION,
+				GenerationStep.Decoration.UNDERGROUND_ORES,
 				feature
 			);
 		}

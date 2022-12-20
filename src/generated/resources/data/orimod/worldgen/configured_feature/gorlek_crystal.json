@@ -1,0 +1,34 @@
+{
+  "type": "orimod:gorlek_crystal",
+  "config": {
+    "blockConfiguration": {
+      "internalOreBlock": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "orimod:gorlek_ore"
+        }
+      },
+      "primaryCrystalBlock": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:amethyst_block"
+        }
+      }
+    },
+    "crystalLength": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 24,
+        "min_inclusive": 8
+      }
+    },
+    "crystalWidth": {
+      "type": "minecraft:uniform",
+      "value": {
+        "max_inclusive": 5,
+        "min_inclusive": 3
+      }
+    },
+    "maxTiltAngle": 60.0
+  }
+}

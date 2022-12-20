@@ -1,12 +1,14 @@
 package etithespirit.orimod.datagen.features.implementations;
 
 import com.google.common.collect.AbstractIterator;
+import com.mojang.math.Vector3f;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.block.StaticData;
 import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.FeaturePlaceContext;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -31,17 +33,27 @@ public class GorlekCrystalFeature extends Feature<GorlekCrystalConfiguration> {
 		return new Vec3(sinY * cosX, -sinX, cosY * cosX);
 	}
 	
-	private static void generateCircleOfBlocks(BlockPos center, WorldGenLevel level, BlockStateProvider shellProvider, BlockStateProvider oreProvider, int radius) {
-		BlockPos.betweenClosedStream(AABB.ofSize(Vec3.atCenterOf(center), radius * 2, 1, radius * 2)).forEach(pos -> {
-			if (Mth.sqrt((float)pos.distSqr(center)) <= radius) {
+	private static void generateCircleOfBlocks(BlockPos center, WorldGenLevel level, BlockStateProvider shellProvider, BlockStateProvider oreProvider, int radius, Vec3 nrm) {
+		if (radius < 1) radius = 1;
+		if ((radius & 1) == 1) radius -= 1;
+		
+		int radiusSqr = radius * radius;
+		AABB target;
+		if (Math.abs(nrm.y) > 0.707) {
+			target = AABB.ofSize(Vec3.atCenterOf(center), radius, 1, radius);
+		} else if (Math.abs(nrm.x) > 0.707) {
+			target = AABB.ofSize(Vec3.atCenterOf(center), 1, radius, radius);
+		} else {
+			target = AABB.ofSize(Vec3.atCenterOf(center), radius, radius, 1);
+		}
+		BlockPos.betweenClosedStream(target).forEach(pos -> {
+			if (pos.distSqr(center) <= radiusSqr) {
 				if (level.ensureCanWrite(pos)) {
-					level.setBlock(pos, shellProvider.getState(level.getRandom(), pos), StaticData.REPLICATE_CHANGE | StaticData.CAUSE_BLOCK_UPDATE);
+					BlockState state = pos.equals(center) ? oreProvider.getState(level.getRandom(), pos) : shellProvider.getState(level.getRandom(), pos);
+					level.setBlock(pos, state, StaticData.REPLICATE_CHANGE | StaticData.CAUSE_BLOCK_UPDATE);
 				}
 			}
 		});
-		if (level.ensureCanWrite(center)) {
-			level.setBlock(center, oreProvider.getState(level.getRandom(), center), StaticData.REPLICATE_CHANGE | StaticData.CAUSE_BLOCK_UPDATE);
-		}
 	}
 	
 	private static Iterable<BlockPos> alongLine(BlockPos start, Vec3 direction, int length) {
@@ -54,7 +66,8 @@ public class GorlekCrystalFeature extends Feature<GorlekCrystalConfiguration> {
 				);
 			}
 			
-			private BlockPos last = start;
+			private BlockPos lastRetn = start;
+			private Vec3 last = Vec3.atCenterOf(start);
 			private int iter = 0;
 			
 			@Nullable
@@ -64,10 +77,13 @@ public class GorlekCrystalFeature extends Feature<GorlekCrystalConfiguration> {
 					return endOfData();
 				}
 				iter++;
-				Vec3 nowPrecise = Vec3.atCenterOf(last);
-				Vec3 next = nowPrecise.add(direction);
-				BlockPos nextRetn = toBlockPos(next);
-				last = nextRetn;
+				BlockPos nextRetn;
+				do {
+					Vec3 next = last.add(direction);
+					nextRetn = toBlockPos(next);
+					last = next;
+				} while (nextRetn.equals(lastRetn));
+				lastRetn = nextRetn;
 				return nextRetn;
 			}
 		};
@@ -84,7 +100,7 @@ public class GorlekCrystalFeature extends Feature<GorlekCrystalConfiguration> {
 	public boolean place(FeaturePlaceContext<GorlekCrystalConfiguration> pContext) {
 		GorlekCrystalConfiguration config = pContext.config();
 		RandomSource rng = pContext.level().getRandom();
-		OriMod.LOG.debug("Generated crystal at " + pContext.origin().toShortString());
+		OriMod.LOG.debug("Placed feature at " + pContext.origin().toShortString());
 		
 		double tiltAngle = rng.nextDouble() * config.maxTiltAngle();
 		double yaw = rng.nextDouble() * 360;
@@ -98,7 +114,8 @@ public class GorlekCrystalFeature extends Feature<GorlekCrystalConfiguration> {
 				pContext.level(),
 				config.blockConfiguration().primaryBlockProvider(),
 				config.blockConfiguration().internalOreBlock(),
-				thickness / 2
+				thickness / 2,
+				direction
 			);
 		}
 		return true;
