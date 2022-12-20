@@ -6,11 +6,15 @@
     "orimod:forlorn_stone_omni",
     "orimod:hardlight_block",
     "orimod:light_repair_box",
+    "orimod:gorlek_ore",
+    "orimod:gorlek_metal_block",
     "orimod:light_capacitor",
     "orimod:light_conduit",
     "orimod:solid_light_conduit",
     "orimod:light_to_rf",
     "orimod:infinite_light_source",
-    "orimod:solar_generator"
+    "orimod:light_to_redstone_signal",
+    "orimod:solar_generator",
+    "orimod:thermal_generator"
   ]
 }

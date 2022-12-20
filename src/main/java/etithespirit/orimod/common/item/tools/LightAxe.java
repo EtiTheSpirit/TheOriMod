@@ -22,7 +22,7 @@ import java.util.List;
 
 public class LightAxe extends AxeItem implements ISpiritLightItem {
 	public LightAxe() {
-		super(SpiritTiers.COMPLEX_LIGHT, 3, -2.2f, (new Item.Properties()).rarity(Rarity.EPIC).tab(OriModCreativeModeTabs.SPIRIT_TOOLS).fireResistant().stacksTo(1).setNoRepair().durability(SpiritTiers.COMPLEX_LIGHT.getUses()));
+		super(SpiritTiers.SIMPLE_LIGHT, 3, -2.2f, (new Item.Properties()).rarity(Rarity.EPIC).tab(OriModCreativeModeTabs.SPIRIT_TOOLS).fireResistant().stacksTo(1).setNoRepair().durability(SpiritTiers.COMPLEX_LIGHT.getUses()));
 	}
 	
 	@Override

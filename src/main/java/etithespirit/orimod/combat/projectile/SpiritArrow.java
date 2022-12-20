@@ -1,27 +1,12 @@
 package etithespirit.orimod.combat.projectile;
 
-import com.google.common.collect.Lists;
 import etithespirit.orimod.combat.ExtendedDamageSource;
 import etithespirit.orimod.registry.SoundRegistry;
-import it.unimi.dsi.fastutil.ints.IntOpenHashSet;
-import net.minecraft.advancements.CriteriaTriggers;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.particle.FireworkParticles;
-import net.minecraft.client.particle.SingleQuadParticle;
-import net.minecraft.core.Vec3i;
-import net.minecraft.network.protocol.game.ClientboundGameEventPacket;
-import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.projectile.AbstractArrow;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
@@ -34,6 +19,8 @@ public class SpiritArrow extends AbstractArrow {
 	public SpiritArrow(EntityType<? extends AbstractArrow> type, Level world) {
 		super(type, world);
 	}
+	
+	private int ticksAlive = 0;
 	
 	@Override
 	protected ItemStack getPickupItem() {
@@ -61,10 +48,18 @@ public class SpiritArrow extends AbstractArrow {
 	}
 	
 	@Override
+	public void tick() {
+		super.tick();
+		ticksAlive++;
+	}
+	
+	@Override
 	protected void onHitEntity(EntityHitResult result) {
-		
 		Entity shooter = this.getOwner();
 		Entity victim = result.getEntity();
+		if (shooter.equals(victim)) {
+			if (ticksAlive < 10) return;
+		}
 		
 		DamageSource damage;
 		double baseDamage = this.getBaseDamage();

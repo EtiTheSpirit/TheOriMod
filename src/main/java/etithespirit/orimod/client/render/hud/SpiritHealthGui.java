@@ -18,6 +18,9 @@ import net.minecraftforge.client.gui.overlay.IGuiOverlay;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
+/**
+ * A reimplementation of the health GUI that draws health for Spirit players. Mimics vanilla behavior.
+ */
 public class SpiritHealthGui extends ForgeGui {
 	
 	private static final ResourceLocation DECAY_HEALTH_ICONS = new ResourceLocation(OriMod.MODID, "textures/hud/spiriticons.png");

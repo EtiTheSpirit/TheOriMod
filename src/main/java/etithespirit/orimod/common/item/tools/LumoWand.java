@@ -4,15 +4,11 @@ package etithespirit.orimod.common.item.tools;
 import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
-import etithespirit.orimod.common.block.light.decoration.LitForlornStoneBlockBase;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
-import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
-import etithespirit.orimod.common.tile.light.implementations.LightCapacitorTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.InteractionResult;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
@@ -23,8 +19,6 @@ import net.minecraft.world.level.Level;
 import javax.annotation.Nullable;
 import java.util.List;
 
-import net.minecraft.world.item.Item.Properties;
-import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 /**

@@ -23,7 +23,6 @@ public interface ILightEnergyStorage {
 	float LUM_PER_LUX = 1024f;
 	float LUM_UNIT_SIZE = 1 / LUM_PER_LUX;
 	
-	
 	/**
 	 * A default helper method to perform a transfer of energy. If the amount is negative, the sender and receiver are swapped.
 	 * @param sender The object sending energy.
@@ -49,6 +48,73 @@ public interface ILightEnergyStorage {
 			return realAmountReceived;
 		}
 		return 0;
+	}
+	
+	/**
+	 * A default helper method to transfer energy from a generator to a storage device.
+	 * @param generator The entity generating power.
+	 * @param storage The entity storing the power.
+	 * @param amount The amount to transfer. A value of {@link Double#POSITIVE_INFINITY} can be used to perform the largest transfer possible.
+	 * @param simulate If true, the transferred amount is returned but no changes are made.
+	 * @return The amount that was actually transferred.
+	 */
+	static float storeFromGenerator(ILightEnergyGenerator generator, ILightEnergyStorage storage, float amount, boolean simulate) {
+		if (amount <= 0) return 0;
+		float realAmountTaken = generator.takeGeneratedEnergy(amount, true);
+		float realAmountStored = storage.receiveLight(realAmountTaken, true);
+		
+		// In a sane scenario, and for a scenario where only losses occur, amount will be larger than realAmountTaken, which will be larger than realAmountReceived
+		// thus, realAmountReceived is the grand representation of the actual transfer.
+		if (simulate) return realAmountStored;
+		
+		generator.takeGeneratedEnergy(realAmountStored, false);
+		storage.receiveLight(realAmountStored, false);
+		return realAmountStored;
+	}
+	
+	/**
+	 * A default helper method to transfer energy from a generator to a consumer.
+	 * @param generator The entity generating power.
+	 * @param consumer The entity using the power.
+	 * @param amount The amount to transfer. A value of {@link Double#POSITIVE_INFINITY} can be used to perform the largest transfer possible.
+	 * @param simulate If true, the transferred amount is returned but no changes are made.
+	 * @return The amount that was actually transferred.
+	 */
+	static float consumeFromGenerator(ILightEnergyGenerator generator, ILightEnergyConsumer consumer, float amount, boolean simulate) {
+		if (amount <= 0) return 0;
+		float realAmountTaken = generator.takeGeneratedEnergy(amount, true);
+		float realAmountConsumed = consumer.consumeEnergy(realAmountTaken, true);
+		
+		// In a sane scenario, and for a scenario where only losses occur, amount will be larger than realAmountTaken, which will be larger than realAmountReceived
+		// thus, realAmountReceived is the grand representation of the actual transfer.
+		if (simulate) return realAmountConsumed;
+		
+		generator.takeGeneratedEnergy(realAmountConsumed, false);
+		consumer.consumeEnergy(realAmountConsumed, false);
+		return realAmountConsumed;
+	}
+	
+	
+	/**
+	 * A default helper method to transfer energy from a storage device to a consumer.
+	 * @param storage The entity storing the power.
+	 * @param consumer The entity using the power.
+	 * @param amount The amount to transfer. A value of {@link Double#POSITIVE_INFINITY} can be used to perform the largest transfer possible.
+	 * @param simulate If true, the transferred amount is returned but no changes are made.
+	 * @return The amount that was actually transferred.
+	 */
+	static float consumeFromStorage(ILightEnergyStorage storage, ILightEnergyConsumer consumer, float amount, boolean simulate) {
+		if (amount <= 0) return 0;
+		float realAmountTaken = storage.extractLightFrom(amount, true);
+		float realAmountConsumed = consumer.consumeEnergy(realAmountTaken, true);
+		
+		// In a sane scenario, and for a scenario where only losses occur, amount will be larger than realAmountTaken, which will be larger than realAmountReceived
+		// thus, realAmountReceived is the grand representation of the actual transfer.
+		if (simulate) return realAmountConsumed;
+		
+		storage.extractLightFrom(realAmountConsumed, false);
+		consumer.consumeEnergy(realAmountConsumed, false);
+		return realAmountConsumed;
 	}
 	
 	/**
@@ -115,5 +181,4 @@ public interface ILightEnergyStorage {
 	 * @return Whether or not this storage can have energy added to it.
 	 */
 	boolean canReceiveLight();
-	
 }

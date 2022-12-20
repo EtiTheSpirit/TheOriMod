@@ -1,33 +1,15 @@
 package etithespirit.orimod.datagen.block;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.common.block.decay.DecayCommon;
-import etithespirit.orimod.common.block.decay.flora.DecayLogBase;
-import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
-import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
-import etithespirit.orimod.registry.BlockRegistry;
-import etithespirit.orimod.registry.FluidRegistry;
-import net.minecraft.core.Direction;
+import etithespirit.orimod.registry.world.BlockRegistry;
+import etithespirit.orimod.registry.world.FluidRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.RotatedPillarBlock;
-import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.block.state.properties.BlockStateProperties;
-import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
-import net.minecraftforge.client.model.generators.ConfiguredModel;
-import net.minecraftforge.client.model.generators.ModelBuilder;
-import net.minecraftforge.client.model.generators.ModelFile;
-import net.minecraftforge.client.model.generators.ModelProvider;
-import net.minecraftforge.client.model.generators.MultiPartBlockStateBuilder;
-import net.minecraftforge.client.model.generators.VariantBlockStateBuilder;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Level;
-
-import javax.annotation.Nullable;
 
 /***/
 public final class GenerateBlockModels extends BlockStateProvider {
@@ -77,8 +59,10 @@ public final class GenerateBlockModels extends BlockStateProvider {
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.INFINITE_LIGHT_SOURCE, "techblocks/storage");
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.LIGHT_TO_RF, "techblocks/conversion");
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.LIGHT_TO_REDSTONE_SIGNAL, "techblocks/conversion");
-		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.SOLAR_ENERGY_BLOCK, "techblocks/conversion");
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.LIGHT_REPAIR_BOX, "techblocks/conversion");
+		
+		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.SOLAR_ENERGY_BLOCK, "techblocks/conversion");
+		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.THERMAL_ENERGY_BLOCK, "techblocks/conversion");
 		
 		OriMod.LOG.printf(Level.INFO, "Block models registered!");
 	}

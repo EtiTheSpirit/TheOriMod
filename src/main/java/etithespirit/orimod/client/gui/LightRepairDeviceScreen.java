@@ -9,6 +9,9 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Inventory;
 
+/**
+ * The menu used in the Luxen Reconstructor block. It mimics that of the Dispenser.
+ */
 public class LightRepairDeviceScreen extends AbstractContainerScreen<LightRepairDeviceMenu> {
 	private static final ResourceLocation CONTAINER_LOCATION = new ResourceLocation("textures/gui/container/dispenser.png");
 	

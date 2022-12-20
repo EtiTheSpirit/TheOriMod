@@ -8,7 +8,7 @@ import etithespirit.orimod.common.tile.light.LightEnergyTicker;
 import etithespirit.orimod.common.tile.light.LightEnergyTile;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
-import etithespirit.orimod.registry.ItemRegistry;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

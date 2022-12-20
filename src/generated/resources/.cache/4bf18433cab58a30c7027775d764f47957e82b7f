@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-12T14:21:35.8934462	Block States: orimod
+// 1.19.2	2022-12-19T07:43:17.0975814	Block States: orimod
 7d0e0990f8adadf301ac49e62a0e32232e1c3caa assets/orimod/blockstates/decay_dirt_mycelium.json
 26fc54514894e6818d989ed0f02a42f1112b892f assets/orimod/blockstates/decay_log.json
 bafe5118787191397120405650d61e41f9608606 assets/orimod/blockstates/decay_plantmatter_mycelium.json
@@ -18,6 +18,7 @@ f010a382086c39bfebee7b90cfffa105b7003855 assets/orimod/blockstates/light_to_reds
 dfecd1c010748ee45159f217e116577706b9f348 assets/orimod/blockstates/solar_generator.json
 8ca48d8e234cfd4bd73078f965ddb0c60aaeb177 assets/orimod/blockstates/solid_light_conduit.json
 b148d8192245b5e9af7e24871cc52062bec7a9a0 assets/orimod/blockstates/stripped_decay_log.json
+7ec164e85548c3502cb305aec54c3bcdc9fcb7fc assets/orimod/blockstates/thermal_generator.json
 b4863dc73a5906bdb113c67e79c96327af4f56c5 assets/orimod/models/block/decay/generic/decay_dirt_mycelium.json
 3041d92e7e6d8c9ea1ec3f7c55bd80e103c14885 assets/orimod/models/block/decay/generic/decay_plantmatter_mycelium.json
 1a0027cd7310e3b4e48b013ede5bc4add13aeefa assets/orimod/models/block/decay/generic/decay_surface_mycelium.json
@@ -59,6 +60,9 @@ dbe00afc20a67a7a5b4090436d2cb0e281e0d71f assets/orimod/models/block/techblocks/c
 9655a9c9bb4dd1070762aa337fb2ee1c4b94276e assets/orimod/models/block/techblocks/conversion/solar_generator_base.json
 951cf6395670bb7ebc5555e8f442bb1e0696e183 assets/orimod/models/block/techblocks/conversion/solar_generator_blue.json
 e215c1e04b73987aa2e346f4fc47bb856207e224 assets/orimod/models/block/techblocks/conversion/solar_generator_orange.json
+51df28685c59e95e186adf8b5d2c2e219876df85 assets/orimod/models/block/techblocks/conversion/thermal_generator_base.json
+bcc90f674353666d89f10ad4f01f695e1533b4ec assets/orimod/models/block/techblocks/conversion/thermal_generator_blue.json
+f181a6d47778089c9deecf261e6427ca59857ea5 assets/orimod/models/block/techblocks/conversion/thermal_generator_orange.json
 54adccd51c1c1a47334a516c442db8572e67e25f assets/orimod/models/block/techblocks/storage/infinite_light_source_base.json
 975bff8d3fbd5cdfafa8244235f1bf9fa56de236 assets/orimod/models/block/techblocks/storage/infinite_light_source_blue.json
 c2164d48edc797d74d42a08861e838bab7124df5 assets/orimod/models/block/techblocks/storage/infinite_light_source_orange.json
@@ -84,3 +88,4 @@ bab4f07ea3577a65a3dbb043e5b45264a1797ca1 assets/orimod/models/item/light_to_rf.j
 ffdd2632c84de3cc6289674a81e8f2a314100c79 assets/orimod/models/item/solar_generator.json
 931c51db0769320cf2a513437328beaad2404bac assets/orimod/models/item/solid_light_conduit.json
 0511093f04bda1004f865cea534604cdec53c919 assets/orimod/models/item/stripped_decay_log.json
+ae7f7cfc7ed7844de474773a2a946e2596481558 assets/orimod/models/item/thermal_generator.json

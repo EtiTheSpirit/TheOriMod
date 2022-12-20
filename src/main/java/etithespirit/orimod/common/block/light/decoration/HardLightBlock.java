@@ -3,7 +3,7 @@ package etithespirit.orimod.common.block.light.decoration;
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.material.ExtendedMaterials;
-import etithespirit.orimod.registry.ItemRegistry;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
@@ -17,8 +17,8 @@ import net.minecraft.world.level.block.SoundType;
 
 import java.util.List;
 
-import static etithespirit.orimod.common.block.StaticData.FALSE_POSITION_PREDICATE;
-import static etithespirit.orimod.common.block.StaticData.TRUE_POSITION_PREDICATE;
+import static etithespirit.orimod.common.block.StaticData.ALWAYS_FALSE;
+import static etithespirit.orimod.common.block.StaticData.ALWAYS_TRUE;
 
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.storage.loot.LootContext;
@@ -33,9 +33,9 @@ public class HardLightBlock extends Block implements IToolRequirementProvider, I
 	public HardLightBlock() {
 		super(
 			Properties.of(ExtendedMaterials.LIGHT)
-				.isViewBlocking(FALSE_POSITION_PREDICATE)
-				.emissiveRendering(TRUE_POSITION_PREDICATE)
-				.isSuffocating(FALSE_POSITION_PREDICATE)
+				.isViewBlocking(ALWAYS_FALSE)
+				.emissiveRendering(ALWAYS_TRUE)
+				.isSuffocating(ALWAYS_FALSE)
 				.strength(10, 1000) // Make it absurdly blast resistant.
 				.lightLevel((state) -> 15)
 				.sound(SoundType.GLASS)
@@ -69,7 +69,7 @@ public class HardLightBlock extends Block implements IToolRequirementProvider, I
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	
 	/**

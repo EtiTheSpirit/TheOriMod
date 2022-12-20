@@ -12,23 +12,31 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
 
-@ClientUseOnly
+import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
+
 /**
  * The Light Tech Looper is a sound system designed to play looping audio while a block is active.
  * Unlike traditional loops, this allows seamlessly blending a startup and shutdown sound into the mix.
  */
+@ClientUseOnly
 public class LightTechLooper {
 	
 	protected static final RandomSource RNG = RandomSource.create();
 	
+	/** The {@link BlockEntity} that is emitting the sound. */
 	public final BlockEntity source;
 	
-	public final SoundEvent startSound;
+	/** The {@link SoundEvent} that plays when the block "turns on". */
+	public final @Nullable SoundEvent startSound;
 	
-	public final LoopPartHandler loopSound;
+	/** The {@link LoopPartHandler} that manages the loop sound effect. */
+	public final @Nonnull LoopPartHandler loopSound;
 	
-	public final SoundEvent stopSound;
+	/** The {@link SoundEvent} that plays when the block "turns off". */
+	public final @Nullable SoundEvent stopSound;
 	
+	/** The type of sound that is emitted, which controls what volume slider affects it. */
 	public final SoundSource soundType;
 	
 	private float baseVolume = 1f;
@@ -42,7 +50,7 @@ public class LightTechLooper {
 	 * @param loop The loop effect that plays while this is active.
 	 * @param end The sound effect that plays when stopping the audio.
 	 */
-	public LightTechLooper(BlockEntity src, SoundEvent start, SoundEvent loop, SoundEvent end) {
+	public LightTechLooper(BlockEntity src, @Nullable SoundEvent start, @Nonnull SoundEvent loop, @Nullable SoundEvent end) {
 		this(src, start, loop, end, SoundSource.BLOCKS);
 	}
 	
@@ -55,7 +63,7 @@ public class LightTechLooper {
 	 * @param end The sound effect that plays when stopping the audio.
 	 * @param type The type of sound that this is. In 99% of cases this will be {@link SoundSource#BLOCKS}. If it is, consider not including this argument. Or don't. I'm not your daddy (as much as some of you would like me to be) (nohomo).
 	 */
-	public LightTechLooper(BlockEntity src, SoundEvent start, SoundEvent loop, SoundEvent end, SoundSource type) {
+	public LightTechLooper(BlockEntity src, @Nullable SoundEvent start, @Nonnull SoundEvent loop, @Nullable SoundEvent end, SoundSource type) {
 		startSound = start;
 		loopSound = new LoopPartHandler(src, loop, type);
 		stopSound = end;
@@ -63,51 +71,55 @@ public class LightTechLooper {
 		source = src;
 	}
 	
+	/**
+	 * Sets the base volume, which affects the volume of the startup, loop, and shutdown sounds.
+	 * @param volume
+	 */
 	public void setBaseVolume(float volume) {
 		baseVolume = volume;
 		loopSound.setBaseVolume(volume);
 	}
 	
+	/**
+	 * If the sound is not playing (or starting up) already, begin playing the sound.
+	 */
 	public void play() {
 		if (lastState) return;
 		lastState = true;
 		if (loopSound.hasFullyStopped()) {
-			Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
-				startSound,
-				soundType,
-				baseVolume,
-				1,
-				RNG,
-				source.getBlockPos()
-			));
+			if (startSound != null) {
+				Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
+					startSound,
+					soundType,
+					baseVolume,
+					1,
+					RNG,
+					source.getBlockPos()
+				));
+			}
 			loopSound.easeIntoStart();
 		}
 	}
 	
+	/**
+	 * If the sound is not stopped (or stopping) already, stop the sound.
+	 */
 	public void stop() {
 		if (!lastState) return;
 		lastState = false;
 		if (!loopSound.hasFullyStopped()) {
-			Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
-				stopSound,
-				soundType,
-				baseVolume,
-				1,
-				RNG,
-				source.getBlockPos()
-			));
+			if (stopSound != null) {
+				Minecraft.getInstance().getSoundManager().play(new SimpleSoundInstance(
+					stopSound,
+					soundType,
+					baseVolume,
+					1,
+					RNG,
+					source.getBlockPos()
+				));
+			}
 			loopSound.easeIntoStop();
 		}
-	}
-	
-	@Deprecated
-	public void setRange(float range) {
-		loopSound.setRange(range);
-	}
-	
-	@Deprecated
-	public float getRange() {
-		return loopSound.getRange();
 	}
 	
 	private static final class LoopPartHandler extends AbstractTickableSoundInstance {
@@ -229,6 +241,7 @@ public class LightTechLooper {
 		 * @param max The maximum volume (at distance=0)
 		 * @return A value between 0 and (max) based on the camera entity's distance.
 		 */
+		@Deprecated(forRemoval = true)
 		private float getVolumeForDistance(float maxDistance, float max) {
 			Entity camEntity = Minecraft.getInstance().cameraEntity;
 			if (camEntity == null) return 0;

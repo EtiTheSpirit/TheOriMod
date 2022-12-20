@@ -8,12 +8,10 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.stream.JsonWriter;
 import etithespirit.orimod.GeneralUtils;
+import etithespirit.orimod.OriMod;
 import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataProvider;
-import net.minecraft.data.HashCache;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.PackType;
 import net.minecraft.sounds.SoundSource;
 import net.minecraftforge.common.data.ExistingFileHelper;
@@ -22,13 +20,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import javax.annotation.Nonnull;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
-import java.nio.charset.Charset;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -52,19 +52,22 @@ public final class GenerateSoundsJson implements DataProvider {
 	private final File srcGenerated;
 	private final Logger log;
 	private final Map<String, List<String>> allRsrcsByCategory = new HashMap<>();
-	private final Map<String, String> audioCategoryToMinecraftCategory = new HashMap<>();
+	private final Map<String, String> audioToMinecraftCategory = new HashMap<>();
+	private boolean reportedffprobeMissing = false;
+	private boolean validateChannels = false;
 	
 	/**
 	 * Create a sound json generator for the given mod using the given source folder for the repository.
 	 * @param modid The ID of the mod to generate for.
-	 * @param srcFolder The source folder. For obvious reasons, this is only usable in an IDE.
 	 */
-	public GenerateSoundsJson(String modid, String srcFolder) {
-		this(modid, srcFolder, "main", "generated");
+	public GenerateSoundsJson(String modid) {
+		this(modid, "main", "generated");
 	}
 	
-	public GenerateSoundsJson(String modid, String srcFolder, String mainFolderName, String generatedFolderName) {
+	public GenerateSoundsJson(String modid, String mainFolderName, String generatedFolderName) {
 		if (!GeneralUtils.IS_DEV_ENV) throw new IllegalCallerException("This can only be called in a development environment!");
+		File modProjectRoot = new File(".").getAbsoluteFile().getParentFile().getParentFile();
+		String srcFolder = new File(modProjectRoot, "src").getAbsolutePath();
 		
 		this.modid = modid;
 		this.log = LogManager.getLogger(modid);
@@ -88,6 +91,16 @@ public final class GenerateSoundsJson implements DataProvider {
 	private static final SoundSource[] ALL_SOUND_SRC = SoundSource.values();
 	
 	/**
+	 * Enables the audio channel validator, which ensures all audio files are mono and warns for those that aren't. This can increase the amount
+	 * of time this data generator takes to execute dramatically, so only use it when adding new audio.
+	 * @return This, for chaining.
+	 */
+	public GenerateSoundsJson setValidatesChannels() {
+		this.validateChannels = true;
+		return this;
+	}
+	
+	/**
 	 * Returns whether or not the given file has the given extension. The extension should begin with a dot.
 	 * @param file The file to check.
 	 * @param ext The extension to check.
@@ -104,6 +117,35 @@ public final class GenerateSoundsJson implements DataProvider {
 			clipped = clipped.substring(0, clipped.length() - 4);
 		}
 		return modid + ":" + clipped.replace('\\', '/');
+	}
+	
+	/**
+	 * Uses ffprobe (assuming it is installed in the system PATH) to return the number of channels in an audio file.
+	 * @param file The file to check.
+	 * @return The number of channels in the file, or 0 if an exception occurred.
+	 */
+	private int getNumberOfAudioChannels(File file) {
+		if (!validateChannels) return 1;
+		try {
+			if (file.exists() && file.isFile()) {
+				Process process = Runtime.getRuntime().exec(String.format("ffprobe -show_entries stream=channels -of compact=p=0:nk=1 -v 0 \"%s\"", file.getAbsolutePath()));
+				BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream()));
+				String value = reader.readLine();
+				int ret = Integer.parseInt(value);
+				reader.close();
+				return ret;
+			}
+		} catch (IOException ioe) {
+			if (!reportedffprobeMissing) {
+				reportedffprobeMissing = true;
+				log.error("Failed to execute ffprobe! If you are building this mod as a third party, consider downloading ffmpeg and adding its directory to your PATH. ffprobe is used for error correction by reporting an invalid number of audio channels in .ogg files, which breaks Minecraft's attenuation. Coupled with ffmpeg, the system can automatically repair audio files.");
+				log.error(ioe);
+			}
+		} catch (NumberFormatException fmt) {
+			log.error("Failed to read output from ffprobe when parsing " + file.getAbsolutePath());
+			log.error(fmt);
+		}
+		return 0;
 	}
 	
 	private void getAllFoldersWithAudio(File inDir) throws Exception {
@@ -123,6 +165,10 @@ public final class GenerateSoundsJson implements DataProvider {
 						String rsrc = asResource(sub.getAbsolutePath().substring(end));
 						audioFileRsrcs.add(rsrc);
 						fileToRsrc.put(sub, rsrc);
+						int channelCount = getNumberOfAudioChannels(sub);
+						if (channelCount > 1) {
+							log.warn("Audio file {} is not a mono audio file! If this audio file is intended for use in 3D (it is not a GUI sound or clientside sound), it will emit across the entire Level. You have been warned!", sub.getAbsolutePath());
+						}
 					}
 				} else if (sub.getName().equalsIgnoreCase("procgen_info.json")) {
 					procgen = sub;
@@ -169,11 +215,11 @@ public final class GenerateSoundsJson implements DataProvider {
 		minecraftCategory = categoryLower;
 		
 		if (hasSingleAudioPath) {
-			String cat = fileJson.get("audioName").getAsString();
-			for (String f : audioFileRsrcs) {
-				audioFileToCategory.put(f, cat);
+			String audioName = fileJson.get("audioName").getAsString();
+			for (String resource : audioFileRsrcs) {
+				audioFileToCategory.put(resource, audioName);
 			}
-			audioCategoryToMinecraftCategory.put(cat, minecraftCategory);
+			audioToMinecraftCategory.put(audioName, minecraftCategory);
 		} else {
 			File parent = audioFileToRsrc.keySet().stream().findFirst().get().getParentFile();
 			File[] allFiles = parent.listFiles();
@@ -183,9 +229,9 @@ public final class GenerateSoundsJson implements DataProvider {
 				for (JsonElement element : files) {
 					String fileName = element.getAsString();
 					File equalFile = null;
-					for (int idx = 0; idx < allFiles.length; idx++) {
-						if (allFiles[idx].getName().equalsIgnoreCase(fileName)) {
-							equalFile = allFiles[idx];
+					for (File allFile : allFiles) {
+						if (allFile.getName().equalsIgnoreCase(fileName)) {
+							equalFile = allFile;
 							break;
 						}
 					}
@@ -206,13 +252,13 @@ public final class GenerateSoundsJson implements DataProvider {
 				throw new IllegalStateException("Audio file " + rsrc + " has already been registered to " + cat + " (duplicate exists in " + procgenInfoJson.getAbsolutePath() + ")");
 			}
 			entries.add(rsrc);
-			if (audioCategoryToMinecraftCategory.containsKey(rsrc)) {
-				String mcCat = audioCategoryToMinecraftCategory.get(rsrc);
+			if (audioToMinecraftCategory.containsKey(rsrc)) {
+				String mcCat = audioToMinecraftCategory.get(rsrc);
 				if (!minecraftCategory.equals(mcCat)) {
 					log.warn("Something is going to override the Minecraft Sound Category of " + cat + " (from "+mcCat+" to "+minecraftCategory+")");
 				}
 			}
-			audioCategoryToMinecraftCategory.put(cat, minecraftCategory);
+			audioToMinecraftCategory.put(cat, minecraftCategory);
 		}
 	}
 	
@@ -223,7 +269,7 @@ public final class GenerateSoundsJson implements DataProvider {
 			String firstRsrc = entries.stream().findFirst().get();
 			
 			JsonObject soundObj = new JsonObject();
-			soundObj.addProperty("category", audioCategoryToMinecraftCategory.getOrDefault(firstRsrc, "master"));
+			soundObj.addProperty("category", audioToMinecraftCategory.getOrDefault(firstRsrc, "master"));
 			JsonArray arr = new JsonArray();
 			for (String entry : entries) {
 				arr.add(entry);
@@ -237,6 +283,9 @@ public final class GenerateSoundsJson implements DataProvider {
 	@Override
 	public void run(@Nonnull CachedOutput pCache) {
 		try {
+			log.info("Note: This generator is custom! Do not report issues with it to Mojang or the Forge team! It has been designed by Xan explicitly for The Ori Mod.");
+			if (validateChannels) log.warn("The data generator has been instructed to verify that all audio files are mono. This will dramatically increase the time it takes to execute!");
+			log.info("Iterating sounds folder...");
 			getAllFoldersWithAudio(new File(srcMain, "resources/assets/" + modid + "/sounds"));
 			JsonObject soundJson = new JsonObject();
 			addToJson(soundJson);
@@ -248,6 +297,7 @@ public final class GenerateSoundsJson implements DataProvider {
 			pCache.writeIfNeeded(out.toPath(), json.getBytes(StandardCharsets.UTF_8), HashCode.fromInt(json.hashCode()));
 			
 		} catch (Exception exc) {
+			// lmao
 			throw new RuntimeException(exc);
 		}
 	}

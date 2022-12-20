@@ -1,17 +1,12 @@
 package etithespirit.orimod.datagen.advancements;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonObject;
-import etithespirit.orimod.registry.AdvancementRegistry;
+import etithespirit.orimod.registry.advancements.AdvancementRegistry;
 import net.minecraft.advancements.Advancement;
-import net.minecraft.advancements.critereon.DeserializationContext;
 import net.minecraft.advancements.critereon.SimpleCriterionTrigger;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.advancements.AdvancementProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;
 
-import javax.json.Json;
 import java.util.function.Consumer;
 
 public class GenerateAdvancements extends AdvancementProvider {

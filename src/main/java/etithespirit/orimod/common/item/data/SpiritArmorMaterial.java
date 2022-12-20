@@ -13,7 +13,8 @@ import java.util.function.Supplier;
 
 public enum SpiritArmorMaterial implements ArmorMaterial {
 	
-	LIGHT("orimod:light", 33, new int[]{3, 6, 8, 3}, 22, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.6f, 0.0f, () -> Ingredient.EMPTY);
+	SIMPLE_LIGHT("orimod:light", 30, new int[]{3,6,8,3}, 20, SoundEvents.ARMOR_EQUIP_DIAMOND, 2f, 0.0f, () -> Ingredient.EMPTY),
+	HEAVY_LIGHT("orimod:heavy_light", 38, new int[]{4, 7, 9, 4}, 24, SoundEvents.ARMOR_EQUIP_DIAMOND, 3.2f, 0.0f, () -> Ingredient.EMPTY);
 	
 	private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
 	private final String name;

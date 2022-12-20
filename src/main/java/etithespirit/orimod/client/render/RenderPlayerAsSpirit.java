@@ -33,6 +33,9 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
+/**
+ * Responsible for overriding the Player renderer such that they render as a Spirit.
+ */
 public class RenderPlayerAsSpirit {
 	
 	/**

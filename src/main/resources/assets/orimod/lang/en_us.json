@@ -51,11 +51,10 @@
 	"input.orimod.cling" : "Wall Cling",
 
 	"entity.orimod.spirit.name" : "Spirit",
-	"entity.orimod.spirit_arrow.name" : "Spirit Arc Bolt",
+	"entity.orimod.spirit_arrow" : "Spirit Arc Bolt",
 
 	"advancement.orimod.become_spirit" : "Born from The Light",
 	"advancement.orimod.become_spirit.description" : "Become a Spirit.",
-
 
 	"itemGroup.orimod.spirit_combat" : "Spirit Combat",
 	"itemGroup.orimod.spirit_tools" : "Spirit Tools",
@@ -84,9 +83,11 @@
 	"block.orimod.light_to_rf" : "§bLuxen Flux Inducer",
 	"block.orimod.light_to_rf.tip" : "§3Converts Luxen to RF.",
 	"block.orimod.infinite_light_source" : "§bInfinite Luxen Source",
-	"block.orimod.infinite_light_source.tip" : "§3Provides power at an unlimited rate forever.",
+	"block.orimod.infinite_light_source.tip" : "§3Provides unlimited power at an unlimited rate.",
 	"block.orimod.solar_generator" : "§bSolar Luxen Generator",
-	"block.orimod.solar_generator.tip" : "§3Converts Sky light into Luxen",
+	"block.orimod.solar_generator.tip" : "§3Converts sky light into Luxen",
+	"block.orimod.thermal_generator" : "§bThermal Luxen Generator",
+	"block.orimod.thermal_generator.tip" : "§3Converts heat into Luxen. Optimal in The Nether.",
 	"block.orimod.light_repair_box" : "§bLuxen Reconstructor",
 	"block.orimod.light_repair_box.tip" : "§3Consumes Luxen to repair hardlight items.",
 	"container.orimod.light_repair_device" : "Luxen Reconstructor",
@@ -122,20 +123,14 @@
 
 	"config.orimod.spirit_abilities" : "Spirit Abilities",
 
-	"config.orimod.spirit_abilities.air_jumps" : "Air Jump Count",
-	"config.orimod.spirit_abilities.air_jumps.description" : "§cThis is not yet functional, and is always set to 2.§f The amount of jumps a spirit can perform whilst in the air. 1 is double jump, and 2 is triple jump.",
+	"config.orimod.spirit_abilities.known_jump_type" : "Default Known Jump Ability",
+	"config.orimod.spirit_abilities.known_jump_type.description" : "What type of jumping Spirits can do as soon as they become one.",
 
-	"config.orimod.spirit_abilities.know_double_jump" : "Know Double-Jump By Default",
-	"config.orimod.spirit_abilities.know_double_jump.description" : "§cThis is not yet functional, and is always enabled.§f Whether or not Spirit players will know how to double jump as soon as becoming one.",
+	"config.orimod.spirit_abilities.known_dash_type" : "Default Known Dash Ability",
+	"config.orimod.spirit_abilities.known_dash_type.description" : "What type of dashing Spirits can do as soon as they become one.",
 
-	"config.orimod.spirit_abilities.know_dash" : "Know Dash By Default",
-	"config.orimod.spirit_abilities.know_dash.description" : "§cThis is not yet functional, and is always enabled.§f Whether or not Spirit players will know how to dash on land as soon as becoming one.",
-
-	"config.orimod.spirit_abilities.know_air_dash" : "Know Air-Dash By Default",
-	"config.orimod.spirit_abilities.know_air_dash.description" : "§cThis is not yet functional, and is always enabled.§f §lRequires Dash to use! §fWhether or not Spirit players will know to dash whilst in the air.",
-
-	"config.orimod.spirit_abilities.know_water_dash" : "Know Water-Dash By Default",
-	"config.orimod.spirit_abilities.know_water_dash.description" : "§cThis is not yet functional, and is always enabled.§f §lRequires Dash to use! §fWhether or not Spirit players will know to dash whilst in water.",
+	"config.orimod.spirit_abilities.know_wall_jump" : "Know Wall Jump/Cling By Default",
+	"config.orimod.spirit_abilities.know_wall_jump.description" : "Whether or not Spirit players will know to wall jump and wall cling as soon as they become one.",
 
 
 
@@ -150,20 +145,32 @@
 	"config.orimod.spirit_management.allow_changes_default" : "Allow Changing State",
 	"config.orimod.spirit_management.allow_changes_default.description" : "Whether or not to allow players to change between Player and Spirit. There is a permissions file that dictates who is explicitly allowed to, and who is explicitly not allowed to, which can be used to override this value per player.",
 
-	"config.orimod.spirit_management.only_eat_plants" : "Allow Eating Only Plants",
-	"config.orimod.spirit_management.only_eat_plants.description" : "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
+	"config.orimod.spirit_management.change_model_self_level" : "Required op level to set self",
+	"config.orimod.spirit_management.change_model_self_level.description" : "What operator permission level must a player have to use /spirit set on themselves?",
+	"config.orimod.spirit_management.change_abilities_self_level" : "Required op level to change self abilities",
+	"config.orimod.spirit_management.change_abilities_self_level.description" : "What operator permission level must a player have to use /spirit ability on themselves?",
+	"config.orimod.spirit_management.change_model_others_level" : "Required op level to set others",
+	"config.orimod.spirit_management.change_model_others_level.description" : "What operator permission level must a player have to use /spirit set on other players?",
+	"config.orimod.spirit_management.change_abilities_others_level" : "Required op level to change others abilities",
+	"config.orimod.spirit_management.change_abilities_others_level.description" : "What operator permission level must a player have to use /spirit ability on other players?",
 
-	"config.orimod.spirit_management.self_repair_limits" : "Spirit Self-Powered Light Tools",
-	"config.orimod.spirit_management.self_repair_limits.description" : "Some tools and devices allow Spirits to use their own life energy as a means of repair. This determines the extent in which that is possible.",
 
-	"config.orimod.spirit_management.anyone_can_self_repair" : "Allow Normal Players To Self-Repair Light Tools",
-	"config.orimod.spirit_management.anyone_can_self_repair.description" : "Under normal circumstances, non-spirit players cannot use their life to repair hardlight tools. If this is true, this limitation is bypassed.",
+	"config.orimod.spirit_limits" : "Spirit Mechanics and Limits",
 
-	"config.orimod.spirit_management.self_repair_damage" : "Spirit Self-Powered Repair Cost",
-	"config.orimod.spirit_management.self_repair_damage.description" : "How much health does a single self-powered repair take? Note that 2 health is 1 heart.",
+	"config.orimod.spirit_limits.only_eat_plants" : "Allow Eating Only Plants",
+	"config.orimod.spirit_limits.only_eat_plants.description" : "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
 
-	"config.orimod.spirit_management.self_repair_earnings" : "Spirit Self-Powered Repair Amount",
-	"config.orimod.spirit_management.self_repair_earnings.description" : "How much durability gets restored when repairing with your own energy?",
+	"config.orimod.spirit_limits.self_repair_limits" : "Spirit Self-Powered Light Tools",
+	"config.orimod.spirit_limits.self_repair_limits.description" : "Some tools and devices allow Spirits to use their own life energy as a means of repair. This determines the extent in which that is possible.",
+
+	"config.orimod.spirit_limits.anyone_can_self_repair" : "Allow Normal Players To Self-Repair Light Tools",
+	"config.orimod.spirit_limits.anyone_can_self_repair.description" : "Under normal circumstances, non-spirit players cannot use their life to repair hardlight tools. If this is true, this limitation is bypassed.",
+
+	"config.orimod.spirit_limits.self_repair_damage" : "Spirit Self-Powered Repair Cost",
+	"config.orimod.spirit_limits.self_repair_damage.description" : "How much health does a single self-powered repair take? Note that 2 health is 1 heart.",
+
+	"config.orimod.spirit_limits.self_repair_earnings" : "Spirit Self-Powered Repair Amount",
+	"config.orimod.spirit_limits.self_repair_earnings.description" : "How much durability gets restored when repairing with your own energy?",
 
 	"config.orimod.light_energy" : "Luxen Configuration (Light Technology)",
 
@@ -226,9 +233,16 @@
 	"config.jade.plugin_orimod.show_energy" : "Show stored Luxen in tech blocks",
 
 	"command.orimod.setspirit.success" : "Success! Player %1$s has been updated. Their state of being a Spirit has changed to: %2$s",
-	"command.orimod.setspirit.success_self" : "Success! Your state of being a Spirit has changed to: %1$s",
+	"command.orimod.setspirit.success.self" : "Success! Your state of being a Spirit has changed to: %1$s",
 	"command.orimod.getspirit.status" : "Player %1$s has a spirit state of: %2$s",
-	"command.orimod.setspirit.failure_insufficent_permissions_self" : "§cYou do not have permission to change your own state.",
-	"command.orimod.setspirit.failure_insufficent_permissions_others" : "§cYou do not have permission to modify the state of others.",
-	"command.orimod.setspirit.failure_server_forces_state" : "§cThe server is currently enforcing that all players use the default state, and nobody (including ops) can change."
+	"command.orimod.setspirit.failure.set_spirit_self" : "§cYou do not have permission to set whether or not you are a Spirit.",
+	"command.orimod.setspirit.failure.set_spirit_other" : "§cYou do not have permission to change if other players are Spirits.",
+	"command.orimod.setspirit.failure.server_forces_state" : "§cThis server or save is enforcing that players always use the current state. You cannot change it.",
+	"command.orimod.setspirit.failure.unknown_ability" : "§cUnknown ability.",
+	"command.orimod.setspirit.invalid.ability_value" : "§cInvalid value for this ability.",
+
+	"command.orimod.setspirit.failure.set_abilities_other" : "§cYou do not have permission to set the abilities of other Spirits.",
+	"command.orimod.setspirit.failure.set_abilities_self" : "§cYou do not have permission to set your own abilities.",
+
+	"command.orimod.setspirit.success.ability" : "Success! Data belonging to %1$s has been set to "
 }

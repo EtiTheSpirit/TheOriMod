@@ -161,14 +161,14 @@ public class SpiritSoundProvider {
 	
 	/**
 	 * Returns a sound based on the amount of times the player has jumped. Expected to be 1, 2, or 3. Any value outside of that range will return a silent sound.
-	 * @param numberOfJumps The amount of jumps that have been performed, counting the initial jump off of the ground.
+	 * @param numberOfJumpsIncludingLand The amount of jumps that have been performed, counting the initial jump off of the ground.
 	 */
-	public static SoundEvent getSpiritJumpSound(int numberOfJumps) {
-		if (numberOfJumps == 1) {
+	public static SoundEvent getSpiritJumpSound(int numberOfJumpsIncludingLand) {
+		if (numberOfJumpsIncludingLand == 1) {
 			return SoundRegistry.get("entity.spirit.jump.single");
-		} else if (numberOfJumps == 2) {
+		} else if (numberOfJumpsIncludingLand == 2) {
 			return SoundRegistry.get("entity.spirit.jump.double");
-		} else if (numberOfJumps == 3) {
+		} else if (numberOfJumpsIncludingLand == 3) {
 			return SoundRegistry.get("entity.spirit.jump.triple");
 		}
 		return SoundRegistry.get("nullsound");

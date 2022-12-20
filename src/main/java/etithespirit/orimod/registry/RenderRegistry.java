@@ -1,10 +1,9 @@
 package etithespirit.orimod.registry;
 
 import etithespirit.orimod.client.render.entity.SpiritArrowRenderer;
+import etithespirit.orimod.registry.gameplay.EntityRegistry;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterShadersEvent;
-
-import java.io.IOException;
 
 public final class RenderRegistry {
 	

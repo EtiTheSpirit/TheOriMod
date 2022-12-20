@@ -2,7 +2,7 @@ package etithespirit.orimod.common.block.decay.world;
 
 
 import etithespirit.orimod.common.block.decay.DecayCommon;
-import etithespirit.orimod.common.block.decay.IDecayBlock;
+import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.util.level.StateHelper;
 import net.minecraft.core.BlockPos;
@@ -34,7 +34,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.NORTH;
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.SOUTH;
 
-import static etithespirit.orimod.common.block.StaticData.FALSE_POSITION_PREDICATE;
+import static etithespirit.orimod.common.block.StaticData.ALWAYS_FALSE;
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.orimod.util.Bit32.hasAnyFlag;
@@ -44,7 +44,7 @@ import static etithespirit.orimod.util.Bit32.hasAnyFlag;
  * @author Eti
  *
  */
-public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
+public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlockCommon {
 	
 	/* NOTE TO INDIVIDUALS HERE TRYING TO FIGURE OUT HOW TO MAKE INSIDE OUT BLOCKS:
 	 *
@@ -97,7 +97,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	/// CTOR ///
 	/** */
 	public DecaySurfaceMyceliumBlock() {
-		super(Properties.of(Material.REPLACEABLE_PLANT).dynamicShape().strength(0.4f).noCollission().sound(SoundType.SLIME_BLOCK).randomTicks().noLootTable().isRedstoneConductor(FALSE_POSITION_PREDICATE));
+		super(Properties.of(Material.REPLACEABLE_PLANT).dynamicShape().strength(0.4f).noCollission().sound(SoundType.SLIME_BLOCK).randomTicks().noLootTable().isRedstoneConductor(ALWAYS_FALSE));
 		this.registerDefaultState(
 			this.stateDefinition.any()
 				.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE)
@@ -177,7 +177,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	}
 	
 	private void registerAllStatesForBlock(List<StateHolder<?, ?>> blocksToReplaceWithSelf, Block block) {
-		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, block);
+		IDecayBlockCommon.registerAllStatesFor(blocksToReplaceWithSelf, block);
 		blocksToReplaceWithMycelium.addAll(block.getStateDefinition().getPossibleStates());
 	}
 	
@@ -202,7 +202,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 	@Override
 	public StateHolder<?, ?> getDecayReplacementFor(StateHolder<?, ?> existingBlock) {
 		if (existingBlock instanceof BlockState blockState && blockState.isAir()) return defaultBlockState();
-		return IDecayBlock.getDefaultDecayReplacementFor(existingBlock);
+		return IDecayBlockCommon.getDefaultDecayReplacementFor(existingBlock);
 	}
 	
 	@Override
@@ -265,7 +265,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlock {
 		}
 		
 		BlockState newState = (BlockState)modifyStateForNeighbors(worldIn, pos, state); // Modify this state to adapt to its neighbors.
-		if (!(blockIn instanceof IDecayBlock) && getDecayReplacementFor(worldIn.getBlockState(fromPos)) != null) {
+		if (!(blockIn instanceof IDecayBlockCommon) && getDecayReplacementFor(worldIn.getBlockState(fromPos)) != null) {
 			// If the new neighbor wasn't a decay block and there is no replacement for it, mark this as false.
 			newState = newState.setValue(ALL_ADJACENT_ARE_DECAY, Boolean.FALSE);
 		}

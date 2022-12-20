@@ -9,6 +9,7 @@ import etithespirit.orimod.common.block.light.creative.InfiniteSourceLightBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornStoneLineBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornStoneOmniBlock;
 import etithespirit.orimod.common.block.light.generation.SolarGeneratorBlock;
+import etithespirit.orimod.common.block.light.generation.ThermalGeneratorBlock;
 import etithespirit.orimod.common.block.light.interaction.LightRepairBoxBlock;
 import snownee.jade.api.IWailaClientRegistration;
 import snownee.jade.api.IWailaPlugin;
@@ -22,6 +23,7 @@ public class OriModWailaPluginClient implements IWailaPlugin {
 		registration.registerBlockComponent(LightEnergyComponentProviderClient.INSTANCE, LightCapacitorBlock.class);
 		registration.registerBlockComponent(LightEnergyComponentProviderClient.INSTANCE, InfiniteSourceLightBlock.class);
 		registration.registerBlockComponent(LightEnergyComponentProviderClient.INSTANCE, SolarGeneratorBlock.class);
+		registration.registerBlockComponent(LightEnergyComponentProviderClient.INSTANCE, ThermalGeneratorBlock.class);
 		registration.registerBlockComponent(LightEnergyComponentProviderClient.INSTANCE, LightToRedstoneSignalBlock.class);
 		registration.registerBlockComponent(LightEnergyComponentProviderClient.INSTANCE, LightToRFGeneratorBlock.class);
 		registration.registerBlockComponent(LightEnergyComponentProviderClient.INSTANCE, LightRepairBoxBlock.class);

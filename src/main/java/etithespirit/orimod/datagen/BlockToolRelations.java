@@ -2,7 +2,7 @@ package etithespirit.orimod.datagen;
 
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.block.IToolRequirementProvider;
-import etithespirit.orimod.registry.BlockRegistry;
+import etithespirit.orimod.registry.world.BlockRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
 import net.minecraft.tags.TagKey;
@@ -28,9 +28,9 @@ public final class BlockToolRelations extends BlockTagsProvider {
 	
 	@Override
 	protected void addTags() {
-		OriMod.LOG.printf(Level.INFO, "Starting block to tool tag generation.");
+		OriMod.LOG.printf(Level.INFO, "Starting custom datagen system: Block -> Tag Binding Generation.");
 		addTagsToBlocks();
-		OriMod.LOG.printf(Level.INFO, "Done associating blocks with optimal tools!");
+		OriMod.LOG.printf(Level.INFO, "Done associating blocks with their declared tags!");
 	}
 	
 	private void addTagsToBlocks() {
@@ -42,7 +42,6 @@ public final class BlockToolRelations extends BlockTagsProvider {
 					this.tag(tag).add(block);
 					OriMod.LOG.printf(Level.INFO, "Added tag %s to %s", tag.toString(), blockReg.getId().toString());
 				}
-				OriMod.LOG.printf(Level.INFO, "\n");
 			}
 		}
 	}

@@ -305,6 +305,12 @@
       "orimod:spirit/step/shroom/stepshroom3"
     ]
   },
+  "tile.light_tech.thermal.loop": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_tech/generators/thermal_generator"
+    ]
+  },
   "entity.spirit.step.sand": {
     "category": "master",
     "sounds": [

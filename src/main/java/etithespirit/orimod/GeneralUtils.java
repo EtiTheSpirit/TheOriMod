@@ -72,7 +72,7 @@ public final class GeneralUtils {
 	 * <strong>This will still return true on an integrated server or LAN server.</strong>
 	 * @return {@code true} if this build of the game is the playable client.<br/>
 	 */
-	public static boolean isGameClient() {
+	public static boolean isPlayableGameClient() {
 		return FMLEnvironment.dist == Dist.CLIENT;
 	}
 	

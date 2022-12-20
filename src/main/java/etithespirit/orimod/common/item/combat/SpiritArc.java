@@ -3,24 +3,21 @@ package etithespirit.orimod.common.item.combat;
 import etithespirit.orimod.combat.projectile.SpiritArrow;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.item.ISpiritLightItem;
-import etithespirit.orimod.registry.EntityRegistry;
+import etithespirit.orimod.registry.gameplay.EntityRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
 import net.minecraft.stats.Stats;
 import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
-
-import java.util.function.Predicate;
-
-import net.minecraft.world.item.Item.Properties;
+import net.minecraft.world.phys.Vec3;
 
 public class SpiritArc extends BowItem implements ISpiritLightItem {
 	
@@ -29,6 +26,7 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	private static final int USE_TIME = 33;
 	private static final int READY_TO_FIRE_AFTER_TICKS = USE_TIME - 5;
 	private static final int CHARGED_AFTER_TICKS = USE_TIME - 20;
+	private static final float PI180 = (float)Math.PI / 180f;
 	
 	public SpiritArc() {
 		this(new Properties().rarity(Rarity.EPIC).stacksTo(1).durability(1000).tab(OriModCreativeModeTabs.SPIRIT_COMBAT).setNoRepair());
@@ -51,6 +49,11 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 		return onStack.getOrCreateTag().getBoolean(IS_CHARGED_KEY); // Returns false if the key does not exist.
 	}
 	
+	private void shootWithoutInheritedVelocity(SpiritArrow arrow, Entity shooter, float pVelocity, float pInaccuracy) {
+		Vec3 lookVector = shooter.getLookAngle();
+		arrow.shoot(lookVector.x, lookVector.y, lookVector.z, pVelocity, pInaccuracy);
+	}
+	
 	@Override
 	public void releaseUsing(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity, int pTimeLeft) {
 		if (pTimeLeft > READY_TO_FIRE_AFTER_TICKS) {
@@ -66,6 +69,7 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 		
 		if (!pLevel.isClientSide()) {
 			SpiritArrow projectile = new SpiritArrow(EntityRegistry.SPIRIT_ARROW.get(), pLevel);
+			projectile.setOwner(pLivingEntity);
 			
 			float damage = chargedShot ? 5 : 2;
 			int power = pStack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
@@ -84,8 +88,8 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 			
 			projectile.setBaseDamage(damage);
 			projectile.setCritArrow(chargedShot);
-			projectile.setPos(pLivingEntity.getX(), pLivingEntity.getEyeY() - 0.1, pLivingEntity.getZ());
-			projectile.shootFromRotation(pLivingEntity, pLivingEntity.getXRot(), pLivingEntity.getYRot(), 0.0F, chargedShot ? 5f : 1.6f, chargedShot ? 0 : 0.1f);
+			projectile.setPos(pLivingEntity.getX(), pLivingEntity.getEyeY(), pLivingEntity.getZ());
+			shootWithoutInheritedVelocity(projectile, pLivingEntity, chargedShot ? 6f : 1.6f, chargedShot ? 0 : 0.1f);
 			pLevel.addFreshEntity(projectile);
 		}
 		if (pLivingEntity instanceof Player player) player.awardStat(Stats.ITEM_USED.get(this));

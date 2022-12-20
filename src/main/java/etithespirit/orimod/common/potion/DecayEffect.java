@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.potion;
 
 import etithespirit.orimod.combat.ExtendedDamageSource;
-import etithespirit.orimod.registry.PotionRegistry;
+import etithespirit.orimod.registry.gameplay.PotionRegistry;
 import etithespirit.orimod.util.RichEffect;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.util.extension.MobEffectDataStorage;

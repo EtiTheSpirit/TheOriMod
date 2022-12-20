@@ -8,7 +8,6 @@ import etithespirit.orimod.common.tile.light.implementations.SolarGeneratorTile;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
@@ -56,6 +55,6 @@ public class SolarGeneratorBlock extends ConnectableLightTechBlock implements IT
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 }

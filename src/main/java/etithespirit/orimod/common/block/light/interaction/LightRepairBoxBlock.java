@@ -8,7 +8,6 @@ import etithespirit.orimod.common.tile.light.implementations.LightRepairBoxTile;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.Containers;
 import net.minecraft.world.InteractionHand;
@@ -54,7 +53,7 @@ public class LightRepairBoxBlock extends ConnectableLightTechBlock implements IF
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	
 	@Override

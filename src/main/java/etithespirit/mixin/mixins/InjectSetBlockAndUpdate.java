@@ -14,6 +14,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.Map;
 import java.util.Stack;
 
+/**
+ * This mixin was created to optimize the behavior that is used by conduits so that they may more accurately determine when/if they should (re)connect
+ * to neighbors by providing context about what specific state used to exist before a change, and what state exists after a change.
+ */
 @Mixin(Level.class)
 public abstract class InjectSetBlockAndUpdate extends net.minecraftforge.common.capabilities.CapabilityProvider<Level> {
 	private InjectSetBlockAndUpdate(Class<Level> baseClass) {
@@ -62,7 +66,7 @@ public abstract class InjectSetBlockAndUpdate extends net.minecraftforge.common.
 	)
 	public void setBlock$notifyAfter(BlockPos pPos, BlockState pNewState, int pFlags, CallbackInfoReturnable<Boolean> cir) {
 		if ((pFlags & 3) == 3) {
-			WorldUpdateListener.notifyOfUpdatingBlockChangeBefore(pPos, BEFORE_CACHE.pop(), pNewState);
+			WorldUpdateListener.notifyOfUpdatingBlockChangeAfter(pPos, BEFORE_CACHE.pop(), pNewState);
 		}
 	}
 	

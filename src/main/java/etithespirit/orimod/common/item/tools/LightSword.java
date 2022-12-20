@@ -25,7 +25,7 @@ import java.util.List;
 
 public class LightSword extends SwordItem implements ISpiritLightItem {
 	public LightSword() {
-		super(SpiritTiers.COMPLEX_LIGHT, 2, -0.2f, (new Item.Properties()).rarity(Rarity.EPIC).tab(OriModCreativeModeTabs.SPIRIT_COMBAT).fireResistant().stacksTo(1).setNoRepair().durability(SpiritTiers.COMPLEX_LIGHT.getUses()));
+		super(SpiritTiers.SIMPLE_LIGHT, 2, -0.2f, (new Item.Properties()).rarity(Rarity.EPIC).tab(OriModCreativeModeTabs.SPIRIT_COMBAT).fireResistant().stacksTo(1).setNoRepair().durability(SpiritTiers.COMPLEX_LIGHT.getUses()));
 	}
 	
 	@Override

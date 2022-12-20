@@ -18,6 +18,9 @@ import net.minecraft.world.entity.Entity;
 
 import java.util.HashMap;
 
+/**
+ * Constructs and renders the model for the Hardlight Shield
+ */
 public class SpiritShieldModel extends Model {
 	// This layer location should be baked with EntityRendererProvider.Context in the entity renderer and passed into this model's constructor
 	private final ModelPart bone;

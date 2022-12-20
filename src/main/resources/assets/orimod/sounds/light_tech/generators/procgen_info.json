@@ -1,0 +1,8 @@
+{
+	"category" : "block",
+	"audioNames" : {
+		"tile.light_tech.thermal.loop" : [
+			"thermal_generator.ogg"
+		]
+	}
+}

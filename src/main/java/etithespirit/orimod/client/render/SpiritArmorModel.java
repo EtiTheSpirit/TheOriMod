@@ -23,6 +23,11 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * A custom Armor model used for Spirits. The UVs are purposely mapped to that of vanilla armor to at least try to construct
+ * something comprehensible.
+ *
+ */
 public class SpiritArmorModel extends Model {
 	
 	private final ModelPart root;

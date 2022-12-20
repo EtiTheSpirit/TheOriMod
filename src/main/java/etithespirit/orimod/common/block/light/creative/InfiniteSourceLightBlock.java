@@ -42,6 +42,6 @@ public class InfiniteSourceLightBlock extends ConnectableLightTechBlock implemen
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 }

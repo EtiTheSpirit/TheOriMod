@@ -1,14 +1,12 @@
 package etithespirit.orimod.datagen;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.registry.ItemRegistry;
-import net.minecraft.client.renderer.block.model.BlockModel;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.Item;
 import net.minecraftforge.client.model.generators.ItemModelProvider;
-import net.minecraftforge.client.model.generators.ModelBuilder;
 import net.minecraftforge.client.model.generators.ModelFile;
 import net.minecraftforge.client.model.generators.ModelProvider;
 import net.minecraftforge.common.data.ExistingFileHelper;

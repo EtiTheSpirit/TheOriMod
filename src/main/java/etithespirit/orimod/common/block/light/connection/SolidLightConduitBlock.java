@@ -2,8 +2,10 @@ package etithespirit.orimod.common.block.light.connection;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
-import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
+import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
 import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
+import etithespirit.orimod.energy.ILightEnergyGenerator;
+import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.util.Bit32;
@@ -66,16 +68,20 @@ public class SolidLightConduitBlock extends ConnectableLightTechBlock implements
 			if (isConnectable) {
 				if (neighborState.getValue(AUTO)) {
 					BlockEntity be = ctx.getLevel().getBlockEntity(neighborPos);
-					if (be instanceof LightEnergyStorageTile storageTile) {
+					if (be instanceof ILightEnergyStorage storageTile) {
 						if (storageTile.getLightStored() > 0) foundNeighboringEnergizedTechBlock.set(true);
+					} else if (be instanceof ILightEnergyGenerator generatorTile) {
+						if (generatorTile.getMaximumGeneratedAmountForDisplay() > 0) foundNeighboringEnergizedTechBlock.set(true);
 					}
 					return true;
 				}
 				int neighborOutgoing = SixSidedUtils.getNumberFromSurfaces(neighborState);
 				if (Bit32.hasAnyFlag(neighborOutgoing, SixSidedUtils.neighborFlagForBlockDirection(neighborPos, currentPos))) {
 					BlockEntity be = ctx.getLevel().getBlockEntity(neighborPos);
-					if (be instanceof LightEnergyStorageTile storageTile) {
+					if (be instanceof ILightEnergyStorage storageTile) {
 						if (storageTile.getLightStored() > 0) foundNeighboringEnergizedTechBlock.set(true);
+					} else if (be instanceof ILightEnergyGenerator generatorTile) {
+						if (generatorTile.getMaximumGeneratedAmountForDisplay() > 0) foundNeighboringEnergizedTechBlock.set(true);
 					}
 					return true;
 				}
@@ -109,7 +115,7 @@ public class SolidLightConduitBlock extends ConnectableLightTechBlock implements
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	
 	@Override

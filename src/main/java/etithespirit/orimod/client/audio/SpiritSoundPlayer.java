@@ -56,11 +56,7 @@ public final class SpiritSoundPlayer {
 		if (player == null) throw new ArgumentNullException("player");
 		if (sound == null) throw new ArgumentNullException("sound");
 		if (category == null) throw new ArgumentNullException("category");
-		
-		Player passIn = null;
-		if (GeneralUtils.isClient(player)) passIn = player;
-		
-		player.getCommandSenderWorld().playSound(passIn, player.getX(), player.getY(), player.getZ(), sound, category, volume, pitch);
+		player.getCommandSenderWorld().playSound(player, player.getX(), player.getY(), player.getZ(), sound, category, volume, pitch);
 	}
 	
 	/**
@@ -98,14 +94,14 @@ public final class SpiritSoundPlayer {
 	/**
 	 * Plays the sound associated with the given jump count.
 	 * @param player The player to play for. Whether or not they are a spirit is validated in this method.
-	 * @param jumps The amount of jumps they have performed when this sound is called, which should either be 1, 2, or 3.
+	 * @param jumpsIncludingLand The amount of jumps they have performed when this sound is called, which should either be 1, 2, or 3.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static void playJumpSound(@Nonnull Player player, int jumps) {
+	public static void playJumpSound(@Nonnull Player player, int jumpsIncludingLand) {
 		if (player == null) throw new ArgumentNullException("player");
 		
 		if (SpiritIdentifier.isSpirit(player)) {
-			SoundEvent sound = SpiritSoundProvider.getSpiritJumpSound(jumps);
+			SoundEvent sound = SpiritSoundProvider.getSpiritJumpSound(jumpsIncludingLand);
 			if (sound != null) playSoundAtPlayer(player, sound, SoundSource.PLAYERS, 0.1f, getRandomPitch());
 		}
 	}
@@ -113,6 +109,7 @@ public final class SpiritSoundPlayer {
 	/**
 	 * Plays the sound associated with jumping against the given block.
 	 * @param player The player to play for. Whether or not they are a spirit is validated in this method.
+	 * @param block The location of the block that should provide the sound to play.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playWallJumpSound(@Nonnull Player player, @Nonnull BlockPos block) {

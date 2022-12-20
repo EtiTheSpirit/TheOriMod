@@ -16,6 +16,10 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 
+/**
+ * Renders the Spirit Arrow by constructing its model and mapping the texture to the model. Closely related to the default arrow renderer.
+ * @param <T>
+ */
 public class SpiritArrowRenderer<T extends SpiritArrow> extends ArrowRenderer<T> {
 	public SpiritArrowRenderer(EntityRendererProvider.Context ctx) {
 		super(ctx);

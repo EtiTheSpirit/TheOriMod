@@ -10,6 +10,9 @@ import net.minecraft.world.inventory.MenuType;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * The menu managing the Luxen Reconstructor block.
+ */
 public class LightRepairDeviceMenu extends AbstractContainerMenu {
 	private static final int SLOT_COUNT = 9;
 	private static final int INV_SLOT_START = 9;

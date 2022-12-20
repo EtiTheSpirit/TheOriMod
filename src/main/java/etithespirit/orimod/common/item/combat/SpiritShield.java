@@ -11,7 +11,7 @@ import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.item.ISpiritLightItem;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.event.EntityEmittedSoundEventProvider;
-import etithespirit.orimod.registry.ItemRegistry;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.geom.EntityModelSet;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -25,20 +25,17 @@ import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.RenderShape;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.List;
 import java.util.function.Consumer;
 
-import net.minecraft.world.item.Item.Properties;
 import org.jetbrains.annotations.Nullable;
 
 public class SpiritShield extends ShieldItem implements ISpiritLightItem {

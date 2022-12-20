@@ -8,7 +8,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Identifies sounds played by vanilla and loosely categorizes them.
+ * Identifies sounds played by vanilla and loosely categorizes them. The intent of this action is
+ * for vanilla sounds to be replacable by sounds oriented towards Spirit players.
  * @author Eti
  *
  */

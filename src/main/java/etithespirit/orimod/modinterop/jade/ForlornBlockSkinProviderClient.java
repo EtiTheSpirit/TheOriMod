@@ -1,7 +1,7 @@
 package etithespirit.orimod.modinterop.jade;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.client.gui.ExtendedChatColors;
+import etithespirit.orimod.common.chat.ExtendedChatColors;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;

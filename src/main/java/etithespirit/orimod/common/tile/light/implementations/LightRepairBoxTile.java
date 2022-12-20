@@ -1,18 +1,19 @@
 package etithespirit.orimod.common.tile.light.implementations;
 
-import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.annotation.ServerUseOnly;
 import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.client.render.hud.LightRepairDeviceMenu;
-import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
+import etithespirit.orimod.common.tile.IClientUpdatingTile;
 import etithespirit.orimod.common.tile.IServerUpdatingTile;
-import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
-import etithespirit.orimod.common.tile.light.PersistentLightEnergyStorage;
+import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
+import etithespirit.orimod.common.tile.light.helpers.EnergyReservoir;
+import etithespirit.orimod.common.tile.light.helpers.SoundSmearer;
+import etithespirit.orimod.energy.ILightEnergyConsumer;
 import etithespirit.orimod.registry.SoundRegistry;
-import etithespirit.orimod.registry.TileEntityRegistry;
+import etithespirit.orimod.registry.world.TileEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
@@ -28,22 +29,23 @@ import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
 
-public class LightRepairBoxTile extends LightEnergyStorageTile implements MenuProvider, Container, IAmbientSoundEmitter, IServerUpdatingTile, LightEnergyStorageTile.ILuxenConsumer {
+public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuProvider, Container, IAmbientSoundEmitter, IServerUpdatingTile, IClientUpdatingTile, ILightEnergyConsumer {
 	
 	public static final float CONSUMPTION_RATE = 0.25f;
 	public static final int CONTAINER_SIZE = 9;
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
 	private final LightTechLooper SOUND;
-	private int debounceSoundOffTicksRemaining = 0;
 	private int nextItem = 0;
 	
-	private @ServerUseOnly boolean continuePlayingSound = false;
-	private @ServerUseOnly boolean neededToRepairItemLastTick = false;
+	private final @ServerUseOnly
+	EnergyReservoir consumerHelper = new EnergyReservoir(CONSUMPTION_RATE);
+	private final @ServerUseOnly SoundSmearer soundSmearer = new SoundSmearer(SoundSmearer.SmearDirection.DELAY_BOTH, 10);
+	private @ServerUseOnly boolean lastTickHadEnough = true;
+	private @ServerUseOnly boolean thereWasSomethingToRepair = false;
 	private @ServerUseOnly boolean failedToRepairItemLastTick = false;
-	private @ClientUseOnly int ticksThatWouldPlaySound = 0;
 	
 	public LightRepairBoxTile(BlockPos pWorldPosition, BlockState pBlockState) {
-		super(TileEntityRegistry.LIGHT_REPAIR_BOX.get(), pWorldPosition, pBlockState, new PersistentLightEnergyStorage(null, CONSUMPTION_RATE, CONSUMPTION_RATE, 0));
+		super(TileEntityRegistry.LIGHT_REPAIR_BOX.get(), pWorldPosition, pBlockState);
 		SOUND = new LightTechLooper(
 			this,
 			SoundRegistry.get("tile.light_tech.generic.activate"),
@@ -142,92 +144,52 @@ public class LightRepairBoxTile extends LightEnergyStorageTile implements MenuPr
 	}
 	
 	@Override
-	public boolean skipAutomaticPoweredBlockstate() {
-		return true;
+	public void updateVisualPoweredAppearance() {
+		// TODO: Make this power down after a delay (use the Sound Smearer to help)
+		BlockState currentState = getBlockState();
+		boolean targetPower = soundShouldBePlaying();
+		boolean currentPower = currentState.getValue(ForlornAppearanceMarshaller.POWERED);
+		if (targetPower != currentPower) {
+			super.utilSetPoweredStateTo(targetPower);
+		}
 	}
 	
 	/**
-	 * Iterates over all items in the container and spends energy to try to repair them.
+	 * The Block Entity keeps track of the last inventory slot it repaired. This will make it try to repair that slot, such that
+	 * only one slot is repaired per tick.
 	 */
-	@Deprecated(forRemoval = true)
-	protected void tryRepairAllItems() {
-		boolean didSomething = false;
-		neededToRepairItemLastTick = false;
-		for (int index = 0; index < CONTAINER_SIZE; index++) {
-			ItemStack item = items.get(index);
-			if (item.isEmpty()) continue;
-			if (!item.is(OriModItemTags.LIGHT_REPAIRABLE)) continue;
-			if (!item.isDamaged()) continue;
-			
-			if (trySpendEnergy(CONSUMPTION_RATE, false)) {
-				item.setDamageValue(item.getDamageValue() - 1);
-				didSomething = true;
-			}
-			neededToRepairItemLastTick = true;
-		}
-		failedToRepairItemLastTick = neededToRepairItemLastTick && !didSomething;
-		continuePlayingSound = didSomething || debounceSoundOffTicksRemaining > 1;
-	}
-	
 	protected void tryRepairNextItem() {
-		tryRepairNextItem(0);
-	}
-	
-	private void tryRepairNextItem(int reEntry) {
-		ItemStack item = items.get(nextItem);
-		boolean didSomething = false;
-		nextItem++;
-		if (nextItem >= CONTAINER_SIZE) nextItem = 0;
-		neededToRepairItemLastTick = false;
-		
-		boolean mustSkip = item.isEmpty() || !item.is(OriModItemTags.LIGHT_REPAIRABLE) || !item.isDamaged();
-		if (mustSkip) {
-			if (reEntry >= CONTAINER_SIZE) {
-				failedToRepairItemLastTick = false;
-				continuePlayingSound = debounceSoundOffTicksRemaining > 1;
-				return;
+		thereWasSomethingToRepair = false;
+		failedToRepairItemLastTick = false;
+		for (int limit = 0; limit < CONTAINER_SIZE; limit++) {
+			ItemStack item = items.get(nextItem++);
+			if (nextItem >= CONTAINER_SIZE) nextItem = 0;
+			
+			boolean canBeRepaired = !item.isEmpty() && item.is(OriModItemTags.LIGHT_REPAIRABLE) && item.isDamaged();
+			if (canBeRepaired) {
+				thereWasSomethingToRepair = true;
+				if (trySpendEnergyForTick()) {
+					item.setDamageValue(item.getDamageValue() - 1);
+				} else {
+					failedToRepairItemLastTick = true;
+				}
+				break;
 			}
-			tryRepairNextItem(++reEntry);
-			return;
 		}
-		
-		neededToRepairItemLastTick = true;
-		if (trySpendEnergy(CONSUMPTION_RATE, false)) {
-			item.setDamageValue(item.getDamageValue() - 1);
-			didSomething = true;
-		}
-		failedToRepairItemLastTick = neededToRepairItemLastTick && !didSomething;
-		continuePlayingSound = didSomething || debounceSoundOffTicksRemaining > 1;
+		lastTickHadEnough = !thereWasSomethingToRepair || !failedToRepairItemLastTick;
+		// Above comes out to "There was nothing to repair, or, there was something to repair (implicit) and no items failed to repair last tick.
 	}
 	
 	@Override
 	public void updateServer(Level inLevel, BlockPos at, BlockState current) {
-		//tryRepairAllItems();
 		tryRepairNextItem();
-		if (current.getValue(ForlornAppearanceMarshaller.POWERED) != continuePlayingSound) {
-			inLevel.setBlock(at, current.setValue(ForlornAppearanceMarshaller.POWERED, continuePlayingSound), StaticData.REPLICATE_CHANGE);
-			// No neighbor updates! This is just for the sound.
-		}
-		debounceSoundOffTicksRemaining--;
-		if (debounceSoundOffTicksRemaining < 0) debounceSoundOffTicksRemaining = 0;
+		// soundSmearer.tick(thereWasSomethingToRepair && !failedToRepairItemLastTick);
 	}
 	
-	// This fixes a bug that causes the sound to be spammed in low energy conditions.
 	@Override
-	public float receiveLight(float maxReceive, boolean simulate) {
-		if (!neededToRepairItemLastTick)
-			return 0; // When there's nothing to do, do not consume power.
-		
-		float amount = super.receiveLight(maxReceive, simulate);
-		if (!simulate) {
-			if (amount > 0) {
-				if (getLightStored() >= CONSUMPTION_RATE) {
-					debounceSoundOffTicksRemaining += 2; // Add 2 so that it has to fight against the constant decrease
-					if (debounceSoundOffTicksRemaining > 10) debounceSoundOffTicksRemaining = 10;
-				}
-			}
-		}
-		return amount;
+	public void updateClient(Level inLevel, BlockPos at, BlockState current) {
+		BlockState state = getBlockState();
+		soundSmearer.tick(state.getValue(ForlornAppearanceMarshaller.POWERED));
 	}
 	
 	/**
@@ -248,30 +210,34 @@ public class LightRepairBoxTile extends LightEnergyStorageTile implements MenuPr
 	 */
 	@Override
 	public boolean soundShouldBePlaying() {
-		boolean isPowered = getBlockState().getValue(ForlornAppearanceMarshaller.POWERED);
-		if (isPowered) {
-			ticksThatWouldPlaySound++;
-			if (ticksThatWouldPlaySound > 10) ticksThatWouldPlaySound = 10;
-		} else {
-			ticksThatWouldPlaySound--;
-			if (ticksThatWouldPlaySound < 0) ticksThatWouldPlaySound = 0;
-		}
-		return ticksThatWouldPlaySound > 4;
-		// And check greater than 1 here so that the +2 -1 pattern doesn't cause spam.
+		return soundSmearer.shouldSoundPlay();
+	}
+	
+	/**
+	 * Attempts to spend the energy needed to repair something by one durability point.
+	 * @return Whether or not enough energy was there to spend.
+	 */
+	private boolean trySpendEnergyForTick() {
+		lastTickHadEnough = consumerHelper.tryConsume(CONSUMPTION_RATE);
+		return lastTickHadEnough;
 	}
 	
 	@Override
-	public float getLuxConsumedPerTick() {
-		if (neededToRepairItemLastTick && !failedToRepairItemLastTick) {
-			// It needed to and did not fail. Great!
-			return CONSUMPTION_RATE;
+	public float consumeEnergy(float desiredAmount, boolean simulate) {
+		float realAmount = desiredAmount / 2f;
+		if (realAmount > CONSUMPTION_RATE) {
+			realAmount = CONSUMPTION_RATE;
 		}
-		// Failed.
-		return 0;
+		return consumerHelper.stash(realAmount);
 	}
 	
 	@Override
-	public boolean isOverdrawn() {
-		return failedToRepairItemLastTick;
+	public float getMaximumDrawnAmountForDisplay() {
+		return thereWasSomethingToRepair ? CONSUMPTION_RATE : 0;
+	}
+	
+	@Override
+	public boolean hadTooLittlePowerLastForDisplay() {
+		return !lastTickHadEnough;
 	}
 }

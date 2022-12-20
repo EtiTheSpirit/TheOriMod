@@ -23,7 +23,8 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 import java.util.ArrayList;
 
 /**
- * Mostly intended for use in {@link ConnectableLightTechBlock}, this provides methods associated with testing connections.
+ * Mostly intended for use in {@link ConnectableLightTechBlock}, this provides methods associated with testing and creating connections
+ * between neighboring Light tech blocks.
  *
  * @author Eti
  */

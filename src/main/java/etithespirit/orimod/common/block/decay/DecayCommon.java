@@ -1,6 +1,8 @@
 package etithespirit.orimod.common.block.decay;
 
 
+import etithespirit.orimod.common.tags.OriModBlockTags;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateHolder;
@@ -88,7 +90,7 @@ public final class DecayCommon {
 	 * @return True if this block classifies as a decay block.
 	 */
 	public static boolean isDecayBlock(Block block) {
-		return block instanceof IDecayBlockIdentifier;
+		return block.defaultBlockState().is(OriModBlockTags.DECAY_ASSOC);
 	}
 	
 }

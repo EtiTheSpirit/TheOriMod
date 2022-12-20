@@ -5,9 +5,9 @@ import net.minecraft.world.level.block.state.BlockBehaviour;
 @SuppressWarnings("PointlessBitwiseExpression")
 public final class StaticData {
 	
-	public static final BlockBehaviour.StatePredicate FALSE_POSITION_PREDICATE = (x, y, z) -> false;
+	public static final BlockBehaviour.StatePredicate ALWAYS_FALSE = (x, y, z) -> false;
 	
-	public static final BlockBehaviour.StatePredicate TRUE_POSITION_PREDICATE = (x, y, z) -> true;
+	public static final BlockBehaviour.StatePredicate ALWAYS_TRUE = (x, y, z) -> true;
 	
 	/** For use in setBlock() */ public static final int CAUSE_BLOCK_UPDATE = 1 << 0;
 	/** For use in setBlock() */ public static final int REPLICATE_CHANGE = 1 << 1;

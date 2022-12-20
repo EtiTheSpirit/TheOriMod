@@ -6,10 +6,13 @@
     },
     "S": {
       "item": "orimod:hardlight_shard"
+    },
+    "b": {
+      "item": "minecraft:diamond_boots"
     }
   },
   "pattern": [
-    "B B",
+    "BbB",
     "S S"
   ],
   "result": {

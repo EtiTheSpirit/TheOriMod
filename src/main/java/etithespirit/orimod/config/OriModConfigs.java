@@ -7,10 +7,12 @@ import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import etithespirit.orimod.common.block.decay.DecayLiquidBlock;
 import etithespirit.orimod.common.block.decay.DecayWorldConfigBehavior;
-import etithespirit.orimod.common.block.decay.IDecayBlockIdentifier;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
 import etithespirit.orimod.common.item.ISpiritLightItem;
-import etithespirit.orimod.registry.FluidRegistry;
+import etithespirit.orimod.common.tags.OriModBlockTags;
+import etithespirit.orimod.registry.world.FluidRegistry;
+import etithespirit.orimod.spirit.abilities.SpiritDashAbility;
+import etithespirit.orimod.spirit.abilities.SpiritJumpAbility;
 import net.minecraft.locale.Language;
 import net.minecraft.network.chat.FormattedText;
 import net.minecraft.network.chat.Style;
@@ -41,11 +43,13 @@ public class OriModConfigs {
 	/** Corresponds to {@link ModConfig.Type#COMMON} -- This exists <em>independently</em> on both client and server; not replicated in multiplayer environments. */
 	public static ForgeConfigSpec NOT_REPLICATED;
 	
-	public static ForgeConfigSpec.IntValue AIR_JUMP_COUNT;
-	public static ForgeConfigSpec.BooleanValue KNOW_DOUBLE_JUMP;
-	public static ForgeConfigSpec.BooleanValue KNOW_DASH;
-	public static ForgeConfigSpec.BooleanValue KNOW_AIR_DASH;
-	public static ForgeConfigSpec.BooleanValue KNOW_WATER_DASH;
+	//public static ForgeConfigSpec.IntValue AIR_JUMP_COUNT;
+	public static ForgeConfigSpec.EnumValue<SpiritJumpAbility> KNOWN_JUMP_TYPE;
+	public static ForgeConfigSpec.EnumValue<SpiritDashAbility> KNOWN_DASH_TYPE;
+	//public static ForgeConfigSpec.BooleanValue KNOW_DASH;
+	//public static ForgeConfigSpec.BooleanValue KNOW_AIR_DASH;
+	//public static ForgeConfigSpec.BooleanValue KNOW_WATER_DASH;
+	public static ForgeConfigSpec.BooleanValue KNOW_WALL_JUMP;
 	
 	public static ForgeConfigSpec.BooleanValue DEFAULT_SPIRIT_STATE;
 	public static ForgeConfigSpec.BooleanValue FORCE_STATE;
@@ -60,6 +64,11 @@ public class OriModConfigs {
 	public static ForgeConfigSpec.BooleanValue ANYONE_CAN_SELF_REPAIR;
 	public static ForgeConfigSpec.DoubleValue SELF_REPAIR_DAMAGE;
 	public static ForgeConfigSpec.IntValue SELF_REPAIR_EARNINGS;
+	
+	public static ForgeConfigSpec.IntValue CHANGE_MODEL_SELF_LEVEL;
+	public static ForgeConfigSpec.IntValue CHANGE_MODEL_OTHERS_LEVEL;
+	public static ForgeConfigSpec.IntValue CHANGE_ABILITIES_SELF_LEVEL;
+	public static ForgeConfigSpec.IntValue CHANGE_ABILITIES_OTHERS_LEVEL;
 	
 	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_SPREADING;
 	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_COATING_SPREADING;
@@ -85,7 +94,7 @@ public class OriModConfigs {
 	 */
 	public static DecayWorldConfigBehavior getDecaySpreadBehavior(StateHolder<?, ?> state) throws IllegalArgumentException {
 		if (state instanceof BlockState block) {
-			if (block.getBlock() instanceof IDecayBlockIdentifier) {
+			if (block.is(OriModBlockTags.DECAY_ASSOC)) {
 				if (block.getBlock() instanceof DecaySurfaceMyceliumBlock) {
 					if (DECAY_SPREADING.get().permissiveness < DECAY_COATING_SPREADING.get().permissiveness) {
 						return DECAY_SPREADING.get();
@@ -258,6 +267,14 @@ public class OriModConfigs {
 		DEFAULT_SPIRIT_STATE = createBoolean(builder, current, "default_state", true, false);
 		FORCE_STATE = createBoolean(builder, current, "force_state", false, false);
 		ALLOW_CHANGING_BY_DEFAULT = createBoolean(builder, current, "allow_changes_default", true, false);
+		CHANGE_MODEL_SELF_LEVEL = createIntRange(builder, current, "change_model_self_level", 2, 1, 4, false);
+		CHANGE_MODEL_OTHERS_LEVEL = createIntRange(builder, current, "change_model_self_level", 4, 1, 4, false);
+		CHANGE_ABILITIES_SELF_LEVEL = createIntRange(builder, current, "change_abilities_self_level", 2, 1, 4, false);
+		CHANGE_ABILITIES_OTHERS_LEVEL = createIntRange(builder, current, "change_abilities_self_level", 4, 1, 4, false);
+		builder.pop();
+		
+		current = "spirit_limits";
+		builder.push(current);
 		ONLY_EAT_PLANTS = createBoolean(builder, current, "only_eat_plants", false, false);
 		SELF_REPAIR_LIMITS = createEnum(builder, current, "self_repair_limits", ISpiritLightItem.SelfRepairLimit.NOT_ALLOWED, false);
 		ANYONE_CAN_SELF_REPAIR = createBoolean(builder, current, "anyone_can_self_repair", false, false);
@@ -267,11 +284,10 @@ public class OriModConfigs {
 		
 		current = "spirit_abilities";
 		builder.push(current);
-		AIR_JUMP_COUNT = createIntRange(builder, current, "air_jumps", 1, 1, 2, false);
-		KNOW_DOUBLE_JUMP = createBoolean(builder, current, "know_double_jump", false, false);
-		KNOW_DASH = createBoolean(builder, current, "know_dash", false, false);
-		KNOW_AIR_DASH = createBoolean(builder, current, "know_air_dash", false, false);
-		KNOW_WATER_DASH = createBoolean(builder, current, "know_water_dash", false, false);
+		//AIR_JUMP_COUNT = createIntRange(builder, current, "air_jumps", 1, 1, 2, false);
+		KNOWN_JUMP_TYPE = createEnum(builder, current, "known_jump_type", SpiritJumpAbility.DOUBLE_JUMP, false);
+		KNOWN_DASH_TYPE = createEnum(builder, current, "known_dash_type", SpiritDashAbility.AIR_AND_WATER_DASH, false);
+		KNOW_WALL_JUMP = createBoolean(builder, current, "know_wall_jump", true, false);
 		builder.pop();
 		
 		current = "light_energy";

@@ -5,7 +5,7 @@ import etithespirit.orimod.OriMod;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAcquisitionFunction;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import etithespirit.orimod.common.material.ExtendedMaterials;
-import etithespirit.orimod.registry.BlockRegistry;
+import etithespirit.orimod.registry.world.BlockRegistry;
 import etithespirit.orimod.spiritmaterial.defaults.DefaultImplementations;
 import net.minecraft.core.BlockPos;
 import net.minecraft.resources.ResourceLocation;

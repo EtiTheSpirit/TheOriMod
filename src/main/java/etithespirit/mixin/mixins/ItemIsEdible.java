@@ -7,10 +7,11 @@ import net.minecraft.world.level.ItemLike;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 /**
- * This mixin intercepts the canEat method to prevent Spirits from eating meat.
+ * This mixin intercepts the canEat method to prevent Spirits from eating meat. It is currently obsolete as
+ * the existing Forge hook for canUse is more suitable (if not a bit early).
  */
-
 //@Mixin(Item.class)
+@Deprecated(forRemoval = true)
 public abstract class ItemIsEdible implements ItemLike, net.minecraftforge.common.extensions.IForgeItem, ISelfProvider {
 	
 	//@Inject(method="isEdible()Z", at=@At("HEAD"), cancellable = true)

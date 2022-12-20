@@ -1,0 +1,9 @@
+{
+  "replace": false,
+  "values" : [
+    "orimod:light_conduit",
+    "orimod:solid_light_conduit",
+    "orimod:hardlight_block",
+    "orimod:light_capacitor"
+  ]
+}

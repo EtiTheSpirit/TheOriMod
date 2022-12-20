@@ -1,7 +1,9 @@
 package etithespirit.orimod.modinterop.jade;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
+import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
+import etithespirit.orimod.energy.ILightEnergyConsumer;
+import etithespirit.orimod.energy.ILightEnergyGenerator;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
@@ -17,14 +19,15 @@ public enum LightEnergyComponentProviderServer implements IServerDataProvider<Bl
 	
 	@Override
 	public void appendServerData(CompoundTag data, ServerPlayer serverPlayer, Level level, BlockEntity blockEntity, boolean b) {
-		ILightEnergyStorage storage = (LightEnergyStorageTile)blockEntity;
-		data.putFloat("Light", storage.getLightStored());
-		if (storage instanceof LightEnergyStorageTile.ILuxenGenerator generator) {
-			data.putFloat("Generated", generator.getLuxGeneratedPerTick());
+		if (blockEntity instanceof ILightEnergyStorage storage) {
+			data.putFloat("Light", storage.getLightStored());
 		}
-		if (storage instanceof LightEnergyStorageTile.ILuxenConsumer generator) {
-			data.putFloat("Consumed", generator.getLuxConsumedPerTick());
-			data.putBoolean("IsOverdrawn", generator.isOverdrawn());
+		if (blockEntity instanceof ILightEnergyGenerator generator) {
+			data.putFloat("Generated", generator.getMaximumGeneratedAmountForDisplay());
+			data.putBoolean("IsOverdrawn", generator.hadTooMuchDrawLastForDisplay());
+		} else if (blockEntity instanceof ILightEnergyConsumer consumer) {
+			data.putFloat("Consumed", consumer.getMaximumDrawnAmountForDisplay());
+			data.putBoolean("IsOverdrawn", consumer.hadTooLittlePowerLastForDisplay());
 		}
 	}
 	

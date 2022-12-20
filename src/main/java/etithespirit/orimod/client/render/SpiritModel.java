@@ -25,6 +25,9 @@ import net.minecraft.world.entity.LivingEntity;
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 
+/**
+ * The actual model of a Spirit.
+ */
 public class SpiritModel extends Model implements ArmedModel, HeadedModel {
 	
 	/** Spirits will be rendered at this amount of scale on the Y axis. */

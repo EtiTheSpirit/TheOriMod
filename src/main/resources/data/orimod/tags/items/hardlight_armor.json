@@ -4,6 +4,10 @@
     "orimod:light_helmet",
     "orimod:light_chestplate",
     "orimod:light_leggings",
-    "orimod:light_boots"
+    "orimod:light_boots",
+    "orimod:light_strong_helmet",
+    "orimod:light_strong_chestplate",
+    "orimod:light_strong_leggings",
+    "orimod:light_strong_boots"
   ]
 }

@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.tile.light.implementations;
 
 import etithespirit.orimod.common.tile.light.LightEnergyTile;
-import etithespirit.orimod.registry.TileEntityRegistry;
+import etithespirit.orimod.registry.world.TileEntityRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.state.BlockState;
 

@@ -9,7 +9,7 @@ import etithespirit.orimod.client.render.hud.SpiritHealthGui;
 import etithespirit.orimod.command.SetSpiritCommand;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
 import etithespirit.orimod.common.potion.DecayEffect;
-import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
+import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
 import etithespirit.orimod.datagen.advancements.GenerateAdvancements;
@@ -17,27 +17,32 @@ import etithespirit.orimod.datagen.block.GenerateBlockModels;
 import etithespirit.orimod.datagen.GenerateItemModels;
 import etithespirit.orimod.client.render.RenderPlayerAsSpirit;
 import etithespirit.orimod.datagen.audio.GenerateSoundsJson;
+import etithespirit.orimod.datagen.features.GenerateBiomeFeatures;
+import etithespirit.orimod.datagen.loot.GenerateLootTables;
 import etithespirit.orimod.datagen.recipe.GenerateRecipes;
+import etithespirit.orimod.networking.player.ReplicateKnownAbilities;
+import etithespirit.orimod.networking.player.ReplicatePlayerMovement;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
-import etithespirit.orimod.networking.spirit.ClientSpiritStateComponent;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.DamageMarshaller;
-import etithespirit.orimod.registry.AdvancementRegistry;
-import etithespirit.orimod.registry.BlockRegistry;
-import etithespirit.orimod.registry.EntityRegistry;
-import etithespirit.orimod.registry.FluidRegistry;
-import etithespirit.orimod.registry.ItemRegistry;
+import etithespirit.orimod.registry.advancements.AdvancementRegistry;
+import etithespirit.orimod.registry.world.BlockRegistry;
+import etithespirit.orimod.registry.gameplay.CapabilityRegistry;
+import etithespirit.orimod.registry.gameplay.EntityRegistry;
+import etithespirit.orimod.registry.world.FeatureRegistry;
+import etithespirit.orimod.registry.world.FluidRegistry;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.MenuRegistry;
-import etithespirit.orimod.registry.PotionRegistry;
+import etithespirit.orimod.registry.gameplay.PotionRegistry;
 import etithespirit.orimod.registry.RenderRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
-import etithespirit.orimod.registry.TileEntityRegistry;
+import etithespirit.orimod.spirit.client.SpiritInput;
+import etithespirit.orimod.registry.world.TileEntityRegistry;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import etithespirit.orimod.spirit.SpiritRestrictions;
 import etithespirit.orimod.spirit.SpiritSize;
 import etithespirit.orimod.spirit.SpiritSounds;
-import etithespirit.orimod.spirit.client.SpiritDash;
-import etithespirit.orimod.spirit.client.SpiritJump;
+import etithespirit.orimod.spirit.common.MotionMarshaller;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -45,8 +50,9 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.data.DataGenerator;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.data.event.GatherDataEvent;
@@ -60,7 +66,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.io.File;
 import java.util.Map;
 
 /**
@@ -112,11 +117,16 @@ public final class OriMod {
 		TileEntityRegistry.registerAll();
 		EntityRegistry.registerAll();
 		MenuRegistry.registerAll();
+		FeatureRegistry.registerAll();
+		GenerateBiomeFeatures.registerAll();
 		
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onPlayerTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onWorldTickEvent);
 		
 		MinecraftForge.EVENT_BUS.addListener(SpiritRestrictions::onEat);
+		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::registerPlayerCaps);
+		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onPlayerClone);
+		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityRegistry::attachPlayerCaps);
 	}
 	
 	/**
@@ -146,10 +156,19 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedInServer);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutServer);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onRespawnedServer);
+		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onChangeDimensionServer);
 		
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::performAirSounds);
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityHurt);
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityDied);
+		
+		MinecraftForge.EVENT_BUS.addListener(MotionMarshaller::onEntityJumped);
+		MinecraftForge.EVENT_BUS.addListener(MotionMarshaller.Server::onServerTick);
+		
+		ReplicateSpiritStatus.Server.registerServerPackets();
+		EffectModificationReplication.Server.registerServerPackets();
+		ReplicatePlayerMovement.Server.registerServerPackets();
+		ReplicateKnownAbilities.Server.registerServerPackets();
 		
 		event.enqueueWork(AdvancementRegistry::registerAll);
 		// event.enqueueWork(MenuRegistry::registerAll);
@@ -180,7 +199,7 @@ public final class OriMod {
 					LOG.warn("A Light Assembly block registered more than one chunk with one BlockPos?! This could be a serious problem!");
 				}
 				BlockEntity ent = serverLevel.getBlockEntity(at);
-				if (!(ent instanceof LightEnergyStorageTile)) {
+				if (!(ent instanceof LightEnergyHandlingTile)) {
 					LOG.info("Found a chunk that was being kept alive by what was believed to be a Light Tech block at {}, however there was no Tech Block at that location, so the keep-alive ticket has been removed and this chunk may now rest.", at);
 					ForgeChunkManager.forceChunk(serverLevel, MODID, at, at.getX() >> 4, at.getY() >> 4, false, true);
 				}
@@ -196,19 +215,27 @@ public final class OriMod {
 		//UniProfiler.setProfiler(Minecraft.getInstance().getProfiler(), Dist.CLIENT);
 		
 		MinecraftForge.EVENT_BUS.addListener(SpiritHealthGui::setupHealthElement);
+		/*
 		MinecraftForge.EVENT_BUS.addListener(SpiritDash::onKeyPressed);
 		MinecraftForge.EVENT_BUS.addListener(SpiritDash::onClientUpdated);
 		
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onEntityJumped);
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onKeyPressed);
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onPlayerTicked);
+		*/
+		MinecraftForge.EVENT_BUS.addListener(SpiritInput::onKeyPressed);
+		//MinecraftForge.EVENT_BUS.addListener(SpiritInput::movementChanged);
 		
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedInClient);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onLoggedOutClient);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onRespawnedClient);
+		MinecraftForge.EVENT_BUS.addListener(MotionMarshaller.Client::onClientTick);
+		MinecraftForge.EVENT_BUS.addListener(ReplicateSpiritStatus.Client::onPlayerExist);
 		
-		ClientSpiritStateComponent.registerClientPackets();
-		EffectModificationReplication.registerClientPackets();
+		ReplicateSpiritStatus.Client.registerClientPackets();
+		EffectModificationReplication.Client.registerClientPackets();
+		ReplicateKnownAbilities.Client.registerClientPackets();
+		// ReplicatePlayerMovement.Client.registerClientPackets();
 		
 		//OnRegisterKeyMappings?
 		//ClientRegistry.registerKeyBinding(SpiritDash.DASH_BIND);
@@ -230,8 +257,9 @@ public final class OriMod {
 	 * @param event The setup event.
 	 */
 	public void dedicatedServerBuildInit(final FMLDedicatedServerSetupEvent event) {
-		ReplicateSpiritStatus.registerServerPackets();
-		EffectModificationReplication.registerServerPackets();
+		//ReplicateSpiritStatus.Server.registerServerPackets();
+		//EffectModificationReplication.Server.registerServerPackets();
+		//ReplicatePlayerMovement.Server.registerServerPackets();
 	}
 	
 	/**
@@ -248,29 +276,27 @@ public final class OriMod {
 	 * @param dataEvt The setup event.
 	 */
 	public void onDataGenerated(final GatherDataEvent dataEvt) throws RuntimeException {
+		DataGenerator generator = dataEvt.getGenerator();
+		BlockToolRelations blockTags = new BlockToolRelations(generator, dataEvt.getExistingFileHelper());
+		GenerateAdvancements advancements = new GenerateAdvancements(generator, dataEvt.getExistingFileHelper());
+		GenerateRecipes recipes = new GenerateRecipes(generator);
+		GenerateBiomeFeatures biomeFeatures = new GenerateBiomeFeatures(generator, dataEvt.getExistingFileHelper());
+		GenerateLootTables lootTables = new GenerateLootTables(generator);
+		GenerateSoundsJson sounds = new GenerateSoundsJson(OriMod.MODID);//.setValidatesChannels();
+		
 		if (dataEvt.includeClient()) {
-			DataGenerator generator = dataEvt.getGenerator();
 			GenerateBlockModels models = new GenerateBlockModels(generator, dataEvt.getExistingFileHelper());
 			GenerateItemModels items = new GenerateItemModels(generator, dataEvt.getExistingFileHelper());
-			BlockToolRelations blockTags = new BlockToolRelations(generator, dataEvt.getExistingFileHelper());
-			GenerateAdvancements advancements = new GenerateAdvancements(generator, dataEvt.getExistingFileHelper());
-			GenerateRecipes recipes = new GenerateRecipes(generator);
-			
-			File modProjectRoot = new File(".").getAbsoluteFile().getParentFile().getParentFile();
-			File srcFolder = new File(modProjectRoot, "src");
-			LOG.info(srcFolder.getAbsolutePath());
-			
-			GenerateSoundsJson sounds = new GenerateSoundsJson(OriMod.MODID, srcFolder.getAbsolutePath());
-			
 			generator.addProvider(true, models);
 			generator.addProvider(true, items);
-			generator.addProvider(true, blockTags);
-			generator.addProvider(true, sounds);
-			generator.addProvider(true, advancements);
-			generator.addProvider(true, recipes);
-			//File file = new File(".");
-			
 		}
+		
+		generator.addProvider(true, blockTags);
+		generator.addProvider(true, sounds);
+		generator.addProvider(true, advancements);
+		generator.addProvider(true, recipes);
+		generator.addProvider(false, lootTables);
+		biomeFeatures.generateGorlekOreFeaturesUsing(dataEvt);
 	}
 	
 	/**
@@ -282,5 +308,15 @@ public final class OriMod {
 		etithespirit.orimod.api.environment.defaultimpl.DefaultEnvironments.init(PotionRegistry.get(DecayEffect.class));
 		EnvironmentalAffinityAPI.validate();
 	}
+	
+	/**
+	 * Constructs a new {@link ResourceLocation} with its namespace already set to <c>orimod</c>.
+	 * @param path The path to the resource.
+	 * @return A new {@link ResourceLocation} made such that it is <c>orimod:(path here)</c>.
+	 */
+	public static ResourceLocation rsrc(String path) {
+		return new ResourceLocation(MODID, path);
+	}
+	
 	
 }

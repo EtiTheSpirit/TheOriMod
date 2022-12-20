@@ -17,7 +17,7 @@ public final class SoundRegistry {
 	
 	public static final HashMap<String, RegistryObject<SoundEvent>> SOUNDS = new HashMap<>();
 	
-	public static SoundEvent get(@Nonnull String soundEventName) {
+	public static @Nonnull SoundEvent get(@Nonnull String soundEventName) {
 		RegistryObject<SoundEvent> sound = SOUNDS.get(soundEventName);
 		if (sound == null || !sound.isPresent()) {
 			throw new NullPointerException(String.format("ALERT: Something attempted to get a spirit sound that didn't exist! Key: %s, RegistryObject<SoundEvent> exists: %s (if TRUE, then the RegistryObject<SoundEvent> was empty)", soundEventName, (sound != null)));
@@ -112,6 +112,8 @@ public final class SoundRegistry {
 		registerSound("tile.light_tech.energize");
 		registerSound("tile.light_tech.activate_large_a");
 		registerSound("tile.light_tech.activate_large_b");
+		
+		registerSound("tile.light_tech.thermal.loop");
 		
 		registerSound("item.lumo_wand.swapconduitauto");
 		

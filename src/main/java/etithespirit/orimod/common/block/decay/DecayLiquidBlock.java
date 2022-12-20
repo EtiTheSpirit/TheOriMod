@@ -1,17 +1,12 @@
 package etithespirit.orimod.common.block.decay;
 
-import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
 import etithespirit.orimod.config.OriModConfigs;
-import etithespirit.orimod.registry.BlockRegistry;
-import etithespirit.orimod.registry.FluidRegistry;
+import etithespirit.orimod.registry.world.FluidRegistry;
 import etithespirit.orimod.util.level.StateHelper;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
-import net.minecraft.tags.FluidTags;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -28,7 +23,6 @@ import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import java.util.function.Supplier;
 
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
@@ -36,12 +30,10 @@ import static etithespirit.orimod.common.block.decay.DecayCommon.DECAY_REPLACEME
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_TEST_MINIMUM_CHANCE;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 /**
  * A decay liquid block, which inherits the attributes of both liquid and decay materials.
  */
-public class DecayLiquidBlock extends LiquidBlock implements IDecayBlock {
+public class DecayLiquidBlock extends LiquidBlock implements IDecayBlockCommon {
 	/**
 	 * @param fluid      A fluid supplier such as {@link RegistryObject < FlowingFluid >}
 	 * @param properties The properties of this fluid.
@@ -187,6 +179,6 @@ public class DecayLiquidBlock extends LiquidBlock implements IDecayBlock {
 	public void stepOn(Level world, BlockPos at, BlockState state, Entity ent) {
 		super.stepOn(world, at, state, ent);
 		if (world.isClientSide) return;
-		IDecayBlock.super.defaultOnEntityWalked(world, at, ent);
+		IDecayBlockCommon.super.defaultOnEntityWalked(world, at, ent);
 	}
 }

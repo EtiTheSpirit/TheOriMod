@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.creative;
 
-import etithespirit.orimod.registry.BlockRegistry;
-import etithespirit.orimod.registry.ItemRegistry;
+import etithespirit.orimod.registry.world.BlockRegistry;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 

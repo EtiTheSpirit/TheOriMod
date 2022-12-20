@@ -2,7 +2,7 @@ package etithespirit.orimod.common.block.light.decoration;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
-import etithespirit.orimod.registry.ItemRegistry;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.tags.TagKey;
@@ -24,7 +24,7 @@ public class ForlornStoneBlock extends Block implements IToolRequirementProvider
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	
 	@Override

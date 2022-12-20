@@ -1,14 +1,11 @@
 package etithespirit.orimod.common.block.light;
 
-import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tags.PresetBlockTags;
-import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
-import etithespirit.orimod.common.tile.light.LightEnergyTile;
 import etithespirit.orimod.common.tile.light.implementations.LightToRedstoneSignalTile;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -18,7 +15,6 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
-import net.minecraft.world.level.LevelReader;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -35,7 +31,7 @@ public class LightToRedstoneSignalBlock extends ConnectableLightTechBlock implem
 			Properties.of(Material.STONE)
 				.strength(0.8f, 80f)
 				.requiresCorrectToolForDrops()
-				.isRedstoneConductor(StaticData.TRUE_POSITION_PREDICATE)
+				.isRedstoneConductor(StaticData.ALWAYS_TRUE)
 		);
 	}
 	
@@ -101,6 +97,6 @@ public class LightToRedstoneSignalBlock extends ConnectableLightTechBlock implem
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY_LIGHT;
+		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 }

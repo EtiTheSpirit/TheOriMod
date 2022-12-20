@@ -12,6 +12,10 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
+/**
+ * This mixin is responsible for managing the pose a Spirit player uses, since their qualifications for poses are different than that of a
+ * default player due to the differences in height.
+ */
 @Mixin(Entity.class)
 public abstract class RedirectForSpiritPose extends net.minecraftforge.common.capabilities.CapabilityProvider<Entity> {
 	protected RedirectForSpiritPose(Class<Entity> baseClass) { super(baseClass); }

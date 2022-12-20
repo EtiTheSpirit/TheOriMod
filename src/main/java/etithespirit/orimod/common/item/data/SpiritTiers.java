@@ -1,16 +1,8 @@
 package etithespirit.orimod.common.item.data;
 
-import etithespirit.orimod.registry.ItemRegistry;
-import net.minecraft.network.chat.Component;
-import net.minecraft.tags.ItemTags;
-import net.minecraft.util.LazyLoadedValue;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Tier;
-import net.minecraft.world.item.Tiers;
 import net.minecraft.world.item.crafting.Ingredient;
 
-import java.util.function.Function;
 import java.util.function.Supplier;
 
 
@@ -37,7 +29,7 @@ public enum SpiritTiers implements Tier {
 	*/
 	
 	/** Weak light tools. */
-	SIMPLE_LIGHT(3, 500, 7f, 2.2f, 18, () -> Ingredient.EMPTY),
+	SIMPLE_LIGHT(3, 500, 7.5f, 2.2f, 18, () -> Ingredient.EMPTY),
 	
 	/** Strong light tools. */
 	COMPLEX_LIGHT(5, 1000, 9.5f, 3.5f, 24, () -> Ingredient.EMPTY);

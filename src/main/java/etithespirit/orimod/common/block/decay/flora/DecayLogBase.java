@@ -2,7 +2,7 @@ package etithespirit.orimod.common.block.decay.flora;
 
 import etithespirit.orimod.OriMod;
 
-import etithespirit.orimod.common.block.decay.IDecayBlock;
+import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
 import net.minecraft.core.BlockPos;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
@@ -16,13 +16,10 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
 import static etithespirit.orimod.common.block.decay.DecayCommon.DECAY_REPLACEMENT_TARGETS;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
-
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
 
 /**
  * A decayed tree log.
@@ -30,7 +27,7 @@ import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
  *
  */
 @SuppressWarnings("unused")
-public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayBlock {
+public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayBlockCommon {
 	
 	
 	public static final BooleanProperty IS_SAFE = BooleanProperty.create("is_safe");

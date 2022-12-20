@@ -1,15 +1,14 @@
 package etithespirit.orimod.common.tile.light;
 
-import etithespirit.orimod.OriMod;
 import etithespirit.orimod.aos.ConnectionHelper;
-import etithespirit.orimod.registry.EntityRegistry;
-import etithespirit.orimod.registry.TileEntityRegistry;
+import etithespirit.orimod.common.block.StaticData;
+import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
+import etithespirit.orimod.energy.ILightEnergyConsumer;
+import etithespirit.orimod.energy.ILightEnergyGenerator;
+import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.core.BlockPos;
-import net.minecraft.world.level.Level;
-import net.minecraft.world.level.block.EntityBlock;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
-import net.minecraft.world.level.block.entity.TickingBlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
@@ -55,6 +54,44 @@ public abstract class LightEnergyTile extends BlockEntity {
 		lastKnownValidNeighbors = null;
 	}
 	
+	/**
+	 * Only safe to call when this has the Powered property. This sets the block at the current position to the desired power state.
+	 * This does not check if the state is already set, nor does it check if the Powered property is actually valid. Handle with care!
+	 * @param desiredPower The desired Powered state.
+	 */
+	protected void utilSetPoweredStateTo(boolean desiredPower) {
+		if (level != null) {
+			level.setBlock(worldPosition, getBlockState().setValue(ForlornAppearanceMarshaller.POWERED, desiredPower), StaticData.REPLICATE_CHANGE | StaticData.DO_NOT_NOTIFY_NEIGHBORS | StaticData.DO_NOT_MAKE_NEIGHBORS_DROP);
+		}
+	}
+	
+	/**
+	 * Updates the state of this block based on whether or not it is powered.
+	 */
+	public void updateVisualPoweredAppearance() {
+		BlockState currentState = getBlockState();
+		if (currentState.hasProperty(ForlornAppearanceMarshaller.POWERED) && level != null) {
+			boolean currentPower = currentState.getValue(ForlornAppearanceMarshaller.POWERED);
+			
+			if (this instanceof ILightEnergyStorage storage) {
+				boolean desiredPower = storage.getLightStored() > 0;
+				if (desiredPower != currentPower) {
+					utilSetPoweredStateTo(desiredPower);
+				}
+			} else if (this instanceof ILightEnergyGenerator generator) {
+				boolean desiredPower = generator.takeGeneratedEnergy(Float.POSITIVE_INFINITY, true) > 0;
+				if (desiredPower != currentPower) {
+					utilSetPoweredStateTo(desiredPower);
+				}
+			} else if (this instanceof ILightEnergyConsumer consumer) {
+				boolean desiredPower = consumer.consumeEnergy(Float.POSITIVE_INFINITY, true) > 0;
+				if (desiredPower != currentPower) {
+					utilSetPoweredStateTo(desiredPower);
+				}
+			}
+		}
+	}
+	
 	@Override
 	public void setRemoved() {
 		markLastKnownNeighborsDirty();
@@ -76,7 +113,7 @@ public abstract class LightEnergyTile extends BlockEntity {
 	 * @return The BlockEntity at {@code pos} iff this tile has a level and the BlockEntity at the given position is an instance of {@link LightEnergyTile}.
 	 */
 	protected @Nullable LightEnergyTile at(BlockPos pos) {
-		if (isRemoved() || !hasLevel()) return null;
+		if (isRemoved() || (level == null)) return null;
 		BlockEntity be = level.getBlockEntity(pos);
 		if (be instanceof LightEnergyTile lightBlock) return lightBlock;
 		return null;
@@ -119,11 +156,9 @@ public abstract class LightEnergyTile extends BlockEntity {
 		if (isRemoved() || !hasLevel()) return null;
 		ArrayList<LightEnergyTile> tiles = new ArrayList<>(6);
 		if (isFunctioningAsHub() || isFunctioningAsLine()) {
-			for (int index = 0; index < lastKnownValidNeighbors.length; index++) {
-				BlockPos neighborPos = lastKnownValidNeighbors[index];
+			for (BlockPos neighborPos : lastKnownValidNeighbors) {
 				LightEnergyTile next = at(neighborPos);
 				LightEnergyTile current = this;
-				
 				
 				while (next != null && next != this) { // next != this would be caused by someone making a square.
 					LightEnergyTile nextBuf = next.tryGetNext(current);

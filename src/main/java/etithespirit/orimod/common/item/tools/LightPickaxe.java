@@ -26,7 +26,7 @@ import java.util.List;
 
 public class LightPickaxe extends PickaxeItem implements ISpiritLightItem {
 	public LightPickaxe() {
-		super(SpiritTiers.COMPLEX_LIGHT, 1, -0.2f, (new Item.Properties()).rarity(Rarity.EPIC).tab(OriModCreativeModeTabs.SPIRIT_TOOLS).fireResistant().stacksTo(1).setNoRepair().durability(SpiritTiers.COMPLEX_LIGHT.getUses()));
+		super(SpiritTiers.SIMPLE_LIGHT, 1, -0.2f, (new Item.Properties()).rarity(Rarity.EPIC).tab(OriModCreativeModeTabs.SPIRIT_TOOLS).fireResistant().stacksTo(1).setNoRepair().durability(SpiritTiers.COMPLEX_LIGHT.getUses()));
 	}
 	
 	@Override

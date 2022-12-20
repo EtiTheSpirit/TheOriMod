@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.block.decay.world;
 
 import etithespirit.orimod.common.block.decay.DecayBlockBase;
-import etithespirit.orimod.common.block.decay.IDecayBlock;
+import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
@@ -21,8 +21,8 @@ public class DecayPlantMatterBlock extends DecayBlockBase {
 	
 	@Override
 	public void registerReplacements(List<StateHolder<?, ?>> blocksToReplaceWithSelf) {
-		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.MOSS_BLOCK);
-		IDecayBlock.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.HAY_BLOCK);
+		IDecayBlockCommon.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.MOSS_BLOCK);
+		IDecayBlockCommon.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.HAY_BLOCK);
 	}
 	
 	@Override

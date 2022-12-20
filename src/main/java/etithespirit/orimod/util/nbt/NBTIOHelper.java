@@ -95,4 +95,18 @@ public final class NBTIOHelper {
 		}
 		return result;
 	}
+	
+	/**
+	 * Returns the float stored at the given key iff the tag has the key registered and it is a float type. Returns def otherwise.
+	 * @param tag The tag to read.
+	 * @param key The key of the value.
+	 * @param def The fallback value if the real value is missing or the wrong type.
+	 * @return The float stored at the given key iff the tag has the key registered and it is a float type. Returns def otherwise.
+	 */
+	public static float getFloatOrDefault(CompoundTag tag, String key, float def) {
+		if (tag.contains(key, CompoundTag.TAG_FLOAT)) {
+			return tag.getFloat(key);
+		}
+		return def;
+	}
 }

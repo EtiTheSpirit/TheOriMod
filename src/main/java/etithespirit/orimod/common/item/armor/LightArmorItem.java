@@ -19,21 +19,31 @@ import org.jetbrains.annotations.Nullable;
 import java.util.List;
 
 public class LightArmorItem extends ArmorItem implements ISpiritLightItem {
-	protected LightArmorItem(EquipmentSlot pSlot) {
-		super(SpiritArmorMaterial.LIGHT, pSlot, (new Item.Properties()).fireResistant().setNoRepair().tab(OriModCreativeModeTabs.SPIRIT_COMBAT).rarity(Rarity.EPIC));
+	protected LightArmorItem(EquipmentSlot pSlot, boolean isHeavy) {
+		super(isHeavy ? SpiritArmorMaterial.HEAVY_LIGHT : SpiritArmorMaterial.SIMPLE_LIGHT, pSlot, (new Item.Properties()).fireResistant().setNoRepair().tab(OriModCreativeModeTabs.SPIRIT_COMBAT).rarity(Rarity.EPIC));
 	}
 	
-	public static LightArmorItem newHelmet() {
-		return new LightArmorItem(EquipmentSlot.HEAD);
+	public static LightArmorItem newSimpleHelmet() { return newHelmet(false); }
+	public static LightArmorItem newSimpleChestplate() { return newChestplate(false); }
+	public static LightArmorItem newSimpleLegs() { return newLegs(false); }
+	public static LightArmorItem newSimpleBoots() { return newBoots(false); }
+	
+	public static LightArmorItem newHeavyHelmet() { return newHelmet(true); }
+	public static LightArmorItem newHeavyChestplate() { return newChestplate(true); }
+	public static LightArmorItem newHeavyLegs() { return newLegs(true); }
+	public static LightArmorItem newHeavyBoots() { return newBoots(true); }
+	
+	private static LightArmorItem newHelmet(boolean heavy) {
+		return new LightArmorItem(EquipmentSlot.HEAD, heavy);
 	}
-	public static LightArmorItem newChestplate() {
-		return new LightArmorItem(EquipmentSlot.CHEST);
+	private static LightArmorItem newChestplate(boolean heavy) {
+		return new LightArmorItem(EquipmentSlot.CHEST, heavy);
 	}
-	public static LightArmorItem newLegs() {
-		return new LightArmorItem(EquipmentSlot.LEGS);
+	private static LightArmorItem newLegs(boolean heavy) {
+		return new LightArmorItem(EquipmentSlot.LEGS, heavy);
 	}
-	public static LightArmorItem newBoots() {
-		return new LightArmorItem(EquipmentSlot.FEET);
+	private static LightArmorItem newBoots(boolean heavy) {
+		return new LightArmorItem(EquipmentSlot.FEET, heavy);
 	}
 	
 	@Override

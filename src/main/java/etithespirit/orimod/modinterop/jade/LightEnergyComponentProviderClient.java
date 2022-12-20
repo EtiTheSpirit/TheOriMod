@@ -1,33 +1,22 @@
 package etithespirit.orimod.modinterop.jade;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.annotation.ClientUseOnly;
-import etithespirit.orimod.client.gui.ExtendedChatColors;
-import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
-import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
-import etithespirit.orimod.common.tile.light.LightEnergyStorageTile;
-import etithespirit.orimod.config.OriModConfigs;
+import etithespirit.orimod.common.chat.ExtendedChatColors;
+import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
+import etithespirit.orimod.energy.ILightEnergyConsumer;
+import etithespirit.orimod.energy.ILightEnergyGenerator;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.util.TruncateNumber;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
-import net.minecraft.world.level.block.state.BlockState;
 import snownee.jade.api.BlockAccessor;
 import snownee.jade.api.IBlockComponentProvider;
-import snownee.jade.api.IServerDataProvider;
 import snownee.jade.api.ITooltip;
 import snownee.jade.api.config.IPluginConfig;
-
-import javax.swing.text.AttributeSet;
-import javax.swing.text.Style;
 
 public enum LightEnergyComponentProviderClient implements IBlockComponentProvider {
 	INSTANCE;
@@ -45,17 +34,6 @@ public enum LightEnergyComponentProviderClient implements IBlockComponentProvide
 		Player plr = Minecraft.getInstance().player;
 		if (plr == null) return false;
 		return plr.isCrouching();
-	}
-	
-	@Deprecated(forRemoval = true)
-	private static boolean shouldShowRF() {
-		/*
-		ShowRFType current = OriModConfigs.SHOW_RF_WHEN.get();
-		if (!current.canShowAtAll) return false;
-		if (current.onlyWhenSneaking) return isClientSneaking();
-		return true;
-		*/
-		return isClientSneaking();
 	}
 	
 	/**
@@ -94,7 +72,7 @@ public enum LightEnergyComponentProviderClient implements IBlockComponentProvide
 	
 	/**
 	 * On the current line: " (X RF)" or " (X RF/tick)"<br/>
-	 * Shows nothing if {@link #shouldShowRF()} returns false.
+	 * Shows nothing if {@link #isClientSneaking()} returns false.
 	 * @param tooltip
 	 * @param lux
 	 */
@@ -116,7 +94,7 @@ public enum LightEnergyComponentProviderClient implements IBlockComponentProvide
 	
 	/**
 	 * On the current line: "X Luxen (Y RF)" or "X Luxen/tick (Y RF/tick)" or "X Lum/tick (Y RF/tick)"<br/>
-	 * Excludes RF if {@link #shouldShowRF()} returns false.
+	 * Excludes RF if {@link #isClientSneaking()} returns false.
 	 * @param tooltip
 	 * @param lux
 	 * @param asRate
@@ -152,7 +130,7 @@ public enum LightEnergyComponentProviderClient implements IBlockComponentProvide
 		);
 	}
 	
-	private static void setupConsumerTip(LightEnergyStorageTile tile, ITooltip tooltip, CompoundTag serverData) {
+	private static void setupConsumerTip(LightEnergyHandlingTile tile, ITooltip tooltip, CompoundTag serverData) {
 		float consumptionPerTick = serverData.getFloat("Consumed");
 		boolean isOverdrawn = serverData.getBoolean("IsOverdrawn");
 		
@@ -163,16 +141,18 @@ public enum LightEnergyComponentProviderClient implements IBlockComponentProvide
 		if (isOverdrawn) addOverloadWarning(tooltip);
 	}
 	
-	private static void setupGeneratorTip(LightEnergyStorageTile tile, ITooltip tooltip, CompoundTag serverData) {
+	private static void setupGeneratorTip(LightEnergyHandlingTile tile, ITooltip tooltip, CompoundTag serverData) {
 		float generationPerTick = serverData.getFloat("Generated");
+		boolean isOverdrawn = serverData.getBoolean("IsOverdrawn");
 		
 		tooltip.add(Component.translatable("waila.orimod.energy.word_output").withStyle(ExtendedChatColors.GRAY.normal));
 		tooltip.append(Component.literal(": ").withStyle(ExtendedChatColors.GRAY.normal));
 		boolean neededLum = appendLuxAndRF(tooltip, generationPerTick, true);
 		if (neededLum && isClientSneaking()) addConversionNotice(tooltip);
+		if (isOverdrawn) addOverloadWarning(tooltip);
 	}
 	
-	private static void setupStorageTip(LightEnergyStorageTile tile, ITooltip tooltip, CompoundTag serverData) {
+	private static void setupStorageTip(LightEnergyHandlingTile tile, ITooltip tooltip, CompoundTag serverData) {
 		tooltip.add(Component.translatable("waila.orimod.energy.word_storage").withStyle(ExtendedChatColors.GRAY.normal));
 		tooltip.append(Component.literal(": ").withStyle(ExtendedChatColors.GRAY.normal));
 		boolean neededLum = appendLuxAndRF(tooltip, serverData.getFloat("Light"), false);
@@ -182,21 +162,19 @@ public enum LightEnergyComponentProviderClient implements IBlockComponentProvide
 	@Override
 	public void appendTooltip(ITooltip tooltip, BlockAccessor blockAccessor, IPluginConfig pluginConfig) {
 		BlockEntity ent = blockAccessor.getBlockEntity();
-		if (ent instanceof LightEnergyStorageTile storageTile) {
+		if (ent instanceof LightEnergyHandlingTile storageTile) {
 			CompoundTag srvData = blockAccessor.getServerData();
-			if (srvData.contains("Light")) {
-				boolean isConsumer = storageTile instanceof LightEnergyStorageTile.ILuxenConsumer;
-				boolean isGenerator = storageTile instanceof LightEnergyStorageTile.ILuxenGenerator;
-				if (isConsumer && isGenerator) {
-					throw new UnsupportedOperationException();
-				}
-				if (isConsumer) {
-					setupConsumerTip(storageTile, tooltip, srvData);
-				} else if (isGenerator) {
-					setupGeneratorTip(storageTile, tooltip, srvData);
-				} else {
-					setupStorageTip(storageTile, tooltip, srvData);
-				}
+			boolean isConsumer = storageTile instanceof ILightEnergyConsumer;
+			boolean isGenerator = storageTile instanceof ILightEnergyGenerator;
+			if (isConsumer && isGenerator) {
+				throw new UnsupportedOperationException();
+			}
+			if (isConsumer) {
+				setupConsumerTip(storageTile, tooltip, srvData);
+			} else if (isGenerator) {
+				setupGeneratorTip(storageTile, tooltip, srvData);
+			} else if (srvData.contains("Light")) {
+				setupStorageTip(storageTile, tooltip, srvData);
 			}
 		}
 	}

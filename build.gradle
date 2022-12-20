@@ -27,6 +27,11 @@ sourceSets {
             srcDirs = ['src/api/java']
         }
     }
+    extension {
+        java {
+            srcDirs = ['src/extension/java']
+        }
+    }
     main {
         java {
             srcDirs = ['src/main/java', 'src/api/java']
@@ -41,6 +46,9 @@ configurations {
     apiCompile.extendsFrom(compile)
     apiImplementation.extendsFrom(implementation)
     apiCompileOnly.extendsFrom(compileOnly)
+    extCompile.extendsFrom(compile)
+    extImplementation.extendsFrom(implementation)
+    extCompileOnly.extendsFrom(compileOnly)
 
     // configuration that holds jars to embed inside the jar
     //embed
@@ -94,6 +102,20 @@ minecraft {
                 "${mod_id}" {
                     source sourceSets.main
                     source sourceSets.api
+                }
+            }
+        }
+
+        clientWithExtensions {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+            args '--mixin=orimod.mixin.json'
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                    source sourceSets.api
+                    source sourceSets.extension
                 }
             }
         }
@@ -197,7 +219,7 @@ dependencies {
 
     compileOnly fg.deobf("curse.maven:configured-457570:4011355")
     compileOnly fg.deobf("curse.maven:catalogue-459701:3873264")
-    compileOnly fg.deobf("curse.maven:jade-324717:4096513") // full build
+    implementation fg.deobf("curse.maven:jade-324717:4096513") // full build
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html
@@ -291,6 +313,12 @@ task apiJarSrc(type: Jar) {
     afterEvaluate { finalizedBy('reobfJar') }
 }
 
+task extensionJar(type: Jar) {
+    archiveClassifier = "extensions"
+    from sourceSets.extension.java
+    afterEvaluate { finalizedBy('reobfJar') }
+}
+
 // Example configuration to allow publishing using the maven-publish plugin
 // This is the preferred method to reobfuscate your jar file
 jar.finalizedBy('reobfJar')
@@ -309,3 +337,4 @@ tasks.withType(JavaCompile).configureEach {
 
 build.dependsOn tasks.apiJar
 build.dependsOn tasks.apiJarSrc
+build.dependsOn tasks.extensionJar

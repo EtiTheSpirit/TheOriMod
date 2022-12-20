@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.block.decay;
 
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
-import etithespirit.orimod.registry.BlockRegistry;
+import etithespirit.orimod.registry.world.BlockRegistry;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
 import net.minecraft.server.level.ServerLevel;
@@ -15,23 +15,20 @@ import net.minecraft.world.level.block.state.StateHolder;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import static etithespirit.orimod.common.block.decay.DecayCommon.ALL_ADJACENT_ARE_DECAY;
 import static etithespirit.orimod.common.block.decay.DecayCommon.DECAY_REPLACEMENT_TARGETS;
 import static etithespirit.orimod.common.block.decay.DecayCommon.EDGE_DETECTION_RARITY;
 import static etithespirit.orimod.info.coordinate.Cardinals.ADJACENTS_IN_ORDER;
 
-import net.minecraft.world.level.block.state.BlockBehaviour.Properties;
-
 /**
  * This base class represents a block associated with The Decay. It provides a crude implementation of spreading and "infecting"
- * (replacing) other blocks as defined by {@link IDecayBlock}.
+ * (replacing) other blocks as defined by {@link IDecayBlockCommon}.
  * @author Eti
  *
  */
 @SuppressWarnings("unused")
-public abstract class DecayBlockBase extends Block implements IDecayBlock {
+public abstract class DecayBlockBase extends Block implements IDecayBlockCommon {
 	
 	/**
 	 * Create a new Decay block with the given properties that doesn't spread.
@@ -98,6 +95,6 @@ public abstract class DecayBlockBase extends Block implements IDecayBlock {
 	@Override
 	public void stepOn(Level world, BlockPos at, BlockState state, Entity ent) {
 		if (world.isClientSide) return;
-		IDecayBlock.super.defaultOnEntityWalked(world, at, ent);
+		IDecayBlockCommon.super.defaultOnEntityWalked(world, at, ent);
 	}
 }
