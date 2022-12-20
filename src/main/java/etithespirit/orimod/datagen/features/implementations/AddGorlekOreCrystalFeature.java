@@ -1,4 +1,4 @@
-package etithespirit.orimod.datagen.biome;
+package etithespirit.orimod.datagen.features.implementations;
 
 import com.mojang.serialization.Codec;
 import etithespirit.orimod.datagen.features.GenerateBiomeFeatures;
