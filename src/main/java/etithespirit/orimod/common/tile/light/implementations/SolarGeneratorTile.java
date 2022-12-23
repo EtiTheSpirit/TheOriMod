@@ -54,7 +54,7 @@ public class SolarGeneratorTile extends LightEnergyHandlingTile implements IServ
 			generated = (brightness / 15f) * PEAK_GENERATION_RATE;
 		}
 		lastGenerated = generated;
-		generatorHelper.stash(generated);
+		generatorHelper.stash(generated, false);
 		
 		boolean isBlockPowered = current.getValue(ForlornAppearanceMarshaller.POWERED);
 		boolean shouldBePowered = lastGenerated > 0;

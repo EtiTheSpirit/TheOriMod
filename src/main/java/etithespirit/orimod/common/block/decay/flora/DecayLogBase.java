@@ -2,8 +2,11 @@ package etithespirit.orimod.common.block.decay.flora;
 
 import etithespirit.orimod.OriMod;
 
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.Level;
@@ -89,6 +92,11 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 	@Override
 	public BlockState healsInto(BlockState thisState) {
 		return thisState.setValue(IS_SAFE, true);
+	}
+	
+	@Override
+	public MutableComponent getName() {
+		return StaticData.getNameAsDecay(super.getName());
 	}
 	
 }

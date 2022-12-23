@@ -11,12 +11,13 @@ public final class SoundSmearer {
 	private final int tickThreshold;
 	private int ticksSinceLastAction = 0;
 	private int ticksSinceLastNonAction = 0;
-	private int dualBiasTickCount = 0;
+	private int dualBiasTickCount;
 	private final SmearDirection direction;
 	
 	public SoundSmearer(SmearDirection direction, int tickThreshold) {
 		this.direction = direction;
 		this.tickThreshold = tickThreshold;
+		this.dualBiasTickCount = -tickThreshold;
 	}
 	
 	public void tick(boolean hadAction) {
@@ -39,7 +40,7 @@ public final class SoundSmearer {
 		} else if (direction == SmearDirection.DELAY_TURNING_OFF) {
 			return ticksSinceLastAction < tickThreshold;
 		} else {
-			return dualBiasTickCount >= 0;
+			return dualBiasTickCount > 0;
 		}
 	}
 	

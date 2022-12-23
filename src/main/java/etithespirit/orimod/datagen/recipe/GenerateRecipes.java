@@ -10,11 +10,16 @@ import net.minecraft.data.recipes.FinishedRecipe;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.data.recipes.ShapelessRecipeBuilder;
+import net.minecraft.data.recipes.SimpleCookingRecipeBuilder;
+import net.minecraft.data.recipes.UpgradeRecipeBuilder;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.level.block.Blocks;
+import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
 import java.util.function.Consumer;
 
 public class GenerateRecipes extends RecipeProvider {
@@ -23,7 +28,7 @@ public class GenerateRecipes extends RecipeProvider {
 	}
 	
 	@Override
-	protected void buildCraftingRecipes(Consumer<FinishedRecipe> recipeConsumer) {
+	protected void buildCraftingRecipes(@NotNull Consumer<FinishedRecipe> recipeConsumer) {
 		
 		// TODO: Make advancements for all of these!
 		
@@ -179,6 +184,7 @@ public class GenerateRecipes extends RecipeProvider {
 			.pattern("FGF")
 		.save(recipeConsumer);
 		
+		/*
 		ShapedRecipeBuilder.shaped(ItemRegistry.getBlockItemOf(BlockRegistry.HARDLIGHT_GLASS), 1)
 			.unlockedBy("main_action", becomeSpirit)
 			.unlockedBy("get_diamond", AdvancementRegistry.PICKUP_DIAMONDS)
@@ -186,6 +192,13 @@ public class GenerateRecipes extends RecipeProvider {
 			.pattern("SSS")
 			.pattern("SSS")
 			.pattern("SSS")
+		.save(recipeConsumer);
+		 */
+		
+		ShapelessRecipeBuilder.shapeless(BlockRegistry.HARDLIGHT_GLASS.get(), 1)
+			.unlockedBy("main_action", becomeSpirit)
+			.unlockedBy("get_diamond", AdvancementRegistry.PICKUP_DIAMONDS)
+			.requires(ItemRegistry.HARDLIGHT_SHARD.get(), 9)
 		.save(recipeConsumer);
 		
 		ShapelessRecipeBuilder.shapeless(ItemRegistry.HARDLIGHT_SHARD.get(), 9)
@@ -258,6 +271,18 @@ public class GenerateRecipes extends RecipeProvider {
 			.pattern("FGF")
 		.save(recipeConsumer);
 		
+		
+		ShapedRecipeBuilder.shaped(ItemRegistry.getBlockItemOf(BlockRegistry.THERMAL_ENERGY_BLOCK), 2)
+			.unlockedBy("main_action", becomeSpirit)
+			.unlockedBy("get_diamond", AdvancementRegistry.PICKUP_DIAMONDS)
+			.define('F', ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE))
+			.define('S', ItemRegistry.HARDLIGHT_SHARD.get())
+			.define('N', Items.NETHERITE_SCRAP)
+			.pattern("FNF")
+			.pattern("NSN")
+			.pattern("FNF")
+		.save(recipeConsumer);
+		
 		ShapedRecipeBuilder.shaped(ItemRegistry.getBlockItemOf(BlockRegistry.LIGHT_REPAIR_BOX), 1)
 			.unlockedBy("main_action", becomeSpirit)
 			.unlockedBy("get_diamond", AdvancementRegistry.PICKUP_DIAMONDS)
@@ -306,6 +331,80 @@ public class GenerateRecipes extends RecipeProvider {
 			.pattern("BbB")
 			.pattern("S S")
 		.save(recipeConsumer);
+		
+		// Smith Gorlek Ingot + Netherite Ingot
+		UpgradeRecipeBuilder.smithing(Ingredient.of(ItemRegistry.GORLEK_INGOT.get()), Ingredient.of(Items.NETHERITE_INGOT), ItemRegistry.GORLEK_NETHERITE_ALLOY_INGOT.get())
+			.unlocks("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.unlocks("get_netherite_ingot", Objects.requireNonNull(AdvancementRegistry.PICKUP_NETHERITE_INGOTS))
+		.save(recipeConsumer, OriMod.rsrc("merge_gorlek_and_netherite"));
+		
+		// Smelt Raw Gorlek Ore
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(ItemRegistry.RAW_GORLEK_ORE.get()), ItemRegistry.GORLEK_INGOT.get(), 1, 200)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+		.save(recipeConsumer, OriMod.rsrc("gorlek_ingot_from_raw_gorlek_ore"));
+		
+		// Smelt Gorlek Ore Block
+		SimpleCookingRecipeBuilder.smelting(Ingredient.of(BlockRegistry.GORLEK_ORE.get()), ItemRegistry.GORLEK_INGOT.get(), 1,200)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+		.save(recipeConsumer, OriMod.rsrc("gorlek_ingot_from_gorlek_ore_block"));
+		
+		// Smelt Raw Gorlek Ore (Blast Furnace)
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(ItemRegistry.RAW_GORLEK_ORE.get()), ItemRegistry.GORLEK_INGOT.get(), 1, 100)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+		.save(recipeConsumer, OriMod.rsrc("gorlek_ingot_from_raw_gorlek_ore_blast_furnace"));
+		
+		// Smelt Gorlek Ore Block (Blast Furnace)
+		SimpleCookingRecipeBuilder.blasting(Ingredient.of(BlockRegistry.GORLEK_ORE.get()), ItemRegistry.GORLEK_INGOT.get(), 1,100)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+		.save(recipeConsumer, OriMod.rsrc("gorlek_ingot_from_gorlek_ore_block_blast_furnace"));
+		
+		// TWO-WAY: INGOT <-> NUGGET
+		ShapelessRecipeBuilder.shapeless(ItemRegistry.GORLEK_INGOT.get(), 1)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.requires(ItemRegistry.GORLEK_NUGGET.get(), 9)
+		.save(recipeConsumer, OriMod.rsrc("gorlek_ingot_from_nuggets"));
+		
+		ShapelessRecipeBuilder.shapeless(ItemRegistry.GORLEK_NUGGET.get(), 9)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.requires(ItemRegistry.GORLEK_INGOT.get())
+		.save(recipeConsumer, OriMod.rsrc("gorlek_nuggets_from_ingot"));
+		
+		// TWO-WAY: RAW ORE <-> RAW ORE BLOCK
+		ShapelessRecipeBuilder.shapeless(ItemRegistry.RAW_GORLEK_ORE.get(), 9)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.requires(BlockRegistry.RAW_GORLEK_ORE_BLOCK.get(), 1)
+		.save(recipeConsumer, OriMod.rsrc("raw_gorlek_ore_from_block"));
+		
+		ShapelessRecipeBuilder.shapeless(BlockRegistry.RAW_GORLEK_ORE_BLOCK.get(), 1)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.requires(ItemRegistry.RAW_GORLEK_ORE.get(), 9)
+		.save(recipeConsumer, OriMod.rsrc("raw_gorlek_block_from_ores"));
+		
+		// TWO-WAY: GORLEK METAL BLOCK <-> GORLEK INGOT
+		ShapelessRecipeBuilder.shapeless(BlockRegistry.GORLEK_METAL_BLOCK.get(), 1)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.requires(ItemRegistry.GORLEK_INGOT.get(), 9)
+		.save(recipeConsumer, OriMod.rsrc("gorlek_block_from_ingots"));
+		
+		ShapelessRecipeBuilder.shapeless(ItemRegistry.GORLEK_INGOT.get(), 9)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.requires(BlockRegistry.GORLEK_METAL_BLOCK.get())
+		.save(recipeConsumer, OriMod.rsrc("gorlek_ingots_from_block"));
+		
+		// TWO-WAY: GORLEK-NETHERITE ALLOY BLOCK <-> INGOT
+		ShapelessRecipeBuilder.shapeless(BlockRegistry.GORLEK_NETHERITE_ALLOY_BLOCK.get(), 1)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.unlockedBy("get_netherite_ingot", Objects.requireNonNull(AdvancementRegistry.PICKUP_NETHERITE_INGOTS))
+			.requires(ItemRegistry.GORLEK_NETHERITE_ALLOY_INGOT.get(), 9)
+		.save(recipeConsumer, OriMod.rsrc("gorlek_netherite_alloy_block_from_ingots"));
+	
+		ShapelessRecipeBuilder.shapeless(ItemRegistry.GORLEK_NETHERITE_ALLOY_INGOT.get(), 9)
+			.unlockedBy("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.PICKUP_GORLEK_ORE.get()))
+			.unlockedBy("get_netherite_ingot", Objects.requireNonNull(AdvancementRegistry.PICKUP_NETHERITE_INGOTS))
+			.requires(BlockRegistry.GORLEK_NETHERITE_ALLOY_BLOCK.get())
+		.save(recipeConsumer, OriMod.rsrc("gorlek_netherite_alloy_ingots_from_block"));
+		
+		
 		
 		//ShapedRecipeBuilder.shaped(ItemRegistry.LIGHT_STRONG_HELMET)
 		//UpgradeRecipeBuilder.smithing(ItemRegistry.LIGHT_HELMET.get(), )

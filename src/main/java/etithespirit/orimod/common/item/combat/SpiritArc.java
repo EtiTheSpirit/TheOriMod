@@ -1,12 +1,17 @@
 package etithespirit.orimod.common.item.combat;
 
+import etithespirit.orimod.OriMod;
 import etithespirit.orimod.combat.projectile.SpiritArrow;
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
-import etithespirit.orimod.common.item.ISpiritLightItem;
+import etithespirit.orimod.common.item.IModelPredicateProvider;
+import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
 import etithespirit.orimod.registry.gameplay.EntityRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
-import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -15,11 +20,15 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-public class SpiritArc extends BowItem implements ISpiritLightItem {
+import java.util.HashMap;
+import java.util.Map;
+
+public class SpiritArc extends BowItem implements ISpiritLightRepairableItem, IModelPredicateProvider {
 	
 	private static final String IS_CHARGED_KEY = "isCharged";
 	
@@ -29,7 +38,7 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	private static final float PI180 = (float)Math.PI / 180f;
 	
 	public SpiritArc() {
-		this(new Properties().rarity(Rarity.EPIC).stacksTo(1).durability(1000).tab(OriModCreativeModeTabs.SPIRIT_COMBAT).setNoRepair());
+		this(new Properties().stacksTo(1).durability(200).tab(OriModCreativeModeTabs.SPIRIT_COMBAT).setNoRepair());
 	}
 	
 	private SpiritArc(Properties pProperties) {
@@ -39,6 +48,11 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	@Override
 	public int getMaxStackSize(ItemStack stack) {
 		return 1;
+	}
+	
+	@Override
+	public UseAnim getUseAnimation(ItemStack pStack) {
+		return UseAnim.BOW;
 	}
 	
 	protected static void setCharged(ItemStack onStack, boolean isCharged) {
@@ -93,7 +107,7 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 			pLevel.addFreshEntity(projectile);
 		}
 		if (pLivingEntity instanceof Player player) player.awardStat(Stats.ITEM_USED.get(this));
-		pStack.hurtAndBreak(chargedShot ? 1 : 2, pLivingEntity, item -> {});
+		pStack.hurtAndBreak(chargedShot ? 2 : 1, pLivingEntity, item -> {});
 	}
 	
 	@Override
@@ -113,7 +127,7 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	@Override
 	public ItemStack finishUsingItem(ItemStack pStack, Level pLevel, LivingEntity pLivingEntity) {
 		this.releaseUsing(pStack, pLevel, pLivingEntity, 0);
-		return super.finishUsingItem(pStack, pLevel, pLivingEntity);
+		return pStack;
 	}
 	
 	@Override
@@ -142,7 +156,27 @@ public class SpiritArc extends BowItem implements ISpiritLightItem {
 	
 	@Override
 	public int getBarColor(ItemStack pStack) {
-		return ISpiritLightItem.super.getBarColor(pStack);
+		return ISpiritLightRepairableItem.super.getBarColor(pStack);
 	}
 	
+	@Override
+	public Component getName(ItemStack pStack) {
+		return StaticData.getNameAsLight(super.getName(pStack));
+	}
+	
+	@Override
+	public void getPredicates(Map<ResourceLocation, ItemPropertyFunction> result) {
+		ItemPropertyFunction func = ((pStack, pLevel, pEntity, pSeed) -> {
+			if (pStack.is(SpiritArc.this)) {
+				if (pEntity.isUsingItem()) {
+					int remainingTicks = pEntity.getUseItemRemainingTicks();
+					if (remainingTicks <= CHARGED_AFTER_TICKS) return 3;
+					if (remainingTicks <= READY_TO_FIRE_AFTER_TICKS) return 2;
+					if (remainingTicks <= USE_TIME) return 1;
+				}
+			}
+			return 0;
+		});
+		result.put(OriMod.rsrc("arcphase"), func);
+	}
 }

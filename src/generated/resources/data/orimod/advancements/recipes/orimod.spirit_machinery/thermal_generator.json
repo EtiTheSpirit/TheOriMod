@@ -1,0 +1,49 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "get_diamond": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "minecraft:diamond"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "orimod:thermal_generator"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    },
+    "main_action": {
+      "conditions": {
+        "player": [
+          {
+            "condition": "minecraft:entity_properties",
+            "entity": "this",
+            "predicate": {
+              "type": "minecraft:player"
+            }
+          }
+        ]
+      },
+      "trigger": "orimod:become_spirit"
+    }
+  },
+  "requirements": [
+    [
+      "main_action",
+      "get_diamond",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "orimod:thermal_generator"
+    ]
+  }
+}

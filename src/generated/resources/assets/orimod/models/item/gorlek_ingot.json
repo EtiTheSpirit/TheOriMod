@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "orimod:item/ingot/gorlek_ingot"
+  }
+}

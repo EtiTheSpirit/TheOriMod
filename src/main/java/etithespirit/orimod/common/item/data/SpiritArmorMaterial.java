@@ -1,5 +1,6 @@
 package etithespirit.orimod.common.item.data;
 
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.LazyLoadedValue;
@@ -13,8 +14,25 @@ import java.util.function.Supplier;
 
 public enum SpiritArmorMaterial implements ArmorMaterial {
 	
-	SIMPLE_LIGHT("orimod:light", 30, new int[]{3,6,8,3}, 20, SoundEvents.ARMOR_EQUIP_DIAMOND, 2f, 0.0f, () -> Ingredient.EMPTY),
-	HEAVY_LIGHT("orimod:heavy_light", 38, new int[]{4, 7, 9, 4}, 24, SoundEvents.ARMOR_EQUIP_DIAMOND, 3.2f, 0.0f, () -> Ingredient.EMPTY);
+	// TODO: Armor equip sounds that are suitable for these types!
+	
+	/** Somewhere around Iron and Diamond, but more enchantable than Gold. Must be repaired with energy. Decently strong but not amazing. */
+	//LIGHT("orimod:light", 30, new int[]{2, 5, 7, 2}, 24, SoundEvents.ARMOR_EQUIP_DIAMOND, 1.8f, 0.0f, () -> Ingredient.EMPTY),
+	
+	// TEMPORARY: So I can play, I wil buff this back up to the previous strength
+	LIGHT("orimod:light", 30, new int[]{3, 6, 8, 3}, 24, SoundEvents.ARMOR_EQUIP_DIAMOND, 2.2f, 0.0f, () -> Ingredient.EMPTY),
+	
+	/** Roughly the same as Netherite. A little worse. No knockback resistance. */
+	GORLEK("orimod:gorlek", 34, new int[]{3, 6, 8, 3}, 12, SoundEvents.ARMOR_EQUIP_IRON, 2.5f, 0.0f, () -> Ingredient.of(ItemRegistry.GORLEK_INGOT.get())),
+	
+	/** The combined strength of Gorlek + Netherite, which is considerably stronger, but a bit lacking in its enchantment capabilities. */
+	GORLEK_NETHERITE_ALLOY("orimod:gorlek_netherite_alloy", 40, new int[]{4, 7, 9, 4}, 6, SoundEvents.ARMOR_EQUIP_NETHERITE, 3.5f, 0.2f, () -> Ingredient.of(ItemRegistry.GORLEK_NETHERITE_ALLOY_INGOT.get())),
+	
+	/** what the fuck */
+	DEBUG("orimod:debug", 0x7FFFFFFF, new int[]{0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF, 0x7FFFFFFF}, 0x7FFFFFFF, SoundEvents.ARMOR_EQUIP_NETHERITE, Float.POSITIVE_INFINITY, Float.POSITIVE_INFINITY, () -> Ingredient.EMPTY);
+	
+	// TODO: Go the extra mile for endgame+ players and allow combining Light + Gorlek (Alloy)? This would be very powerful mostly due to the cheaper repairs, I would have to actually balance this.
+	// TODO: Play in a lot of mainstream endgame+ modpacks, get a feel for the power and desired playstyle of the modder, try to really tune this before making a formal decision.
 	
 	private static final int[] HEALTH_PER_SLOT = new int[]{13, 15, 16, 11};
 	private final String name;

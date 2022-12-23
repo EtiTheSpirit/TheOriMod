@@ -7,11 +7,15 @@ import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.EffectEnforcement;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.spirit.SpiritIdentifier;
+import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.dedicated.DedicatedServer;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.entity.player.PlayerEvent;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 
 import java.util.Optional;
 
@@ -22,8 +26,9 @@ public final class WorldLoading {
 		ReplicateSpiritStatus.Server.tellEveryonePlayerSpiritStatus(player, SpiritIdentifier.isSpirit(player));
 		player.refreshDimensions();
 		EffectEnforcement.updatePlayerAttrs(player);
-		ReplicateKnownAbilities.Server.tellAllCapsTo((ServerPlayer)player);
 		
+		ServerPlayer srvPlr = (ServerPlayer)player;
+		ReplicateKnownAbilities.Server.tellAllCapsTo(srvPlr);
 	}
 	
 	public static void onLoggedInClient(PlayerEvent.PlayerLoggedInEvent evt) {

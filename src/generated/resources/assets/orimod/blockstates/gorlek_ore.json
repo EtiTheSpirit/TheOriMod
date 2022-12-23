@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "orimod:block/ore/deposits/gorlek_ore"
+    }
+  }
+}

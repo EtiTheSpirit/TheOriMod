@@ -30,12 +30,12 @@ public enum ForlornBlockSkinProviderClient implements IBlockComponentProvider {
 	 * @param isBlue
 	 */
 	private static void addSkin(ITooltip tooltip, boolean isBlue) {
-		tooltip.add(Component.translatable("waila.orimod.forlorn.word_skin").withStyle(ExtendedChatColors.GRAY.dark));
-		tooltip.append(Component.literal(": ").withStyle(ExtendedChatColors.GRAY.dark));
+		tooltip.add(Component.translatable("waila.orimod.forlorn.word_skin").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
+		tooltip.append(Component.literal(": ").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
 		if (isBlue) {
-			tooltip.append(Component.translatable("waila.orimod.forlorn.word_blue").withStyle(ExtendedChatColors.FORLORN_BLUE.dark));
+			tooltip.append(Component.translatable("waila.orimod.forlorn.word_blue").withStyle(ExtendedChatColors.FORLORN_BLUE_PAIR.dark));
 		} else {
-			tooltip.append(Component.translatable("waila.orimod.forlorn.word_orange").withStyle(ExtendedChatColors.FORLORN_ORANGE.dark));
+			tooltip.append(Component.translatable("waila.orimod.forlorn.word_orange").withStyle(ExtendedChatColors.FORLORN_ORANGE_PAIR.dark));
 		}
 	}
 	

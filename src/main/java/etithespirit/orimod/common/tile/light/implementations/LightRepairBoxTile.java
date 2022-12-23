@@ -4,6 +4,7 @@ import etithespirit.orimod.annotation.ServerUseOnly;
 import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.client.render.hud.LightRepairDeviceMenu;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
+import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
 import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
 import etithespirit.orimod.common.tile.IClientUpdatingTile;
@@ -37,8 +38,9 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	private final LightTechLooper SOUND;
 	private int nextItem = 0;
 	
-	private final @ServerUseOnly
-	EnergyReservoir consumerHelper = new EnergyReservoir(CONSUMPTION_RATE);
+	private final @ServerUseOnly EnergyReservoir consumerHelper = new EnergyReservoir(Float.POSITIVE_INFINITY); // Unlike other devices, this has a conditional cost, so it can store a theoretical unlimited amount of power
+	// This also allows it to accommodate for items that want more power to repair.
+	
 	private final @ServerUseOnly SoundSmearer soundSmearer = new SoundSmearer(SoundSmearer.SmearDirection.DELAY_BOTH, 10);
 	private @ServerUseOnly boolean lastTickHadEnough = true;
 	private @ServerUseOnly boolean thereWasSomethingToRepair = false;
@@ -145,7 +147,6 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	
 	@Override
 	public void updateVisualPoweredAppearance() {
-		// TODO: Make this power down after a delay (use the Sound Smearer to help)
 		BlockState currentState = getBlockState();
 		boolean targetPower = soundShouldBePlaying();
 		boolean currentPower = currentState.getValue(ForlornAppearanceMarshaller.POWERED);
@@ -168,7 +169,7 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 			boolean canBeRepaired = !item.isEmpty() && item.is(OriModItemTags.LIGHT_REPAIRABLE) && item.isDamaged();
 			if (canBeRepaired) {
 				thereWasSomethingToRepair = true;
-				if (trySpendEnergyForTick()) {
+				if (trySpendEnergyForTick(item)) {
 					item.setDamageValue(item.getDamageValue() - 1);
 				} else {
 					failedToRepairItemLastTick = true;
@@ -183,7 +184,7 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	@Override
 	public void updateServer(Level inLevel, BlockPos at, BlockState current) {
 		tryRepairNextItem();
-		// soundSmearer.tick(thereWasSomethingToRepair && !failedToRepairItemLastTick);
+		soundSmearer.tick(thereWasSomethingToRepair && !failedToRepairItemLastTick);
 	}
 	
 	@Override
@@ -217,18 +218,22 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	 * Attempts to spend the energy needed to repair something by one durability point.
 	 * @return Whether or not enough energy was there to spend.
 	 */
-	private boolean trySpendEnergyForTick() {
-		lastTickHadEnough = consumerHelper.tryConsume(CONSUMPTION_RATE);
+	private boolean trySpendEnergyForTick(ItemStack item) {
+		float rate = CONSUMPTION_RATE;
+		if (item.getItem() instanceof ISpiritLightRepairableItem spiritLightItem) {
+			rate *= spiritLightItem.getRepairEnergyCostMultiplier();
+			if (rate <= 0) return true;
+		}
+		lastTickHadEnough = consumerHelper.tryConsume(rate, false);
 		return lastTickHadEnough;
 	}
 	
 	@Override
 	public float consumeEnergy(float desiredAmount, boolean simulate) {
+		if (!thereWasSomethingToRepair) return 0; // Do not spend energy if there's nothing to repair!
+		
 		float realAmount = desiredAmount / 2f;
-		if (realAmount > CONSUMPTION_RATE) {
-			realAmount = CONSUMPTION_RATE;
-		}
-		return consumerHelper.stash(realAmount);
+		return consumerHelper.stash(realAmount, simulate);
 	}
 	
 	@Override

@@ -3,7 +3,7 @@ package etithespirit.orimod.networking.potion;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ServerUseOnly;
 import etithespirit.orimod.networking.ReplicationData;
-import etithespirit.orimod.registry.gameplay.PotionRegistry;
+import etithespirit.orimod.registry.gameplay.EffectRegistry;
 import etithespirit.orimod.util.extension.MobEffectDataStorage;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -69,7 +69,7 @@ public final class EffectModificationReplication {
 		 */
 		@ServerUseOnly
 		public static void tellClientDurationModified(ServerPlayer player, Class<? extends MobEffect> effect, int addedDuration) {
-			INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new Packet(PotionRegistry.getId(effect), addedDuration));
+			INSTANCE.send(PacketDistributor.PLAYER.with(() -> player), new Packet(EffectRegistry.getId(effect), addedDuration));
 		}
 	}
 	
@@ -82,7 +82,7 @@ public final class EffectModificationReplication {
 		private static void onClientEvent(Packet msg, Supplier<NetworkEvent.Context> ctx) {
 			ctx.get().enqueueWork(() -> {
 				LocalPlayer player = Minecraft.getInstance().player;
-				MobEffect effect = PotionRegistry.get(msg.effect);
+				MobEffect effect = EffectRegistry.fromId(msg.effect);
 				MobEffectInstance fx = player.getEffect(effect);
 				CompoundTag effectData = MobEffectDataStorage.accessData(fx);
 				effectData.putInt("maxDuration", effectData.getInt("maxDuration") + msg.addedDuration);

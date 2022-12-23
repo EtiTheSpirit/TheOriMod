@@ -47,5 +47,4 @@ public abstract class InjectPlayerPlaySound extends LivingEntity implements ISel
 			ci.cancel();
 		}
 	}
-	
 }

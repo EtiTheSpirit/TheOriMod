@@ -3,6 +3,40 @@
   "display": {
     "firstperson_lefthand": {
       "rotation": [
+        0,
+        90,
+        -25
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ],
+      "translation": [
+        1.13,
+        3.2,
+        1.13
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        -90,
+        25
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ],
+      "translation": [
+        1.13,
+        3.2,
+        1.13
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
         -80,
         -280,
         40
@@ -18,7 +52,7 @@
         2.5
       ]
     },
-    "firstperson_righthand": {
+    "thirdperson_righthand": {
       "rotation": [
         -80,
         260,
@@ -32,7 +66,7 @@
       "translation": [
         -1,
         -2,
-        -2.5
+        2.5
       ]
     }
   },
@@ -40,21 +74,19 @@
     {
       "model": "orimod:item/spirit_arc_pulling_0",
       "predicate": {
-        "minecraft:pulling": 1.0
+        "orimod:arcphase": 1.0
       }
     },
     {
       "model": "orimod:item/spirit_arc_pulling_1",
       "predicate": {
-        "minecraft:pull": 0.25,
-        "minecraft:pulling": 1.0
+        "orimod:arcphase": 2.0
       }
     },
     {
       "model": "orimod:item/spirit_arc_pulling_2",
       "predicate": {
-        "minecraft:pull": 0.4,
-        "minecraft:pulling": 1.0
+        "orimod:arcphase": 3.0
       }
     }
   ],

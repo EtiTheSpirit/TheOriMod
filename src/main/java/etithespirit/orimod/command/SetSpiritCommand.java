@@ -60,14 +60,14 @@ public class SetSpiritCommand {
 				        )
 				    )
 				)
-				.then(Commands.literal("airjump")
+				.then(Commands.literal("jumptype")
 					.then(Commands.argument("jumpType", EnumArgument.enumArgument(SpiritJumpAbility.class))
 					    .executes(
 					    	ctx -> setAirJumpMode(ctx.getSource(), EntityArgument.getPlayer(ctx, "player"), ctx.getArgument("jumpType", SpiritJumpAbility.class))
 					    )
 					)
 				)
-				.then(Commands.literal("dash")
+				.then(Commands.literal("dashtype")
 					.then(Commands.argument("dashType", EnumArgument.enumArgument(SpiritDashAbility.class))
 						.executes(
 							ctx -> setDashMode(ctx.getSource(), EntityArgument.getPlayer(ctx, "player"), ctx.getArgument("dashType", SpiritDashAbility.class))
@@ -126,7 +126,7 @@ public class SetSpiritCommand {
 			Optional<SpiritCapabilities> capsCtr = SpiritCapabilities.getCaps(player);
 			if (capsCtr.isPresent()) {
 				SpiritCapabilities caps = capsCtr.get();
-				caps.setAirJumps(mode);
+				caps.setAirJumpType(mode);
 				ReplicateKnownAbilities.Server.sendNewAirJump((ServerPlayer)player, caps);
 				src.sendSuccess(Component.translatable("command.orimod.setspirit.success.ability", sender.getDisplayName()).append(caps.dumpToComponent()), true);
 			}
@@ -149,7 +149,7 @@ public class SetSpiritCommand {
 			Optional<SpiritCapabilities> capsCtr = SpiritCapabilities.getCaps(player);
 			if (capsCtr.isPresent()) {
 				SpiritCapabilities caps = capsCtr.get();
-				caps.setDash(mode);
+				caps.setDashType(mode);
 				ReplicateKnownAbilities.Server.sendNewDash((ServerPlayer)player, caps);
 				src.sendSuccess(Component.translatable("command.orimod.setspirit.success.ability", sender.getDisplayName()).append(caps.dumpToComponent()), true);
 			}

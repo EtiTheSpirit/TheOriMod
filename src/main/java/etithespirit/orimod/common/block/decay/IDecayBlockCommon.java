@@ -6,7 +6,7 @@ import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.potion.DecayEffect;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
-import etithespirit.orimod.registry.gameplay.PotionRegistry;
+import etithespirit.orimod.registry.gameplay.EffectRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.util.EffectConstructors;
 import etithespirit.orimod.util.extension.MobEffectDataStorage;
@@ -339,7 +339,7 @@ public interface IDecayBlockCommon extends IBlockItemPropertiesProvider {
 		if (!(entityIn instanceof LivingEntity entity)) return;
 		if (worldIn.isClientSide) return;
 		if (worldIn.getRandom().nextDouble() > 0.95) {
-			DecayEffect decay = (DecayEffect) PotionRegistry.get(DecayEffect.class);
+			DecayEffect decay = (DecayEffect) EffectRegistry.DECAY.get();
 			MobEffectInstance existing = entity.getEffect(decay);
 			if (existing != null) {
 				existing.duration += 60;

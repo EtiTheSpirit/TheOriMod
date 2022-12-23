@@ -35,4 +35,7 @@ public class DecayDirtMyceliumBlock extends DecayBlockBase {
 	public BlockState healsInto(BlockState thisState) {
 		return Blocks.DIRT.defaultBlockState();
 	}
+	
+	
+	
 }

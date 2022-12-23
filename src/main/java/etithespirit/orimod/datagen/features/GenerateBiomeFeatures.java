@@ -1,14 +1,12 @@
 package etithespirit.orimod.datagen.features;
 
 import com.google.gson.JsonElement;
-import com.mojang.serialization.Codec;
 import com.mojang.serialization.JsonOps;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.datagen.features.implementations.AddGorlekOreCrystalFeature;
 import etithespirit.orimod.datagen.features.implementations.GorlekCrystalBlockConfiguration;
 import etithespirit.orimod.datagen.features.implementations.GorlekCrystalConfiguration;
 import etithespirit.orimod.datagen.features.implementations.GorlekCrystalFeature;
+import etithespirit.orimod.datagen.features.implementations.GorlekCrystalBlockSelectionConfiguration;
 import etithespirit.orimod.registry.world.BlockRegistry;
 import etithespirit.orimod.registry.world.FeatureRegistry;
 import net.minecraft.core.Holder;
@@ -19,7 +17,6 @@ import net.minecraft.resources.RegistryOps;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.valueproviders.UniformInt;
-import net.minecraft.world.level.biome.Biome;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
@@ -29,13 +26,7 @@ import net.minecraft.world.level.levelgen.placement.RandomOffsetPlacement;
 import net.minecraft.world.level.levelgen.placement.RarityFilter;
 import net.minecraftforge.common.data.ExistingFileHelper;
 import net.minecraftforge.common.data.JsonCodecProvider;
-import net.minecraftforge.common.world.BiomeModifier;
-import net.minecraftforge.common.world.ModifiableBiomeInfo;
 import net.minecraftforge.data.event.GatherDataEvent;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.minecraftforge.registries.DeferredRegister;
-import net.minecraftforge.registries.ForgeRegistries;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.List;
 import java.util.Map;
@@ -49,18 +40,6 @@ public class GenerateBiomeFeatures {
 	private static final String FEATURE_NAME = "gorlek_crystal";
 	private static final ResourceLocation FEATURE_ID = OriMod.rsrc(FEATURE_NAME);
 	
-	private static final DeferredRegister<Codec<? extends BiomeModifier>> BIOME_MODIFIER_SERIALIZERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIER_SERIALIZERS, OriMod.MODID);
-	private static final DeferredRegister<BiomeModifier> BIOME_MODIFIERS = DeferredRegister.create(ForgeRegistries.Keys.BIOME_MODIFIERS, OriMod.MODID);
-	
-	public static final RegistryObject<Codec<AddGorlekOreCrystalFeature>> GORLEK_CRYSTAL_CODEC = BIOME_MODIFIER_SERIALIZERS.register(
-		FEATURE_NAME,
-		() -> RecordCodecBuilder.create(builder -> builder.group(
-			Biome.LIST_CODEC.fieldOf("biomes").forGetter(AddGorlekOreCrystalFeature::biomes),
-			PlacedFeature.CODEC.fieldOf("feature").forGetter(AddGorlekOreCrystalFeature::feature)
-		).apply(builder, AddGorlekOreCrystalFeature::new))
-	);
-	
-	
 	
 	public GenerateBiomeFeatures(DataGenerator generator, ExistingFileHelper helper) {
 		dataGenerator = generator;
@@ -68,18 +47,14 @@ public class GenerateBiomeFeatures {
 		registryOps = RegistryOps.create(JsonOps.INSTANCE, RegistryAccess.builtinCopy());
 	}
 	
-	public static void registerAll() {
-		BIOME_MODIFIER_SERIALIZERS.register(FMLJavaModLoadingContext.get().getModEventBus());
-	}
-	
 	private void generateGorlekOrePlacedFeatureUsing(GatherDataEvent evt, Holder<ConfiguredFeature<?, ?>> gorlekCrystal) {
 		PlacedFeature feature = new PlacedFeature(
 			gorlekCrystal,
 			List.of(
-				RarityFilter.onAverageOnceEvery(1),
+				RarityFilter.onAverageOnceEvery(80),
 				RandomOffsetPlacement.of(
-					UniformInt.of(0, 15),
-					UniformInt.of(-16, 16)
+					UniformInt.of(-8, 8),
+					UniformInt.of(8, 16)
 				),
 				BiomeFilter.biome()
 			)
@@ -104,8 +79,16 @@ public class GenerateBiomeFeatures {
 			(GorlekCrystalFeature)FeatureRegistry.GORLEK_CRYSTAL_FEATURE.get(),
 			new GorlekCrystalConfiguration(
 				new GorlekCrystalBlockConfiguration(
+					BlockStateProvider.simple(Blocks.SMOOTH_BASALT),
 					BlockStateProvider.simple(Blocks.AMETHYST_BLOCK),
-					BlockStateProvider.simple(BlockRegistry.GORLEK_ORE.get())
+					BlockStateProvider.simple(BlockRegistry.GORLEK_ORE.get()),
+					BlockStateProvider.simple(BlockRegistry.RAW_GORLEK_ORE_BLOCK.get()),
+					new GorlekCrystalBlockSelectionConfiguration(
+						0.45,
+						0.02,
+						0.125,
+						0.001
+					)
 				),
 				UniformInt.of(3, 5),
 				UniformInt.of(8, 24),

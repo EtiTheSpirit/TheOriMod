@@ -64,6 +64,11 @@ public final class GenerateBlockModels extends BlockStateProvider {
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.SOLAR_ENERGY_BLOCK, "techblocks/conversion");
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.THERMAL_ENERGY_BLOCK, "techblocks/conversion");
 		
+		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.GORLEK_ORE, "ore/deposits");
+		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.RAW_GORLEK_ORE_BLOCK, "ore/deposits");
+		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.GORLEK_METAL_BLOCK, "ore/blocks");
+		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.GORLEK_NETHERITE_ALLOY_BLOCK, "ore/blocks");
+		
 		OriMod.LOG.printf(Level.INFO, "Block models registered!");
 	}
 	

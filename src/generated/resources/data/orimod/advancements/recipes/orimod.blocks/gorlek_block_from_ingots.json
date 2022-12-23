@@ -1,0 +1,35 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "get_gorlek_ore": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "orimod:raw_gorlek_ore",
+              "orimod:gorlek_ore"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "orimod:gorlek_block_from_ingots"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "get_gorlek_ore",
+      "has_the_recipe"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "orimod:gorlek_block_from_ingots"
+    ]
+  }
+}

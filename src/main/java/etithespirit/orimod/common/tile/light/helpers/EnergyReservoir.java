@@ -31,14 +31,18 @@ public final class EnergyReservoir {
 	 * @param amount The amount to add.
 	 * @return The actual amount of energy that was stashed.
 	 */
-	public float stash(float amount) {
+	public float stash(float amount, boolean simulate) {
 		float result = stashedEnergy + amount;
 		if (result > maxStashed) {
-			stashedEnergy = maxStashed;
+			if (!simulate) {
+				stashedEnergy = maxStashed;
+			}
 			float overflow = result - maxStashed;
 			return amount - overflow;
 		}
-		stashedEnergy = result;
+		if (!simulate) {
+			stashedEnergy = result;
+		}
 		return amount;
 	}
 	
@@ -56,7 +60,9 @@ public final class EnergyReservoir {
 	 * @param desiredAmount The desired amount that should be consumed.
 	 * @return True if the amount was consumed, false if nothing changed due to there being too little energy.
 	 */
-	public boolean tryConsume(float desiredAmount) {
+	public boolean tryConsume(float desiredAmount, boolean simulate) {
+		if (simulate) return stashedEnergy >= desiredAmount;
+		
 		if (stashedEnergy < desiredAmount) return false;
 		stashedEnergy -= desiredAmount;
 		return true;
@@ -75,27 +81,5 @@ public final class EnergyReservoir {
 		}
 		return spent;
 	}
-	
-	/**
-	 * A hybrid method that attempts to consume the energy provided. If the amount of energy in the stash plus the available amount is greater
-	 * than the amount needed to succeed, then this method returns true and the stash has the power deducted away. Alternatively,
-	 * if there is not enough power, the available energy is stashed.<br/>
-	 * <br/>
-	 * Consider limiting the available amount so that this device does not hog all of the power available in a system.
-	 * @param available The amount of energy available on this tick.
-	 * @param neededToSucceed The amount of energy needed to successfully operate.
-	 * @return True if there was enough energy, false if not.
-	 */
-	@Deprecated(forRemoval = true)
-	public boolean tryConsumeOrStash(float available, float neededToSucceed) {
-		float total = stashedEnergy + available;
-		if (total >= neededToSucceed) {
-			stashedEnergy = total - neededToSucceed;
-			return true;
-		}
-		stash(available);
-		return false;
-	}
-	
 
 }

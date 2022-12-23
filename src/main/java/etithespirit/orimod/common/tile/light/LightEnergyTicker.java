@@ -3,6 +3,7 @@ package etithespirit.orimod.common.tile.light;
 import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
 import etithespirit.orimod.common.tile.IClientUpdatingTile;
+import etithespirit.orimod.common.tile.IFirstTickListener;
 import etithespirit.orimod.common.tile.IServerUpdatingTile;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.energy.ILightEnergyConsumer;
@@ -58,6 +59,13 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 			if (be instanceof LightEnergyTile eTile) {
 				eTile.neighbors(); // Populate!
 				eTile.updateVisualPoweredAppearance();
+			}
+			
+			if (be instanceof IFirstTickListener firstTicker) {
+				if (firstTicker.needsInit()) {
+					firstTicker.firstTick(level, blockPos, blockState);
+					firstTicker.tellInitComplete();
+				}
 			}
 			
 			if (be instanceof LightEnergyHandlingTile thisTile) {
@@ -116,78 +124,6 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 					}
 				}
 			}
-			
-			/*
-			if (be instanceof LightEnergyHandlingTile thisStorage) {
-				boolean rx = thisStorage.canReceiveLight();
-				boolean tx = thisStorage.canExtractLightFrom();
-				LightEnergyTile[] tiles = thisStorage.getAllConnectedStorage(remainingBranches);
-				if (rx && tx) {
-					// can do both, try to reach equilibrium
-					for (LightEnergyTile tile : tiles) {
-						if (tile == be) continue; // Skip if this is affecting itself.
-						
-						if (tile instanceof LightEnergyHandlingTile otherStorage) {
-							boolean otherRx = otherStorage.canReceiveLight();
-							boolean otherTx = otherStorage.canExtractLightFrom();
-							float otherDifference = otherStorage.getLightStored() - thisStorage.getLightStored();
-							if (otherRx && otherTx) {
-								// Other can do both, nice
-								// Cut in half to reach eq
-								otherDifference /= 2;
-								if (otherDifference > 0) {
-									// other has more, I take some
-									ILightEnergyStorage.transferLight(otherStorage, thisStorage, otherDifference, false);
-								} else if (otherDifference < 0) {
-									// I have more, I give some (invert otherDifference)
-									ILightEnergyStorage.transferLight(thisStorage, otherStorage, -otherDifference, false);
-								}
-							} else if (otherRx) {
-								// other can receive, transfer iff other has less
-								if (otherDifference < 0) {
-									// I have more, I give some (invert otherDifference)
-									ILightEnergyStorage.transferLight(thisStorage, otherStorage, -otherDifference, false);
-								}
-							} else if (otherTx) {
-								// other can transmit, transfer iff I have less
-								if (otherDifference > 0) {
-									// other has more, I take some
-									ILightEnergyStorage.transferLight(otherStorage, thisStorage, otherDifference, false);
-								}
-							}
-						}
-					}
-				} else if (rx) {
-					// can only receive
-					for (LightEnergyTile tile : tiles) {
-						if (tile instanceof LightEnergyHandlingTile otherStorage) {
-							if (otherStorage.canExtractLightFrom()) {
-								// We want to receive, other wants to transmit. We will be greedy and try to take everything.
-								ILightEnergyStorage.transferLight(otherStorage, thisStorage, otherStorage.getLightStored(), false);
-							}
-						}
-					}
-				} else if (tx) {
-					// can only transmit
-					for (LightEnergyTile tile : tiles) {
-						if (tile instanceof LightEnergyHandlingTile otherStorage) {
-							if (otherStorage.canReceiveLight()) {
-								// It's first come first serve
-								ILightEnergyStorage.transferLight(thisStorage, otherStorage, thisStorage.getLightStored(), false);
-							}
-						}
-					}
-				}
-				
-				if (!thisStorage.skipAutomaticPoweredBlockstate()) {
-					boolean appearsPowered = be.getBlockState().getValue(ForlornAppearanceMarshaller.POWERED);
-					boolean isActuallyPowered = thisStorage.getLightStored() > 0;
-					if (appearsPowered != isActuallyPowered) {
-						level.setBlock(be.getBlockPos(), be.getBlockState().setValue(ForlornAppearanceMarshaller.POWERED, isActuallyPowered), StaticData.REPLICATE_CHANGE | StaticData.DO_NOT_NOTIFY_NEIGHBORS);
-					}
-				}
-			}
-			 */
 			
 			
 			if (be instanceof IServerUpdatingTile updating) {

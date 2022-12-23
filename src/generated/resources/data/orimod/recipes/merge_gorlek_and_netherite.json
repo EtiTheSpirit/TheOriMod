@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "minecraft:netherite_ingot"
+  },
+  "base": {
+    "item": "orimod:gorlek_ingot"
+  },
+  "result": {
+    "item": "orimod:gorlek_netherite_alloy_ingot"
+  }
+}

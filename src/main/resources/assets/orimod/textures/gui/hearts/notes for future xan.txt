@@ -1,0 +1,11 @@
+Hearts are arranged like so. Uppercase is full heart, lowercase is half heart:
+AaBb
+XxYy
+
+A is the default appearance.
+B is for when the hearts flash on the HUD (when healing).
+X is A, but for hardcore mode
+Y is B, but for hardcore mode
+
+The XY row is entirely optional in and of itself, and the BY column is also optional.
+You cannot mix them (i.e. everything except Y is illegal).

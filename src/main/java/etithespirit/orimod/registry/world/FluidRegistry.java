@@ -35,7 +35,7 @@ public final class FluidRegistry {
 	public static final RegistryObject<FluidType> DECAY_POISON_TYPE = FLUID_TYPES.register("decay_poison", DecayPoisonFluid.DECAY_POISON_FLUID_TYPE);
 	
 	static {
-		BlockRegistry.BLOCKS_TO_REGISTER.add(DECAY_POISON);
+		// BlockRegistry.BLOCKS_TO_REGISTER.add(DECAY_POISON);
 	}
 	
 	public static void registerAll() {

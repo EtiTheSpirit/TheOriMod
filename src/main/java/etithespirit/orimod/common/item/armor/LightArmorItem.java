@@ -1,7 +1,8 @@
 package etithespirit.orimod.common.item.armor;
 
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
-import etithespirit.orimod.common.item.ISpiritLightItem;
+import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
 import etithespirit.orimod.common.item.data.SpiritArmorMaterial;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.InteractionHand;
@@ -18,48 +19,44 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightArmorItem extends ArmorItem implements ISpiritLightItem {
-	protected LightArmorItem(EquipmentSlot pSlot, boolean isHeavy) {
-		super(isHeavy ? SpiritArmorMaterial.HEAVY_LIGHT : SpiritArmorMaterial.SIMPLE_LIGHT, pSlot, (new Item.Properties()).fireResistant().setNoRepair().tab(OriModCreativeModeTabs.SPIRIT_COMBAT).rarity(Rarity.EPIC));
-	}
+public class LightArmorItem extends ArmorItem implements ISpiritLightRepairableItem {
 	
-	public static LightArmorItem newSimpleHelmet() { return newHelmet(false); }
-	public static LightArmorItem newSimpleChestplate() { return newChestplate(false); }
-	public static LightArmorItem newSimpleLegs() { return newLegs(false); }
-	public static LightArmorItem newSimpleBoots() { return newBoots(false); }
-	
-	public static LightArmorItem newHeavyHelmet() { return newHelmet(true); }
-	public static LightArmorItem newHeavyChestplate() { return newChestplate(true); }
-	public static LightArmorItem newHeavyLegs() { return newLegs(true); }
-	public static LightArmorItem newHeavyBoots() { return newBoots(true); }
-	
-	private static LightArmorItem newHelmet(boolean heavy) {
-		return new LightArmorItem(EquipmentSlot.HEAD, heavy);
+	protected LightArmorItem(EquipmentSlot pSlot) {
+		super(SpiritArmorMaterial.LIGHT, pSlot, (new Item.Properties()).fireResistant().setNoRepair().tab(OriModCreativeModeTabs.SPIRIT_COMBAT).rarity(Rarity.EPIC));
 	}
-	private static LightArmorItem newChestplate(boolean heavy) {
-		return new LightArmorItem(EquipmentSlot.CHEST, heavy);
+
+	public static LightArmorItem newHelmet() {
+		return new LightArmorItem(EquipmentSlot.HEAD);
 	}
-	private static LightArmorItem newLegs(boolean heavy) {
-		return new LightArmorItem(EquipmentSlot.LEGS, heavy);
+	public static LightArmorItem newChestplate() {
+		return new LightArmorItem(EquipmentSlot.CHEST);
 	}
-	private static LightArmorItem newBoots(boolean heavy) {
-		return new LightArmorItem(EquipmentSlot.FEET, heavy);
+	public static LightArmorItem newLegs() {
+		return new LightArmorItem(EquipmentSlot.LEGS);
+	}
+	public static LightArmorItem newBoots() {
+		return new LightArmorItem(EquipmentSlot.FEET);
 	}
 	
 	@Override
 	public InteractionResultHolder<ItemStack> use(Level pLevel, Player pPlayer, InteractionHand pUsedHand) {
-		InteractionResultHolder<ItemStack> result = ISpiritLightItem.super.useForSelfRepair(pLevel, pPlayer, pUsedHand);
+		InteractionResultHolder<ItemStack> result = ISpiritLightRepairableItem.super.useForSelfRepair(pLevel, pPlayer, pUsedHand);
 		return (result != null) ? result : super.use(pLevel, pPlayer, pUsedHand);
 	}
 	
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
 		super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-		ISpiritLightItem.super.appendDefaultRepairHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+		ISpiritLightRepairableItem.super.appendDefaultRepairHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
 	}
 	
 	@Override
 	public int getBarColor(ItemStack pStack) {
-		return ISpiritLightItem.super.getBarColor(pStack);
+		return ISpiritLightRepairableItem.super.getBarColor(pStack);
+	}
+	
+	@Override
+	public Component getName(ItemStack pStack) {
+		return StaticData.getNameAsLight(super.getName(pStack));
 	}
 }

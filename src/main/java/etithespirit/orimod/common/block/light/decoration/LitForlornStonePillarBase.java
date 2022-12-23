@@ -6,8 +6,10 @@ import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.common.tags.PresetBlockTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
@@ -87,10 +89,9 @@ public abstract class LitForlornStonePillarBase extends RotatedPillarBlock imple
 		return new Item.Properties().tab(OriModCreativeModeTabs.SPIRIT_DECORATION);
 	}
 	
-	
 	@Override
-	@SuppressWarnings("deprecation")
-	public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
-		return List.of(new ItemStack(ItemRegistry.getBlockItemOf(this)));
+	public MutableComponent getName() {
+		return StaticData.getNameAsLight(super.getName());
 	}
+	
 }

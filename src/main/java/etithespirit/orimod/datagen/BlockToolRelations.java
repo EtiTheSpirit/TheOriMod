@@ -34,7 +34,7 @@ public final class BlockToolRelations extends BlockTagsProvider {
 	}
 	
 	private void addTagsToBlocks() {
-		for (RegistryObject<? extends Block> blockReg : BlockRegistry.BLOCKS_TO_REGISTER) {
+		for (RegistryObject<? extends Block> blockReg : BlockRegistry.BLOCKS.getEntries()) {
 			Block block = blockReg.get();
 			if (block instanceof IToolRequirementProvider) {
 				IToolRequirementProvider provider = (IToolRequirementProvider)block;

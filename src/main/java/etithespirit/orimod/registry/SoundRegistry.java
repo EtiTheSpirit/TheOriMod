@@ -48,6 +48,8 @@ public final class SoundRegistry {
 		registerSound("entity.spirit.dash");
 		registerSound("entity.spirit.dash.impactwall");
 		
+		registerSound("entity.spirit.stomp");
+		
 		registerSound("entity.spirit.respawn");
 		registerSound("entity.spirit.respawn2");
 		

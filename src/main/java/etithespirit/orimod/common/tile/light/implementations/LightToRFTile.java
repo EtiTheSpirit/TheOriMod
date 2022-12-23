@@ -1,22 +1,66 @@
 package etithespirit.orimod.common.tile.light.implementations;
 
+import etithespirit.orimod.OriMod;
+import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
+import etithespirit.orimod.common.tile.IServerUpdatingTile;
 import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
 import etithespirit.orimod.common.tile.light.helpers.EnergyReservoir;
 import etithespirit.orimod.energy.ILightEnergyConsumer;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.registry.world.TileEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.capabilities.CapabilityManager;
+import net.minecraftforge.common.capabilities.CapabilityToken;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.energy.IEnergyStorage;
 
-public class LightToRFTile extends LightEnergyHandlingTile implements IEnergyStorage, ILightEnergyConsumer {
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
+public class LightToRFTile extends LightEnergyHandlingTile implements IEnergyStorage, ILightEnergyConsumer, IServerUpdatingTile {
+	
+	public static final ResourceLocation STORAGE_ID = OriMod.rsrc("rf_storage");
 	
 	private static final float MAX_CONVERSION_RATE_LUXEN = 1f;
 	private final EnergyReservoir consumerHelper = new EnergyReservoir(MAX_CONVERSION_RATE_LUXEN);
 	private int rfExtractedLastTick = 0;
+	private List<BlockPos> lastKnownValidNeighbors = new ArrayList<>(6);
 	
 	public LightToRFTile(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(TileEntityRegistry.LIGHT_TO_RF_TILE.get(), pWorldPosition, pBlockState);
+	}
+	
+	@Override
+	public void updateVisualPoweredAppearance() {
+		BlockState currentState = getBlockState();
+		boolean currentPower = currentState.getValue(ForlornAppearanceMarshaller.POWERED);
+		boolean desiredPower = rfExtractedLastTick > 0;
+		if (currentPower != desiredPower) {
+			utilSetPoweredStateTo(desiredPower);
+		}
+	}
+	
+	@Override
+	public void firstTick(Level inWorld, BlockPos at, BlockState state) {
+		for (Direction cardinal : Direction.values()) {
+			BlockPos changedAt = at.relative(cardinal);
+			BlockEntity neighbor = inWorld.getBlockEntity(changedAt);
+			if (neighbor != null) {
+				Optional<IEnergyStorage> energyStorageCtr = neighbor.getCapability(ForgeCapabilities.ENERGY).resolve();
+				if (energyStorageCtr.isPresent()) {
+					lastKnownValidNeighbors.add(changedAt.immutable());
+					return;
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -33,8 +77,45 @@ public class LightToRFTile extends LightEnergyHandlingTile implements IEnergySto
 		}
 		
 		lux = consumerHelper.consumeUpTo(lux, false);
-		rfExtractedLastTick = ILightEnergyStorage.luxenToRedstoneFlux(lux);
-		return rfExtractedLastTick;
+		int extractedRf = ILightEnergyStorage.luxenToRedstoneFlux(lux);
+		return extractedRf;
+	}
+	
+	@Override
+	public void updateServer(Level inLevel, BlockPos at, BlockState current) {
+		rfExtractedLastTick = 0;
+		for (BlockPos neighborPos : lastKnownValidNeighbors) {
+			BlockEntity neighbor = inLevel.getBlockEntity(neighborPos);
+			if (neighbor != null) {
+				Optional<IEnergyStorage> energyStorageCtr = neighbor.getCapability(ForgeCapabilities.ENERGY).resolve();
+				if (energyStorageCtr.isPresent()) {
+					sendToStorage(energyStorageCtr.get());
+					return;
+				}
+			}
+		}
+	}
+	
+	private void sendToStorage(IEnergyStorage storage) {
+		if (storage.canReceive()) {
+			int maxReceive = storage.receiveEnergy(Integer.MAX_VALUE, true);
+			if (maxReceive == 0) return;
+			int actuallyExtracted = extractEnergy(maxReceive, false);
+			storage.receiveEnergy(actuallyExtracted, false);
+			rfExtractedLastTick += actuallyExtracted;
+		}
+	}
+	
+	public void neighborChanged(BlockState thisState, Level world, BlockPos thisLocation, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+		BlockEntity neighbor = world.getBlockEntity(changedAt);
+		if (neighbor != null) {
+			Optional<IEnergyStorage> energyStorageCtr = neighbor.getCapability(ForgeCapabilities.ENERGY).resolve();
+			if (energyStorageCtr.isPresent()) {
+				lastKnownValidNeighbors.add(changedAt.immutable());
+				return;
+			}
+		}
+		lastKnownValidNeighbors.remove(changedAt);
 	}
 	
 	@Override
@@ -70,7 +151,7 @@ public class LightToRFTile extends LightEnergyHandlingTile implements IEnergySto
 		if (realAmount > MAX_CONVERSION_RATE_LUXEN) {
 			realAmount = MAX_CONVERSION_RATE_LUXEN;
 		}
-		return consumerHelper.stash(realAmount);
+		return consumerHelper.stash(realAmount, simulate);
 	}
 	
 	/**

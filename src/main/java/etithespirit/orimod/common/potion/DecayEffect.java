@@ -1,12 +1,16 @@
 package etithespirit.orimod.common.potion;
 
 import etithespirit.orimod.combat.ExtendedDamageSource;
-import etithespirit.orimod.registry.gameplay.PotionRegistry;
+import etithespirit.orimod.common.chat.ExtendedChatColors;
+import etithespirit.orimod.registry.gameplay.EffectRegistry;
 import etithespirit.orimod.util.RichEffect;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.util.extension.MobEffectDataStorage;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.util.Mth;
+import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectCategory;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,7 +18,7 @@ import net.minecraft.world.entity.LivingEntity;
 /**
  * The status effect that occurs when someone is decaying.
  */
-public final class DecayEffect extends RichEffect {
+public final class DecayEffect extends MobEffect {
 	
 	/** The icon of the Decay effect. */
 	public static final ResourceLocation DECAY_ICON = new ResourceLocation(OriMod.MODID, "textures/mob_effect/decay.png");
@@ -34,35 +38,34 @@ public final class DecayEffect extends RichEffect {
 	/** The shortest delay in decay ticks measured in real ticks. This occurs at level MAX_AMP-1. */
 	public static final int SHORTEST_DELAY_TICKS = 10;
 	
-	@Override
-	public MobEffectCategory getCategory() {
-		return MobEffectCategory.HARMFUL;
+	public DecayEffect() {
+		super(MobEffectCategory.HARMFUL, 0x555555);
 	}
 	
 	@Override
-	public int getTextMainColor() {
-		return 0xFACFF4;
+	public Component getDisplayName() {
+		return ((MutableComponent)super.getDisplayName()).withStyle(ExtendedChatColors.DECAY);
 	}
 	
-	@Override
-	public int getTextShadowColor() {
-		return super.getTextShadowColor();
-	}
-	
-	@Override
-	public int getColor() {
-		return 0x555555;
-	}
-	
-	@Override
-	public ResourceLocation getCustomIcon() {
-		return DECAY_ICON;
-	}
-	
+//	@Override
+//	public MobEffectCategory getCategory() {
+//		return MobEffectCategory.HARMFUL;
+//	}
+//
+//	@Override
+//	public int getColor() {
+//		return 0x555555;
+//	}
+//
+//	@Override
+//	public ResourceLocation getCustomIcon() {
+//		return DECAY_ICON;
+//	}
+//
 	@Override
 	public void applyEffectTick(LivingEntity entity, int amplifier) {
 		// New behavior: Do they have radiant?
-		if (entity.hasEffect(PotionRegistry.get(RadiantEffect.class))) {
+		if (entity.hasEffect(EffectRegistry.RADIANT.get())) {
 			return; // Yeah, so don't do anything.
 		}
 		

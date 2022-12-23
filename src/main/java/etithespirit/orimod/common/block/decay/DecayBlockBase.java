@@ -1,9 +1,12 @@
 package etithespirit.orimod.common.block.decay;
 
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
 import etithespirit.orimod.registry.world.BlockRegistry;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Vec3i;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -58,6 +61,12 @@ public abstract class DecayBlockBase extends Block implements IDecayBlockCommon 
 				properties.randomTicks();
 			}
 		}
+	}
+	
+	
+	@Override
+	public MutableComponent getName() {
+		return StaticData.getNameAsDecay(super.getName());
 	}
 	
 	@Override

@@ -13,11 +13,7 @@ import java.util.List;
 
 public class RawGorlekOreItem extends Item {
 	public RawGorlekOreItem() {
-		super((new Item.Properties()).rarity(Rarity.RARE).tab(OriModCreativeModeTabs.SPIRIT_MACHINERY_PARTS));
+		super((new Item.Properties()).tab(OriModCreativeModeTabs.SPIRIT_MACHINERY_PARTS));
 	}
 	
-	@Override
-	public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
-		super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-	}
 }

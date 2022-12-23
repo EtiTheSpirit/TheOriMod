@@ -1,0 +1,23 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "F": {
+      "item": "orimod:forlorn_stone"
+    },
+    "N": {
+      "item": "minecraft:netherite_scrap"
+    },
+    "S": {
+      "item": "orimod:hardlight_shard"
+    }
+  },
+  "pattern": [
+    "FNF",
+    "NSN",
+    "FNF"
+  ],
+  "result": {
+    "count": 2,
+    "item": "orimod:thermal_generator"
+  }
+}

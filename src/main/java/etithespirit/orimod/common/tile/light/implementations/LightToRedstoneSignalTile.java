@@ -38,7 +38,7 @@ public class LightToRedstoneSignalTile extends LightEnergyHandlingTile implement
 	}
 	
 	private boolean trySpendEnergyForTick() {
-		return consumerHelper.tryConsume(CONSUMPTION_RATE);
+		return consumerHelper.tryConsume(CONSUMPTION_RATE, false);
 	}
 	
 	/**
@@ -51,10 +51,7 @@ public class LightToRedstoneSignalTile extends LightEnergyHandlingTile implement
 	@Override
 	public float consumeEnergy(float desiredAmount, boolean simulate) {
 		float realAmount = desiredAmount / 2f;
-		if (realAmount > CONSUMPTION_RATE) {
-			realAmount = CONSUMPTION_RATE;
-		}
-		return consumerHelper.stash(realAmount);
+		return consumerHelper.stash(realAmount, simulate);
 	}
 	
 	@Override

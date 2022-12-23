@@ -3,10 +3,12 @@ package etithespirit.orimod.common.tile.light;
 import etithespirit.orimod.aos.ConnectionHelper;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
+import etithespirit.orimod.common.tile.IFirstTickListener;
 import etithespirit.orimod.energy.ILightEnergyConsumer;
 import etithespirit.orimod.energy.ILightEnergyGenerator;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -22,14 +24,27 @@ import java.util.Set;
  * Unlike previous iterations of the mod, there is no longer a (static) distinction between hubs and conduits. Any block can now switch between being a hub
  * and a conduit at any time.
  */
-public abstract class LightEnergyTile extends BlockEntity {
+public abstract class LightEnergyTile extends BlockEntity implements IFirstTickListener {
 	
 	private BlockPos[] lastKnownValidNeighbors = null;
+	private boolean init = false;
 	
 	protected LightEnergyTile(BlockEntityType<?> pType, BlockPos pWorldPosition, BlockState pBlockState) {
 		super(pType, pWorldPosition, pBlockState);
 	}
 	
+	@Override
+	public boolean needsInit() {
+		return !init;
+	}
+	
+	@Override
+	public void tellInitComplete() {
+		init = true;
+	}
+	
+	@Override
+	public void firstTick(Level inWorld, BlockPos at, BlockState state) { }
 	
 	/**
 	 * To optimize functions like {@link #tryGetNext(LightEnergyTile)} and {@link #tryGetOtherHubs()}, the neighbors of this tile are cached. This clears the cache.

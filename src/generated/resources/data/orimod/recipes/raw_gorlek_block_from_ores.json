@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    },
+    {
+      "item": "orimod:raw_gorlek_ore"
+    }
+  ],
+  "result": {
+    "item": "orimod:raw_gorlek_ore_block"
+  }
+}

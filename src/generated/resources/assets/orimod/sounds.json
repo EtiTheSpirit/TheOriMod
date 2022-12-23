@@ -117,6 +117,14 @@
       "orimod:spirit/step/ash/stepash2"
     ]
   },
+  "entity.spirit.stomp": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/stomp/stomp0",
+      "orimod:spirit/stomp/stomp2",
+      "orimod:spirit/stomp/stomp1"
+    ]
+  },
   "entity.spirit.attack.sweep": {
     "category": "master",
     "sounds": [

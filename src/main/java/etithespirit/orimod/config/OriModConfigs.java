@@ -8,7 +8,7 @@ import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import etithespirit.orimod.common.block.decay.DecayLiquidBlock;
 import etithespirit.orimod.common.block.decay.DecayWorldConfigBehavior;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
-import etithespirit.orimod.common.item.ISpiritLightItem;
+import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
 import etithespirit.orimod.common.tags.OriModBlockTags;
 import etithespirit.orimod.registry.world.FluidRegistry;
 import etithespirit.orimod.spirit.abilities.SpiritDashAbility;
@@ -60,7 +60,7 @@ public class OriModConfigs {
 	// public static ForgeConfigSpec.EnumValue<LightEnergyComponentProvider.ShowRFType> SHOW_RF_WHEN;
 	
 	public static ForgeConfigSpec.BooleanValue ONLY_EAT_PLANTS;
-	public static ForgeConfigSpec.EnumValue<ISpiritLightItem.SelfRepairLimit> SELF_REPAIR_LIMITS;
+	public static ForgeConfigSpec.EnumValue<ISpiritLightRepairableItem.SelfRepairLimit> SELF_REPAIR_LIMITS;
 	public static ForgeConfigSpec.BooleanValue ANYONE_CAN_SELF_REPAIR;
 	public static ForgeConfigSpec.DoubleValue SELF_REPAIR_DAMAGE;
 	public static ForgeConfigSpec.IntValue SELF_REPAIR_EARNINGS;
@@ -276,7 +276,7 @@ public class OriModConfigs {
 		current = "spirit_limits";
 		builder.push(current);
 		ONLY_EAT_PLANTS = createBoolean(builder, current, "only_eat_plants", false, false);
-		SELF_REPAIR_LIMITS = createEnum(builder, current, "self_repair_limits", ISpiritLightItem.SelfRepairLimit.NOT_ALLOWED, false);
+		SELF_REPAIR_LIMITS = createEnum(builder, current, "self_repair_limits", ISpiritLightRepairableItem.SelfRepairLimit.NOT_ALLOWED, false);
 		ANYONE_CAN_SELF_REPAIR = createBoolean(builder, current, "anyone_can_self_repair", false, false);
 		SELF_REPAIR_DAMAGE = createDoubleRange(builder, current, "self_repair_damage", 3, 0, Double.POSITIVE_INFINITY, false);
 		SELF_REPAIR_EARNINGS = createIntRange(builder, current, "self_repair_earnings", 50, 0, 65535, false);
@@ -285,9 +285,9 @@ public class OriModConfigs {
 		current = "spirit_abilities";
 		builder.push(current);
 		//AIR_JUMP_COUNT = createIntRange(builder, current, "air_jumps", 1, 1, 2, false);
-		KNOWN_JUMP_TYPE = createEnum(builder, current, "known_jump_type", SpiritJumpAbility.DOUBLE_JUMP, false);
-		KNOWN_DASH_TYPE = createEnum(builder, current, "known_dash_type", SpiritDashAbility.AIR_AND_WATER_DASH, false);
-		KNOW_WALL_JUMP = createBoolean(builder, current, "know_wall_jump", true, false);
+		KNOWN_JUMP_TYPE = createEnum(builder, current, "def_jump_type", SpiritJumpAbility.DOUBLE_JUMP, false);
+		KNOWN_DASH_TYPE = createEnum(builder, current, "def_dash_type", SpiritDashAbility.AIR_AND_WATER_DASH, false);
+		KNOW_WALL_JUMP = createBoolean(builder, current, "def_wall_jump", true, false);
 		builder.pop();
 		
 		current = "light_energy";

@@ -4,11 +4,11 @@ package etithespirit.orimod;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.datafixers.util.Pair;
 import etithespirit.orimod.apiimpl.EnvironmentalAffinityAPI;
-import etithespirit.orimod.client.gui.LightRepairDeviceScreen;
-import etithespirit.orimod.client.render.hud.SpiritHealthGui;
+import etithespirit.orimod.client.gui.block.LightRepairDeviceScreen;
+import etithespirit.orimod.client.gui.health.SpiritHealthGui;
+import etithespirit.orimod.client.gui.health.heart.HeartTexture;
 import etithespirit.orimod.command.SetSpiritCommand;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
-import etithespirit.orimod.common.potion.DecayEffect;
 import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
@@ -33,7 +33,7 @@ import etithespirit.orimod.registry.world.FeatureRegistry;
 import etithespirit.orimod.registry.world.FluidRegistry;
 import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.MenuRegistry;
-import etithespirit.orimod.registry.gameplay.PotionRegistry;
+import etithespirit.orimod.registry.gameplay.EffectRegistry;
 import etithespirit.orimod.registry.RenderRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.spirit.client.SpiritInput;
@@ -63,6 +63,7 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLDedicatedServerSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -76,8 +77,41 @@ public final class OriMod {
 
 	/** hnnnng kernol,,,,, id,,,, */
 	public static final String MODID = "orimod";
+	
 	/***/
 	public static final Logger LOG = LogManager.getLogger();
+	
+	private static boolean gotUseTrace = false;
+	private static boolean useTrace = false;
+	private static boolean shouldUseOriModTraceLogging() {
+		if (!gotUseTrace) {
+			useTrace = System.getProperty("sun.java.command", "").contains("--useOriModTraceLogs");
+			gotUseTrace = true;
+			LOG.info("Trace logging for The Ori Mod is " + (useTrace ? "ENABLED" : "DISABLED"));
+		}
+		return useTrace;
+	}
+	
+	/**
+	 * Logs to debug iff the user has defined <code>-DuseOriModTraceLogs</code> in their game arguments.
+	 * @param message The message to log.
+	 */
+	public static void logCustomTrace(String message) {
+		if (shouldUseOriModTraceLogging()) {
+			LOG.debug(message);
+		}
+	}
+	
+	/**
+	 * Logs to debug iff the user has defined <code>-DuseOriModTraceLogs</code> in their game arguments.
+	 * @param message The message to log.
+	 * @param args Any arguments to include with that message.
+	 */
+	public static void logCustomTrace(String message, Object... args) {
+		if (shouldUseOriModTraceLogging()) {
+			LOG.debug(message, args);
+		}
+	}
 
 	/** Returns the singleton instance of this mod.
 	 * @return The singleton instance of this mod. */
@@ -92,6 +126,7 @@ public final class OriMod {
 	public OriMod() {
 		_instance = this;
 		OriModConfigs.initialize();
+		shouldUseOriModTraceLogging();
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::commonInit);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(this::clientGameBuildInit);
@@ -104,6 +139,7 @@ public final class OriMod {
 		
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerBERenderers);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerShaders);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(SpiritHealthGui::setupHealthElement);
 		
 		MinecraftForge.EVENT_BUS.addListener(this::commandInit);
 		
@@ -112,13 +148,12 @@ public final class OriMod {
 		BlockRegistry.registerAll();
 		FluidRegistry.registerAll();
 		ItemRegistry.registerAll();
-		PotionRegistry.registerAll();
+		EffectRegistry.registerAll();
 		SoundRegistry.registerAll();
 		TileEntityRegistry.registerAll();
 		EntityRegistry.registerAll();
 		MenuRegistry.registerAll();
 		FeatureRegistry.registerAll();
-		GenerateBiomeFeatures.registerAll();
 		
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onPlayerTickEvent);
 		MinecraftForge.EVENT_BUS.addListener(EnvironmentalAffinityAPI::onWorldTickEvent);
@@ -145,6 +180,7 @@ public final class OriMod {
 		// For TEs
 		// MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
 		
+		MinecraftForge.EVENT_BUS.addListener(SpiritHealthGui::cancelHealthRender);
 		
 		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityAttacked);
 		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityDamaged);
@@ -200,7 +236,7 @@ public final class OriMod {
 				}
 				BlockEntity ent = serverLevel.getBlockEntity(at);
 				if (!(ent instanceof LightEnergyHandlingTile)) {
-					LOG.info("Found a chunk that was being kept alive by what was believed to be a Light Tech block at {}, however there was no Tech Block at that location, so the keep-alive ticket has been removed and this chunk may now rest.", at);
+					LOG.debug("Found a chunk that was being kept alive by what was believed to be a Light Tech block at {}, however there was no Tech Block at that location, so the keep-alive ticket has been removed and this chunk may now rest.", at);
 					ForgeChunkManager.forceChunk(serverLevel, MODID, at, at.getX() >> 4, at.getY() >> 4, false, true);
 				}
 			}
@@ -214,7 +250,8 @@ public final class OriMod {
 	public void clientGameBuildInit(final FMLClientSetupEvent event) {
 		//UniProfiler.setProfiler(Minecraft.getInstance().getProfiler(), Dist.CLIENT);
 		
-		MinecraftForge.EVENT_BUS.addListener(SpiritHealthGui::setupHealthElement);
+		//MinecraftForge.EVENT_BUS.addListener(SpiritHealthGui::setupHealthElement);
+		
 		/*
 		MinecraftForge.EVENT_BUS.addListener(SpiritDash::onKeyPressed);
 		MinecraftForge.EVENT_BUS.addListener(SpiritDash::onClientUpdated);
@@ -241,9 +278,8 @@ public final class OriMod {
 		//ClientRegistry.registerKeyBinding(SpiritDash.DASH_BIND);
 		//ClientRegistry.registerKeyBinding(SpiritJump.CLING_BIND);
 		
-		event.enqueueWork(() -> {
-			MenuScreens.register(MenuRegistry.LIGHT_REPAIR_DEVICE.get(), LightRepairDeviceScreen::new);
-		});
+		event.enqueueWork(() -> MenuScreens.register(MenuRegistry.LIGHT_REPAIR_DEVICE.get(), LightRepairDeviceScreen::new));
+		event.enqueueWork(ItemRegistry::registerPredicates);
 		
 
 		MinecraftForge.EVENT_BUS.addListener(RenderPlayerAsSpirit::whenRenderingPlayer);
@@ -295,7 +331,7 @@ public final class OriMod {
 		generator.addProvider(true, sounds);
 		generator.addProvider(true, advancements);
 		generator.addProvider(true, recipes);
-		generator.addProvider(false, lootTables);
+		generator.addProvider(true, lootTables);
 		biomeFeatures.generateGorlekOreFeaturesUsing(dataEvt);
 	}
 	
@@ -305,8 +341,12 @@ public final class OriMod {
 	 */
 	public void onModLoadingComplete(final FMLLoadCompleteEvent evt) {
 		isModLoadingComplete = true;
-		etithespirit.orimod.api.environment.defaultimpl.DefaultEnvironments.init(PotionRegistry.get(DecayEffect.class));
+		etithespirit.orimod.api.environment.defaultimpl.DefaultEnvironments.init(EffectRegistry.DECAY.get());
 		EnvironmentalAffinityAPI.validate();
+		
+		if (!FMLEnvironment.production) {
+			HeartTexture.validateCorrectTextureResolution();
+		}
 	}
 	
 	/**

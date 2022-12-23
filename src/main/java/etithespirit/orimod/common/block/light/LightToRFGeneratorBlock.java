@@ -12,6 +12,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -58,6 +59,15 @@ public class LightToRFGeneratorBlock extends ConnectableLightTechBlock implement
 	@Override
 	public BlockEntity newBlockEntity(BlockPos pPos, BlockState pState) {
 		return new LightToRFTile(pPos, pState);
+	}
+	
+	@Override
+	public void neighborChanged(BlockState thisState, Level world, BlockPos thisLocation, Block replacedBlock, BlockPos changedAt, boolean isMoving) {
+		super.neighborChanged(thisState, world, thisLocation, replacedBlock, changedAt, isMoving);
+		BlockEntity bEnt = world.getBlockEntity(thisLocation);
+		if (bEnt instanceof LightToRFTile converter) {
+			converter.neighborChanged(thisState, world, thisLocation, replacedBlock, changedAt, isMoving);
+		}
 	}
 	
 	@Override

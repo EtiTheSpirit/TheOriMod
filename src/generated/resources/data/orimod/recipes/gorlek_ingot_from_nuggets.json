@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    },
+    {
+      "item": "orimod:gorlek_nugget"
+    }
+  ],
+  "result": {
+    "item": "orimod:gorlek_ingot"
+  }
+}

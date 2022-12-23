@@ -1,9 +1,12 @@
 package etithespirit.orimod.common.block.decay;
 
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.registry.world.FluidRegistry;
 import etithespirit.orimod.util.level.StateHelper;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.entity.Entity;
@@ -57,6 +60,11 @@ public class DecayLiquidBlock extends LiquidBlock implements IDecayBlockCommon {
 				properties.randomTicks();
 			}
 		}
+	}
+	
+	@Override
+	public MutableComponent getName() {
+		return StaticData.getNameAsDecay(super.getName());
 	}
 	
 	// Registering water will do nothing. There is no need to register it anyway as this does not inherit DecayBlockBase, and thus no warning exists.

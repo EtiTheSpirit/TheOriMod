@@ -19,6 +19,7 @@ import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.registries.RegistryObject;
 
+import javax.annotation.Nonnull;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
@@ -59,6 +60,11 @@ public final class BlockToMaterialBinding {
 	 * Maps blocks to replacement materials.
 	 */
 	private static final Map<Block, Material> BLOCK_TO_MATERIAL = new HashMap<>();
+	
+	/**
+	 * Maps blocks to other blocks. Mostly intended for cases where mod blocks want to mimic vanilla sounds.
+	 */
+	private static final Map<Block, Block> BLOCK_TO_OTHER_BLOCK = new HashMap<>();
 	
 	/**
 	 * Maps blocks to specific spirit materials.
@@ -113,7 +119,7 @@ public final class BlockToMaterialBinding {
 	 * @param standingIn The position of the block the entity is standing in.
 	 * @return An appropriate material for the information in the system.
 	 */
-	public static SpiritMaterial getMaterialFor(Entity entity, BlockPos standingOn, BlockPos standingIn) {
+	public static SpiritMaterial getMaterialFor(Entity entity, @Nonnull BlockPos standingOn, @Nonnull BlockPos standingIn) {
 		Level world = entity.getCommandSenderWorld();
 		BlockState on = world.getBlockState(standingOn);
 		BlockState in = world.getBlockState(standingIn);
@@ -200,6 +206,15 @@ public final class BlockToMaterialBinding {
 	/// REGISTRY CODE
 	
 	/**
+	 * Associates the sound of the mod block to an existing vanilla block. This will only work for vanilla blocks that have non-overridden sounds.
+	 * @param modBlock The modded block to declare the sound for.
+	 * @param vanillaCounterpart The vanilla counterpart.
+	 */
+	public static void copySoundFromVanilla(Block modBlock, Block vanillaCounterpart) {
+		BLOCK_TO_OTHER_BLOCK.put(modBlock, vanillaCounterpart);
+	}
+	
+	/**
 	 * Associates the given Minecraft or Mod {@link Material} with the given {@link SpiritMaterial}
 	 * @param mtl The Minecraft vanilla material (or custom Mod material) to associate.
 	 * @param smtl The Spirit Material to associate it with.
@@ -259,8 +274,9 @@ public final class BlockToMaterialBinding {
 	 * @param block
 	 * @param mtl
 	 */
+	@Deprecated
 	public static void setSpiritMaterialForTag(TagKey<Block> block, SpiritMaterial mtl) {
-	
+		throw new UnsupportedOperationException();
 	}
 	
 	/**
@@ -446,6 +462,7 @@ public final class BlockToMaterialBinding {
 		setSpiritMaterialFor(Blocks.NETHERRACK, SpiritMaterial.INHERITED); // duh
 		setSpiritMaterialFor(Blocks.BASALT, SpiritMaterial.ASH);
 		setSpiritMaterialFor(Blocks.POLISHED_BASALT, SpiritMaterial.ASH);
+		setSpiritMaterialFor(Blocks.SMOOTH_BASALT, SpiritMaterial.ASH);
 		setSpiritMaterialFor(Blocks.GILDED_BLACKSTONE, SpiritMaterial.INHERITED);
 		setSpiritMaterialFor(Blocks.NETHERITE_BLOCK, SpiritMaterial.INHERITED); // from metal
 		setSpiritMaterialFor(Blocks.ANCIENT_DEBRIS, SpiritMaterial.INHERITED); // from metal
@@ -510,6 +527,7 @@ public final class BlockToMaterialBinding {
 		
 		// MY BLOCKS
 		setEffectiveMaterialForRegistryObject(BlockRegistry.DECAY_SURFACE_MYCELIUM, SpiritMaterial.SHROOM);
+		setEffectiveMaterialForRegistryObject(BlockRegistry.GORLEK_NETHERITE_ALLOY_BLOCK, SpiritMaterial.INHERITED); // Block declares .sound(Netherite) (roughly) and I want to use that.
 		useIfIn(BlockRegistry.DECAY_SURFACE_MYCELIUM);
 		
 		// MOD BLOCKS (INCLUDED AHEAD OF TIME)

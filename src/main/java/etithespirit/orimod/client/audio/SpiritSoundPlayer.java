@@ -44,6 +44,24 @@ public final class SpiritSoundPlayer {
 	}
 	
 	/**
+	 * Identical to {@link #playSoundAtPlayer(Player, SoundEvent, SoundSource, float, float)} but this variation is server only, and will replicate the sound to the given player.
+	 * @param player The player to play the sound for
+	 * @param sound The sound to play
+	 * @param category The category of the sound
+	 * @param volume The volume of the sound
+	 * @param pitch The pitch of the sound
+	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
+	 * @exception IllegalStateException if this is called from a logical client.
+	 */
+	public static void playReplicatedSoundAtPlayer(@Nonnull Player player, @Nonnull SoundEvent sound, @Nonnull SoundSource category, float volume, float pitch) {
+		ArgumentNullException.throwIfNull(player, "player");
+		ArgumentNullException.throwIfNull(sound, "sound");
+		ArgumentNullException.throwIfNull(category, "category");
+		if (player.getCommandSenderWorld().isClientSide) throw new IllegalStateException("This method is only callable on the logical server.");
+		player.getCommandSenderWorld().playSound(null, player.getX(), player.getY(), player.getZ(), sound, category, volume, pitch);
+	}
+	
+	/**
 	 * Plays a sound in the given player's world at the player's location with appropriate client/server handling.
 	 * @param player The player to play the sound for
 	 * @param sound The sound to play
@@ -53,9 +71,9 @@ public final class SpiritSoundPlayer {
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playSoundAtPlayer(@Nonnull Player player, @Nonnull SoundEvent sound, @Nonnull SoundSource category, float volume, float pitch) {
-		if (player == null) throw new ArgumentNullException("player");
-		if (sound == null) throw new ArgumentNullException("sound");
-		if (category == null) throw new ArgumentNullException("category");
+		ArgumentNullException.throwIfNull(player, "player");
+		ArgumentNullException.throwIfNull(sound, "sound");
+		ArgumentNullException.throwIfNull(category, "category");
 		player.getCommandSenderWorld().playSound(player, player.getX(), player.getY(), player.getZ(), sound, category, volume, pitch);
 	}
 	
@@ -68,9 +86,9 @@ public final class SpiritSoundPlayer {
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playSoundAtPlayer(@Nonnull Player player, @Nonnull SoundEvent sound, @Nonnull SoundSource category, float volume) {
-		if (player == null) throw new ArgumentNullException("player");
-		if (sound == null) throw new ArgumentNullException("sound");
-		if (category == null) throw new ArgumentNullException("category");
+		ArgumentNullException.throwIfNull(player, "player");
+		ArgumentNullException.throwIfNull(sound, "sound");
+		ArgumentNullException.throwIfNull(category, "category");
 		
 		playSoundAtPlayer(player, sound, category, volume, getRandomPitch());
 	}
@@ -82,7 +100,7 @@ public final class SpiritSoundPlayer {
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playDashSound(@Nonnull Player player, boolean willImmediatelyImpactWall) {
-		if (player == null) throw new ArgumentNullException("player");
+		ArgumentNullException.throwIfNull(player, "player");
 		
 		if (SpiritIdentifier.isSpirit(player)) {
 			SoundEvent sound = SpiritSoundProvider.getSpiritDashSound(willImmediatelyImpactWall);
@@ -98,7 +116,7 @@ public final class SpiritSoundPlayer {
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playJumpSound(@Nonnull Player player, int jumpsIncludingLand) {
-		if (player == null) throw new ArgumentNullException("player");
+		ArgumentNullException.throwIfNull(player, "player");
 		
 		if (SpiritIdentifier.isSpirit(player)) {
 			SoundEvent sound = SpiritSoundProvider.getSpiritJumpSound(jumpsIncludingLand);
@@ -113,8 +131,8 @@ public final class SpiritSoundPlayer {
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playWallJumpSound(@Nonnull Player player, @Nonnull BlockPos block) {
-		if (player == null) throw new ArgumentNullException("player");
-		if (block == null) throw new ArgumentNullException("block");
+		ArgumentNullException.throwIfNull(player, "player");
+		ArgumentNullException.throwIfNull(block, "block");
 		
 		if (SpiritIdentifier.isSpirit(player)) {
 			SoundEvent sound = SpiritSoundProvider.getSpiritWallJumpSound(block);
@@ -131,8 +149,8 @@ public final class SpiritSoundPlayer {
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	private static void playStepSoundForWallJump(@Nonnull Player player, @Nonnull BlockPos block) {
-		if (player == null) throw new ArgumentNullException("player");
-		if (block == null) throw new ArgumentNullException("block");
+		ArgumentNullException.throwIfNull(player, "player");
+		ArgumentNullException.throwIfNull(block, "block");
 		
 		if (SpiritIdentifier.isSpirit(player)) {
 			SoundEvent fromSpiritProvider = SpiritSoundProvider.getSpiritStepSound(player, block, block.above(), null);
@@ -164,34 +182,34 @@ public final class SpiritSoundPlayer {
     */
 	
 	/**
-	 * Plays the sound associated with being hurt.
+	 * Plays the sound associated with being hurt. <strong>This method is for the server only, as the client will not be playing the sound.</strong>
 	 * @param player The player to play for. Whether or not they are a spirit is validated in this method.
 	 * @param source The cause of the damage.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playHurtSound(@Nonnull Player player, @Nonnull DamageSource source) {
-		if (player == null) throw new ArgumentNullException("player");
-		if (source == null) throw new ArgumentNullException("source");
+		ArgumentNullException.throwIfNull(player, "player");
+		ArgumentNullException.throwIfNull(source, "source");
 		
 		if (SpiritIdentifier.isSpirit(player)) {
 			SoundEvent sound = SpiritSoundProvider.getSpiritHurtSound(source);
-			if (sound != null) playSoundAtPlayer(player, sound, SoundSource.PLAYERS, 0.4f, getRandomPitch());
+			if (sound != null) playReplicatedSoundAtPlayer(player, sound, SoundSource.PLAYERS, 0.4f, getRandomPitch());
 		}
 	}
 	
 	/**
-	 * Plays the sound associated with being killed.
+	 * Plays the sound associated with being killed. <strong>This method is for the server only, as the client will not be playing the sound.</strong>
 	 * @param player The player to play for. Whether or not they are a spirit is validated in this method.
 	 * @param source The cause of the damage.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
 	public static void playDeathSound(@Nonnull Player player, @Nonnull DamageSource source) {
-		if (player == null) throw new ArgumentNullException("player");
-		if (source == null) throw new ArgumentNullException("source");
+		ArgumentNullException.throwIfNull(player, "player");
+		ArgumentNullException.throwIfNull(source, "source");
 		
 		if (SpiritIdentifier.isSpirit(player)) {
 			SoundEvent sound = SpiritSoundProvider.getSpiritDeathSound(source);
-			if (sound != null) playSoundAtPlayer(player, sound, SoundSource.PLAYERS, 0.2f, getRandomPitch());
+			if (sound != null) playReplicatedSoundAtPlayer(player, sound, SoundSource.PLAYERS, 0.2f, getRandomPitch());
 		}
 	}
 }

@@ -224,7 +224,7 @@ public final class ReplicateSpiritStatus {
 		
 		public static void onPlayerExist(PlayerEvent.StartTracking evt) {
 			if (evt.getTarget() instanceof Player plr) {
-				OriMod.LOG.info(plr.getDisplayName().getString());
+				OriMod.logCustomTrace(plr.getDisplayName().getString() + " now exists. Asking the server if they are a spirit...");
 				askIfPersonIsASpiritAsync(plr);
 			}
 		}
@@ -303,7 +303,7 @@ public final class ReplicateSpiritStatus {
 		@ClientUseOnly
 		public static Packet toGetModelsOf(UUID... players) {
 			if (players.length == 0) {
-				OriMod.LOG.debug("Something called SpiritStateReplicationPacket::toGetModelsOf with no arguments! Use toGetModelsOfAll instead.");
+				OriMod.logCustomTrace("Something called SpiritStateReplicationPacket::toGetModelsOf with no arguments! Use toGetModelsOfAll instead.");
 				return toGetModelsOfAll();
 			}
 			HashMap<UUID, Boolean> map = new HashMap<>();
@@ -322,7 +322,7 @@ public final class ReplicateSpiritStatus {
 		@ClientUseOnly
 		public static Packet toGetModelsOf(Player... players) {
 			if (players.length == 0) {
-				OriMod.LOG.debug("Something called SpiritStateReplicationPacket::toGetModelsOf with no arguments! Use toGetModelsOfAll instead.");
+				OriMod.logCustomTrace("Something called SpiritStateReplicationPacket::toGetModelsOf with no arguments! Use toGetModelsOfAll instead.");
 				return toGetModelsOfAll();
 			}
 			HashMap<UUID, Boolean> map = new HashMap<>();

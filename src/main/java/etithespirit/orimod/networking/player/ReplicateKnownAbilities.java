@@ -153,7 +153,7 @@ public final class ReplicateKnownAbilities {
 					Optional<SpiritCapabilities> capsCtr = SpiritCapabilities.getCaps(client);
 					if (capsCtr.isPresent()) {
 						SpiritCapabilities caps = capsCtr.get();
-						caps.setDash(SpiritDashAbility.fromByte(msg.dashType));
+						caps.setDashType(SpiritDashAbility.fromByte(msg.dashType));
 					}
  				});
 			} else if (msg.type == Packet.EventType.CHANGE_AIRJUMP) {
@@ -162,7 +162,7 @@ public final class ReplicateKnownAbilities {
 					Optional<SpiritCapabilities> capsCtr = SpiritCapabilities.getCaps(client);
 					if (capsCtr.isPresent()) {
 						SpiritCapabilities caps = capsCtr.get();
-						caps.setAirJumps(SpiritJumpAbility.fromByte(msg.airJumpType));
+						caps.setAirJumpType(SpiritJumpAbility.fromByte(msg.airJumpType));
 					}
 				});
 			} else if (msg.type == Packet.EventType.CHANGE_WALLJUMP) {

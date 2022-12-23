@@ -7,8 +7,10 @@ import etithespirit.orimod.OriMod;
 import etithespirit.orimod.client.audio.SpiritSoundPlayer;
 import etithespirit.orimod.client.audio.SpiritSoundProvider;
 import etithespirit.orimod.client.render.item.SpiritShieldModel;
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
-import etithespirit.orimod.common.item.ISpiritLightItem;
+import etithespirit.orimod.common.item.IModelPredicateProvider;
+import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.event.EntityEmittedSoundEventProvider;
 import etithespirit.orimod.registry.gameplay.ItemRegistry;
@@ -19,6 +21,8 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
+import net.minecraft.client.renderer.item.ItemProperties;
+import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
@@ -27,6 +31,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
@@ -34,11 +39,12 @@ import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SpiritShield extends ShieldItem implements ISpiritLightItem {
+public class SpiritShield extends ShieldItem implements ISpiritLightRepairableItem, IModelPredicateProvider {
 	
 	public SpiritShield() {
 		this(
@@ -89,7 +95,12 @@ public class SpiritShield extends ShieldItem implements ISpiritLightItem {
 	
 	@Override
 	public int getBarColor(ItemStack pStack) {
-		return ISpiritLightItem.super.getBarColor(pStack);
+		return ISpiritLightRepairableItem.super.getBarColor(pStack);
+	}
+	
+	@Override
+	public Component getName(ItemStack pStack) {
+		return StaticData.getNameAsLight(super.getName(pStack));
 	}
 	
 	static {
@@ -100,8 +111,15 @@ public class SpiritShield extends ShieldItem implements ISpiritLightItem {
 				if (player.isUsingItem()) {
 					ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
 					ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-					ItemStack lightShield = new ItemStack(ItemRegistry.LIGHT_SHIELD.get());
-					if (mainHand.equals(lightShield,false) || offHand.equals(lightShield, false)) {
+					Item lightShield = ItemRegistry.LIGHT_SHIELD.get();
+					
+					boolean isHolding = mainHand.is(lightShield); // Holding if its in main hand
+					if (!isHolding) {
+						isHolding = offHand.is(lightShield) && !mainHand.is(Items.SHIELD); // ... or offhand when the main shield is not being held.
+						// TODO: What hand does duel wielding shields prefer?
+					}
+					
+					if (isHolding) {
 						if (event.getSound().equals(SoundEvents.SHIELD_BLOCK)) {
 							// Player is holding a light shield and just blocked. Override the sound!
 							event.setSound(SpiritSoundProvider.getSpiritShieldImpactSound(false));
@@ -115,6 +133,16 @@ public class SpiritShield extends ShieldItem implements ISpiritLightItem {
 				}
 			}
 		});
+	}
+	
+	@Override
+	public void getPredicates(Map<ResourceLocation, ItemPropertyFunction> predicates) {
+		predicates.put(OriMod.rsrc("blocking"), ((pStack, pLevel, pEntity, pSeed) -> {
+			if (pStack.is(SpiritShield.this) && pEntity.isUsingItem()) {
+				return 1;
+			}
+			return 0;
+		}));
 	}
 	
 	
@@ -137,7 +165,7 @@ public class SpiritShield extends ShieldItem implements ISpiritLightItem {
 			matrixStack.pushPose();
 			matrixStack.scale(1.0F, -1.0F, -1.0F);
 			matrixStack.translate(0, -1.5, 0);
-			VertexConsumer solidEntityBuffer = buffer.getBuffer(RenderType.entityTranslucent(SHIELD_MATERIAL));
+			VertexConsumer solidEntityBuffer = buffer.getBuffer(RenderType.entityTranslucentCull(SHIELD_MATERIAL));
 			spiritShieldModel.renderToBuffer(matrixStack, solidEntityBuffer, combinedLight, combinedOverlay, 1, 1, 1, 1);
 			matrixStack.popPose();
 		}

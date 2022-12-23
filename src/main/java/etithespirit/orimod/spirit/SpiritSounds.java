@@ -8,6 +8,7 @@ import static etithespirit.orimod.client.audio.VanillaSoundIdentifier.CustomSoun
 import etithespirit.orimod.client.audio.variation.BreathLevel;
 import etithespirit.orimod.event.EntityEmittedSoundEvent;
 import etithespirit.orimod.event.EntityEmittedSoundEventProvider;
+import etithespirit.orimod.registry.SoundRegistry;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -17,11 +18,13 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.LivingDamageEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
 
 import etithespirit.orimod.client.audio.VanillaSoundIdentifier.CustomSoundType;
 import etithespirit.orimod.client.audio.variation.BreathLevel;
+import ru.dbotthepony.mc.otm.OverdriveThatMatters;
 
 /**
  * Handles when certain sounds should play.
@@ -122,6 +125,13 @@ public final class SpiritSounds {
 			// Only players will need this sound override.
 			ResourceLocation rsrc = event.getSound().getLocation();
 			
+			/*
+			if (rsrc.getNamespace().equals(OverdriveThatMatters.MOD_ID) && rsrc.getPath().equals("android.shockwave")) {
+				event.setSound(SoundRegistry.get("entity.spirit.stomp"));
+				return;
+			}
+			*/
+			
 			if (!rsrc.getNamespace().equals("minecraft")) return;
 			// The replaced sounds are only from MC, so don't bother testing if it's a mod source.
 			// Also prevents a stack overflow.
@@ -194,7 +204,7 @@ public final class SpiritSounds {
 	public static void onEntityHurt(LivingHurtEvent event) {
 		LivingEntity entity = event.getEntity();
 		if (entity instanceof Player player) {
-			if (SpiritIdentifier.isSpirit(player)) {
+			if (!player.getCommandSenderWorld().isClientSide && SpiritIdentifier.isSpirit(player)) {
 				if (entity.getHealth() > 0 && entity.getHealth() - event.getAmount() > 0 && event.getAmount() > 0.05) {
 					SpiritSoundPlayer.playHurtSound(player, event.getSource());
 				}
@@ -205,7 +215,7 @@ public final class SpiritSounds {
 	public static void onEntityDied(LivingDeathEvent event) {
 		LivingEntity entity = event.getEntity();
 		if (entity instanceof Player player) {
-			if (SpiritIdentifier.isSpirit(player)) {
+			if (!player.getCommandSenderWorld().isClientSide && SpiritIdentifier.isSpirit(player)) {
 				SpiritSoundPlayer.playDeathSound(player, event.getSource());
 			}
 		}

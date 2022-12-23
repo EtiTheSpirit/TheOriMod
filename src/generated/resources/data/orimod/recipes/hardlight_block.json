@@ -1,14 +1,33 @@
 {
-  "type": "minecraft:crafting_shaped",
-  "key": {
-    "S": {
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
+      "item": "orimod:hardlight_shard"
+    },
+    {
       "item": "orimod:hardlight_shard"
     }
-  },
-  "pattern": [
-    "SSS",
-    "SSS",
-    "SSS"
   ],
   "result": {
     "item": "orimod:hardlight_block"

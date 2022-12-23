@@ -6,9 +6,12 @@ import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.common.item.ISpiritLightItem;
+import etithespirit.orimod.client.render.armor.ArmorRenderHelper;
+import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
+import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.model.Model;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -49,16 +52,15 @@ public class RenderPlayerAsSpirit {
 	private static final SpiritModel MODEL = new SpiritModel();
 	
 	/**
-	 * The armor that fits on a spirit.
+	 * This armor has janky UVs that don't look that great, but allow the Spirit to use any armor that it wants so long as it follows the vanilla pattern.
 	 */
-	private static final SpiritArmorModel ARMOR = new SpiritArmorModel();
+	private static final SpiritArmorModelVanillaCompatible ARMOR_VANILLA = new SpiritArmorModelVanillaCompatible();
 	
 	/**
-	 * A dummy biped armor layer. This is used for access to the getArmorResource method,
-	 * which relies on having an instance despite not accessing any instance information.<br/>
-	 * <strong>Naturally, this is not safe for use for any other purpose than access to this method.</strong>
+	 * This armor has perfected UVs designed to match up explicitly with a unique armor model just for the spirit. Textures must be newly created for this technique.
 	 */
-	private static final HumanoidArmorLayer<?, ?, ?> DUMMY_BIP_ARMOR_LAYER = new HumanoidArmorLayer<>(null, null, null);
+	private static final SpiritArmorModelSpecialized ARMOR_SPECIAL = new SpiritArmorModelSpecialized();
+	
 	
 	/**
 	 * An ordered list of the four armor slots available in vanilla.
@@ -126,7 +128,6 @@ public class RenderPlayerAsSpirit {
 				// Call rotation methods on both the armor and the main body using this information.
 				setRotationAnglesFrom(partialTicks, mtx, player, renderer.getModel());
 				MODEL.renderToBuffer(mtx, consumer, packedLight, LivingEntityRenderer.getOverlayCoords(player, 0f), r, g, b, 1f);
-				// ^ This is where things seem to be going wrong?
 				
 				// Figure out what gear the player has.
 				boolean hasHelmet = player.hasItemInSlot(EquipmentSlot.HEAD);
@@ -135,37 +136,39 @@ public class RenderPlayerAsSpirit {
 				boolean hasBoots = player.hasItemInSlot(EquipmentSlot.FEET);
 				
 				// Update the visibility of the armor based on which parts the player has. This changes .visible properties.
-				ARMOR.updateVisibility(hasHelmet, hasChestplate, hasLeggings, hasBoots);
+				ARMOR_SPECIAL.updateVisibility(hasHelmet, hasChestplate, hasLeggings, hasBoots);
+				ARMOR_VANILLA.updateVisibility(hasHelmet, hasChestplate, hasLeggings, hasBoots);
 				
 				// ARMOR RENDERING:
 				for (int i = 0; i < SLOTS.length; i++) {
-					// TODO: Improve this, it takes up to four iterations to draw armor!
 					EquipmentSlot slot = SLOTS[i];
 					ItemStack item = player.getItemBySlot(slot);
 					if (!(item.getItem() instanceof ArmorItem)) continue;
-					ResourceLocation armorRsrc = DUMMY_BIP_ARMOR_LAYER.getArmorResource(player, item, slot, null);
+					ResourceLocation armorRsrc = ArmorRenderHelper.getArmorResource(player, item, slot, null);
 					
 					// Get the buffer for the armor.
 					VertexConsumer drawBuffer = ItemRenderer.getArmorFoilBuffer(bufferProvider, RenderType.armorCutoutNoCull(armorRsrc), false, item.hasFoil());
+					
+					IArmorVisibilityProvider targetArmor = item.is(OriModItemTags.SPECIALIZED_SPIRIT_ARMOR) ? ARMOR_SPECIAL : ARMOR_VANILLA;
 					
 					// Effectively what this does is for each iteration (where i corresponds to a slot), this sets the visiblity of everything to false
 					// with the exception of the applicable slot, which is set to true, otherwise the iteration is skipped.
 					switch (i) {
 						case 0 -> {
 							if (!hasHelmet) continue;
-							ARMOR.updateVisibility(true, false, false, false);
+							targetArmor.updateVisibility(true, false, false, false);
 						}
 						case 1 -> {
 							if (!hasChestplate) continue;
-							ARMOR.updateVisibility(false, true, false, false);
+							targetArmor.updateVisibility(false, true, false, false);
 						}
 						case 2 -> {
 							if (!hasLeggings) continue;
-							ARMOR.updateVisibility(false, false, true, false);
+							targetArmor.updateVisibility(false, false, true, false);
 						}
 						case 3 -> {
 							if (!hasBoots) continue;
-							ARMOR.updateVisibility(false, false, false, true);
+							targetArmor.updateVisibility(false, false, false, true);
 						}
 						default ->
 							// Throw exception here, as SLOTS is manually defined. Anything outside the range of 0 to 3 is caused by the me adding a new slot then not adding anything here
@@ -178,11 +181,9 @@ public class RenderPlayerAsSpirit {
 						g = (float) (itemClr >> 8 & 255) / 255.0F;
 						b = (float) (itemClr & 255) / 255.0F;
 						
-						ARMOR.renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, r, g, b, 1);
+						((Model)targetArmor).renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, r, g, b, 1);
 					} else {
-						float alpha = 1;
-						if (item.getItem() instanceof ISpiritLightItem) alpha = 0.5f;
-						ARMOR.renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, 1, 1, 1, 1);
+						((Model)targetArmor).renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, 1, 1, 1, 1);
 					}
 				}
 				renderThirdPersonItems(mtx, bufferProvider, packedLight, player);
@@ -235,7 +236,7 @@ public class RenderPlayerAsSpirit {
 			boolean isLefty = handSide == HumanoidArm.LEFT;
 			mtx.translate((isLefty ? -1D : 1D) / 16.0D, 0.125D, -0.625D);
 			BakedModel itemModel = Minecraft.getInstance().getItemRenderer().getModel(heldItemStack, entity.level, entity, heldItemStack.getDamageValue());
-			Minecraft.getInstance().getItemRenderer().render(heldItemStack, trsType, isLefty, mtx, renType, combinedLightIn, GeneralUtils.FULL_BRIGHT_LIGHT, itemModel);
+			Minecraft.getInstance().getItemRenderer().render(heldItemStack, trsType, isLefty, mtx, renType, combinedLightIn, GeneralUtils.NO_OVERLAY, itemModel);
 			mtx.popPose();
 		}
 	}
@@ -281,7 +282,8 @@ public class RenderPlayerAsSpirit {
 		
 		// Pass in the entity (which is a player, not a spirit) into the model so that the biped stuff works
 		MODEL.setRotationAngles(player, player.animationPosition, player.animationSpeed, player.tickCount, headYawOffset - renderYawOffset, pitchOffset, playerModel);
-		ARMOR.setRotationAngles(player, player.animationPosition, player.animationSpeed, player.tickCount, headYawOffset - renderYawOffset, pitchOffset, playerModel);
+		ARMOR_VANILLA.setRotationAngles(player, player.animationPosition, player.animationSpeed, player.tickCount, headYawOffset - renderYawOffset, pitchOffset, playerModel);
+		ARMOR_SPECIAL.setRotationAngles(player, player.animationPosition, player.animationSpeed, player.tickCount, headYawOffset - renderYawOffset, pitchOffset, playerModel);
 	}
 	
 	/**

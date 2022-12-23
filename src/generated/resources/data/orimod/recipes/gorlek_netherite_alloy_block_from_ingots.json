@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    },
+    {
+      "item": "orimod:gorlek_netherite_alloy_ingot"
+    }
+  ],
+  "result": {
+    "item": "orimod:gorlek_netherite_alloy_block"
+  }
+}

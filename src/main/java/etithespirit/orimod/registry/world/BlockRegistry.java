@@ -21,7 +21,9 @@ import etithespirit.orimod.common.block.light.generation.SolarGeneratorBlock;
 import etithespirit.orimod.common.block.light.generation.ThermalGeneratorBlock;
 import etithespirit.orimod.common.block.light.interaction.LightRepairBoxBlock;
 import etithespirit.orimod.common.block.other.GorlekMetalBlock;
+import etithespirit.orimod.common.block.other.GorlekNetheriteAlloyBlock;
 import etithespirit.orimod.common.block.other.GorlekOreBlock;
+import etithespirit.orimod.common.block.other.RawGorlekOreBlock;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
@@ -37,11 +39,11 @@ import java.util.List;
 public final class BlockRegistry {
 	
 	/** Used in the item registry to generate BlockItems. */
-	public static final List<RegistryObject<? extends Block>> BLOCKS_TO_REGISTER = new ArrayList<>(64);
+	// public static final List<RegistryObject<? extends Block>> BLOCKS_TO_REGISTER = new ArrayList<>(64);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// DEFERRED REGISTERS PROVIDED BY FORGE
-	static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, OriMod.MODID);
+	public static final DeferredRegister<Block> BLOCKS = DeferredRegister.create(ForgeRegistries.BLOCKS, OriMod.MODID);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS
@@ -60,7 +62,9 @@ public final class BlockRegistry {
 	/** */ public static final RegistryObject<Block> LIGHT_REPAIR_BOX = BLOCKS.register("light_repair_box", LightRepairBoxBlock::new);
 	
 	/** */ public static final RegistryObject<Block> GORLEK_ORE = BLOCKS.register("gorlek_ore", GorlekOreBlock::new);
+	/** */ public static final RegistryObject<Block> RAW_GORLEK_ORE_BLOCK = BLOCKS.register("raw_gorlek_ore_block", RawGorlekOreBlock::new);
 	/** */ public static final RegistryObject<Block> GORLEK_METAL_BLOCK = BLOCKS.register("gorlek_metal_block", GorlekMetalBlock::new);
+	/** */ public static final RegistryObject<Block> GORLEK_NETHERITE_ALLOY_BLOCK = BLOCKS.register("gorlek_netherite_alloy_block", GorlekNetheriteAlloyBlock::new);
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////
@@ -76,6 +80,7 @@ public final class BlockRegistry {
 	/** */ //public static final RegistryObject<Block> LIGHT_DEBUGGER = BLOCKS.register("light_debugger", LightDebuggerBlock::new);
 	
 	static {
+		/*
 		BLOCKS_TO_REGISTER.add(DECAY_DIRT_MYCELIUM);
 		BLOCKS_TO_REGISTER.add(DECAY_PLANTMATTER_MYCELIUM);
 		BLOCKS_TO_REGISTER.add(DECAY_LOG);
@@ -91,7 +96,9 @@ public final class BlockRegistry {
 		BLOCKS_TO_REGISTER.add(LIGHT_REPAIR_BOX);
 		
 		BLOCKS_TO_REGISTER.add(GORLEK_ORE);
+		BLOCKS_TO_REGISTER.add(RAW_GORLEK_ORE_BLOCK);
 		BLOCKS_TO_REGISTER.add(GORLEK_METAL_BLOCK);
+		BLOCKS_TO_REGISTER.add(GORLEK_NETHERITE_ALLOY_BLOCK);
 		
 		BLOCKS_TO_REGISTER.add(LIGHT_CAPACITOR);
 		BLOCKS_TO_REGISTER.add(LIGHT_CONDUIT);
@@ -101,6 +108,7 @@ public final class BlockRegistry {
 		BLOCKS_TO_REGISTER.add(LIGHT_TO_REDSTONE_SIGNAL);
 		BLOCKS_TO_REGISTER.add(SOLAR_ENERGY_BLOCK);
 		BLOCKS_TO_REGISTER.add(THERMAL_ENERGY_BLOCK);
+		*/
 	}
 	
 	/***/

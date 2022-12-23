@@ -1,6 +1,7 @@
 package etithespirit.orimod.common.block.light.connection;
 
 
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
@@ -10,8 +11,10 @@ import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -405,11 +408,9 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 		return (new Item.Properties()).tab(OriModCreativeModeTabs.SPIRIT_MACHINERY_COMPLETE);
 	}
 	
-	
 	@Override
-	@SuppressWarnings("deprecation")
-	public List<ItemStack> getDrops(BlockState pState, LootContext.Builder pBuilder) {
-		return List.of(new ItemStack(ItemRegistry.getBlockItemOf(this)));
+	public MutableComponent getName() {
+		return StaticData.getNameAsLight(super.getName());
 	}
 	
 }

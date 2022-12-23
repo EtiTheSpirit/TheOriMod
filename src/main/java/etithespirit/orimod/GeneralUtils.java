@@ -4,6 +4,7 @@ import etithespirit.orimod.annotation.ServerUseOnly;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.network.chat.ChatType;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -36,6 +37,11 @@ public final class GeneralUtils {
 	 * Lightmaps are a UV graph of two short values packed as an int
 	 */
 	public static final int FULL_BRIGHT_LIGHT = 0x00F0_00F0;
+	
+	/**
+	 * A value that disables the overlay on rendered objects. I don't know what the overlay is. It's not the enchanting effect, that's called foil.
+	 */
+	public static final int NO_OVERLAY = OverlayTexture.NO_OVERLAY;
 	
 	public static ResourceLocation getResourceLocation(Block block) {
 		return ForgeRegistries.BLOCKS.getKey(block);

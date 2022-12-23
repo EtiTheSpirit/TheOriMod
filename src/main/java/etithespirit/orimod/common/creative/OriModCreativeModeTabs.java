@@ -9,6 +9,13 @@ public final class OriModCreativeModeTabs {
 	
 	private OriModCreativeModeTabs() {}
 	
+	public static final CreativeModeTab BLOCKS = new CreativeModeTab("orimod.blocks") {
+		@Override
+		public ItemStack makeIcon() {
+			return new ItemStack(BlockRegistry.GORLEK_METAL_BLOCK.get().asItem());
+		}
+	};
+	
 	/** A creative tab for combat items made by Spirits */
 	public static final CreativeModeTab SPIRIT_COMBAT = new CreativeModeTab("orimod.spirit_combat") {
 		@Override
@@ -48,7 +55,6 @@ public final class OriModCreativeModeTabs {
 			return new ItemStack(BlockRegistry.DECAY_DIRT_MYCELIUM.get().asItem());
 		}
 	};
-	
 	
 	/** A creative tab for decorative blocks. */
 	public static final CreativeModeTab SPIRIT_DECORATION = new CreativeModeTab("orimod.spirit_decoration") {

@@ -2,6 +2,7 @@ package etithespirit.orimod.spirit.common;
 
 import etithespirit.orimod.client.audio.SpiritSoundPlayer;
 import etithespirit.orimod.common.capabilities.SpiritCapabilities;
+import etithespirit.orimod.modinterop.overdrive_that_matters.OTMAndroidInterop;
 import etithespirit.orimod.networking.player.ReplicatePlayerMovement;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
@@ -57,7 +58,7 @@ public final class MotionMarshaller {
 		if (capsCtr.isEmpty()) return;
 		
 		SpiritCapabilities caps = capsCtr.get();
-		boolean ok = caps.isClinging();
+		boolean ok = caps.isClinging(player);
 		if (!ok) return;
 		
 		Set<Direction> walls = Utilities.getWalls(player);
@@ -72,11 +73,19 @@ public final class MotionMarshaller {
 	}
 	
 	public static void tryPerformJump(Player player, float leftImpulse, float forwardImpulse, @Nullable BlockPos wallPos) {
+		if (player.isSwimming()) return;
+		
 		Optional<SpiritCapabilities> capsCtr = SpiritCapabilities.getCaps(player);
 		if (capsCtr.isEmpty()) return;
 		
 		SpiritCapabilities caps = capsCtr.get();
-		boolean ok = (wallPos != null) ? caps.tryWallJump(player) : caps.tryAirJump(player);
+		boolean doWallJump = wallPos != null;
+		boolean ok = doWallJump ? caps.tryWallJump(player) : caps.tryAirJump(player);
+		if (!ok && doWallJump) {
+			// Player could not wall jump. Maybe they can air jump as a substitute?
+			ok = caps.tryAirJump(player);
+			doWallJump = false; // Set this to false so that the right multijump sound plays.
+		}
 		if (ok) {
 			float strafe = Math.signum(leftImpulse) * AIRJUMP_UPWARD_FORCE_POW2;
 			float forward = Math.signum(forwardImpulse) * AIRJUMP_UPWARD_FORCE_POW2;
@@ -96,7 +105,7 @@ public final class MotionMarshaller {
 			float newMotionZ = (float) (player.getDeltaMovement().z + forward * f2 + strafe * f1) / LATERAL_DECAY_JUMP;
 			player.setDeltaMovement(newMotionX, newMotionY, newMotionZ);
 			
-			if (wallPos != null) {
+			if (doWallJump) {
 				SpiritSoundPlayer.playWallJumpSound(player, wallPos);
 			} else {
 				SpiritSoundPlayer.playJumpSound(player, caps.getAirJumpIndex() + 1); // +1 turns it from air jumps to land jumps
@@ -118,13 +127,14 @@ public final class MotionMarshaller {
 		
 		Vec3 velocityBeforeLatestDash = player.getDeltaMovement();
 		if (player.isOnGround() || isInFluid) {
-			if (!caps.tryGroundDash(player)) return;
+			boolean dashResult = isInFluid ? caps.tryWaterDash(player) : caps.tryGroundDash(player);
+			if (!dashResult) return;
 			// on ground
-			movement.scale(DASH_SPEED_GND);
+			movement.scale(DASH_SPEED_GND * OTMAndroidInterop.getDashSpeedBoost(player));
 		} else {
 			if (!caps.tryAirDash(player)) return;
 			// in air
-			movement.scale(DASH_SPEED_AIR);
+			movement.scale(DASH_SPEED_AIR * OTMAndroidInterop.getDashSpeedBoost(player));
 		}
 		
 		if (!isInFluid) {
@@ -152,6 +162,11 @@ public final class MotionMarshaller {
 		if (entity instanceof Player player) {
 			player.push(0, 0.2, 0);
 			SpiritSoundPlayer.playJumpSound(player, 1);
+			
+			Optional<SpiritCapabilities> capsCtr = SpiritCapabilities.getCaps(player);
+			if (capsCtr.isEmpty()) return;
+			SpiritCapabilities caps = capsCtr.get();
+			caps.triggerAirJumpCooldown();
 		}
 	}
 	
@@ -287,6 +302,11 @@ public final class MotionMarshaller {
 			return walls.isEmpty() ? Direction.UP : walls.iterator().next();
 		}
 		
+		/**
+		 * Returns the next best available block to wall jump off of by its position.
+		 * @param plr The player to check for.
+		 * @return The best position to use for the block that is being jumped off of, for sounds mainly.
+		 */
 		public static @Nullable BlockPos getBlockForBestWall(Player plr) {
 			Set<Direction> walls = Utilities.getWalls(plr);
 			if (walls.isEmpty()) return null;

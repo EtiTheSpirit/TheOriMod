@@ -1,21 +1,35 @@
 package etithespirit.orimod.common.block.other;
 
 import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.tags.PresetBlockTags;
+import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraft.world.level.material.MaterialColor;
 
-public class GorlekOreBlock extends Block implements IToolRequirementProvider {
+import java.util.List;
+
+public class GorlekOreBlock extends Block implements IToolRequirementProvider, IBlockItemPropertiesProvider {
 	public GorlekOreBlock() {
 		super(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GRAY).requiresCorrectToolForDrops().strength(1.2f, 30f));
 	}
 	
 	@Override
 	public Iterable<TagKey<Block>> getTagsForBlock() {
-		return PresetBlockTags.PICKAXE_ONLY;
+		return List.of(
+			BlockTags.MINEABLE_WITH_PICKAXE,
+			BlockTags.NEEDS_IRON_TOOL
+		);
+	}
+	
+	
+	@Override
+	public Item.Properties getPropertiesOfItem() {
+		return (new Item.Properties()).tab(OriModCreativeModeTabs.SPIRIT_DECORATION);
 	}
 }

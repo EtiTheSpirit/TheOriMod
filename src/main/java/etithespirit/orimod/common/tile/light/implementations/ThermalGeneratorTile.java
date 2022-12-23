@@ -23,7 +23,7 @@ import net.minecraft.world.level.material.Material;
 
 public class ThermalGeneratorTile extends LightEnergyHandlingTile implements IAmbientSoundEmitter, IServerUpdatingTile, IClientUpdatingTile, ILightEnergyGenerator {
 	
-	public static final float PEAK_GENERATION_RATE = 4/64f;
+	public static final float PEAK_GENERATION_RATE = 1/4f;
 	private final LightTechLooper looper;
 	private final EnergyReservoir generatorHelper = new EnergyReservoir(PEAK_GENERATION_RATE * (7/5f));
 	private final BlockPos[] neighborPositions = new BlockPos[6];
@@ -66,7 +66,7 @@ public class ThermalGeneratorTile extends LightEnergyHandlingTile implements IAm
 	public void updateServer(Level inLevel, BlockPos at, BlockState current) {
 		lastHeat = getHeat();
 		lastGeneratedEnergy = (lastHeat / 5f) * PEAK_GENERATION_RATE;
-		generatorHelper.stash(lastGeneratedEnergy);
+		generatorHelper.stash(lastGeneratedEnergy, false);
 	}
 	
 	@Override

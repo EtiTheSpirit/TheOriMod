@@ -63,8 +63,8 @@ public class DamageMarshaller {
 						}
 					}
 					
-					float invHardlightPercentage = 1f - hardlightPercentage;
-					evt.setAmount(evt.getAmount() * (invHardlightPercentage * 0.5f));
+					
+					evt.setAmount(evt.getAmount() / (hardlightPercentage + 1f));
 				}
 			}
 		}

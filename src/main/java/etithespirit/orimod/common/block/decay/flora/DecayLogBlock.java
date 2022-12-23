@@ -1,6 +1,8 @@
 package etithespirit.orimod.common.block.decay.flora;
 
 import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
+import net.minecraft.ChatFormatting;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.StateHolder;
@@ -25,4 +27,5 @@ public class DecayLogBlock extends DecayLogBase {
 		IDecayBlockCommon.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.DARK_OAK_LOG);
 		IDecayBlockCommon.registerAllStatesFor(blocksToReplaceWithSelf, Blocks.ACACIA_LOG);
 	}
+	
 }

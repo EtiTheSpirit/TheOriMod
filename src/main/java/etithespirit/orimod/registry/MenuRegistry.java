@@ -1,10 +1,7 @@
 package etithespirit.orimod.registry;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.client.gui.LightRepairDeviceScreen;
 import etithespirit.orimod.client.render.hud.LightRepairDeviceMenu;
-import net.minecraft.client.gui.screens.MenuScreens;
-import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.MenuType;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;

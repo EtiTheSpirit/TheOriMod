@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:smelting",
+  "cookingtime": 200,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "orimod:raw_gorlek_ore"
+  },
+  "result": "orimod:gorlek_ingot"
+}

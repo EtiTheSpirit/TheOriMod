@@ -2,6 +2,7 @@ package etithespirit.orimod.common.item.tools;
 
 
 import etithespirit.orimod.GeneralUtils;
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
@@ -135,5 +136,10 @@ public class LumoWand extends Item {
 		tooltip.add(Component.translatable("tooltip.orimod.lumowand.2"));
 		tooltip.add(Component.translatable("tooltip.orimod.lumowand.3"));
 		tooltip.add(Component.translatable("tooltip.orimod.lumowand.4"));
+	}
+	
+	@Override
+	public Component getName(ItemStack pStack) {
+		return StaticData.getNameAsLight(super.getName(pStack));
 	}
 }

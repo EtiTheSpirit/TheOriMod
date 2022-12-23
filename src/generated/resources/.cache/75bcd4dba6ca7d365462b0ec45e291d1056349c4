@@ -1,3 +1,11 @@
-// 1.19.2	2022-12-19T07:43:17.0935812	Tags for minecraft:block
-f21574e04b67c6ab70014dea860f317d59271b5e data/minecraft/tags/blocks/mineable/pickaxe.json
+// 1.19.2	2022-12-21T07:53:57.1519316	Tags for minecraft:block
+0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/beacon_base_blocks.json
+0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/dampens_vibrations.json
+0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/dragon_immune.json
+0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/impermeable.json
+649477199ebc0c93e724de92bbd7bbd5dc991e31 data/minecraft/tags/blocks/mineable/pickaxe.json
+0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/needs_diamond_tool.json
+8f6557eb8897d650f43a2d810ba53b3030ea41c7 data/minecraft/tags/blocks/needs_iron_tool.json
+0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/occludes_vibration_signals.json
+0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/wither_immune.json
 fec0ed8ba266981be219828e8362ad3417ac38a6 data/orimod/tags/blocks/alignment/light_related.json

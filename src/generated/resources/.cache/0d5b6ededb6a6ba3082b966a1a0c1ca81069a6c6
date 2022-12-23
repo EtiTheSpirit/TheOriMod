@@ -1,6 +1,9 @@
-// 1.19.2	2022-12-13T13:06:14.558204	Item Models: orimod
+// 1.19.2	2022-12-23T15:18:03.0981735	Item Models: orimod
 d557d9dba2e7793ff4437741f13639d844f2e0a5 assets/orimod/models/item/binding_essence.json
 7d3047672f20a6bafa7d97bd86065bdcffbdfdf8 assets/orimod/models/item/decay_poison_bucket.json
+88ba102c1ba22e76a1afa352f3c944763c04ffdf assets/orimod/models/item/gorlek_ingot.json
+8cbe406fcee2800161694c8e837d573ac0e5c35c assets/orimod/models/item/gorlek_netherite_alloy_ingot.json
+fdc5167d84be76f5f9bd43e16cb066bc74bba814 assets/orimod/models/item/gorlek_nugget.json
 8e2c60eac6140f83b1822d2b7b12705faf50e4ce assets/orimod/models/item/hardlight_shard.json
 f2c38b6fe4e4a0e397e0fc67bc20cdc6b62527d4 assets/orimod/models/item/large_light_lens.json
 a07c168bfec3f618cb5e4fd488d2b0cef4274187 assets/orimod/models/item/light_axe.json
@@ -10,12 +13,13 @@ e07da75fac8cffce7631957716b0015f5d99f512 assets/orimod/models/item/light_chestpl
 817ec2baedf576eb3922cb9b9663163cbb253794 assets/orimod/models/item/light_hoe.json
 5e555587791e5335715d3f8c3e9dba69b00f5a78 assets/orimod/models/item/light_leggings.json
 0ca447739a7fe6daa373645656dbb61d7df18ea6 assets/orimod/models/item/light_pickaxe.json
-63c89805c53c1439de3089d80518cc5ad1078a24 assets/orimod/models/item/light_shield.json
-94329320d4ec55d8fd977cf84d093dd794708bd9 assets/orimod/models/item/light_shield_blocking.json
+6e2edeead855415d7c08806a30881c402a2e29de assets/orimod/models/item/light_shield.json
+a1d84fc8730fe6f3cefe5dd31b6b21c1b8439e57 assets/orimod/models/item/light_shield_blocking.json
 d47d825e8431cda4f99c3502eb02b2428b764b1e assets/orimod/models/item/light_shovel.json
 bdac232cb3485641f63e7dc93974c15e2b338efb assets/orimod/models/item/light_sword.json
 cb80f2346bb87464208a05a8df3ddecfc75cf3a2 assets/orimod/models/item/lumo_wand.json
-e084224be1f0d7ccd284580374009cf3c08d37fe assets/orimod/models/item/spirit_arc.json
+983b53405a985fe81c5660e8c80f7f9567e049e1 assets/orimod/models/item/raw_gorlek_ore.json
+2f7319d87bd2ff2117c8c614cb0c95ba99c25b86 assets/orimod/models/item/spirit_arc.json
 3f8c1301944571e6bdae553ee156f9975aff6b75 assets/orimod/models/item/spirit_arc_pulling_0.json
 d15ef98f942f77aa0f59022b6405d7aa045b0648 assets/orimod/models/item/spirit_arc_pulling_1.json
 be1cb0ef920171dc1f3c0f4c50493184fecec710 assets/orimod/models/item/spirit_arc_pulling_2.json

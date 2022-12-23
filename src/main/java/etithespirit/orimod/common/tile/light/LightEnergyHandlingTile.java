@@ -1,6 +1,5 @@
 package etithespirit.orimod.common.tile.light;
 
-import etithespirit.orimod.common.tile.light.technique.LightEnergyStorageLgc;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;

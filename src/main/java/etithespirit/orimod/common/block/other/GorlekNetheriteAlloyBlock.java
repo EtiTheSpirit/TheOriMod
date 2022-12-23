@@ -3,21 +3,28 @@ package etithespirit.orimod.common.block.other;
 import com.google.common.collect.ImmutableList;
 import etithespirit.orimod.common.block.IToolRequirementProvider;
 import etithespirit.orimod.common.block.StaticData;
+import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
+import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.material.Material;
 
-public class GorlekNetheriteAlloyBlock extends Block implements IToolRequirementProvider {
+public class GorlekNetheriteAlloyBlock extends Block implements IToolRequirementProvider, IBlockItemPropertiesProvider {
 	
 	public GorlekNetheriteAlloyBlock() {
 		super(
-			Properties.of(Material.HEAVY_METAL)
+			Properties.copy(Blocks.NETHERITE_BLOCK)
 				.isRedstoneConductor(StaticData.ALWAYS_TRUE)
-				.strength(18, 30000)
+				.strength(60, 4000)
 				.requiresCorrectToolForDrops()
 				.sound(SoundType.NETHERITE_BLOCK)
+				// To future Xan: The call to .sound on the properties is accompanied by an override in BlockToMaterialBinding (you tell this block specifically to be SpiritMaterial.INHERITED)
+				// Don't go removing the sound type and then start wondering why it's not playing the proper sound. That's why.
 		);
 	}
 	
@@ -30,7 +37,13 @@ public class GorlekNetheriteAlloyBlock extends Block implements IToolRequirement
 			BlockTags.DRAGON_IMMUNE,
 			BlockTags.WITHER_IMMUNE,
 			BlockTags.DAMPENS_VIBRATIONS,
-			BlockTags.OCCLUDES_VIBRATION_SIGNALS
+			BlockTags.OCCLUDES_VIBRATION_SIGNALS,
+			BlockTags.BEACON_BASE_BLOCKS
 		);
+	}
+	
+	@Override
+	public Item.Properties getPropertiesOfItem() {
+		return (new Item.Properties()).fireResistant().rarity(Rarity.EPIC).tab(OriModCreativeModeTabs.BLOCKS);
 	}
 }

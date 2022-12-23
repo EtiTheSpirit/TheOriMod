@@ -1,5 +1,66 @@
 {
-  "parent": "minecraft:item/shield_blocking",
+  "parent": "minecraft:item/shield",
+  "display": {
+    "firstperson_lefthand": {
+      "rotation": [
+        15,
+        185,
+        -5
+      ],
+      "scale": [
+        0.65,
+        0.65,
+        0.65
+      ],
+      "translation": [
+        -2,
+        8,
+        0
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        180,
+        -5
+      ],
+      "scale": [
+        1.25,
+        1.25,
+        1.25
+      ],
+      "translation": [
+        -15,
+        5,
+        -11
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        45,
+        135,
+        0
+      ],
+      "translation": [
+        12,
+        5,
+        8
+      ]
+    },
+    "thirdperson_righthand": {
+      "rotation": [
+        45,
+        135,
+        0
+      ],
+      "translation": [
+        0,
+        12,
+        0
+      ]
+    }
+  },
+  "gui_light": "front",
   "textures": {
     "particle": "minecraft:block/glass"
   }

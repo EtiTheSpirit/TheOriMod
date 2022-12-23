@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "orimod:block/ore/blocks/gorlek_netherite_alloy_block"
+    }
+  }
+}

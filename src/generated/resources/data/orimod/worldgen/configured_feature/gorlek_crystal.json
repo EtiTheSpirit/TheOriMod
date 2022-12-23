@@ -2,16 +2,34 @@
   "type": "orimod:gorlek_crystal",
   "config": {
     "blockConfiguration": {
+      "alternateShellBlock": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "minecraft:amethyst_block"
+        }
+      },
+      "internalFullOreBlock": {
+        "type": "minecraft:simple_state_provider",
+        "state": {
+          "Name": "orimod:raw_gorlek_ore_block"
+        }
+      },
       "internalOreBlock": {
         "type": "minecraft:simple_state_provider",
         "state": {
           "Name": "orimod:gorlek_ore"
         }
       },
-      "primaryCrystalBlock": {
+      "oreGenerationChances": {
+        "chanceForAlternateOreInstead": 0.001,
+        "chanceForAlternateShellBlock": 0.125,
+        "chanceForOreBlock": 0.45,
+        "chanceForOreBlockInShell": 0.02
+      },
+      "shellBlock": {
         "type": "minecraft:simple_state_provider",
         "state": {
-          "Name": "minecraft:amethyst_block"
+          "Name": "minecraft:smooth_basalt"
         }
       }
     },
