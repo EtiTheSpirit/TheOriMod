@@ -1,5 +1,7 @@
 package etithespirit.orimod.api.spiritmaterial;
 
+import org.jetbrains.annotations.ApiStatus;
+
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 
@@ -18,82 +20,82 @@ public enum SpiritMaterial {
 	INHERITED(true),
 	
 	/** Corresponds to ash or basalt. Has a deep, soft impact sound. Think stepping on a charred log in real life. */
-	ASH(),
+	ASH,
 	
 	/** Corresponds to bones. Sounds like a pile of bones clattering together mixed with that solid surface of bone. */
-	BONE(),
+	BONE,
 	
 	/** Corresponds to solid ceramics, like bricks or hardened clay. */
-	CERAMIC_SOLID(),
+	CERAMIC_SOLID,
 	
 	/** Corresponds to broken, brittle, or cracked ceramics, like pottery or sandstone.*/
-	CERAMIC_BROKEN(),
+	CERAMIC_BROKEN,
 	
 	/** Corresponds to chitin, the solid material making up bug exoskeletons. */
-	CHITIN(),
+	CHITIN,
 	
-	/** Corresponds to glassy materials. This causes it to use the same sound as the hardlight platforms in the <em>Black Root Burrows</em>, so it's more suitable for that. */
-	GLASS(),
+	/** Corresponds to materials made from Spirit Light. This causes it to use the same sound as the hardlight platforms in the <em>Black Root Burrows</em>. */
+	HARDLIGHT_GLASS("hardlight_glass"), // The name must be explicitly defined since it replaced _ with a dot by default unless a name override is declared.
 	
 	/** Corresponds to crispy foliage materials. */
-	GRASS_HARD(),
+	GRASS_HARD,
 	
 	/** Corresponds to soft foliage materials. */
-	GRASS_SOFT(),
+	GRASS_SOFT,
 	
 	/** Corresponds to materials akin to gravel or loose pebbles. */
-	GRAVEL_DRY(),
+	GRAVEL_DRY,
 	
 	/** Corresponds to mushy wet gravel inside of muddy ground. Lots of water. */
-	GRAVEL_WET(),
+	GRAVEL_WET,
 	
 	/** Corresponds to gravel with a layer of snow atop it. */
-	GRAVEL_SNOWY(),
+	GRAVEL_SNOWY,
 	
 	/** Corresponds to ice. */
-	ICE(),
+	ICE,
 	
 	/** Corresponds to metal. */
-	METAL(),
+	METAL,
 	
 	/** Corresponds to squishy, fleshy materials. */
-	ORGANIC(),
+	ORGANIC,
 	
 	/** Corresponds to solid rock and stone. */
-	ROCK(),
+	ROCK,
 	
 	/** Corresponds to sand, kind of sounds like a carpet. */
-	SAND(),
+	SAND,
 	
 	/** Corresponds to fungus or other wet, mostly solid materials. For wet and soft/squishy materials, consider using {@link #ORGANIC}. */
-	SHROOM(),
+	SHROOM,
 	
 	/** Corresponds to slimy materials, like mud or (obviously) slime. */
-	SLIMY(),
+	SLIMY,
 	
 	/** Corresponds to snow. */
-	SNOW(),
+	SNOW,
 	
 	/** Corresponds to dry, crisp wood. */
-	WOOD_DRY(),
+	WOOD_DRY,
 	
 	/** Corresponds to woody materials covered in moss or other soft plant matter. */
-	WOOD_MOSSY(),
+	WOOD_MOSSY,
 	
 	/** Corresponds to woody materials covered in snow. */
-	WOOD_SNOWY(),
+	WOOD_SNOWY,
 	
 	/** Corresponds to wood with a thin layer of water atop it, good for use in rain. */
-	WOOD_WET(),
+	WOOD_WET,
 	
 	/** Corresponds to shallow water like puddles. */
-	WATER_SHALLOW(),
+	WATER_SHALLOW,
 	
 	/** Corresponds to walkable deep water, think ankle deep. */
-	WATER_DEEP(),
+	WATER_DEEP,
 	
 	/** Corresponds to clothy materials. Derived from the WotW sand step sounds that I was able to find prior to the much larger datamining haul. */
-	WOOL();
+	WOOL;
 	
 	/** If true, the vanilla sound for this material should be used instead. The vanilla sound in question is able to be determined via BlockToMaterialBinding. */
 	public final boolean useVanillaInstead;

@@ -1,5 +1,6 @@
 package etithespirit.orimod.common.item.data;
 
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import net.minecraft.world.item.Tier;
 import net.minecraft.world.item.crafting.Ingredient;
 
@@ -31,8 +32,14 @@ public enum SpiritTiers implements Tier {
 	/** Weak light tools. */
 	SIMPLE_LIGHT(3, 500, 7.5f, 2.2f, 18, () -> Ingredient.EMPTY),
 	
+	/** Gorlek Steel tools. */
+	GORLEK_STEEL(3, 1200, 8.5f, 3.2f, 8, () -> Ingredient.of(ItemRegistry.GORLEK_INGOT.get())),
+	
+	/** Gorlek-Netherite Alloy tools. */
+	GORLEK_NETHERITE_ALLOY(5, 3125, 10.2f, 4.8f, 12, () -> Ingredient.of(ItemRegistry.GORLEK_NETHERITE_ALLOY_INGOT.get())),
+	
 	/** Strong light tools. */
-	COMPLEX_LIGHT(5, 1000, 9.5f, 3.5f, 24, () -> Ingredient.EMPTY);
+	COMPLEX_LIGHT(5, 1, 9.5f, 3.5f, 24, () -> Ingredient.EMPTY);
 	
 	
 	private final int level;

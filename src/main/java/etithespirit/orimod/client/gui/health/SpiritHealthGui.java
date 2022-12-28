@@ -5,6 +5,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.client.gui.health.heart.ExtendedHeartType;
 import etithespirit.orimod.client.gui.health.heart.IHeartRenderType;
+import etithespirit.orimod.config.OriModConfigs;
 import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.resources.ResourceLocation;
@@ -46,7 +47,7 @@ public class SpiritHealthGui implements IGuiOverlay {
 	
 	public static void cancelHealthRender(RenderGuiOverlayEvent.Pre preRenderEvent) {
 		if (preRenderEvent.getOverlay().id().equals(VanillaGuiOverlay.PLAYER_HEALTH.id())) {
-			preRenderEvent.setCanceled(true);
+			preRenderEvent.setCanceled(OriModConfigs.OVERRIDE_HEALTH_RENDERING.get());
 		}
 	}
 	
@@ -74,6 +75,8 @@ public class SpiritHealthGui implements IGuiOverlay {
 	
 	@Override
 	public void render(ForgeGui gui, PoseStack poseStack, float partialTick, int screenWidth, int screenHeight) {
+		if (!OriModConfigs.OVERRIDE_HEALTH_RENDERING.get()) return;
+		
 		this.ticks = gui.getGuiTicks();
 		Minecraft minecraft = gui.getMinecraft();
 		
@@ -122,7 +125,7 @@ public class SpiritHealthGui implements IGuiOverlay {
 			absorbHalfHeartsToDraw = currentAbsorbHalfHearts;
 			for (int rowIndex = 0; rowIndex < healthRows; rowIndex++) {
 				int heightOffset = rowHeightPx * rowIndex;
-				renderRowOfHearts(gui, poseStack, livingEntity, screenLeft, screenTop + heightOffset, rowIndex, doFlashEffect); // min because this should never be larger than 10
+				renderRowOfHearts(gui, poseStack, livingEntity, screenLeft, screenTop - heightOffset, rowIndex, doFlashEffect); // min because this should never be larger than 10
 			}
 		}
 		
@@ -132,13 +135,15 @@ public class SpiritHealthGui implements IGuiOverlay {
 	private void renderRowOfHearts(ForgeGui gui, PoseStack poseStack, LivingEntity forEntity, int x, int y, int currentRowIndex, boolean flash) {
 		int halfHeartsToDrawNow = Math.min(halfHeartsToDraw, 20);
 		int halfContainersToDrawNow = Math.min(halfContainersToDraw, 20);
-		int absorbHeartsToDrawNow = Math.min(absorbHalfHeartsToDraw, 20) - halfHeartsToDrawNow;
+		int absorbHeartsToDrawNow = Math.min(absorbHalfHeartsToDraw, 20 - halfHeartsToDrawNow);
+		
 		
 		int currentX = x;
 		ExtendedHeartType container = ExtendedHeartType.getContainerForEntity(forEntity);
 		ExtendedHeartType heart = ExtendedHeartType.getBaseHeartForEntity(forEntity);
 		boolean isRadiant = container == ExtendedHeartType.RADIANT_CONTAINER;
 		
+		// CONTAINERS
 		int currentHeartIndex = currentRowIndex * 10;
 		while (halfContainersToDrawNow > 0) {
 			int currentY = y;
@@ -152,7 +157,7 @@ public class SpiritHealthGui implements IGuiOverlay {
 			currentHeartIndex += 1;
 		}
 		
-		// Reset heart index here
+		// MAIN HEARTS: RESET X POSITION
 		currentX = x;
 		currentHeartIndex = currentRowIndex * 10;
 		while (halfHeartsToDrawNow > 0) {
@@ -170,8 +175,7 @@ public class SpiritHealthGui implements IGuiOverlay {
 			currentHeartIndex += 1;
 		}
 		
-		// Do NOT reset heart index here
-		currentX = x;
+		// ABSORB HEARTS: DO NOT RESET X POSITION NOR INDEX!
 		while (absorbHeartsToDrawNow > 0) {
 			int currentY = y;
 			if (currentHeartIndex == regenHeartWaveIndex) {

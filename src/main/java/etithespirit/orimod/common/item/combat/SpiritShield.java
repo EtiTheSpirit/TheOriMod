@@ -138,7 +138,7 @@ public class SpiritShield extends ShieldItem implements ISpiritLightRepairableIt
 	@Override
 	public void getPredicates(Map<ResourceLocation, ItemPropertyFunction> predicates) {
 		predicates.put(OriMod.rsrc("blocking"), ((pStack, pLevel, pEntity, pSeed) -> {
-			if (pStack.is(SpiritShield.this) && pEntity.isUsingItem()) {
+			if (pStack.is(SpiritShield.this) && pEntity != null && pEntity.isUsingItem()) {
 				return 1;
 			}
 			return 0;

@@ -1,7 +1,6 @@
 package etithespirit.orimod.api.util.valuetypes;
 
-
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 /**
  * An implementation of {@link NumberRange} that can have its minimum and maximum set after construction.
@@ -31,7 +30,7 @@ public class MutableNumberRange extends NumberRange {
 	 * @param rng The randomizer to use in the {@link #random()} method.
 	 * @throws IllegalArgumentException If min is greater than max.
 	 */
-	public MutableNumberRange(double min, double max, Random rng) throws IllegalArgumentException {
+	public MutableNumberRange(double min, double max, RandomSource rng) throws IllegalArgumentException {
 		super(min, max, rng);
 	}
 	

@@ -6,12 +6,15 @@ import etithespirit.exception.ConstantErrorMessages;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.api.interfaces.ISpiritSoundAPI;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAcquisitionFunction;
-import etithespirit.orimod.spiritmaterial.BlockToMaterialBinding;
+import etithespirit.orimod.spiritmaterial.BlockToMaterialBindingLgc;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
+import etithespirit.orimod.spiritmaterial.data.SpiritMaterialContainer;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
+
+import java.util.function.Supplier;
 
 /**
  * An implementation of the spirit sound API, which is used if the mod is installed.
@@ -23,7 +26,13 @@ public class SpiritSoundAPI implements ISpiritSoundAPI {
 		if (OriMod.forgeLoadingComplete()) throw new IllegalStateException(ConstantErrorMessages.FORGE_LOADING_COMPLETED);
 	}
 	
-	public SpiritSoundAPI() { } // For reflection
+	public final String declaringModId;
+	private final SpiritMaterialContainer container;
+	
+	public SpiritSoundAPI(String mod) {
+		declaringModId = mod;
+		container = SpiritMaterialContainer.getForThisMod();
+	}
 	
 	@Override
 	public boolean isInstalled() {
@@ -31,38 +40,48 @@ public class SpiritSoundAPI implements ISpiritSoundAPI {
 	}
 	
 	@Override
-	public void registerSpiritStepSound(Block entireBlockType, SpiritMaterial material) throws ArgumentNullException, IllegalStateException {
+	public void registerBlock(Supplier<Block> entireBlockType, SpiritMaterial material) throws ArgumentNullException, IllegalStateException {
 		throwLoadCompleteIfNeeded();
 		ArgumentNullException.throwIfNull(entireBlockType, "entireBlockType");
 		ArgumentNullException.throwIfNull(material, "material");
-		BlockToMaterialBinding.setSpiritMaterialFor(entireBlockType, material);
+		container.registerBlock(entireBlockType, material);
 	}
 	
 	@Override
-	public void registerSpiritStepSound(BlockState specificState, SpiritMaterial material) throws ArgumentNullException, IllegalStateException {
+	public void registerBlockState(Supplier<BlockState> specificState, SpiritMaterial material) throws ArgumentNullException, IllegalStateException {
 		throwLoadCompleteIfNeeded();
 		ArgumentNullException.throwIfNull(specificState, "specificState");
 		ArgumentNullException.throwIfNull(material, "material");
-		BlockToMaterialBinding.setSpiritMaterialForState(specificState, material);
+		container.registerState(specificState, material);
 	}
 	
 	@Override
-	public void registerSpiritStepSound(TagKey<Block> blockTag, SpiritMaterial material) throws ArgumentNullException, IllegalArgumentException, IllegalStateException {
-		throw new UnsupportedOperationException();
+	public void registerTag(TagKey<Block> blockTag, SpiritMaterial material) throws ArgumentNullException, IllegalArgumentException, IllegalStateException {
+		throwLoadCompleteIfNeeded();
+		ArgumentNullException.throwIfNull(blockTag, "blockTag");
+		ArgumentNullException.throwIfNull(material, "material");
+		container.registerTag(blockTag, material);
 	}
 	
 	@Override
-	public void setUseIfIn(Block entireBlockType) throws ArgumentNullException, IllegalStateException {
+	public void setUseIfInBlock(Supplier<Block> entireBlockType, boolean useIfInside) throws ArgumentNullException, IllegalStateException {
 		throwLoadCompleteIfNeeded();
 		ArgumentNullException.throwIfNull(entireBlockType, "entireBlockType");
-		BlockToMaterialBinding.useIfIn(entireBlockType);
+		container.setUseIfInsideBlock(entireBlockType, useIfInside);
 	}
 	
 	@Override
-	public void setUseIfIn(BlockState specificState) throws ArgumentNullException, IllegalStateException {
+	public void setUseIfInState(Supplier<BlockState> specificState, boolean useIfInside) throws ArgumentNullException, IllegalStateException {
 		throwLoadCompleteIfNeeded();
 		ArgumentNullException.throwIfNull(specificState, "specificState");
-		BlockToMaterialBinding.useIfIn(specificState);
+		container.setUseIfInsideState(specificState, useIfInside);
+	}
+	
+	@Override
+	public void setUseIfInBlock(TagKey<Block> blockTag, boolean useIfInside) throws ArgumentNullException, IllegalStateException {
+		throwLoadCompleteIfNeeded();
+		ArgumentNullException.throwIfNull(blockTag, "blockTag");
+		container.setUseIfInsideTag(blockTag, useIfInside);
 	}
 	
 	@Override
@@ -70,15 +89,15 @@ public class SpiritSoundAPI implements ISpiritSoundAPI {
 		throwLoadCompleteIfNeeded();
 		ArgumentNullException.throwIfNull(material, "material");
 		ArgumentNullException.throwIfNull(spiritMaterial, "spiritMaterial");
-		BlockToMaterialBinding.associateMCMaterialWith(material, spiritMaterial);
+		container.registerMaterial(material, spiritMaterial);
 	}
 	
 	@Override
-	public void setSpecialMaterialPredicate(Block entireBlockType, ISpiritMaterialAcquisitionFunction getter) throws ArgumentNullException, IllegalStateException {
+	public void setSpecialMaterialPredicate(Supplier<Block> entireBlockType, ISpiritMaterialAcquisitionFunction getter) throws ArgumentNullException, IllegalStateException {
 		throwLoadCompleteIfNeeded();
 		ArgumentNullException.throwIfNull(entireBlockType, "entireBlockType");
 		ArgumentNullException.throwIfNull(getter, "getter");
-		BlockToMaterialBinding.setConditionForBlock(entireBlockType, getter);
+		container.registerBlock(entireBlockType, getter);
 	}
 	
 	@Override
@@ -86,7 +105,19 @@ public class SpiritSoundAPI implements ISpiritSoundAPI {
 		throwLoadCompleteIfNeeded();
 		ArgumentNullException.throwIfNull(material, "material");
 		ArgumentNullException.throwIfNull(getter, "getter");
-		BlockToMaterialBinding.setConditionForMaterial(material, getter);
+		container.registerMaterial(material, getter);
 	}
 	
+	@Override
+	public void setSpecialMaterialPredicate(TagKey<Block> blockTag, ISpiritMaterialAcquisitionFunction getter) throws ArgumentNullException, IllegalArgumentException, IllegalStateException {
+		throwLoadCompleteIfNeeded();
+		ArgumentNullException.throwIfNull(blockTag, "blockTag");
+		ArgumentNullException.throwIfNull(getter, "getter");
+		container.registerTag(blockTag, getter);
+	}
+	
+	@Override
+	public String toString() {
+		return "SpiritSoundAPI[Mod=" + declaringModId + "]";
+	}
 }

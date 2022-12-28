@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-21T07:53:57.1519316	Tags for minecraft:block
+// 1.19.2	2022-12-25T06:37:45.2238207	Tags for minecraft:block
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/beacon_base_blocks.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/dampens_vibrations.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/dragon_immune.json
@@ -8,4 +8,4 @@
 8f6557eb8897d650f43a2d810ba53b3030ea41c7 data/minecraft/tags/blocks/needs_iron_tool.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/occludes_vibration_signals.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/wither_immune.json
-fec0ed8ba266981be219828e8362ad3417ac38a6 data/orimod/tags/blocks/alignment/light_related.json
+fec0ed8ba266981be219828e8362ad3417ac38a6 data/orimod/tags/blocks/aligned/aligned_light.json

@@ -168,6 +168,7 @@ public class SpiritArc extends BowItem implements ISpiritLightRepairableItem, IM
 	public void getPredicates(Map<ResourceLocation, ItemPropertyFunction> result) {
 		ItemPropertyFunction func = ((pStack, pLevel, pEntity, pSeed) -> {
 			if (pStack.is(SpiritArc.this)) {
+				if (pEntity == null) return 0;
 				if (pEntity.isUsingItem()) {
 					int remainingTicks = pEntity.getUseItemRemainingTicks();
 					if (remainingTicks <= CHARGED_AFTER_TICKS) return 3;

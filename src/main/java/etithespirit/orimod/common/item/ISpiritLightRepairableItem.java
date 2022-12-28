@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.item;
 
 
-import etithespirit.orimod.combat.ExtendedDamageSource;
+import etithespirit.orimod.combat.damage.OriModDamageSources;
 import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.spirit.SpiritIdentifier;
@@ -80,7 +80,7 @@ public interface ISpiritLightRepairableItem {
 			if (!isSneaking) return null;
 			if (!hasHealthNeeded) return null;
 			item.setDamageValue(item.getDamageValue() - OriModConfigs.SELF_REPAIR_EARNINGS.get());
-			pPlayer.hurt(ExtendedDamageSource.USE_SELF_FOR_ENERGY, selfRepairDamage);
+			pPlayer.hurt(OriModDamageSources.USE_SELF_FOR_ENERGY, selfRepairDamage);
 			return InteractionResultHolder.success(item);
 		}
 		return null;

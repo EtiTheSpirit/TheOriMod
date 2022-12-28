@@ -2,6 +2,7 @@ package etithespirit.orimod.api.environment;
 
 import com.google.common.collect.ImmutableMap;
 import etithespirit.orimod.api.APIProvider;
+import etithespirit.orimod.api.interfaces.IEnvironmentalAffinityAPI;
 import etithespirit.orimod.api.util.valuetypes.MutableNumberRange;
 import etithespirit.orimod.api.util.valuetypes.NumberRange;
 import net.minecraft.resources.ResourceLocation;
@@ -9,6 +10,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 
 import javax.annotation.Nullable;
+import java.util.Objects;
 import java.util.Set;
 
 /**
@@ -39,9 +41,9 @@ public abstract class EnvironmentalAffinity {
 	 * @param biome The biome that this exists for.
 	 * @param efficiencyPercentage The efficiency boost (or reduction) for all devices as a range of possible values. <strong>Note: If this is an immutable number range and it is singular (min == max), then {@link #efficiencySingular} will be set to that value and {@link #efficiency} will be null.</strong>
 	 */
-	public EnvironmentalAffinity(ResourceLocation biome, NumberRange efficiencyPercentage) {
+	public EnvironmentalAffinity(ResourceLocation biome, @Nullable NumberRange efficiencyPercentage) {
 		this.biome = biome;
-		if (!(efficiencyPercentage instanceof MutableNumberRange) && efficiencyPercentage.isSingular()) {
+		if (!(efficiencyPercentage instanceof MutableNumberRange) && (efficiencyPercentage != null) && efficiencyPercentage.isSingular()) {
 			this.efficiency = null;
 			this.efficiencySingular = efficiencyPercentage.getMin();
 		} else {
@@ -89,23 +91,26 @@ public abstract class EnvironmentalAffinity {
 	 * @param player The player to apply to.
 	 */
 	public static void sendPlayerTickToAll(Player player) {
-		ResourceLocation current = null;
-		Class<?> latest = null;
-		ImmutableMap<ResourceLocation, EnvironmentalAffinity> all = APIProvider.getEnvironmentalAffinityAPI().getAllBindings();
-		try {
-			Set<ResourceLocation> keys = all.keySet();
-			for (ResourceLocation rsrc : keys) {
-				current = rsrc;
-				if (player.level.getBiome(player.getOnPos()).is(rsrc)) {
-					EnvironmentalAffinity env = all.get(rsrc);
-					latest = env.getClass();
-					env.onPlayerTick(player);
+		ImmutableMap<String, IEnvironmentalAffinityAPI> apiBindings = APIProvider.getAllEnvAffinityAPIs();
+		Set<String> keys = apiBindings.keySet();
+		for (String key : keys) {
+			ResourceLocation lastBiomeID = null;
+			try {
+				ImmutableMap<ResourceLocation, EnvironmentalAffinity> implementations = Objects.requireNonNull(apiBindings.get(key)).getAllBindings();
+				Set<ResourceLocation> rsrcs = implementations.keySet();
+				for (ResourceLocation rsrc : rsrcs) {
+					lastBiomeID = rsrc;
+					EnvironmentalAffinity impl = Objects.requireNonNull(implementations.get(rsrc));
+					impl.onPlayerTick(player);
 				}
+			} catch (Exception exc) {
+				String message = String.format(
+					"An error occurred whilst trying to do a player tick in the Environmental Affinity system. The ID of the mod that registered this implementation is '%s', and the biome that the failure occurred in is '%s'.",
+					key,
+					lastBiomeID == null ? "<no biome - this error occurred while trying to get the API instance for the mod in question>" : lastBiomeID.toString()
+				);
+				throw new RuntimeException(message, exc);
 			}
-		} catch (Exception exc) {
-			//LOG.error("An error occurred whilst trying to execute player tick code for biome [{}]: {}", current, exc.getMessage());
-			//throw exc;
-			throw (RuntimeException)new RuntimeException(String.format("An error occurred whilst trying to execute the player tick portion of a Decay/Light Environment Affinity system registered for biome [%s]: %s\nThe offending class is located at: %s", current.toString(), exc.getMessage(), latest.getName())).initCause(exc);
 		}
 	}
 	
@@ -114,21 +119,26 @@ public abstract class EnvironmentalAffinity {
 	 * @param world The level to send in.
 	 */
 	public static void sendWorldTickToAll(Level world) {
-		ResourceLocation current = null;
-		Class<?> latest = null;
-		ImmutableMap<ResourceLocation, EnvironmentalAffinity> all = APIProvider.getEnvironmentalAffinityAPI().getAllBindings();
-		try {
-			Set<ResourceLocation> keys = all.keySet();
-			for (ResourceLocation rsrc : keys) {
-				current = rsrc;
-				EnvironmentalAffinity env = all.get(rsrc);
-				latest = env.getClass();
-				env.onWorldTick(world);
+		ImmutableMap<String, IEnvironmentalAffinityAPI> apiBindings = APIProvider.getAllEnvAffinityAPIs();
+		Set<String> keys = apiBindings.keySet();
+		for (String key : keys) {
+			ResourceLocation lastBiomeID = null;
+			try {
+				ImmutableMap<ResourceLocation, EnvironmentalAffinity> implementations = Objects.requireNonNull(apiBindings.get(key)).getAllBindings();
+				Set<ResourceLocation> rsrcs = implementations.keySet();
+				for (ResourceLocation rsrc : rsrcs) {
+					lastBiomeID = rsrc;
+					EnvironmentalAffinity impl = Objects.requireNonNull(implementations.get(rsrc));
+					impl.onWorldTick(world);
+				}
+			} catch (Exception exc) {
+				String message = String.format(
+					"An error occurred whilst trying to do a world tick in the Environmental Affinity system. The ID of the mod that registered this implementation is '%s', and the biome that the failure occurred in is '%s'.",
+					key,
+					lastBiomeID == null ? "<no biome - this error occurred while trying to get the API instance for the mod in question>" : lastBiomeID.toString()
+				);
+				throw new RuntimeException(message, exc);
 			}
-		} catch (Exception exc) {
-			//LOG.error("An error occurred whilst trying to execute player tick code for biome [{}]: {}", current, exc.getMessage());
-			//throw exc;
-			throw (RuntimeException)new RuntimeException(String.format("An error occurred whilst trying to execute the world tick portion of a Decay/Light Environment Affinity system registered for biome [%s]: %s\nThe offending class is located at: %s", current.toString(), exc.getMessage(), latest.getName())).initCause(exc);
 		}
 	}
 

@@ -4,13 +4,21 @@ import com.mojang.blaze3d.shaders.FogShape;
 import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.math.Vector3f;
 import etithespirit.orimod.OriMod;
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.world.FluidRegistry;
 import net.minecraft.client.Camera;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.renderer.FogRenderer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.state.StateDefinition;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.client.extensions.common.IClientFluidTypeExtensions;
+import net.minecraftforge.common.SoundActions;
 import net.minecraftforge.fluids.FluidType;
 import net.minecraftforge.fluids.ForgeFlowingFluid;
 import org.jetbrains.annotations.NotNull;
@@ -19,13 +27,29 @@ import org.jetbrains.annotations.Nullable;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-public class DecayPoisonFluid {
+public abstract class DecayPoisonFluid extends ForgeFlowingFluid {
 	
-	public static final ForgeFlowingFluid.Properties createProperties() {
-		return new ForgeFlowingFluid.Properties(FluidRegistry.DECAY_POISON_TYPE, FluidRegistry.DECAY_FLUID_STATIC, FluidRegistry.DECAY_FLUID_FLOWING).block(FluidRegistry.DECAY_POISON);
+	protected DecayPoisonFluid(Properties properties) {
+		super(properties);
 	}
 	
-	public static final Supplier<FluidType> DECAY_POISON_FLUID_TYPE = () -> new FluidType(FluidType.Properties.create().supportsBoating(true).canHydrate(false).canDrown(true)) {
+	public static final ForgeFlowingFluid.Properties createProperties() {
+		return new ForgeFlowingFluid.Properties(FluidRegistry.DECAY_POISON_TYPE, FluidRegistry.DECAY_FLUID_STATIC, FluidRegistry.DECAY_FLUID_FLOWING)
+			.block(FluidRegistry.DECAY_POISON)
+			.bucket(ItemRegistry.POISON_BUCKET)
+			.levelDecreasePerBlock(2)
+			.tickRate(1);
+	}
+	
+	public static final Supplier<FluidType> DECAY_POISON_FLUID_TYPE = () -> new FluidType(
+			FluidType.Properties.create()
+				.supportsBoating(true)
+				.canHydrate(false)
+				.canDrown(true)
+				.canConvertToSource(true)
+				.canExtinguish(true)
+				.canSwim(true)
+			) {
 		@Override
 		public void initializeClient(Consumer<IClientFluidTypeExtensions> consumer) {
 			
@@ -81,4 +105,45 @@ public class DecayPoisonFluid {
 			});
 		}
 	};
+	
+	@Override
+	protected boolean canBeReplacedWith(FluidState state, BlockGetter level, BlockPos pos, Fluid fluidIn, Direction direction) {
+		// Based on the water implementation, may need to be overriden for mod fluids that shouldn't behave like water.
+		// return direction == Direction.DOWN && !isSame(fluidIn);
+		return false; //!isSame(fluidIn);
+	}
+	
+	public static class Flowing extends DecayPoisonFluid {
+		public Flowing() {
+			super(createProperties());
+			registerDefaultState(getStateDefinition().any().setValue(LEVEL, 7));
+		}
+		
+		protected void createFluidStateDefinition(StateDefinition.Builder<Fluid, FluidState> builder) {
+			super.createFluidStateDefinition(builder);
+			builder.add(LEVEL);
+		}
+		
+		public int getAmount(FluidState state) {
+			return state.getValue(LEVEL);
+		}
+		
+		public boolean isSource(FluidState state) {
+			return false;
+		}
+	}
+	
+	public static class Source extends DecayPoisonFluid {
+		public Source() {
+			super(createProperties());
+		}
+		
+		public int getAmount(FluidState state) {
+			return 8;
+		}
+		
+		public boolean isSource(FluidState state) {
+			return true;
+		}
+	}
 }

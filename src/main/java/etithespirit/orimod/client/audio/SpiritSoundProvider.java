@@ -5,10 +5,11 @@ import etithespirit.exception.ArgumentNullException;
 import etithespirit.orimod.client.audio.variation.BreathLevel;
 import etithespirit.orimod.client.audio.variation.DamageLevel;
 import etithespirit.orimod.client.audio.variation.SpecialAttackType;
-import etithespirit.orimod.combat.ExtendedDamageSource;
+import etithespirit.orimod.combat.damage.OriModDamageSources;
 import etithespirit.orimod.registry.SoundRegistry;
-import etithespirit.orimod.spiritmaterial.BlockToMaterialBinding;
+import etithespirit.orimod.spiritmaterial.BlockToMaterialBindingLgc;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
+import etithespirit.orimod.spiritmaterial.implementation.SpiritMaterialGetter;
 import net.minecraft.core.BlockPos;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.util.Mth;
@@ -27,12 +28,14 @@ import java.util.Objects;
  */
 public class SpiritSoundProvider {
 	
+	private static final double THINNEST_BLOCK = 1D/32D;
+	
 	/**
 	 * Returns the BlockPos of the block the entity is standing on.
 	 * @param entity The entity that provides the position.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static BlockPos getBlockOnPos(@Nonnull Entity entity) {
+	public static @Nonnull BlockPos getBlockOnPos(@Nonnull Entity entity) {
 		ArgumentNullException.throwIfNull(entity, "entity");
 		return entity.blockPosition().below();
 	}
@@ -42,7 +45,7 @@ public class SpiritSoundProvider {
 	 * @param entity The entity that provides the position.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static BlockPos getBlockInPos(@Nonnull Entity entity) {
+	public static @Nonnull BlockPos getBlockInPos(@Nonnull Entity entity) {
 		ArgumentNullException.throwIfNull(entity, "entity");
 		return entity.blockPosition();
 	}
@@ -69,7 +72,7 @@ public class SpiritSoundProvider {
 	 * Returns a unique sound for stepping on a given block as a spirit.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritStepSound(@Nonnull LivingEntity entity, @Nullable SoundEvent vanilla) {
+	public static @Nullable SoundEvent getSpiritStepSound(@Nonnull LivingEntity entity, @Nullable SoundEvent vanilla) {
 		ArgumentNullException.throwIfNull(entity, "entity");
 		
 		return getSpiritStepSound(entity, getBlockOnPos(entity), getBlockInPos(entity), vanilla);
@@ -79,22 +82,21 @@ public class SpiritSoundProvider {
 	 * Returns a unique sound for stepping on a given block as a spirit.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritStepSound(@Nonnull LivingEntity entity, @Nonnull BlockPos on, @Nonnull BlockPos in, @Nullable SoundEvent vanilla) {
+	public static @Nullable SoundEvent getSpiritStepSound(@Nonnull LivingEntity entity, @Nonnull BlockPos on, @Nonnull BlockPos in, @Nullable SoundEvent vanilla) {
 		ArgumentNullException.throwIfNull(entity, "entity");
 		ArgumentNullException.throwIfNull(on, "on");
 		ArgumentNullException.throwIfNull(in, "in");
 		
 		// BUG FIX: Sounds for slabs and other blocks the player sinks into will play the sound of the block beneath it instead of the block they are on.
-		if (Mth.frac(entity.getY()) >= 0.0620) {
-			// Just under 1/16th of a block, this is the width of a carpet block, the thinnest block.
+		if (Mth.frac(entity.getY()) >= THINNEST_BLOCK) {
+			// The fact that double precision is being used allows the crazy precise decimals like this
 			on = on.above();
 			in = in.above();
 		}
 		
-		SpiritMaterial spiritMtl = BlockToMaterialBinding.getMaterialFor(entity, on, in);
+		SpiritMaterial spiritMtl = SpiritMaterialGetter.getMaterialFor(entity, on, in); //BlockToMaterialBindingLgc.getMaterialFor(entity, on, in);
 		if (spiritMtl.useVanillaInstead) return vanilla;
-		SoundEvent spiritSound = getSound(spiritMtl, false);
-		return spiritSound != null ? spiritSound : vanilla;
+		return getSound(spiritMtl, false);
 	}
 	
 	/**
@@ -102,7 +104,7 @@ public class SpiritSoundProvider {
 	 * @param damageType The type of damage inflicted.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritHurtSound(@Nonnull DamageSource damageType) {
+	public static @Nonnull SoundEvent getSpiritHurtSound(@Nonnull DamageSource damageType) {
 		ArgumentNullException.throwIfNull(damageType, "damageType");
 		
 		return SoundRegistry.get("entity.spirit.hurt");
@@ -113,15 +115,14 @@ public class SpiritSoundProvider {
 	 * @param damageType The type of damage inflicted.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritDeathSound(@Nonnull DamageSource damageType) {
+	public static @Nonnull SoundEvent getSpiritDeathSound(@Nonnull DamageSource damageType) {
 		ArgumentNullException.throwIfNull(damageType, "damageType");
 		
-		if (damageType.isFire() || damageType == DamageSource.DRAGON_BREATH || damageType == DamageSource.LIGHTNING_BOLT)
-		{
+		if (damageType.isFire() || damageType == DamageSource.DRAGON_BREATH || damageType == DamageSource.LIGHTNING_BOLT) {
 			return SoundRegistry.get("entity.spirit.death.burn");
 		} else if (damageType == DamageSource.DROWN) {
 			return SoundRegistry.get("entity.spirit.death.drown");
-		} else if (damageType == ExtendedDamageSource.DECAY) {
+		} else if (OriModDamageSources.isDecayDamage(damageType)) {
 			return SoundRegistry.get("entity.spirit.death.decay");
 		}
 	
@@ -132,7 +133,7 @@ public class SpiritSoundProvider {
 	 * Returns a sound for dashing. willImpactWallClosely should be true if a wall that will block the dash is within a short distance (around 1.5 blocks) of the player's direction.
 	 * @param willImpactWallClosely Whether or not the player will impact a wall immediately after dashing.
 	 */
-	public static SoundEvent getSpiritDashSound(boolean willImpactWallClosely) {
+	public static @Nonnull SoundEvent getSpiritDashSound(boolean willImpactWallClosely) {
 		if (willImpactWallClosely) {
 			return SoundRegistry.get("entity.spirit.dash.impactwall");
 		}
@@ -143,7 +144,7 @@ public class SpiritSoundProvider {
 	 * Returns a swimming sound for spirits.
 	 * @param belowWater Whether or not the player is swimming below water vs. treading above its surface.
 	 */
-	public static SoundEvent getSpiritSwimSound(boolean belowWater) {
+	public static @Nonnull SoundEvent getSpiritSwimSound(boolean belowWater) {
 		if (belowWater) return SoundRegistry.get("entity.spirit.aquatic.swim");
 		return SoundRegistry.get("entity.spirit.aquatic.swim_above");
 	}
@@ -153,7 +154,7 @@ public class SpiritSoundProvider {
 	 * @param isBigSplash Whether or not the splash is big.
 	 */
 	@SuppressWarnings("unused")
-	public static SoundEvent getSpiritSplashSound(boolean isBigSplash) {
+	public static @Nonnull SoundEvent getSpiritSplashSound(boolean isBigSplash) {
 		// if (isBig) return SoundRegistry.get("entity.spirit.fall.water");
 		// return SoundRegistry.get("entity.spirit.fall.shallow_water");
 		return SoundRegistry.get("nullsound"); // temp
@@ -163,7 +164,7 @@ public class SpiritSoundProvider {
 	 * Returns a sound based on the amount of times the player has jumped. Expected to be 1, 2, or 3. Any value outside of that range will return a silent sound.
 	 * @param numberOfJumpsIncludingLand The amount of jumps that have been performed, counting the initial jump off of the ground.
 	 */
-	public static SoundEvent getSpiritJumpSound(int numberOfJumpsIncludingLand) {
+	public static @Nonnull SoundEvent getSpiritJumpSound(int numberOfJumpsIncludingLand) {
 		if (numberOfJumpsIncludingLand == 1) {
 			return SoundRegistry.get("entity.spirit.jump.single");
 		} else if (numberOfJumpsIncludingLand == 2) {
@@ -178,7 +179,7 @@ public class SpiritSoundProvider {
 	 * Returns a sound for wall jumping. As of writing, this does not respect the block's material.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritWallJumpSound(@Nonnull BlockPos onBlock) {
+	public static @Nonnull SoundEvent getSpiritWallJumpSound(@Nonnull BlockPos onBlock) {
 		ArgumentNullException.throwIfNull(onBlock, "onBlock");
 		
 		return SoundRegistry.get("entity.spirit.jump.wall");
@@ -188,7 +189,7 @@ public class SpiritSoundProvider {
 	 * Returns a sound associated with a hard-light shield being impacted.
 	 * @param broke Whether or not the shield broke as a result of this impact.
 	 */
-	public static SoundEvent getSpiritShieldImpactSound(boolean broke) {
+	public static @Nonnull SoundEvent getSpiritShieldImpactSound(boolean broke) {
 		if (broke) return SoundRegistry.get("item.light_shield.break");
 		return SoundRegistry.get("item.light_shield.impact");
 	}
@@ -198,7 +199,7 @@ public class SpiritSoundProvider {
 	 * @param level The damage level.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritAttackSound(@Nonnull DamageLevel level) {
+	public static @Nonnull SoundEvent getSpiritAttackSound(@Nonnull DamageLevel level) {
 		ArgumentNullException.throwIfNull(level, "level");
 		
 		if (level == DamageLevel.INEFFECTIVE) return SoundRegistry.get("entity.spirit.attack.nothing");
@@ -206,7 +207,7 @@ public class SpiritSoundProvider {
 		if (level == DamageLevel.STANDARD) return SoundRegistry.get("entity.spirit.attack.standard");
 		if (level == DamageLevel.STRONG) return SoundRegistry.get("entity.spirit.attack.strong");
 		if (level == DamageLevel.CRITICAL) return SoundRegistry.get("entity.spirit.attack.crit");
-		return null;
+		throw new RuntimeException("If you are seeing this, something has gone horribly wrong. This should be impossible.");
 	}
 	
 	/**
@@ -214,12 +215,12 @@ public class SpiritSoundProvider {
 	 * @param type The damage type.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritAttackTypeSound(@Nonnull SpecialAttackType type) {
+	public static @Nonnull SoundEvent getSpiritAttackTypeSound(@Nonnull SpecialAttackType type) {
 		ArgumentNullException.throwIfNull(type, "type");
 		
 		if (type == SpecialAttackType.KNOCKBACK) return SoundRegistry.get("entity.spirit.attack.knockback");
 		if (type == SpecialAttackType.SWEEP) return SoundRegistry.get("entity.spirit.attack.sweep");
-		return null;
+		throw new RuntimeException("If you are seeing this, something has gone horribly wrong. This should be impossible.");
 	}
 	
 	/**
@@ -227,7 +228,7 @@ public class SpiritSoundProvider {
 	 * @param level The urgency of the breath.
 	 * @exception ArgumentNullException if any arguments denoted as @Nonnull are null.
 	 */
-	public static SoundEvent getSpiritBreathSound(@Nonnull BreathLevel level) {
+	public static @Nonnull SoundEvent getSpiritBreathSound(@Nonnull BreathLevel level) {
 		ArgumentNullException.throwIfNull(level, "level");
 		
 		if (level == BreathLevel.BIG) {
@@ -238,10 +239,13 @@ public class SpiritSoundProvider {
 		return SoundRegistry.get("entity.spirit.aquatic.breath.little");
 	}
 	
-	private static SoundEvent getSound(SpiritMaterial mtl, boolean isFallingOn) {
+	private static @Nonnull SoundEvent getSound(SpiritMaterial mtl, boolean isFallingOn) {
 		String key;
-		if (isFallingOn && mtl.fallSoundKey != null && !Objects.equals(mtl.fallSoundKey, "nullsound")) key = mtl.fallSoundKey;
-		else key = mtl.stepSoundKey;
+		if (isFallingOn && mtl.fallSoundKey != null && !Objects.equals(mtl.fallSoundKey, "nullsound")) {
+			key = mtl.fallSoundKey;
+		} else {
+			key = mtl.stepSoundKey;
+		}
 		
 		if (key == null) key = "nullsound";
 		return SoundRegistry.get(key);

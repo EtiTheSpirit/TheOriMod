@@ -26,14 +26,17 @@ public class ArmorRenderHelper {
 	private static final HumanoidArmorLayer<?, ?, ?> DUMMY_BIP_ARMOR_LAYER = new HumanoidArmorLayer<>(null, null, null);
 	
 	/**
-	 * Returns the appropriate armor texture for the given item.
+	 * Returns the appropriate armor texture for the given item.<br/>
+	 * <br/>
+	 * <strong>NOTE:</strong> The armor's material contains the namespace responsible for declaring the texture. This gets used in the path to the texture (NOT its namespace)!
 	 * @param entity The entity the armor is being drawn on.
 	 * @param stack The armor item being rendered.
 	 * @param slot The slot said item is in.
+	 * @param declaringModId The ID of the mod declaring this texture. It should be your own mod id. This is what gets used in the namespace of the texture's {@link ResourceLocation}.
 	 * @param type Additional context for the vanilla armor texture. Not used for Spirit armors.
 	 * @return The {@link ResourceLocation} to the appropriate texture.
 	 */
-	public static ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, @Nullable String type) {
+	public static ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, String declaringModId, @Nullable String type) {
 		if (!stack.is(OriModItemTags.SPECIALIZED_SPIRIT_ARMOR)) {
 			return DUMMY_BIP_ARMOR_LAYER.getArmorResource(entity, stack, slot, type);
 		}
@@ -45,7 +48,11 @@ public class ArmorRenderHelper {
 			texture = new ResourceLocation(mtlName);
 			MATERIAL_TO_NAME_BINDINGS.put(mtlName, texture);
 		}
-		String rsrcName = String.format(java.util.Locale.ROOT, "%s:textures/models/spirit_armor/%s.png", texture.getNamespace(), texture.getPath());
+		
+		String rsrcName = String.format(java.util.Locale.ROOT, "%s:textures/models/spirit_armor/%s/%s", declaringModId, texture.getNamespace(), texture.getPath());
+		if (type != null) rsrcName += "_" + type;
+		rsrcName += ".png";
+		
 		ResourceLocation rsrc = ARMOR_LOCATION_CACHE.get(rsrcName);
 		if (rsrc == null) {
 			rsrc = new ResourceLocation(rsrcName);

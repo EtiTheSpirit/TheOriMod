@@ -1,7 +1,7 @@
 package etithespirit.orimod.api.util.valuetypes;
 
 
-import java.util.Random;
+import net.minecraft.util.RandomSource;
 
 /**
  * A value representing a range between two numbers [min, max]
@@ -14,7 +14,7 @@ public class NumberRange {
 	public static final NumberRange ZERO = new NumberRange(0, 0);
 	
 	/** A randomizer used for {@link #random()} */
-	protected final Random rng;
+	protected final RandomSource rng;
 	
 	/** The minimum possible value this will return. */
 	protected double min;
@@ -45,7 +45,7 @@ public class NumberRange {
 	 * @throws IllegalArgumentException If min is greater than max.
 	 */
 	public NumberRange(double min, double max) throws IllegalArgumentException {
-		this(min, max, new Random());
+		this(min, max, RandomSource.create());
 	}
 	
 	
@@ -57,7 +57,7 @@ public class NumberRange {
 	 * @param rng The randomizer to use in the {@link #random()} method.
 	 * @throws IllegalArgumentException If min is greater than max.
 	 */
-	public NumberRange(double min, double max, Random rng) throws IllegalArgumentException {
+	public NumberRange(double min, double max, RandomSource rng) throws IllegalArgumentException {
 		this.rng = rng;
 		if (min > max) {
 			throw new IllegalArgumentException("Parameter 'min' is greater than parameter 'max'!");

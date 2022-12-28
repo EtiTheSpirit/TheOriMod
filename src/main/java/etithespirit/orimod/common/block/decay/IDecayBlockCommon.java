@@ -228,7 +228,8 @@ public interface IDecayBlockCommon extends IBlockItemPropertiesProvider {
 	 * @param random The pseudorandomizer of this world.
 	 */
 	default void defaultRandomTick(BlockState state, ServerLevel worldIn, BlockPos pos, RandomSource random) {
-		if (OriModConfigs.getDecaySpreadBehavior(state).canSpread) {
+		DecayWorldConfigBehavior behavior = DecayWorldConfigHelper.getSpreadLimits(DecayWorldConfigHelper.SpreadType.GENERAL);
+		if (behavior.canSpread) {
 			if (!shouldSpreadByRNG(worldIn, pos)) return;
 			
 			boolean doEdgeCheckInstead = OriModConfigs.DO_DIAGONAL_SPREAD.get() && needsToDoEdgeCheck(random, state.getValue(EDGE_DETECTION_RARITY), EDGE_TEST_MINIMUM_CHANCE);
@@ -245,7 +246,7 @@ public interface IDecayBlockCommon extends IBlockItemPropertiesProvider {
 				}
 			}
 		}
-		if (OriModConfigs.getDecaySpreadBehavior(state).selfDestructs) {
+		if (behavior.selfDestructs) {
 			worldIn.setBlockAndUpdate(pos, healsInto(state));
 		}
 	}
@@ -338,7 +339,7 @@ public interface IDecayBlockCommon extends IBlockItemPropertiesProvider {
 		
 		if (!(entityIn instanceof LivingEntity entity)) return;
 		if (worldIn.isClientSide) return;
-		if (worldIn.getRandom().nextDouble() > 0.95) {
+		if (worldIn.getRandom().nextDouble() > 0.99) {
 			DecayEffect decay = (DecayEffect) EffectRegistry.DECAY.get();
 			MobEffectInstance existing = entity.getEffect(decay);
 			if (existing != null) {
@@ -348,7 +349,7 @@ public interface IDecayBlockCommon extends IBlockItemPropertiesProvider {
 					EffectModificationReplication.Server.tellClientDurationModified(player, DecayEffect.class, 60);
 				}
 			} else {
-				MobEffectInstance instance = EffectConstructors.constructEffect(decay, 60, 2, true);
+				MobEffectInstance instance = EffectConstructors.constructEffect(decay, 60, 0, true);
 				instance.setCurativeItems(new ArrayList<>());
 				MobEffectDataStorage.setMaxDuration(instance, instance.getDuration());
 				entity.addEffect(instance);

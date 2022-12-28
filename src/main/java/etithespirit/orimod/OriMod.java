@@ -20,6 +20,7 @@ import etithespirit.orimod.datagen.audio.GenerateSoundsJson;
 import etithespirit.orimod.datagen.features.GenerateBiomeFeatures;
 import etithespirit.orimod.datagen.loot.GenerateLootTables;
 import etithespirit.orimod.datagen.recipe.GenerateRecipes;
+import etithespirit.orimod.modinterop.biomesoplenty.BiomesOPlentySpiritSoundProvider;
 import etithespirit.orimod.networking.player.ReplicateKnownAbilities;
 import etithespirit.orimod.networking.player.ReplicatePlayerMovement;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
@@ -43,6 +44,8 @@ import etithespirit.orimod.spirit.SpiritRestrictions;
 import etithespirit.orimod.spirit.SpiritSize;
 import etithespirit.orimod.spirit.SpiritSounds;
 import etithespirit.orimod.spirit.common.MotionMarshaller;
+import etithespirit.orimod.spiritmaterial.implementation.OriModBindings;
+import etithespirit.orimod.spiritmaterial.implementation.VanillaBindings;
 import it.unimi.dsi.fastutil.longs.LongSet;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
@@ -140,6 +143,7 @@ public final class OriMod {
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerBERenderers);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(RenderRegistry::registerShaders);
 		FMLJavaModLoadingContext.get().getModEventBus().addListener(SpiritHealthGui::setupHealthElement);
+		FMLJavaModLoadingContext.get().getModEventBus().addListener(EntityRegistry::registerAttributes);
 		
 		MinecraftForge.EVENT_BUS.addListener(this::commandInit);
 		
@@ -162,6 +166,10 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::registerPlayerCaps);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onPlayerClone);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityRegistry::attachPlayerCaps);
+		
+		VanillaBindings.initialize();
+		OriModBindings.initialize();
+		BiomesOPlentySpiritSoundProvider.initialize();
 	}
 	
 	/**
@@ -342,6 +350,7 @@ public final class OriMod {
 	public void onModLoadingComplete(final FMLLoadCompleteEvent evt) {
 		isModLoadingComplete = true;
 		etithespirit.orimod.api.environment.defaultimpl.DefaultEnvironments.init(EffectRegistry.DECAY.get());
+		etithespirit.orimod.api.APIProvider._internalMarkLoadCycleCompleted();
 		EnvironmentalAffinityAPI.validate();
 		
 		if (!FMLEnvironment.production) {

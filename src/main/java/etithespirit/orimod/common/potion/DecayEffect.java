@@ -1,9 +1,8 @@
 package etithespirit.orimod.common.potion;
 
-import etithespirit.orimod.combat.ExtendedDamageSource;
+import etithespirit.orimod.combat.damage.OriModDamageSources;
 import etithespirit.orimod.common.chat.ExtendedChatColors;
 import etithespirit.orimod.registry.gameplay.EffectRegistry;
-import etithespirit.orimod.util.RichEffect;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.util.extension.MobEffectDataStorage;
 import net.minecraft.network.chat.Component;
@@ -79,7 +78,7 @@ public final class DecayEffect extends MobEffect {
 			// This is because of how changing levels of Decay apply. My goal is less of a "is the remaining duration a factor" and more of a
 			// "has X time passed since the last damage" check, which is not possible under the default system.
 			// This system allows the effect's level to change on the fly or be reset without doing more (or less) damage than it should.
-			entity.hurt(ExtendedDamageSource.DECAY, getDamageAmount(amplifier));
+			entity.hurt(OriModDamageSources.DECAY, getDamageAmount(amplifier));
 		}
 	}
 	

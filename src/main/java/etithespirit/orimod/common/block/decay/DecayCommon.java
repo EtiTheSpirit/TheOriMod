@@ -2,7 +2,6 @@ package etithespirit.orimod.common.block.decay;
 
 
 import etithespirit.orimod.common.tags.OriModBlockTags;
-import net.minecraft.tags.BlockTags;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateHolder;
@@ -10,8 +9,6 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.IntegerProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.phys.shapes.VoxelShape;
-
-import etithespirit.orimod.info.coordinate.Cardinals;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -90,7 +87,7 @@ public final class DecayCommon {
 	 * @return True if this block classifies as a decay block.
 	 */
 	public static boolean isDecayBlock(Block block) {
-		return block.defaultBlockState().is(OriModBlockTags.DECAY_ASSOC);
+		return block.defaultBlockState().is(OriModBlockTags.ALIGNED_DECAY);
 	}
 	
 }

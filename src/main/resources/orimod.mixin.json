@@ -12,7 +12,8 @@
   ],
   "client": [
     "InjectLocalPlayerPlaySound",
-    "InjectUsesInnerModel"
+    "InjectUsesInnerModel",
+    "RedirectExplosionSound"
   ],
   "server": [
     "InjectServerPlayerPlaySound"

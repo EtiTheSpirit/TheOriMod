@@ -1,6 +1,7 @@
 package etithespirit.exception;
 
 
+import javax.annotation.Nullable;
 import java.io.Serial;
 
 /**
@@ -25,12 +26,12 @@ public class ArgumentNullException extends IllegalArgumentException {
 	private static final String PARAM_NAME_COMPONENT = "Parameter name: %s";
 	
 	/**
-	 * Alias method to ensure that a parameter is non-null (by reference).
+	 * Raises an {@link ArgumentNullException} if the given object <code>obj</code> is null.
 	 * @param obj The value of the parameter.
-	 * @param parameterName The name of the parameter.
-	 * @throws ArgumentNullException If the value is equal to null.
+	 * @param parameterName The name of the parameter, for use in the exception message.
+	 * @throws ArgumentNullException If the value of obj is null by reference.
 	 */
-	public static void throwIfNull(Object obj, String parameterName) throws ArgumentNullException {
+	public static void throwIfNull(@Nullable Object obj, String parameterName) throws ArgumentNullException {
 		if (obj == null) {
 			throw new ArgumentNullException(parameterName);
 		}

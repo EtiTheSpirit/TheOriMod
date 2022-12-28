@@ -1,5 +1,7 @@
 package etithespirit.orimod.registry;
 
+import com.mojang.serialization.codecs.CompoundListCodec;
+import com.mojang.serialization.codecs.RecordCodecBuilder;
 import etithespirit.orimod.OriMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -15,6 +17,8 @@ public final class SoundRegistry {
 	
 	private static final DeferredRegister<SoundEvent> SOUND_REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, OriMod.MODID);
 	
+	
+	
 	public static final HashMap<String, RegistryObject<SoundEvent>> SOUNDS = new HashMap<>();
 	
 	public static @Nonnull SoundEvent get(@Nonnull String soundEventName) {
@@ -29,7 +33,10 @@ public final class SoundRegistry {
 		SOUNDS.put(soundEventName, SOUND_REGISTRY.register(soundEventName, () -> new SoundEvent(new ResourceLocation(OriMod.MODID, soundEventName))));
 	}
 	
+	
+	
 	public static void registerAll() {
+		
 		registerSound("entity.spirit.hurt");
 		registerSound("entity.spirit.hurt.takedamage");
 		registerSound("entity.spirit.hurt.vo");
@@ -72,7 +79,7 @@ public final class SoundRegistry {
 		registerSound("entity.spirit.step.ceramic.solid");
 		registerSound("entity.spirit.step.ceramic.broken");
 		registerSound("entity.spirit.step.chitin");
-		registerSound("entity.spirit.step.glass");
+		registerSound("entity.spirit.step.hardlight_glass");
 		registerSound("entity.spirit.step.grass.hard");
 		registerSound("entity.spirit.step.grass.soft");
 		registerSound("entity.spirit.step.gravel.dry");
@@ -93,6 +100,10 @@ public final class SoundRegistry {
 		registerSound("entity.spirit.step.water.shallow");
 		registerSound("entity.spirit.step.water.deep");
 		registerSound("entity.spirit.step.wool");
+		
+		registerSound("entity.decay_exploder.detonate_overtone");
+		registerSound("entity.decay_exploder.detonate_undertone");
+		registerSound("entity.decay_exploder.alert");
 		
 		registerSound("item.light_shield.impact");
 		registerSound("item.light_shield.break");
@@ -156,6 +167,10 @@ public final class SoundRegistry {
 		*/
 		
 		SOUND_REGISTRY.register(FMLJavaModLoadingContext.get().getModEventBus());
+	}
+	
+	private static record SoundEntry() {
+	
 	}
 	
 }

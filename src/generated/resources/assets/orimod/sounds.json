@@ -23,6 +23,19 @@
       "orimod:spirit/aquatic/swim/swim0"
     ]
   },
+  "entity.decay_exploder.detonate_overtone": {
+    "category": "master",
+    "sounds": [
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate7",
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate6",
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate5",
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate4",
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate3",
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate2",
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate1",
+      "orimod:mob/decay_exploder/detonate_overtone/exploder_detonate0"
+    ]
+  },
   "item.spirit_arc.shot.charge_overlay": {
     "category": "master",
     "sounds": [
@@ -117,6 +130,19 @@
       "orimod:spirit/step/ash/stepash2"
     ]
   },
+  "entity.decay_exploder.alert": {
+    "category": "master",
+    "sounds": [
+      "orimod:mob/decay_exploder/alert/alert0",
+      "orimod:mob/decay_exploder/alert/alert4",
+      "orimod:mob/decay_exploder/alert/alert3",
+      "orimod:mob/decay_exploder/alert/alert2",
+      "orimod:mob/decay_exploder/alert/alert1",
+      "orimod:mob/decay_exploder/alert/alert7",
+      "orimod:mob/decay_exploder/alert/alert6",
+      "orimod:mob/decay_exploder/alert/alert5"
+    ]
+  },
   "entity.spirit.stomp": {
     "category": "master",
     "sounds": [
@@ -146,6 +172,14 @@
       "orimod:spirit/step/organic/steporganic5",
       "orimod:spirit/step/organic/steporganic8",
       "orimod:spirit/step/organic/steporganic9"
+    ]
+  },
+  "entity.spirit.step.hardlight_glass": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/step/hardlight_glass/stepglass2",
+      "orimod:spirit/step/hardlight_glass/stepglass1",
+      "orimod:spirit/step/hardlight_glass/stepglass0"
     ]
   },
   "entity.spirit.step.chitin": {
@@ -415,6 +449,19 @@
       "orimod:spirit/ability/fanfare/ability04_marsh"
     ]
   },
+  "entity.decay_exploder.detonate_undertone": {
+    "category": "master",
+    "sounds": [
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone0",
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone2",
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone1",
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone4",
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone3",
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone6",
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone5",
+      "orimod:mob/decay_exploder/detonate_undertone/exploder_detonate_undertone7"
+    ]
+  },
   "item.spirit_arc.start": {
     "category": "master",
     "sounds": [
@@ -581,14 +628,6 @@
       "orimod:spirit/hurt/vo/hurtvo3",
       "orimod:spirit/hurt/vo/hurtvo0",
       "orimod:spirit/hurt/vo/hurtvo1"
-    ]
-  },
-  "entity.spirit.step.glass": {
-    "category": "master",
-    "sounds": [
-      "orimod:spirit/step/glass/stepglass2",
-      "orimod:spirit/step/glass/stepglass1",
-      "orimod:spirit/step/glass/stepglass0"
     ]
   },
   "entity.spirit.death.generic": {

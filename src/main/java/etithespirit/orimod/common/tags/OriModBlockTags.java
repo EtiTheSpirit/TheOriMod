@@ -10,7 +10,8 @@ public final class OriModBlockTags {
 	
 	private OriModBlockTags() { }
 	
-	public static final TagKey<Block> LIGHT_ASSOC = BlockTags.create(OriMod.rsrc("alignment/light_related"));
-	public static final TagKey<Block> DECAY_ASSOC = BlockTags.create(OriMod.rsrc("alignment/decay_related"));
+	public static final TagKey<Block> ALIGNED = BlockTags.create(OriMod.rsrc("aligned"));
+	public static final TagKey<Block> ALIGNED_LIGHT = BlockTags.create(OriMod.rsrc("aligned/aligned_light"));
+	public static final TagKey<Block> ALIGNED_DECAY = BlockTags.create(OriMod.rsrc("aligned/aligned_decay"));
 
 }

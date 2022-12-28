@@ -1,16 +1,22 @@
 package etithespirit.orimod.registry.world;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.common.block.decay.DecayLiquidBlock;
+import etithespirit.orimod.common.block.decay.DecayWorldConfigHelper;
+import etithespirit.orimod.common.block.fluid.DecayLiquidBlock;
 import etithespirit.orimod.common.fluid.DecayPoisonFluid;
 import etithespirit.orimod.common.material.ExtendedMaterials;
+import etithespirit.orimod.config.OriModConfigs;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
+import net.minecraft.world.level.material.Fluids;
+import net.minecraftforge.fluids.FluidInteractionRegistry;
 import net.minecraftforge.fluids.FluidType;
-import net.minecraftforge.fluids.ForgeFlowingFluid;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -26,12 +32,12 @@ public final class FluidRegistry {
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// FLUIDS
-	public static final RegistryObject<Fluid> DECAY_FLUID_STATIC = FLUIDS.register("decay_poison", () -> new ForgeFlowingFluid.Source(DecayPoisonFluid.createProperties()));
-	public static final RegistryObject<Fluid> DECAY_FLUID_FLOWING = FLUIDS.register("flowing_decay_poison", () -> new ForgeFlowingFluid.Flowing(DecayPoisonFluid.createProperties()));
+	public static final RegistryObject<? extends FlowingFluid> DECAY_FLUID_STATIC = FLUIDS.register("decay_poison", DecayPoisonFluid.Source::new);
+	public static final RegistryObject<? extends FlowingFluid> DECAY_FLUID_FLOWING = FLUIDS.register("flowing_decay_poison", DecayPoisonFluid.Flowing::new);
 	
 	/////////////////////////////////////////////////////////////////////////////////////
 	/// BLOCKS WRAPPING FLUIDS
-	public static final RegistryObject<LiquidBlock> DECAY_POISON = BLOCKS.register("decay_poison", () -> new DecayLiquidBlock(() -> (FlowingFluid)FluidRegistry.DECAY_FLUID_STATIC.get(), BlockBehaviour.Properties.of(ExtendedMaterials.DECAY_LIQUID).noCollission().strength(100).noLootTable(), true));
+	public static final RegistryObject<LiquidBlock> DECAY_POISON = BLOCKS.register("decay_poison", () -> new DecayLiquidBlock(DECAY_FLUID_STATIC, BlockBehaviour.Properties.of(ExtendedMaterials.DECAY_LIQUID).noCollission().strength(100).noLootTable()));
 	public static final RegistryObject<FluidType> DECAY_POISON_TYPE = FLUID_TYPES.register("decay_poison", DecayPoisonFluid.DECAY_POISON_FLUID_TYPE);
 	
 	static {
@@ -42,6 +48,45 @@ public final class FluidRegistry {
 		FLUID_TYPES.register(FMLJavaModLoadingContext.get().getModEventBus());
 		FLUIDS.register(FMLJavaModLoadingContext.get().getModEventBus());
 		//DecayFluidTags.registerAll();
+		
+		
+		
+		
 	}
 	
+	
+	private static class FluidInteractions {
+		
+		private static boolean decayPoisonHasInteraction(Level level, BlockPos currentPos, BlockPos relativePos, FluidState currentState) {
+			if (true)
+			return false;
+			
+			
+			if (!DecayWorldConfigHelper.getSpreadLimits(DecayWorldConfigHelper.SpreadType.FLUID).canSpread) {
+				return false;
+			}
+			
+			BlockPos location = currentPos.offset(relativePos);
+			if (level.getFluidState(location).is(Fluids.WATER)) {
+				return true;
+			}
+			
+			return false;
+		}
+		
+		private static void decayPoisonDoInteraction(Level level, BlockPos currentPos, BlockPos relativePos, FluidState currentState) {
+			BlockPos location = currentPos.offset(relativePos);
+		}
+		
+		public static void registerAll() {
+			FluidInteractionRegistry.addInteraction(
+				DECAY_POISON_TYPE.get(),
+				new FluidInteractionRegistry.InteractionInformation(
+					FluidInteractions::decayPoisonHasInteraction,
+					FluidInteractions::decayPoisonDoInteraction
+				)
+			);
+		}
+		
+	}
 }

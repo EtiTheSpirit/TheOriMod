@@ -1,8 +1,8 @@
-// 1.19.2	2022-12-21T07:48:15.9994432	Block States: orimod
+// 1.19.2	2022-12-25T06:37:45.2198212	Block States: orimod
 7d0e0990f8adadf301ac49e62a0e32232e1c3caa assets/orimod/blockstates/decay_dirt_mycelium.json
 26fc54514894e6818d989ed0f02a42f1112b892f assets/orimod/blockstates/decay_log.json
 bafe5118787191397120405650d61e41f9608606 assets/orimod/blockstates/decay_plantmatter_mycelium.json
-caa8f3e3f9f83a79da98a5a5c15960339708f31d assets/orimod/blockstates/decay_poison.json
+f95ddaf04b82aec3c60560d7f79ad50e0cc85c44 assets/orimod/blockstates/decay_poison.json
 c21580715f67c1f06a30b546873915a6fc7db2c5 assets/orimod/blockstates/decay_surface_mycelium.json
 47eacca448e457fa9ee6e06c8196076d76412b25 assets/orimod/blockstates/forlorn_stone.json
 87fd17c7d298739fb7fbd31a4c5bb178b78111ec assets/orimod/blockstates/forlorn_stone_bricks.json

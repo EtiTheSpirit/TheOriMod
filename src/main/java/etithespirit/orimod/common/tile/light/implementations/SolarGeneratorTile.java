@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 
 public class SolarGeneratorTile extends LightEnergyHandlingTile implements IServerUpdatingTile, ILightEnergyGenerator {
 	
-	public static final float PEAK_GENERATION_RATE = 1/64f;
+	public static final float PEAK_GENERATION_RATE = 1/32f;
 	private final EnergyReservoir generatorHelper = new EnergyReservoir(PEAK_GENERATION_RATE);
 	
 	public SolarGeneratorTile(BlockPos pWorldPosition, BlockState pBlockState) {

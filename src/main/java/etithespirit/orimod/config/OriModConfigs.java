@@ -5,7 +5,8 @@ import com.google.gson.JsonParseException;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
-import etithespirit.orimod.common.block.decay.DecayLiquidBlock;
+import etithespirit.orimod.common.block.decay.DecayWorldConfigHelper;
+import etithespirit.orimod.common.block.fluid.DecayLiquidBlock;
 import etithespirit.orimod.common.block.decay.DecayWorldConfigBehavior;
 import etithespirit.orimod.common.block.decay.world.DecaySurfaceMyceliumBlock;
 import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
@@ -70,9 +71,9 @@ public class OriModConfigs {
 	public static ForgeConfigSpec.IntValue CHANGE_ABILITIES_SELF_LEVEL;
 	public static ForgeConfigSpec.IntValue CHANGE_ABILITIES_OTHERS_LEVEL;
 	
-	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_SPREADING;
-	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_COATING_SPREADING;
-	protected static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_FLUID_SPREADING;
+	public static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_SPREADING;
+	public static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_COATING_SPREADING;
+	public static ForgeConfigSpec.EnumValue<DecayWorldConfigBehavior> DECAY_FLUID_SPREADING;
 	
 	public static ForgeConfigSpec.BooleanValue KEEP_CHUNKS_ALIVE;
 	public static ForgeConfigSpec.BooleanValue DO_DIAGONAL_SPREAD;
@@ -91,10 +92,13 @@ public class OriModConfigs {
 	 * @param state The state to check.
 	 * @return The default spreading behavior of this block, limited by the permissiveness of the user settings.
 	 * @throws IllegalArgumentException If the given block is not a decay block.
+	 * @deprecated Use {@link DecayWorldConfigHelper} instead.
 	 */
+	@Deprecated(forRemoval = true)
 	public static DecayWorldConfigBehavior getDecaySpreadBehavior(StateHolder<?, ?> state) throws IllegalArgumentException {
+		
 		if (state instanceof BlockState block) {
-			if (block.is(OriModBlockTags.DECAY_ASSOC)) {
+			if (block.is(OriModBlockTags.ALIGNED_DECAY)) {
 				if (block.getBlock() instanceof DecaySurfaceMyceliumBlock) {
 					if (DECAY_SPREADING.get().permissiveness < DECAY_COATING_SPREADING.get().permissiveness) {
 						return DECAY_SPREADING.get();

@@ -71,6 +71,13 @@ public final class SpiritCapabilities implements ICapabilitySerializable<Compoun
 	}
 	
 	/**
+	 * @return True if the player is currently (sensibly) carrying the momentum of their dash.
+	 */
+	public boolean isCurrentlyInDash() {
+		return canDash() && dashCooldownTicksRemaining > DASH_RESTORE_BEFORE_COOLDOWN;
+	}
+	
+	/**
 	 * Sets whether or not the player wants to be a spirit. Note that this does not necessarily
 	 * make the appropriate change, as {@link #isSpirit()} changes its return value based on configs.
 	 * @param isSpirit True if they should be a spirit, false if not.

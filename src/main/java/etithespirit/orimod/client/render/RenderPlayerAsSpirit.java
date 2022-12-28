@@ -7,7 +7,9 @@ import com.mojang.math.Vector3f;
 import etithespirit.orimod.GeneralUtils;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.client.render.armor.ArmorRenderHelper;
-import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
+import etithespirit.orimod.client.render.model.SpiritArmorModelSpecialized;
+import etithespirit.orimod.client.render.model.SpiritArmorModelVanillaCompatible;
+import etithespirit.orimod.client.render.model.SpiritModel;
 import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
@@ -19,7 +21,6 @@ import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
-import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
@@ -144,7 +145,7 @@ public class RenderPlayerAsSpirit {
 					EquipmentSlot slot = SLOTS[i];
 					ItemStack item = player.getItemBySlot(slot);
 					if (!(item.getItem() instanceof ArmorItem)) continue;
-					ResourceLocation armorRsrc = ArmorRenderHelper.getArmorResource(player, item, slot, null);
+					ResourceLocation armorRsrc = ArmorRenderHelper.getArmorResource(player, item, slot, OriMod.MODID, null);
 					
 					// Get the buffer for the armor.
 					VertexConsumer drawBuffer = ItemRenderer.getArmorFoilBuffer(bufferProvider, RenderType.armorCutoutNoCull(armorRsrc), false, item.hasFoil());

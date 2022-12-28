@@ -1,6 +1,6 @@
 package etithespirit.orimod.combat.projectile;
 
-import etithespirit.orimod.combat.ExtendedDamageSource;
+import etithespirit.orimod.combat.damage.OriModDamageSources;
 import etithespirit.orimod.registry.SoundRegistry;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
@@ -12,8 +12,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.minecraft.world.phys.Vec3;
-
-import java.util.Arrays;
 
 public class SpiritArrow extends AbstractArrow {
 	public SpiritArrow(EntityType<? extends AbstractArrow> type, Level world) {
@@ -66,9 +64,9 @@ public class SpiritArrow extends AbstractArrow {
 		baseDamage *= 1 + this.random.nextDouble() / 7;
 		
 		if (shooter == null) {
-			damage = ExtendedDamageSource.spiritArc(this, this);
+			damage = OriModDamageSources.spiritArc(this, this);
 		} else {
-			damage = ExtendedDamageSource.spiritArc(this, shooter);
+			damage = OriModDamageSources.spiritArc(this, shooter);
 		}
 		
 		if (victim.hurt(damage, (float)baseDamage)) {
