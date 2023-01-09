@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.block.other;
 
 import com.google.common.collect.ImmutableList;
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
@@ -12,9 +12,8 @@ import net.minecraft.world.item.Rarity;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SoundType;
-import net.minecraft.world.level.material.Material;
 
-public class GorlekNetheriteAlloyBlock extends Block implements IToolRequirementProvider, IBlockItemPropertiesProvider {
+public class GorlekNetheriteAlloyBlock extends Block implements IBlockTagProvider, IBlockItemPropertiesProvider {
 	
 	public GorlekNetheriteAlloyBlock() {
 		super(

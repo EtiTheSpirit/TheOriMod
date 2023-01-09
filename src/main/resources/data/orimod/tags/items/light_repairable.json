@@ -1,15 +1,27 @@
 {
   "replace": false,
   "values": [
+    "orimod:light_helmet",
+    "orimod:light_chestplate",
+    "orimod:light_leggings",
+    "orimod:light_boots",
     "orimod:light_pickaxe",
     "orimod:light_shovel",
     "orimod:light_axe",
     "orimod:light_sword",
     "orimod:light_hoe",
-    "orimod:spirit_arc",
-    "orimod:light_helmet",
-    "orimod:light_chestplate",
-    "orimod:light_leggings",
-    "orimod:light_boots"
+
+    "orimod:luxen_gorlek_netherite_alloy_helmet",
+    "orimod:luxen_gorlek_netherite_alloy_chestplate",
+    "orimod:luxen_gorlek_netherite_alloy_leggings",
+    "orimod:luxen_gorlek_netherite_alloy_boots",
+    "orimod:luxen_gorlek_netherite_alloy_pickaxe",
+    "orimod:luxen_gorlek_netherite_alloy_shovel",
+    "orimod:luxen_gorlek_netherite_alloy_axe",
+    "orimod:luxen_gorlek_netherite_alloy_sword",
+    "orimod:luxen_gorlek_netherite_alloy_hoe",
+
+    "orimod:spirit_arc"
+
   ]
 }

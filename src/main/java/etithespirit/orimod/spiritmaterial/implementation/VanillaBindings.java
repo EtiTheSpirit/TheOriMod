@@ -58,8 +58,8 @@ public final class VanillaBindings {
 		ctr.registerMaterial(Material.WOOL, SpiritMaterial.WOOL);
 		
 		// CUSTOM MATERIAL PREDICATES
-		ctr.registerMaterial(Material.NETHER_WOOD, DefaultAcquisitionImplementations::getWoodMaterial);
-		ctr.registerMaterial(Material.WOOD, DefaultAcquisitionImplementations::getWoodMaterial);
+		ctr.registerMaterial(Material.NETHER_WOOD, DefaultAcquisitionImplementations::getWoodMaterial, SpiritMaterial.WOOD_DRY);
+		ctr.registerMaterial(Material.WOOD, DefaultAcquisitionImplementations::getWoodMaterial, SpiritMaterial.WOOD_DRY);
 		ctr.registerMaterial(Material.WATER, DefaultAcquisitionImplementations::getWaterMaterial);
 		
 		// STATE BINDINGS
@@ -214,8 +214,6 @@ public final class VanillaBindings {
 		
 		// FCW:
 		// (nothing here yet)
-		
-		
 		
 		
 	}

@@ -2,6 +2,7 @@ package etithespirit.orimod.registry;
 
 import com.mojang.serialization.codecs.CompoundListCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
+import etithespirit.mixin.helpers.DuplicateSoundEvent;
 import etithespirit.orimod.OriMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -30,7 +31,7 @@ public final class SoundRegistry {
 	}
 	
 	public static void registerSound(String soundEventName) {
-		SOUNDS.put(soundEventName, SOUND_REGISTRY.register(soundEventName, () -> new SoundEvent(new ResourceLocation(OriMod.MODID, soundEventName))));
+		SOUNDS.put(soundEventName, SOUND_REGISTRY.register(soundEventName, () -> new DuplicateSoundEvent(new ResourceLocation(OriMod.MODID, soundEventName))));
 	}
 	
 	
@@ -129,6 +130,8 @@ public final class SoundRegistry {
 		registerSound("tile.light_tech.thermal.loop");
 		
 		registerSound("item.lumo_wand.swapconduitauto");
+		
+		registerSound("item.armor.orimod.equip_light");
 		
 		registerSound("item.spirit_arc.start");
 		registerSound("item.spirit_arc.charge");

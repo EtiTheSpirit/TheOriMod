@@ -5,7 +5,7 @@ import etithespirit.orimod.combat.projectile.SpiritArrow;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.item.IModelPredicateProvider;
-import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.registry.gameplay.EntityRegistry;
 import etithespirit.orimod.registry.SoundRegistry;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
@@ -19,16 +19,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 
-import java.util.HashMap;
 import java.util.Map;
 
-public class SpiritArc extends BowItem implements ISpiritLightRepairableItem, IModelPredicateProvider {
+public class SpiritArc extends BowItem implements IModelPredicateProvider {
 	
 	private static final String IS_CHARGED_KEY = "isCharged";
 	
@@ -146,7 +144,7 @@ public class SpiritArc extends BowItem implements ISpiritLightRepairableItem, IM
 	}
 	
 	public int getUseDuration() {
-		return getUseDuration(null);
+		return getUseDuration(ItemStack.EMPTY);
 	}
 	
 	@Override
@@ -156,12 +154,12 @@ public class SpiritArc extends BowItem implements ISpiritLightRepairableItem, IM
 	
 	@Override
 	public int getBarColor(ItemStack pStack) {
-		return ISpiritLightRepairableItem.super.getBarColor(pStack);
+		return SpiritItemCustomizations.getLightToolBarColor(pStack);
 	}
 	
 	@Override
 	public Component getName(ItemStack pStack) {
-		return StaticData.getNameAsLight(super.getName(pStack));
+		return SpiritItemCustomizations.getNameAsLight(super.getName(pStack));
 	}
 	
 	@Override

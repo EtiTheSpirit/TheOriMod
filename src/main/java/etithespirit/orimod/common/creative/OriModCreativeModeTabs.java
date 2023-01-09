@@ -12,7 +12,7 @@ public final class OriModCreativeModeTabs {
 	public static final CreativeModeTab BLOCKS = new CreativeModeTab("orimod.blocks") {
 		@Override
 		public ItemStack makeIcon() {
-			return new ItemStack(BlockRegistry.GORLEK_METAL_BLOCK.get().asItem());
+			return new ItemStack(BlockRegistry.GORLEK_STEEL_BLOCK.get().asItem());
 		}
 	};
 	

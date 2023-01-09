@@ -20,7 +20,7 @@ import etithespirit.orimod.common.block.light.decoration.ForlornStoneOmniBlock;
 import etithespirit.orimod.common.block.light.generation.SolarGeneratorBlock;
 import etithespirit.orimod.common.block.light.generation.ThermalGeneratorBlock;
 import etithespirit.orimod.common.block.light.interaction.LightRepairBoxBlock;
-import etithespirit.orimod.common.block.other.GorlekMetalBlock;
+import etithespirit.orimod.common.block.other.GorlekSteelBlock;
 import etithespirit.orimod.common.block.other.GorlekNetheriteAlloyBlock;
 import etithespirit.orimod.common.block.other.GorlekOreBlock;
 import etithespirit.orimod.common.block.other.RawGorlekOreBlock;
@@ -29,9 +29,6 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * This class manages the registration of blocks for the mod.
@@ -63,7 +60,7 @@ public final class BlockRegistry {
 	
 	/** */ public static final RegistryObject<Block> GORLEK_ORE = BLOCKS.register("gorlek_ore", GorlekOreBlock::new);
 	/** */ public static final RegistryObject<Block> RAW_GORLEK_ORE_BLOCK = BLOCKS.register("raw_gorlek_ore_block", RawGorlekOreBlock::new);
-	/** */ public static final RegistryObject<Block> GORLEK_METAL_BLOCK = BLOCKS.register("gorlek_metal_block", GorlekMetalBlock::new);
+	/** */ public static final RegistryObject<Block> GORLEK_STEEL_BLOCK = BLOCKS.register("gorlek_steel_block", GorlekSteelBlock::new);
 	/** */ public static final RegistryObject<Block> GORLEK_NETHERITE_ALLOY_BLOCK = BLOCKS.register("gorlek_netherite_alloy_block", GorlekNetheriteAlloyBlock::new);
 	
 	

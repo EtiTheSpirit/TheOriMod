@@ -5,6 +5,7 @@ import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.common.tile.light.LightEnergyTicker;
 import etithespirit.orimod.common.tile.light.LightEnergyTile;
 import etithespirit.orimod.energy.ILightEnergyStorage;
@@ -410,7 +411,7 @@ public abstract class ConnectableLightTechBlock extends Block implements EntityB
 	
 	@Override
 	public MutableComponent getName() {
-		return StaticData.getNameAsLight(super.getName());
+		return SpiritItemCustomizations.getNameAsLight(super.getName());
 	}
 	
 }

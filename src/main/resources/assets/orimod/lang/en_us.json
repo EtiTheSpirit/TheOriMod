@@ -1,16 +1,30 @@
 {
-	"item.orimod.spiritglow.name" : "Spirit Glow",
-	"item.orimod.lifecell.name" : "Life Cell",
-
-	"item.orimod.light_omnitool" : "Spirit Omni-Tool",
-	"item.orimod.light_shield" : "Spirit Shield",
-	"item.orimod.spirit_arc" : "Spirit Arc",
+	"item.orimod.light_shield" : "Hardlight Shield",
+	"item.orimod.spirit_arc" : "Hardlight Arc Bow",
 
 	"item.orimod.light_pickaxe" : "Hardlight Pickaxe",
 	"item.orimod.light_shovel" : "Hardlight Shovel",
 	"item.orimod.light_axe" : "Hardlight Axe",
 	"item.orimod.light_sword" : "Hardlight Sword",
 	"item.orimod.light_hoe" : "Hardlight Hoe",
+	
+	"item.orimod.gorlek_steel_pickaxe" : "Gorlek Steel Pickaxe",
+	"item.orimod.gorlek_steel_shovel" : "Gorlek Steel Shovel",
+	"item.orimod.gorlek_steel_axe" : "Gorlek Steel Axe",
+	"item.orimod.gorlek_steel_sword" : "Gorlek Steel Sword",
+	"item.orimod.gorlek_steel_hoe" : "Gorlek Steel Hoe",
+
+	"item.orimod.gorlek_netherite_alloy_pickaxe" : "Gorlek-Netherite Alloy Pickaxe",
+	"item.orimod.gorlek_netherite_alloy_shovel" : "Gorlek-Netherite Alloy Shovel",
+	"item.orimod.gorlek_netherite_alloy_axe" : "Gorlek-Netherite Alloy Axe",
+	"item.orimod.gorlek_netherite_alloy_sword" : "Gorlek-Netherite Alloy Sword",
+	"item.orimod.gorlek_netherite_alloy_hoe" : "Gorlek-Netherite Alloy Hoe",
+
+	"item.orimod.luxen_gorlek_netherite_alloy_pickaxe" : "Luxen Gorlek-Netherite Alloy Pickaxe",
+	"item.orimod.luxen_gorlek_netherite_alloy_shovel" : "Luxen Gorlek-Netherite Alloy Shovel",
+	"item.orimod.luxen_gorlek_netherite_alloy_axe" : "Luxen Gorlek-Netherite Alloy Axe",
+	"item.orimod.luxen_gorlek_netherite_alloy_sword" : "Luxen Gorlek-Netherite Alloy Sword",
+	"item.orimod.luxen_gorlek_netherite_alloy_hoe" : "Luxen Gorlek-Netherite Alloy Hoe",
 
 	"item.orimod.binding_essence" : "Binding Essence",
 	"item.orimod.large_light_lens" : "Large Luxen Lens",
@@ -21,22 +35,53 @@
 	"item.orimod.light_chestplate" : "Hardlight Chestplate",
 	"item.orimod.light_leggings" : "Hardlight Leggings",
 	"item.orimod.light_boots" : "Hardlight Boots",
+	
+	"item.orimod.gorlek_steel_helmet" : "Gorlek Steel Helmet",
+	"item.orimod.gorlek_steel_chestplate" : "Gorlek Steel Chestplate",
+	"item.orimod.gorlek_steel_leggings" : "Gorlek Steel Leggings",
+	"item.orimod.gorlek_steel_boots" : "Gorlek Steel Boots",
+
+	"item.orimod.gorlek_netherite_alloy_helmet" : "Gorlek-Netherite Alloy Helmet",
+	"item.orimod.gorlek_netherite_alloy_chestplate" : "Gorlek-Netherite Alloy Chestplate",
+	"item.orimod.gorlek_netherite_alloy_leggings" : "Gorlek-Netherite Alloy Leggings",
+	"item.orimod.gorlek_netherite_alloy_boots" : "Gorlek-Netherite Alloy Boots",
+
+	"item.orimod.luxen_gorlek_netherite_alloy_helmet" : "Luxen Gorlek-Netherite Alloy Helmet",
+	"item.orimod.luxen_gorlek_netherite_alloy_chestplate" : "Luxen Gorlek-Netherite Alloy Chestplate",
+	"item.orimod.luxen_gorlek_netherite_alloy_leggings" : "Luxen Gorlek-Netherite Alloy Leggings",
+	"item.orimod.luxen_gorlek_netherite_alloy_boots" : "Luxen Gorlek-Netherite Alloy Boots",
 
 	"item.orimod.raw_gorlek_ore" : "Raw Gorlek Ore",
-	"item.orimod.gorlek_nugget" : "Gorlek Nugget",
-	"item.orimod.gorlek_ingot" : "Gorlek Ingot",
+	"item.orimod.gorlek_steel_nugget" : "Gorlek Steel Nugget",
+	"item.orimod.gorlek_steel_ingot" : "Gorlek Steel Ingot",
 	"item.orimod.gorlek_netherite_alloy_ingot" : "Gorlek-Netherite Alloy Ingot",
 
-	"tooltip.orimod.focuslight.1" : "§3This tool can be repaired",
-	"tooltip.orimod.focuslight.2" : "§3in a Luxen Reconstructor.",
-	"tooltip.orimod.focuslight.3" : "§3Spirits can also §bsneak+use",
-	"tooltip.orimod.focuslight.4" : "§3to give up §b%1$s health §3and",
-	"tooltip.orimod.focuslight.5" : "§3hunger for §b+%1$s durability§3.",
+	"tooltip.orimod.focuslight.1" : "This tool can be repaired",
+	"tooltip.orimod.focuslight.2" : "in a Luxen Reconstructor.",
+	"tooltip.orimod.focuslight.3" : "Repair Cost: ",
 
-	"tooltip.orimod.lumowand.1" : "§3Press Use to swap the",
-	"tooltip.orimod.lumowand.2" : "§3color of a block that",
-	"tooltip.orimod.lumowand.3" : "§3(appears to) use Light",
-	"tooltip.orimod.lumowand.4" : "§3energy.",
+	"tooltip.orimod.focuslight.self.1" : "§3Spirits can also §bsneak+use",
+	"tooltip.orimod.focuslight.self.2" : "§3to sacrifice §b%s health §3and",
+	"tooltip.orimod.focuslight.self.3" : "§3restore +§b%s durability§3.",
+
+	"tooltip.orimod.focuslight.self.1a" : "Spirits can also ",
+	"tooltip.orimod.focuslight.self.1b" : "sneak+use",
+	"tooltip.orimod.focuslight.self.2a" : "to sacrifice ",
+	"tooltip.orimod.focuslight.self.2b" : "%s health",
+	"tooltip.orimod.focuslight.self.3a" : "for ",
+	"tooltip.orimod.focuslight.self.3b" : "+%s durability.",
+
+	"tooltip.orimod.lumowand.1" : "Press Use to swap the",
+	"tooltip.orimod.lumowand.2" : "color of a block that",
+	"tooltip.orimod.lumowand.3" : "(appears to) use Light",
+	"tooltip.orimod.lumowand.4" : "energy.",
+
+	"tooltip.orimod.durability.physical" : "Physical Durability: %s/%s",
+	"tooltip.orimod.durability.luxen" : "Hardlight Integrity: %s/%s",
+	"tooltip.orimod.durability.repairlimit.1" : "Can Reconstruct Up To: %s",
+	"tooltip.orimod.durability.repairlimit.2" : "To repair more than this amount",
+	"tooltip.orimod.durability.repairlimit.3" : "you must use an Anvil with the",
+	"tooltip.orimod.durability.repairlimit.4" : "appropriate repair ingredient.",
 
 	"info.orimod.lumowand.autoon" : "Automatic Connections: On",
 	"info.orimod.lumowand.autooff" : "Automatic Connections: Off",
@@ -51,7 +96,7 @@
 	"input.orimod.cling" : "Wall Cling",
 
 	"entity.orimod.spirit.name" : "Spirit",
-	"entity.orimod.spirit_arrow" : "Spirit Arc Bolt",
+	"entity.orimod.spirit_arrow" : "Hardlight Arc Bolt",
 
 	"advancement.orimod.become_spirit" : "Born from The Light",
 	"advancement.orimod.become_spirit.description" : "Become a Spirit.",
@@ -75,20 +120,28 @@
 
 	"block.orimod.light_capacitor" : "Luxen Capacitor",
 	"block.orimod.light_capacitor.tip" : "§3Stores Luxen for later use.",
+	
 	"block.orimod.light_conduit" : "Luxen Conduit",
 	"block.orimod.light_conduit.tip" : "§3Links devices together to route power.",
+	
 	"block.orimod.solid_light_conduit" : "Airtight Luxen Conduit",
 	"block.orimod.solid_light_conduit.tip" : "§3Links devices together to route power.",
+	
 	"block.orimod.light_to_redstone_signal" : "Luxen Detector",
 	"block.orimod.light_to_redstone_signal.tip" : "§3Produces a redstone signal when powered.",
+	
 	"block.orimod.light_to_rf" : "Luxen Flux Inducer",
 	"block.orimod.light_to_rf.tip" : "§3Converts Luxen to RF.",
+	
 	"block.orimod.infinite_light_source" : "Infinite Luxen Source",
 	"block.orimod.infinite_light_source.tip" : "§3Provides unlimited power at an unlimited rate.",
+	
 	"block.orimod.solar_generator" : "Solar Luxen Generator",
 	"block.orimod.solar_generator.tip" : "§3Converts sky light into Luxen",
+	
 	"block.orimod.thermal_generator" : "Thermal Luxen Generator",
 	"block.orimod.thermal_generator.tip" : "§3Converts heat into Luxen. Optimal in The Nether.",
+	
 	"block.orimod.light_repair_box" : "Luxen Reconstructor",
 	"block.orimod.light_repair_box.tip" : "§3Consumes Luxen to repair hardlight items.",
 	"container.orimod.light_repair_device" : "Luxen Reconstructor",
@@ -102,7 +155,7 @@
 
 	"block.orimod.gorlek_ore" : "Gorlek Ore",
 	"block.orimod.raw_gorlek_ore_block" : "Block of Raw Gorlek Ore",
-	"block.orimod.gorlek_metal_block" : "Block of Gorlek Metal",
+	"block.orimod.gorlek_steel_block" : "Block of Gorlek Metal",
 	"block.orimod.gorlek_netherite_alloy_block" : "Block of Gorlek-Netherite Alloy",
 
 	"item.orimod.lumo_wand" : "Lumo Wand",
@@ -111,17 +164,17 @@
 	"effect.orimod.decay" : "Decay",
 	"effect.orimod.radiant" : "Radiant",
 
-	"death.attack.decay" : "%1$s was lost to The Decay.",
-	"death.attack.decay.player" : "%1$s was lost to The Decay.",
+	"death.attack.decay" : "%s was silenced by The Decay.",
+	"death.attack.decay.player" : "%2$s silenced $1$s with The Decay.",
 
-	"death.attack.light" : "%1$s was incinerated by Light energy.",
-	"death.attack.light.player" : "%1$s was incinerated by Light energy.",
+	"death.attack.light" : "%s was incinerated with Light energy.",
+	"death.attack.light.player" : "%2$s incinerated %1$s with Light energy.",
 
-	"death.attack.spirit_arc" : "%1$s was pierced by hard light.",
-	"death.attack.spirit_arc.player" : "%1$s was pierced by hard light.",
+	"death.attack.spirit_arc" : "%s was pierced by hard Light.",
+	"death.attack.spirit_arc.player" : "%2$s pierced %1$s with Hard Light.",
 
-	"death.attack.self_energy" : "%1$s decided that an object was worth more than their life.",
-	"death.attack.self_energy.player" : "%1$s decided that an object was worth more than their life.",
+	"death.attack.self_energy" : "%s sacrificed too much of their internal Light.",
+	"death.attack.self_energy.player" : "%2$s tricked %1$s into spending too much of their internal Light.",
 
 	"orimod.spirit_restrictions.no_meat" : "You know you can't eat this. You're a herbivore!",
 
@@ -153,10 +206,13 @@
 
 	"config.orimod.spirit_management.change_model_self_level" : "Required op level to set self",
 	"config.orimod.spirit_management.change_model_self_level.description" : "What operator permission level must a player have to use /spirit set on themselves?",
+	
 	"config.orimod.spirit_management.change_abilities_self_level" : "Required op level to change self abilities",
 	"config.orimod.spirit_management.change_abilities_self_level.description" : "What operator permission level must a player have to use /spirit ability on themselves?",
+	
 	"config.orimod.spirit_management.change_model_others_level" : "Required op level to set others",
 	"config.orimod.spirit_management.change_model_others_level.description" : "What operator permission level must a player have to use /spirit set on other players?",
+	
 	"config.orimod.spirit_management.change_abilities_others_level" : "Required op level to change others abilities",
 	"config.orimod.spirit_management.change_abilities_others_level.description" : "What operator permission level must a player have to use /spirit ability on other players?",
 
@@ -190,25 +246,33 @@
 	"config.orimod.light_energy.show_rf.description" : "§dRequires mod: Jade §r-- This determines when to display the RF equivalent of any given amount of Luxen.",
 
 	"config.orimod.rendering" : "Rendering Configuration",
+	
 	"config.orimod.rendering.assembly_debug" : "Render AOS Debug Info",
 	"config.orimod.rendering.assembly_debug.description" : "The §bA§fssembly §bO§fptimization §bS§fystem is responsible for allowing excessively large machines to have low CPU usage. This option will cause debugging info for the AOS to show when the debug menu (F3) is open. §cThis feature can make the debug menu very laggy!§f",
+	
 	"config.orimod.rendering.override_health_rendering" : "Override Health Renderer",
 	"config.orimod.rendering.override_health_rendering.description" : "If enabled, the vanilla heart renderer (on your HUD) is disabled and replaced with a near-identical implementation from this mod. This enables support for custom heart types when inflicted with effects like Decay, but may also cause compatibility issues with mods that change how health renders.",
 
 	"config.orimod.world" : "World Configuration",
+	
 	"config.orimod.world.spirit_materials" : "Spirit Step Sound Bindings",
 	"config.orimod.world.spirit_materials.description" : "Binds blocks or block states to a specific SpiritMaterial, which changes the sound when stepping on a block of that material.",
+	
 	"config.orimod.world.decay.spreading" : "General Decay Spreading",
 	"config.orimod.world.decay.spreading.description" : "Dictates how all §5Decay §fspreads in the world. It can either spread (spreads on random ticks, replaces blocks it can infect), not spread, or flat out not exist (it will cure or remove itself on random ticks)",
+	
 	"config.orimod.world.decay.surface_coating" : "Decay Surface Mycelium Spreading",
 	"config.orimod.world.decay.surface_coating.description" : "Dictates how all §5Decay Surface Mycelium §fspreads in the world. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+	
 	"config.orimod.world.decay.fluid" : "Decay Poison Spreading",
 	"config.orimod.world.decay.fluid.description" : "Dictates how all §5Decay Poison §fspreads in the world. This block is particularly aggressive in that it infects and replaces water. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+	
 	"config.orimod.world.decay.diagonal_spread" : "Allow Diagonal Spreading",
 	"config.orimod.world.decay.diagonal_spread.description" : "If enabled, §5Decay §fblocks can spread diagonally by one block. This has somewhat of a performance impact (albeit minor). If disabled, they will only spread to the six direct neighbors to any given block, but can leverage a performance boost.",
 
 	"config.orimod.assembly_optimization_system.keep_chunks_alive" : "Keep Chunks Alive",
 	"config.orimod.assembly_optimization_system.keep_chunks_alive.description" : "This can be used to keep chunks containing functional Light tech (§7meaning they must be doing something with their energy§f) alive. This §aimproves gameplay by allowing tech to operate whilst unattended §fat the cost of §cmore CPU usage (the usage scales with how much is going on)§f.",
+	
 	"config.orimod.assembly_optimization_system.max_assembly_iterations" : "Maximum Assembly Branches",
 	"config.orimod.assembly_optimization_system.max_assembly_iterations.description" : "Big sets of wires and devices are complicated. This setting decides how many + or T shaped wire joints the system can go through when searching for connected technology blocks. If there's too many branches, the system determines the assembly to be too complicated and gives up partway through. Higher values allow more largely interconnected machines, but also introduce a significant amount of server lag when changing the wiring (thankfully, there is not lag from the system existing, only from it changing).",
 

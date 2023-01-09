@@ -3,6 +3,9 @@
 	"audioNames" : {
 		"tile.light_tech.thermal.loop" : [
 			"thermal_generator.ogg"
+		],
+		"tile.light_tech.environmental.loop" : [
+			"environmental_generator.ogg"
 		]
 	}
 }

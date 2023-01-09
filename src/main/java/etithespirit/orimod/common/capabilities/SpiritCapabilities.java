@@ -329,7 +329,16 @@ public final class SpiritCapabilities implements ICapabilitySerializable<Compoun
 		if (dashCooldownTicksRemaining > DASH_RESTORE_BEFORE_COOLDOWN) return;
 		hasSideRestoredPreDashVelocity = true;
 		double dvY = player.getDeltaMovement().y;
-		player.setDeltaMovement(preDashVelocity.x, dvY, preDashVelocity.z);
+		
+		// METHOD 1: COMPLETELY REVERT
+		// player.setDeltaMovement(preDashVelocity.x, dvY, preDashVelocity.z);
+		
+		// METHOD 2: REVERT ONLY THE SPEED, NOT THE DIRECTION
+		Vec3 nrm = player.getDeltaMovement().multiply(1, 0, 1).normalize(); // never returns NaN, vector is ZERO if division by zero occurs.
+		double speed2D = preDashVelocity.x * preDashVelocity.x + preDashVelocity.z * preDashVelocity.z;
+		Vec3 currentXZ = new Vec3(nrm.x, dvY, nrm.z);
+		player.setDeltaMovement(currentXZ.multiply(speed2D, 1, speed2D));
+		
 	}
 	
 	public void landed() {

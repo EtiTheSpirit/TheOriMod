@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "orimod:block/ore/blocks/gorlek_steel_block"
+    }
+  }
+}

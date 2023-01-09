@@ -11,9 +11,11 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.damagesource.EntityDamageSource;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.entity.living.LivingAttackEvent;
 import net.minecraftforge.event.entity.living.LivingDamageEvent;
 
@@ -48,6 +50,9 @@ public class DamageMarshaller {
 					if (spiritCapsCtr.get().isCurrentlyInDash()) {
 						SoundEvent knockback = SpiritSoundProvider.getSpiritAttackTypeSound(SpecialAttackType.KNOCKBACK);
 						SpiritSoundPlayer.playReplicatedSoundAtPlayer(attackingPlayer, knockback, SoundSource.PLAYERS, 0.5f, 1f);
+						
+						Vec3 delta = attackingPlayer.getDeltaMovement().normalize();
+						target.knockback(2.5, -delta.x, -delta.z);
 					}
 				}
 			}
@@ -55,7 +60,7 @@ public class DamageMarshaller {
 	}
 	
 	/**
-	 * Connected to Forge manually. This occurs when an entity spirit is actually damaged.
+	 * Connected to Forge manually. This occurs when an entity is actually damaged.
 	 * @param evt The event forge sends.
 	 */
 	public static void onEntityDamaged(LivingDamageEvent evt) {
@@ -76,7 +81,7 @@ public class DamageMarshaller {
 					float increment = 1f / armorSlots.length;
 					
 					for (int index = 0; index < armorSlots.length; index++) {
-						if (armorSlots[index].is(OriModItemTags.HARDLIGHT_ARMOR)) {
+						if (armorSlots[index].is(OriModItemTags.DECAY_RESISTANT)) {
 							hardlightPercentage += increment;
 						}
 					}

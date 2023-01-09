@@ -1,6 +1,6 @@
 package etithespirit.orimod.common.block.light;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
@@ -24,7 +24,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightToRedstoneSignalBlock extends ConnectableLightTechBlock implements IToolRequirementProvider, IForlornBlueOrangeBlock {
+public class LightToRedstoneSignalBlock extends ConnectableLightTechBlock implements IBlockTagProvider, IForlornBlueOrangeBlock {
 	
 	public LightToRedstoneSignalBlock() {
 		this(

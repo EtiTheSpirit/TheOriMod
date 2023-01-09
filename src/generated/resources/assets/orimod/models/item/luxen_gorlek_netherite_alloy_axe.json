@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "orimod:item/tools/luxen_gorlek_netherite_alloy_axe"
+  }
+}

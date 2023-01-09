@@ -79,8 +79,8 @@ public class CustomizableExplosion extends Explosion {
 		return entity == null ? EXPLOSION_DAMAGE_CALCULATOR : new EntityBasedExplosionDamageCalculator(entity);
 	}
 	
-	public CustomizableExplosion(Level inWorld, @Nullable Entity explodingEntity, @Nullable DamageSource damageType, double x, double y, double z, float blastRadius, boolean causeFire, BlockInteraction blockInteraction) {
-		super(inWorld, explodingEntity, damageType, null, x, y, z, blastRadius, causeFire, blockInteraction);
+	public CustomizableExplosion(Level inWorld, @Nullable Entity explodingEntity, @Nullable DamageSource damageType, double x, double y, double z, float blastRadius, boolean causeFire) {
+		super(inWorld, explodingEntity, damageType, null, x, y, z, blastRadius, causeFire, BlockInteraction.NONE);
 		this.level = inWorld;
 		this.source = explodingEntity;
 		this.radius = blastRadius;
@@ -88,10 +88,18 @@ public class CustomizableExplosion extends Explosion {
 		this.y = y;
 		this.z = z;
 		this.causeFire = causeFire;
-		this.blockInteraction = blockInteraction;
+		this.blockInteraction = BlockInteraction.NONE;
 		this.damageSource = damageType == null ? DamageSource.explosion(this) : damageType;
 		this.damageCalculator = this.makeDamageCalculator(explodingEntity);
 		this.position = new Vec3(this.x, this.y, this.z);
+	}
+	
+	/**
+	 * @deprecated The block interaction is ignored due to networking incompatibility.
+	 */
+	@Deprecated
+	public CustomizableExplosion(Level inWorld, @Nullable Entity explodingEntity, @Nullable DamageSource damageType, double x, double y, double z, float blastRadius, boolean causeFire, BlockInteraction blockInteraction) {
+		this(inWorld, explodingEntity, damageType, x, y, z, blastRadius, causeFire);
 	}
 	
 	private static List<Vec3> cornersOf(AABB bounds) {
@@ -243,9 +251,7 @@ public class CustomizableExplosion extends Explosion {
 	 * Does the second part of the explosion (sound, particles, drop spawn)
 	 */
 	public void finalizeExplosion(boolean pSpawnParticles) {
-		if (this.level.isClientSide) {
-			playSoundsFunction.accept(this);
-		}
+		playSoundsFunction.accept(this);
 		
 		boolean flag = this.blockInteraction != Explosion.BlockInteraction.NONE;
 		if (pSpawnParticles) {

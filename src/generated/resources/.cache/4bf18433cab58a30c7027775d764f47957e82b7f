@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-25T06:37:45.2198212	Block States: orimod
+// 1.19.2	2022-12-28T10:29:45.1873436	Block States: orimod
 7d0e0990f8adadf301ac49e62a0e32232e1c3caa assets/orimod/blockstates/decay_dirt_mycelium.json
 26fc54514894e6818d989ed0f02a42f1112b892f assets/orimod/blockstates/decay_log.json
 bafe5118787191397120405650d61e41f9608606 assets/orimod/blockstates/decay_plantmatter_mycelium.json
@@ -8,9 +8,9 @@ c21580715f67c1f06a30b546873915a6fc7db2c5 assets/orimod/blockstates/decay_surface
 87fd17c7d298739fb7fbd31a4c5bb178b78111ec assets/orimod/blockstates/forlorn_stone_bricks.json
 3a724cb528488f326d8271b40da357ec36fef202 assets/orimod/blockstates/forlorn_stone_line.json
 525fdd1d6f7ae11ebe61ef5d2bdfdac447517209 assets/orimod/blockstates/forlorn_stone_omni.json
-ac155cea424372dd6ec9896d822e362b2fbee8b7 assets/orimod/blockstates/gorlek_metal_block.json
 7199dc24ee36a40da691330dea9fdc500a3d0a6b assets/orimod/blockstates/gorlek_netherite_alloy_block.json
 6f40050273e29d160ec7209b2e832f9769819370 assets/orimod/blockstates/gorlek_ore.json
+45584203c23d2e07dedb4e45d97d063dc65b0198 assets/orimod/blockstates/gorlek_steel_block.json
 aae7470a7065fde57da8ba7a743c6ba6515ff02c assets/orimod/blockstates/hardlight_block.json
 70f15bca49e8ac9aeda2b3044b0591a9d8bd7d7d assets/orimod/blockstates/infinite_light_source.json
 99b94a79211634043f57242878db6ee6dba7ecdd assets/orimod/blockstates/light_capacitor.json
@@ -44,8 +44,8 @@ cbe7e9df0f086e872709b646ca06d0a037d2bdb1 assets/orimod/models/block/forlorn_ston
 1b1978652507da5d282062e6ab36668077a90188 assets/orimod/models/block/forlorn_stone/omni/forlorn_stone_omni_orange.json
 bcefdbc707185c24d6661b3b8364b17f449dac34 assets/orimod/models/block/glass.json
 1e1c60d3b1aaa8c30a38b9b381cc78f3385706c7 assets/orimod/models/block/light/hardlight_block.json
-71817e8c476c8dc1ad33a72064645d35d2c399eb assets/orimod/models/block/ore/blocks/gorlek_metal_block.json
 6fbf517bd47199ca99350bbc07cd167c5b0909bf assets/orimod/models/block/ore/blocks/gorlek_netherite_alloy_block.json
+b451c0d6a1cfdf10b375937d22e31f5b18f7fd54 assets/orimod/models/block/ore/blocks/gorlek_steel_block.json
 1ca358d8fac01e46dca03d12911baebeb54a93b9 assets/orimod/models/block/ore/deposits/gorlek_ore.json
 b75ab9bbf3cba494abb93d6cd45de6fab2e38511 assets/orimod/models/block/ore/deposits/raw_gorlek_ore_block.json
 ea9a6e68751d2be9057334d8f9ffd0f3ec4adeb6 assets/orimod/models/block/techblocks/conduits/connector/light_conduit-blue.json
@@ -86,9 +86,9 @@ c80109584c8ba7c6c2c7c830fda0c3149f4f623d assets/orimod/models/item/decay_surface
 009b2435e901e83ab6e4ca76f682eb952fed383c assets/orimod/models/item/forlorn_stone_bricks.json
 5976aa56053b51b33fb4998ee35a7a149f026e08 assets/orimod/models/item/forlorn_stone_line.json
 1cd51362befe1e020271620a35dd6d4dad860337 assets/orimod/models/item/forlorn_stone_omni.json
-ec51ee76aa553d34bea3dffc85dc73270d80005e assets/orimod/models/item/gorlek_metal_block.json
 5813ce820031ed74f3a5db921f8592e9c22425f3 assets/orimod/models/item/gorlek_netherite_alloy_block.json
 15f019f9f986392314eeed5a91bf521d3b0536b7 assets/orimod/models/item/gorlek_ore.json
+73ada088c6ded6ed1510cb5779eaec11110cd4ea assets/orimod/models/item/gorlek_steel_block.json
 e83d5d3c1693e85ae4017ab8a8d8d54dbbe2d6bd assets/orimod/models/item/hardlight_block.json
 1e49236597fc4be7cd18bb8a732c93d23c0dcbd9 assets/orimod/models/item/infinite_light_source.json
 5744f4f1725f8062022b338c3d39af66604b291f assets/orimod/models/item/light_capacitor.json

@@ -6,7 +6,6 @@ import etithespirit.exception.ConstantErrorMessages;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.api.interfaces.ISpiritSoundAPI;
 import etithespirit.orimod.api.delegate.ISpiritMaterialAcquisitionFunction;
-import etithespirit.orimod.spiritmaterial.BlockToMaterialBindingLgc;
 import etithespirit.orimod.api.spiritmaterial.SpiritMaterial;
 import etithespirit.orimod.spiritmaterial.data.SpiritMaterialContainer;
 import net.minecraft.tags.TagKey;

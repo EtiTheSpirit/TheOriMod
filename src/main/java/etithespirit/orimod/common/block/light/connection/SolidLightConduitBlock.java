@@ -1,8 +1,7 @@
 package etithespirit.orimod.common.block.light.connection;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
-import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
 import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
 import etithespirit.orimod.energy.ILightEnergyGenerator;
 import etithespirit.orimod.energy.ILightEnergyStorage;
@@ -30,7 +29,7 @@ import javax.annotation.Nullable;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class SolidLightConduitBlock extends ConnectableLightTechBlock implements IToolRequirementProvider {
+public class SolidLightConduitBlock extends ConnectableLightTechBlock implements IBlockTagProvider {
 	
 	/***/
 	public SolidLightConduitBlock() {

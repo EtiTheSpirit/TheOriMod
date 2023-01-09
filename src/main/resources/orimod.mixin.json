@@ -13,7 +13,7 @@
   "client": [
     "InjectLocalPlayerPlaySound",
     "InjectUsesInnerModel",
-    "RedirectExplosionSound"
+    "InjectAnvilMenuCreateResult"
   ],
   "server": [
     "InjectServerPlayerPlaySound"

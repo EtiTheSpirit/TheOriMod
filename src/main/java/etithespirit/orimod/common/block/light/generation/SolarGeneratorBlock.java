@@ -1,6 +1,6 @@
 package etithespirit.orimod.common.block.light.generation;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
@@ -21,7 +21,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class SolarGeneratorBlock extends ConnectableLightTechBlock implements IToolRequirementProvider, IForlornBlueOrangeBlock {
+public class SolarGeneratorBlock extends ConnectableLightTechBlock implements IBlockTagProvider, IForlornBlueOrangeBlock {
 	
 	public SolarGeneratorBlock() {
 		super(Block.Properties.of(Material.STONE).strength(0.8f, 80f));

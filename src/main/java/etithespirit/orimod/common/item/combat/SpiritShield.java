@@ -10,7 +10,7 @@ import etithespirit.orimod.client.render.item.SpiritShieldModel;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.item.IModelPredicateProvider;
-import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.event.EntityEmittedSoundEventProvider;
 import etithespirit.orimod.registry.gameplay.ItemRegistry;
@@ -21,7 +21,6 @@ import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.blockentity.BlockEntityRenderDispatcher;
-import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -44,7 +43,7 @@ import java.util.function.Consumer;
 
 import org.jetbrains.annotations.Nullable;
 
-public class SpiritShield extends ShieldItem implements ISpiritLightRepairableItem, IModelPredicateProvider {
+public class SpiritShield extends ShieldItem implements IModelPredicateProvider {
 	
 	public SpiritShield() {
 		this(
@@ -95,12 +94,12 @@ public class SpiritShield extends ShieldItem implements ISpiritLightRepairableIt
 	
 	@Override
 	public int getBarColor(ItemStack pStack) {
-		return ISpiritLightRepairableItem.super.getBarColor(pStack);
+		return SpiritItemCustomizations.getLightToolBarColor(pStack);
 	}
 	
 	@Override
 	public Component getName(ItemStack pStack) {
-		return StaticData.getNameAsLight(super.getName(pStack));
+		return SpiritItemCustomizations.getNameAsLight(super.getName(pStack));
 	}
 	
 	static {

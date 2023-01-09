@@ -1,6 +1,6 @@
 package etithespirit.orimod.common.block.light.creative;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
@@ -15,7 +15,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
 import org.jetbrains.annotations.Nullable;
 
-public class InfiniteSourceLightBlock extends ConnectableLightTechBlock implements IToolRequirementProvider, IForlornBlueOrangeBlock {
+public class InfiniteSourceLightBlock extends ConnectableLightTechBlock implements IBlockTagProvider, IForlornBlueOrangeBlock {
 	
 	public InfiniteSourceLightBlock() {
 		this(Properties.copy(Blocks.BEDROCK));

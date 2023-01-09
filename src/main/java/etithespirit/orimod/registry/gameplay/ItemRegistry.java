@@ -2,8 +2,7 @@ package etithespirit.orimod.registry.gameplay;
 
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.item.IModelPredicateProvider;
-import etithespirit.orimod.common.item.armor.DebugArmorItem;
-import etithespirit.orimod.common.item.armor.LightArmorItem;
+import etithespirit.orimod.common.item.armor.OriModArmorItem;
 import etithespirit.orimod.common.item.combat.SpiritArc;
 import etithespirit.orimod.common.item.combat.SpiritShield;
 import etithespirit.orimod.common.item.crafting.BindingEssenceItem;
@@ -12,30 +11,33 @@ import etithespirit.orimod.common.item.crafting.GorlekNetheriteAlloyIngot;
 import etithespirit.orimod.common.item.crafting.HardlightShardItem;
 import etithespirit.orimod.common.item.crafting.LightLensItem;
 import etithespirit.orimod.common.item.crafting.RawGorlekOreItem;
-import etithespirit.orimod.common.item.tools.hardlight.LightAxe;
-import etithespirit.orimod.common.item.tools.hardlight.LightHoe;
-import etithespirit.orimod.common.item.tools.hardlight.LightPickaxe;
-import etithespirit.orimod.common.item.tools.hardlight.LightShovel;
-import etithespirit.orimod.common.item.tools.hardlight.LightSword;
+import etithespirit.orimod.common.item.data.IOriModItemTierProvider;
+import etithespirit.orimod.common.item.data.UniversalOriModItemTier;
 import etithespirit.orimod.common.item.tools.LumoWand;
+import etithespirit.orimod.common.item.tools.OriModToolItem;
+import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.registry.world.BlockRegistry;
 import etithespirit.orimod.registry.world.FluidRegistry;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.loading.FMLEnvironment;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 import java.util.HashMap;
+import java.util.InputMismatchException;
 import java.util.Map;
 
 /**
@@ -60,27 +62,120 @@ public final class ItemRegistry {
 	/***/ public static final RegistryObject<Item> LARGE_LIGHT_LENS = ITEMS.register("large_light_lens", LightLensItem::new);
 	
 	public static final RegistryObject<Item> SPIRIT_ARC = ITEMS.register("spirit_arc", SpiritArc::new);
-	public static final RegistryObject<Item> LIGHT_PICKAXE = ITEMS.register("light_pickaxe", LightPickaxe::new);
-	public static final RegistryObject<Item> LIGHT_SHOVEL = ITEMS.register("light_shovel", LightShovel::new);
-	public static final RegistryObject<Item> LIGHT_AXE = ITEMS.register("light_axe", LightAxe::new);
-	public static final RegistryObject<Item> LIGHT_SWORD = ITEMS.register("light_sword", LightSword::new);
-	public static final RegistryObject<Item> LIGHT_HOE = ITEMS.register("light_hoe", LightHoe::new);
 	
-	public static final RegistryObject<Item> LIGHT_HELMET = ITEMS.register("light_helmet", LightArmorItem::newHelmet);
-	public static final RegistryObject<Item> LIGHT_CHESTPLATE = ITEMS.register("light_chestplate", LightArmorItem::newChestplate);
-	public static final RegistryObject<Item> LIGHT_LEGS = ITEMS.register("light_leggings", LightArmorItem::newLegs);
-	public static final RegistryObject<Item> LIGHT_BOOTS = ITEMS.register("light_boots", LightArmorItem::newBoots);
+	public static final RegistryObject<Item> LIGHT_PICKAXE;
+	public static final RegistryObject<Item> LIGHT_SHOVEL;
+	public static final RegistryObject<Item> LIGHT_AXE;
+	public static final RegistryObject<Item> LIGHT_SWORD;
+	public static final RegistryObject<Item> LIGHT_HOE;
 	
-	public static final RegistryObject<Item> DEBUG_HELMET = ITEMS.register("debug_helmet", DebugArmorItem::helmet);
-	public static final RegistryObject<Item> DEBUG_CHESTPLATE = ITEMS.register("debug_chestplate", DebugArmorItem::chestplate);
-	public static final RegistryObject<Item> DEBUG_LEGS = ITEMS.register("debug_leggings", DebugArmorItem::leggings);
-	public static final RegistryObject<Item> DEBUG_BOOTS = ITEMS.register("debug_boots", DebugArmorItem::boots);
+	public static final RegistryObject<Item> GORLEK_STEEL_PICKAXE;
+	public static final RegistryObject<Item> GORLEK_STEEL_SHOVEL;
+	public static final RegistryObject<Item> GORLEK_STEEL_AXE;
+	public static final RegistryObject<Item> GORLEK_STEEL_SWORD;
+	public static final RegistryObject<Item> GORLEK_STEEL_HOE;
+	
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_PICKAXE;
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_SHOVEL;
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_AXE;
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_SWORD;
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_HOE;
+	
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_PICKAXE;
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_SHOVEL;
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_AXE;
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_SWORD;
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_HOE;
+	
+	public static final RegistryObject<Item> LIGHT_HELMET;
+	public static final RegistryObject<Item> LIGHT_CHESTPLATE;
+	public static final RegistryObject<Item> LIGHT_LEGGINGS;
+	public static final RegistryObject<Item> LIGHT_BOOTS;
+	
+	public static final RegistryObject<Item> GORLEK_STEEL_HELMET;
+	public static final RegistryObject<Item> GORLEK_STEEL_CHESTPLATE;
+	public static final RegistryObject<Item> GORLEK_STEEL_LEGGINGS;
+	public static final RegistryObject<Item> GORLEK_STEEL_BOOTS;
+	
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_HELMET;
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_CHESTPLATE;
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_LEGGINGS;
+	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_BOOTS;
+	
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_HELMET;
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_CHESTPLATE;
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_LEGGINGS;
+	public static final RegistryObject<Item> LUXEN_GORLEK_NETHERITE_ALLOY_BOOTS;
 	
 	public static final RegistryObject<Item> RAW_GORLEK_ORE = ITEMS.register("raw_gorlek_ore", RawGorlekOreItem::new);
-	public static final RegistryObject<Item> GORLEK_INGOT = ITEMS.register("gorlek_ingot", GorlekIngotNuggetItem::new);
-	public static final RegistryObject<Item> GORLEK_NUGGET = ITEMS.register("gorlek_nugget", GorlekIngotNuggetItem::new);
+	public static final RegistryObject<Item> GORLEK_STEEL_INGOT = ITEMS.register("gorlek_steel_ingot", GorlekIngotNuggetItem::new);
+	public static final RegistryObject<Item> GORLEK_STEEL_NUGGET = ITEMS.register("gorlek_steel_nugget", GorlekIngotNuggetItem::new);
 	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_INGOT = ITEMS.register("gorlek_netherite_alloy_ingot", GorlekNetheriteAlloyIngot::new);
 	
+	
+	static {
+		RegistryObject<Item>[] entries;
+		
+		entries = OriModArmorItem.autoRegisterAllSlotsOfType(ITEMS, UniversalOriModItemTier.LIGHT);
+		LIGHT_HELMET = entries[0];
+		LIGHT_CHESTPLATE = entries[1];
+		LIGHT_LEGGINGS = entries[2];
+		LIGHT_BOOTS = entries[3];
+		
+		
+		entries = OriModArmorItem.autoRegisterAllSlotsOfType(ITEMS, UniversalOriModItemTier.GORLEK_STEEL);
+		GORLEK_STEEL_HELMET = entries[0];
+		GORLEK_STEEL_CHESTPLATE = entries[1];
+		GORLEK_STEEL_LEGGINGS = entries[2];
+		GORLEK_STEEL_BOOTS = entries[3];
+		
+		
+		entries = OriModArmorItem.autoRegisterAllSlotsOfType(ITEMS, UniversalOriModItemTier.GORLEK_NETHERITE_ALLOY);
+		GORLEK_NETHERITE_ALLOY_HELMET = entries[0];
+		GORLEK_NETHERITE_ALLOY_CHESTPLATE = entries[1];
+		GORLEK_NETHERITE_ALLOY_LEGGINGS = entries[2];
+		GORLEK_NETHERITE_ALLOY_BOOTS = entries[3];
+		
+		
+		entries = OriModArmorItem.autoRegisterAllSlotsOfType(ITEMS, UniversalOriModItemTier.LUXEN_GORLEK_NETHERITE_ALLOY);
+		LUXEN_GORLEK_NETHERITE_ALLOY_HELMET = entries[0];
+		LUXEN_GORLEK_NETHERITE_ALLOY_CHESTPLATE = entries[1];
+		LUXEN_GORLEK_NETHERITE_ALLOY_LEGGINGS = entries[2];
+		LUXEN_GORLEK_NETHERITE_ALLOY_BOOTS = entries[3];
+		
+		///////////////////////////////////////////////////////////////////
+		
+		entries = OriModToolItem.autoRegisterEntireTier(ITEMS, UniversalOriModItemTier.LIGHT);
+		LIGHT_PICKAXE = entries[0];
+		LIGHT_SHOVEL = entries[1];
+		LIGHT_AXE = entries[2];
+		LIGHT_SWORD = entries[3];
+		LIGHT_HOE = entries[4];
+		
+		
+		entries = OriModToolItem.autoRegisterEntireTier(ITEMS, UniversalOriModItemTier.GORLEK_STEEL);
+		GORLEK_STEEL_PICKAXE = entries[0];
+		GORLEK_STEEL_SHOVEL = entries[1];
+		GORLEK_STEEL_AXE = entries[2];
+		GORLEK_STEEL_SWORD = entries[3];
+		GORLEK_STEEL_HOE = entries[4];
+		
+		
+		entries = OriModToolItem.autoRegisterEntireTier(ITEMS, UniversalOriModItemTier.GORLEK_NETHERITE_ALLOY);
+		GORLEK_NETHERITE_ALLOY_PICKAXE = entries[0];
+		GORLEK_NETHERITE_ALLOY_SHOVEL = entries[1];
+		GORLEK_NETHERITE_ALLOY_AXE = entries[2];
+		GORLEK_NETHERITE_ALLOY_SWORD = entries[3];
+		GORLEK_NETHERITE_ALLOY_HOE = entries[4];
+		
+		
+		entries = OriModToolItem.autoRegisterEntireTier(ITEMS, UniversalOriModItemTier.LUXEN_GORLEK_NETHERITE_ALLOY);
+		LUXEN_GORLEK_NETHERITE_ALLOY_PICKAXE = entries[0];
+		LUXEN_GORLEK_NETHERITE_ALLOY_SHOVEL = entries[1];
+		LUXEN_GORLEK_NETHERITE_ALLOY_AXE = entries[2];
+		LUXEN_GORLEK_NETHERITE_ALLOY_SWORD = entries[3];
+		LUXEN_GORLEK_NETHERITE_ALLOY_HOE = entries[4];
+	}
 	
 	/***/
 	public static void registerAll() {
@@ -110,6 +205,22 @@ public final class ItemRegistry {
 				provider.getPredicates(predicates);
 				for (ResourceLocation key : predicates.keySet()) {
 					ItemProperties.register(item.get(), key, predicates.get(key)); // this line, this is the one you are interested in, future xan
+				}
+			}
+		}
+	}
+	
+	/**
+	 * <strong>IDE ONLY!</strong> Verify that all tags and interface capabilities match for armor and tools implementing hardlight mechanics.
+	 */
+	public static void validateLightRepairableTags() {
+		if (FMLEnvironment.production) throw new IllegalStateException("This method cannot be called during runtime - it *MUST* be called in the IDE!");
+		
+		for (RegistryObject<? extends Item> itemReg : ITEMS.getEntries()) {
+			Item item = itemReg.get();
+			if (item instanceof IOriModItemTierProvider provider) {
+				if (provider.getOriModTier().getLuxenRepairCost().isEmpty() && item.builtInRegistryHolder().is(OriModItemTags.LIGHT_REPAIRABLE)) {
+					throw new InputMismatchException("Item " + itemReg.getId() + " uses material-tier " + provider.getOriModTier().name() + " which does not declare a Light repair cost, but the item is in data/orimod/tags/items/light_repairable!");
 				}
 			}
 		}

@@ -21,22 +21,4 @@ public final class StaticData {
 	/** For use in setBlock() */ public static final int BLOCK_BEING_MOVED = 1 << 6;
 	
 	
-	/**
-	 * An alias for use in all Decay-related objects that colors the name to match the theme.
-	 * @param superGetName The result of the call to <code>super.getName</code>
-	 * @return The same result, but colored differently.
-	 */
-	public static MutableComponent getNameAsDecay(Component superGetName) {
-		return ((MutableComponent)superGetName).withStyle(ExtendedChatColors.DECAY);
-	}
-	
-	/**
-	 * An alias for use in all Light-related objects that colors the name to match the theme.
-	 * @param superGetName The result of the call to <code>super.getName</code>
-	 * @return The same result, but colored differently.
-	 */
-	public static MutableComponent getNameAsLight(Component superGetName) {
-		return ((MutableComponent)superGetName).withStyle(ExtendedChatColors.LIGHT);
-	}
-	
 }

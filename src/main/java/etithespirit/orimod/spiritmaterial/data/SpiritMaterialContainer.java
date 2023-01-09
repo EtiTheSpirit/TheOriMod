@@ -19,6 +19,8 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.lang.reflect.Field;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -176,6 +178,62 @@ public final class SpiritMaterialContainer {
 		knownValidObjects.addAll(blocksToUseIfInside.keySet());
 		knownValidObjects.addAll(statesToUseIfInside.keySet());
 		knownValidObjects.addAll(tagsToUseIfInside.keySet()); // tagsToUseIfInside
+		
+		OriMod.logCustomTrace("Registered sounds for modid=" + owner);
+		if (OriMod.shouldUseOriModTraceLogging()) {
+			StringBuilder builder = new StringBuilder("Known entries:\n");
+			builder.append("\tBlocks:\n");
+			boolean found = false;
+			for (Object key : knownValidObjects) {
+				if (key instanceof Block) {
+					builder.append("\t\t");
+					builder.append(key);
+					builder.append('\n');
+					found = true;
+				}
+			}
+			if (!found) builder.append("\t\t(none)\n");
+			found = false;
+			builder.append("\tBlock Tags:\n");
+			for (Object key : knownValidObjects) {
+				if (key instanceof TagKey<?>) {
+					builder.append("\t\t");
+					builder.append(key);
+					builder.append('\n');
+					found = true;
+				}
+			}
+			if (!found) builder.append("\t\t(none)\n");
+			found = false;
+			builder.append("\tMaterials:\n");
+			for (Object key : knownValidObjects) {
+				if (key instanceof Material mtl) {
+					builder.append("\t\t");
+					builder.append(mtl.getClass().getSimpleName());
+					builder.append("#");
+					builder.append(dbgFindFieldByValue(mtl.getClass(), mtl));
+					builder.append('\n');
+					found = true;
+				}
+			}
+			if (!found) builder.append("\t\t(none)\n");
+			OriMod.logCustomTrace(builder.toString());
+		}
+	}
+	
+	private static <T> String dbgFindFieldByValue(Class<? extends T> cls, T value) {
+		try {
+			Field[] fields = cls.getFields();
+			for (Field field : fields) {
+				if (field.get(null) == value) {
+					// Yes, == (by reference)
+					return field.getName();
+				}
+			}
+		} catch (Exception ignored) {
+			return "<an error occurred>";
+		}
+		return "<no name found in class " + cls.getName() + ">";
 	}
 	
 	/**
@@ -273,6 +331,13 @@ public final class SpiritMaterialContainer {
 		throwIfComplete();
 		if (!isMinecraft && RegistrationHelpers.isMaterialVanilla(material)) throw new IllegalArgumentException("Attempt to set the conditional SpiritMaterial associated with a vanilla material.");
 		mtlToFuncBindings.put(material, acquisitionFunction);
+	}
+	
+	public void registerMaterial(Material material, ISpiritMaterialAcquisitionFunction acquisitionFunction, SpiritMaterial fallback) {
+		throwIfComplete();
+		if (!isMinecraft && RegistrationHelpers.isMaterialVanilla(material)) throw new IllegalArgumentException("Attempt to set the conditional SpiritMaterial associated with a vanilla material.");
+		mtlToFuncBindings.put(material, acquisitionFunction);
+		customMtlToSpiritMtlBindings.put(material, fallback);
 	}
 	
 	public void registerState(Supplier<BlockState> blockState, SpiritMaterial material) {
@@ -373,38 +438,38 @@ public final class SpiritMaterialContainer {
 		ISpiritMaterialAcquisitionFunction func = blockToFuncBindings.get(state.getBlock());
 		if (func != null) {
 			SpiritMaterial result = func.getSpiritMaterial(entity, standingOn, standingIn, useStandingIn);
-			//noinspection ConstantConditions
-			if (result == null) throw new NullPointerException("SpiritMaterial returned by function " + func.getClass() + " was null.");
-			cacheUsedFuncOn.putIfAbsent(state, true);
-			return result;
+			if (result != null) {
+				cacheUsedFuncOn.putIfAbsent(state, true);
+				return result;
+			}
 		}
 		func = mtlToFuncBindings.get(state.getMaterial());
 		if (func != null) {
 			SpiritMaterial result = func.getSpiritMaterial(entity, standingOn, standingIn, useStandingIn);
-			//noinspection ConstantConditions
-			if (result == null) throw new NullPointerException("SpiritMaterial returned by function " + func.getClass() + " was null.");
-			cacheUsedFuncOn.putIfAbsent(state, true);
-			return result;
+			if (result != null) {
+				cacheUsedFuncOn.putIfAbsent(state, true);
+				return result;
+			}
 		}
 		func = _runtimeTagBlockToFuncBindings.get(state.getBlock());
 		if (func != null) {
 			SpiritMaterial result = func.getSpiritMaterial(entity, standingOn, standingIn, useStandingIn);
-			//noinspection ConstantConditions
-			if (result == null) throw new NullPointerException("SpiritMaterial returned by function " + func.getClass() + " was null.");
-			cacheUsedFuncOn.putIfAbsent(state, true);
-			return result;
+			if (result != null) {
+				cacheUsedFuncOn.putIfAbsent(state, true);
+				return result;
+			}
 			
 		} else if (!skipReadingTagsForAcquisition.contains(state.getBlock())) {
 			for (TagKey<Block> tag : state.getTags().toList()) {
 				func = tagToFuncBindings.get(tag);
 				if (func != null) {
 					SpiritMaterial result = func.getSpiritMaterial(entity, standingOn, standingIn, useStandingIn);
-					//noinspection ConstantConditions
-					if (result == null) throw new NullPointerException("SpiritMaterial returned by function " + func.getClass() + " was null.");
-					_runtimeTagBlockToFuncBindings.put(state.getBlock(), func);
-					skipReadingTagsForAcquisition.add(state.getBlock());
-					cacheUsedFuncOn.putIfAbsent(state, true);
-					return result;
+					if (result != null) {
+						_runtimeTagBlockToFuncBindings.put(state.getBlock(), func);
+						skipReadingTagsForAcquisition.add(state.getBlock());
+						cacheUsedFuncOn.putIfAbsent(state, true);
+						return result;
+					}
 				}
 			}
 			skipReadingTagsForAcquisition.add(state.getBlock());

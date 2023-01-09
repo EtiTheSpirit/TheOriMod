@@ -1,32 +1,27 @@
 package etithespirit.orimod.common.block.light.decoration;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
-import etithespirit.orimod.registry.gameplay.ItemRegistry;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.common.tags.PresetBlockTags;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.tags.TagKey;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
-import net.minecraft.world.level.storage.loot.LootContext;
-
-import java.util.List;
 
 import static net.minecraft.world.level.block.state.properties.BlockStateProperties.POWERED;
 
-public abstract class LitForlornStoneBlockBase extends Block implements IForlornBlueOrangeBlock, IToolRequirementProvider, IBlockItemPropertiesProvider {
+public abstract class LitForlornStoneBlockBase extends Block implements IForlornBlueOrangeBlock, IBlockTagProvider, IBlockItemPropertiesProvider {
 	
 	// TODO: Six sided stuff? There is no way to automate the creation of the block models for that, so I better be ready to make 64 variants manually
 	
@@ -89,6 +84,6 @@ public abstract class LitForlornStoneBlockBase extends Block implements IForlorn
 	
 	@Override
 	public MutableComponent getName() {
-		return StaticData.getNameAsLight(super.getName());
+		return SpiritItemCustomizations.getNameAsLight(super.getName());
 	}
 }

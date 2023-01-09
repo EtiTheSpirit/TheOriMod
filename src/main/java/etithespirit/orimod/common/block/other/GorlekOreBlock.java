@@ -1,8 +1,7 @@
 package etithespirit.orimod.common.block.other;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
-import etithespirit.orimod.common.tags.PresetBlockTags;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.tags.TagKey;
@@ -14,7 +13,7 @@ import net.minecraft.world.level.material.MaterialColor;
 
 import java.util.List;
 
-public class GorlekOreBlock extends Block implements IToolRequirementProvider, IBlockItemPropertiesProvider {
+public class GorlekOreBlock extends Block implements IBlockTagProvider, IBlockItemPropertiesProvider {
 	public GorlekOreBlock() {
 		super(BlockBehaviour.Properties.of(Material.STONE, MaterialColor.COLOR_LIGHT_GRAY).requiresCorrectToolForDrops().strength(1.2f, 30f));
 	}

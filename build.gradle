@@ -106,7 +106,7 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             // property 'forge.enabledGameTestNamespaces', 'orimod'
 
-            args '--mixin=orimod.mixin.json --useOriModTraceLogs'
+            args '--mixin=orimod.mixin.json --useOriModTraceLogs --username Dev#####'
 
             mods {
                 "${mod_id}" {

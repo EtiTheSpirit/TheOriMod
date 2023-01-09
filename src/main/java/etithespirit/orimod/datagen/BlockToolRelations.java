@@ -1,7 +1,7 @@
 package etithespirit.orimod.datagen;
 
 import etithespirit.orimod.OriMod;
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.registry.world.BlockRegistry;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.tags.BlockTagsProvider;
@@ -12,7 +12,7 @@ import net.minecraftforge.registries.RegistryObject;
 import org.apache.logging.log4j.Level;
 
 /**
- * This data generator is responsible for searching for mod objects implementing {@link IToolRequirementProvider} and using the data of that method to figure out
+ * This data generator is responsible for searching for mod objects implementing {@link IBlockTagProvider} and using the data of that method to figure out
  * what tags to give to the block.
  */
 public final class BlockToolRelations extends BlockTagsProvider {
@@ -36,8 +36,8 @@ public final class BlockToolRelations extends BlockTagsProvider {
 	private void addTagsToBlocks() {
 		for (RegistryObject<? extends Block> blockReg : BlockRegistry.BLOCKS.getEntries()) {
 			Block block = blockReg.get();
-			if (block instanceof IToolRequirementProvider) {
-				IToolRequirementProvider provider = (IToolRequirementProvider)block;
+			if (block instanceof IBlockTagProvider) {
+				IBlockTagProvider provider = (IBlockTagProvider)block;
 				for (TagKey<Block> tag : provider.getTagsForBlock()) {
 					this.tag(tag).add(block);
 					OriMod.LOG.printf(Level.INFO, "Added tag %s to %s", tag.toString(), blockReg.getId().toString());

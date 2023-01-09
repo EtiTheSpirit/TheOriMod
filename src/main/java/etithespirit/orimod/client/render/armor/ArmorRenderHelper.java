@@ -2,6 +2,7 @@ package etithespirit.orimod.client.render.armor;
 
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.tags.OriModItemTags;
+import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.renderer.entity.layers.HumanoidArmorLayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
@@ -37,7 +38,7 @@ public class ArmorRenderHelper {
 	 * @return The {@link ResourceLocation} to the appropriate texture.
 	 */
 	public static ResourceLocation getArmorResource(Entity entity, ItemStack stack, EquipmentSlot slot, String declaringModId, @Nullable String type) {
-		if (!stack.is(OriModItemTags.SPECIALIZED_SPIRIT_ARMOR)) {
+		if (!stack.is(OriModItemTags.SPECIALIZED_SPIRIT_ARMOR) || !SpiritIdentifier.isSpirit(entity)) {
 			return DUMMY_BIP_ARMOR_LAYER.getArmorResource(entity, stack, slot, type);
 		}
 		

@@ -40,7 +40,7 @@ public abstract class InjectServerPlayerPlaySound extends Player implements ISel
 	@Inject(method="playNotifySound(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V", at=@At("HEAD"), cancellable = true)
 	public void onPlaySoundCalledWithCategory(SoundEvent soundIn, SoundSource category, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.
-		if (soundIn instanceof DuplicateSoundEvent) {
+		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
 			return;
 		}
 		

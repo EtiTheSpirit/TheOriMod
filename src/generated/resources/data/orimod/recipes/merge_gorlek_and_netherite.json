@@ -4,7 +4,7 @@
     "item": "minecraft:netherite_ingot"
   },
   "base": {
-    "item": "orimod:gorlek_ingot"
+    "item": "orimod:gorlek_steel_ingot"
   },
   "result": {
     "item": "orimod:gorlek_netherite_alloy_ingot"

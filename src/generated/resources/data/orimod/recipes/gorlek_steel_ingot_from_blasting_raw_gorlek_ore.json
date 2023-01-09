@@ -1,0 +1,9 @@
+{
+  "type": "minecraft:blasting",
+  "cookingtime": 100,
+  "experience": 1.0,
+  "ingredient": {
+    "item": "orimod:raw_gorlek_ore"
+  },
+  "result": "orimod:gorlek_steel_ingot"
+}

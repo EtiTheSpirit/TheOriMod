@@ -265,8 +265,11 @@
   "item.light_shield.impact": {
     "category": "master",
     "sounds": [
+      "orimod:spirit/shield/impact/impact4",
+      "orimod:spirit/shield/impact/impact3",
       "orimod:spirit/shield/impact/impact2",
       "orimod:spirit/shield/impact/impact1",
+      "orimod:spirit/shield/impact/impact5",
       "orimod:spirit/shield/impact/impact0"
     ]
   },
@@ -520,6 +523,17 @@
       "orimod:spirit/jump/triple/triplejump4"
     ]
   },
+  "item.armor.orimod.equip_light": {
+    "category": "master",
+    "sounds": [
+      "orimod:spirit/item/armor/equiplightarmor5",
+      "orimod:spirit/item/armor/equiplightarmor1",
+      "orimod:spirit/item/armor/equiplightarmor2",
+      "orimod:spirit/item/armor/equiplightarmor3",
+      "orimod:spirit/item/armor/equiplightarmor4",
+      "orimod:spirit/item/armor/equiplightarmor0"
+    ]
+  },
   "music.abilitygained.any": {
     "category": "master",
     "sounds": [
@@ -715,6 +729,12 @@
     "sounds": [
       "orimod:spirit/step/wool/stepwool0",
       "orimod:spirit/step/wool/stepwool1"
+    ]
+  },
+  "tile.light_tech.environmental.loop": {
+    "category": "master",
+    "sounds": [
+      "orimod:light_tech/generators/environmental_generator"
     ]
   },
   "entity.spirit.jump.single": {

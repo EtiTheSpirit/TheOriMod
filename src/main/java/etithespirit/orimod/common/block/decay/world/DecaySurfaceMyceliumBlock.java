@@ -4,6 +4,7 @@ package etithespirit.orimod.common.block.decay.world;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.decay.DecayCommon;
 import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.util.level.StateHelper;
 import net.minecraft.ChatFormatting;
@@ -129,7 +130,7 @@ public class DecaySurfaceMyceliumBlock extends Block implements IDecayBlockCommo
 	
 	@Override
 	public MutableComponent getName() {
-		return StaticData.getNameAsDecay(super.getName());
+		return SpiritItemCustomizations.getNameAsDecay(super.getName());
 	}
 	
 	

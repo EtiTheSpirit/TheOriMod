@@ -1,6 +1,6 @@
 package etithespirit.orimod.common.block.light;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
@@ -25,7 +25,7 @@ import java.util.List;
 /**
  * Represents a Light Capacitor, used to store Light energy.
  */
-public class LightCapacitorBlock extends ConnectableLightTechBlock implements IToolRequirementProvider, IForlornBlueOrangeBlock, EntityBlock {
+public class LightCapacitorBlock extends ConnectableLightTechBlock implements IBlockTagProvider, IForlornBlueOrangeBlock, EntityBlock {
 	/***/
 	public LightCapacitorBlock() {
 		this(

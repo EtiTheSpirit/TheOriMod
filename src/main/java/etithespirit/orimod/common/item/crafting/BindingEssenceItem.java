@@ -2,6 +2,7 @@ package etithespirit.orimod.common.item.crafting;
 
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -14,7 +15,7 @@ public class BindingEssenceItem extends Item {
 	
 	@Override
 	public Component getName(ItemStack pStack) {
-		return StaticData.getNameAsLight(super.getName(pStack));
+		return SpiritItemCustomizations.getNameAsLight(super.getName(pStack));
 	}
 	
 }

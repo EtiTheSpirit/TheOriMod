@@ -2,6 +2,7 @@ package etithespirit.mixin.mixins;
 
 import etithespirit.orimod.common.entity.DecayExploder;
 import etithespirit.orimod.registry.SoundRegistry;
+import etithespirit.orimod.registry.gameplay.EntityRegistry;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.entity.LivingEntity;
@@ -14,12 +15,15 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 /**
  * This mixin modifies the argument passed into playLocalSound when {@link Explosion} does its clientside effects. It is used to customize the sound effect.
+ * @deprecated The getSourceMob method is always null on the client. This must be replicated over the network, thus making a custom explosion class more suitable than this mixin.
  */
 @Mixin(Explosion.class)
+@Deprecated
 public abstract class RedirectExplosionSound {
 	
 	@Shadow
@@ -33,6 +37,13 @@ public abstract class RedirectExplosionSound {
 		)
 	)
 	public void redirectPlaySoundCall(Level instance, double pX, double pY, double pZ, SoundEvent pSound, SoundSource pCategory, float pVolume, float pPitch, boolean pDistanceDelay) {
+		LivingEntity src = getSourceMob();
+		if (src == null || (src.getType() != EntityRegistry.DECAY_EXPLODER.get())) {
+			// Not a decay exploder, do not override.
+			instance.playLocalSound(pX, pY, pZ, pSound, pCategory, pVolume, pPitch, pDistanceDelay);
+			return;
+		}
+		
 		float pitch = (instance.getRandom().nextFloat() / 10) + 0.95f;
 		instance.playLocalSound(pX, pY, pZ, SoundRegistry.get("entity.decay_exploder.detonate_overtone"), pCategory, pVolume, pitch, pDistanceDelay);
 		

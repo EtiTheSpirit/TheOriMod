@@ -1,0 +1,12 @@
+{
+  "type": "minecraft:smithing",
+  "addition": {
+    "item": "orimod:gorlek_netherite_alloy_ingot"
+  },
+  "base": {
+    "item": "minecraft:diamond_hoe"
+  },
+  "result": {
+    "item": "orimod:gorlek_netherite_alloy_hoe"
+  }
+}

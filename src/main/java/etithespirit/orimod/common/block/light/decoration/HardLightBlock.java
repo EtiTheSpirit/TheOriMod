@@ -1,37 +1,31 @@
 package etithespirit.orimod.common.block.light.decoration;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
-import etithespirit.orimod.common.block.StaticData;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.common.material.ExtendedMaterials;
-import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.util.IBlockItemPropertiesProvider;
 import etithespirit.orimod.common.tags.PresetBlockTags;
-import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
-
-import java.util.List;
 
 import static etithespirit.orimod.common.block.StaticData.ALWAYS_FALSE;
 import static etithespirit.orimod.common.block.StaticData.ALWAYS_TRUE;
 
 import net.minecraft.world.level.block.state.BlockState;
-import net.minecraft.world.level.storage.loot.LootContext;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 
 /***/
 @SuppressWarnings("unused")
-public class HardLightBlock extends Block implements IToolRequirementProvider, IBlockItemPropertiesProvider {
+public class HardLightBlock extends Block implements IBlockTagProvider, IBlockItemPropertiesProvider {
 	/***/
 	public HardLightBlock() {
 		super(
@@ -87,6 +81,6 @@ public class HardLightBlock extends Block implements IToolRequirementProvider, I
 	
 	@Override
 	public MutableComponent getName() {
-		return StaticData.getNameAsLight(super.getName());
+		return SpiritItemCustomizations.getNameAsLight(super.getName());
 	}
 }

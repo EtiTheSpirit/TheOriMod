@@ -1,4 +1,4 @@
-// 1.19.2	2022-12-21T07:48:16.0030855	Ori Mod LootTables
+// 1.19.2	2022-12-28T10:29:45.1893422	Ori Mod LootTables
 fb81496095ff196fe5bd6494bb4f92893f754c9a data/orimod/loot_tables/blocks/decay_dirt_mycelium.json
 991eeef98c530a5a350e42e9831a63d66412a5d0 data/orimod/loot_tables/blocks/decay_log.json
 7ed706d7e83d64871a3d323307dd99caf5b3bd99 data/orimod/loot_tables/blocks/decay_plantmatter_mycelium.json
@@ -6,9 +6,9 @@ e613745419fd2531c3bc4f121dbb32d563d1a3c9 data/orimod/loot_tables/blocks/forlorn_
 2a3500d05cdcf1c4e6ed5ba00f80c3c00ccbb6f5 data/orimod/loot_tables/blocks/forlorn_stone_bricks.json
 bd696b2b587d14167dbfaf272acc76e3b0710e42 data/orimod/loot_tables/blocks/forlorn_stone_line.json
 772cd5fad18314d73f7d7ef1187d3caa38727935 data/orimod/loot_tables/blocks/forlorn_stone_omni.json
-55b3a68f200c2eed2a2ec981ceb6f1d4bc4c33f7 data/orimod/loot_tables/blocks/gorlek_metal_block.json
 8508dbabe4e8cff1d0dc1893c491b07f4739160b data/orimod/loot_tables/blocks/gorlek_netherite_alloy_block.json
 7e2cc294edf211302061639c8f91a330a8a88d7a data/orimod/loot_tables/blocks/gorlek_ore.json
+1d60ff631aef8132f66d1612da3870ea4588bae2 data/orimod/loot_tables/blocks/gorlek_steel_block.json
 e951d5d2b84b3cffb60b764a6044e0aa0732f54a data/orimod/loot_tables/blocks/hardlight_block.json
 3582577f85908764b28296bcb69f80b29728ab63 data/orimod/loot_tables/blocks/infinite_light_source.json
 966f1244ad3044680d0633f0f0ddc9e311f4a6f4 data/orimod/loot_tables/blocks/light_capacitor.json

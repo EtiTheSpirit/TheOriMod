@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "I": {
+      "item": "orimod:gorlek_steel_ingot"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "II",
+    " S",
+    " S"
+  ],
+  "result": {
+    "item": "orimod:gorlek_steel_hoe"
+  }
+}

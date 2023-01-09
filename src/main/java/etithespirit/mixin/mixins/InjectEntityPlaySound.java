@@ -84,7 +84,7 @@ public abstract class InjectEntityPlaySound extends net.minecraftforge.common.ca
 		// I want to do #2 instead of #1, but because of this, I have to write up a bit of a hack to know when it's a re-entered call.
 		// I can do this with a lazy subclass implementation. DuplicateSoundEvent will extend SoundEvent and basically just be a SoundEvent
 		// with a different face.
-		if (soundIn instanceof DuplicateSoundEvent) {
+		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
 			// And so if it's one of my custom instances, oh well, we already handled it. Cool. Move on and don't cause a stack overflow.
 			return;
 		}

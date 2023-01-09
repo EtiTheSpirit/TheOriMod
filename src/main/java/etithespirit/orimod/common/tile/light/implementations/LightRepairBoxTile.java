@@ -4,7 +4,9 @@ import etithespirit.orimod.annotation.ServerUseOnly;
 import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.client.render.hud.LightRepairDeviceMenu;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
-import etithespirit.orimod.common.item.ISpiritLightRepairableItem;
+import etithespirit.orimod.common.item.data.IOriModItemTierProvider;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
+import etithespirit.orimod.common.item.data.UniversalOriModItemTier;
 import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.common.tile.IAmbientSoundEmitter;
 import etithespirit.orimod.common.tile.IClientUpdatingTile;
@@ -25,10 +27,14 @@ import net.minecraft.world.MenuProvider;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
+import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 import org.jetbrains.annotations.Nullable;
+
+import java.util.Optional;
 
 public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuProvider, Container, IAmbientSoundEmitter, IServerUpdatingTile, IClientUpdatingTile, ILightEnergyConsumer {
 	
@@ -45,6 +51,7 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	private @ServerUseOnly boolean lastTickHadEnough = true;
 	private @ServerUseOnly boolean thereWasSomethingToRepair = false;
 	private @ServerUseOnly boolean failedToRepairItemLastTick = false;
+	private @ServerUseOnly float lastRepairCost = 0;
 	
 	public LightRepairBoxTile(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(TileEntityRegistry.LIGHT_REPAIR_BOX.get(), pWorldPosition, pBlockState);
@@ -168,6 +175,16 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 			
 			boolean canBeRepaired = !item.isEmpty() && item.is(OriModItemTags.LIGHT_REPAIRABLE) && item.isDamaged();
 			if (canBeRepaired) {
+				// Additional test
+				if (item.getItem() instanceof IOriModItemTierProvider) {
+					int minDamage = SpiritItemCustomizations.getMinLuxenReconstructionDamage(item);
+					if (item.getDamageValue() <= minDamage) {
+						canBeRepaired = false;
+					}
+				}
+			}
+			
+			if (canBeRepaired) {
 				thereWasSomethingToRepair = true;
 				if (trySpendEnergyForTick(item)) {
 					item.setDamageValue(item.getDamageValue() - 1);
@@ -179,6 +196,9 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 		}
 		lastTickHadEnough = !thereWasSomethingToRepair || !failedToRepairItemLastTick;
 		// Above comes out to "There was nothing to repair, or, there was something to repair (implicit) and no items failed to repair last tick.
+		if (!thereWasSomethingToRepair) {
+			lastRepairCost = 0;
+		}
 	}
 	
 	@Override
@@ -220,10 +240,11 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	 */
 	private boolean trySpendEnergyForTick(ItemStack item) {
 		float rate = CONSUMPTION_RATE;
-		if (item.getItem() instanceof ISpiritLightRepairableItem spiritLightItem) {
-			rate *= spiritLightItem.getRepairEnergyCostMultiplier();
+		if (item.getItem() instanceof IOriModItemTierProvider provider) {
+			rate *= provider.getOriModTier().getLuxenRepairCost().orElse(1f);
 			if (rate <= 0) return true;
 		}
+		lastRepairCost = Math.max(rate, lastRepairCost);
 		lastTickHadEnough = consumerHelper.tryConsume(rate, false);
 		return lastTickHadEnough;
 	}
@@ -232,13 +253,14 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	public float consumeEnergy(float desiredAmount, boolean simulate) {
 		if (!thereWasSomethingToRepair) return 0; // Do not spend energy if there's nothing to repair!
 		
-		float realAmount = desiredAmount / 2f;
+		float realAmount = Math.min(desiredAmount / 2, lastRepairCost);
+		if (consumerHelper.getStashedEnergy() >= lastRepairCost) return 0;
 		return consumerHelper.stash(realAmount, simulate);
 	}
 	
 	@Override
 	public float getMaximumDrawnAmountForDisplay() {
-		return thereWasSomethingToRepair ? CONSUMPTION_RATE : 0;
+		return thereWasSomethingToRepair ? lastRepairCost : 0;
 	}
 	
 	@Override

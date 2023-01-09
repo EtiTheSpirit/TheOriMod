@@ -2,6 +2,7 @@ package etithespirit.orimod.common.block.fluid;
 
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.registry.world.FluidRegistry;
 import etithespirit.orimod.util.level.StateHelper;
@@ -50,7 +51,7 @@ public class DecayLiquidBlock extends LiquidBlock {
 	
 	@Override
 	public MutableComponent getName() {
-		return StaticData.getNameAsDecay(super.getName());
+		return SpiritItemCustomizations.getNameAsDecay(super.getName());
 	}
 	
 }

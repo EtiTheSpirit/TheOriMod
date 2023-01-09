@@ -15,6 +15,7 @@ import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -40,7 +41,7 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 	@Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.
-		if (soundIn instanceof DuplicateSoundEvent) {
+		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
 			return;
 		}
 		
@@ -68,7 +69,7 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 	@Inject(method = "playNotifySound(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V", at = @At("HEAD"), cancellable = true)
 	public void onPlaySoundCalledWithCategory(SoundEvent soundIn, SoundSource category, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.
-		if (soundIn instanceof DuplicateSoundEvent) {
+		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
 			return;
 		}
 		

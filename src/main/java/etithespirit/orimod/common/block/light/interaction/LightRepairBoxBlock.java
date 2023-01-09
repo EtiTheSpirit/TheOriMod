@@ -1,6 +1,6 @@
 package etithespirit.orimod.common.block.light.interaction;
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
@@ -27,7 +27,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.List;
 
-public class LightRepairBoxBlock extends ConnectableLightTechBlock implements IForlornBlueOrangeBlock, IToolRequirementProvider {
+public class LightRepairBoxBlock extends ConnectableLightTechBlock implements IForlornBlueOrangeBlock, IBlockTagProvider {
 	
 	public LightRepairBoxBlock() {
 		super(Block.Properties.of(Material.STONE).strength(0.8f, 80f));

@@ -167,12 +167,12 @@ public class DecayExploder extends Mob {
 	
 	private void playExplosionSounds(CustomizableExplosion explosion) {
 		// this.level.playLocalSound(this.x, this.y, this.z, SoundEvents.GENERIC_EXPLODE, SoundSource.BLOCKS, 4.0F, (1.0F + (this.level.random.nextFloat() - this.level.random.nextFloat()) * 0.2F) * 0.7F, false);
-		level.playLocalSound(explosion.x, explosion.y, explosion.z, SoundRegistry.get("entity.decay_exploder.detonate_overtone"), SoundSource.BLOCKS, 4, 1f + ((explosion.level.random.nextFloat() - 0.5f) / 10f), false);
-		level.playLocalSound(explosion.x, explosion.y, explosion.z, SoundRegistry.get("entity.decay_exploder.detonate_undertone"), SoundSource.BLOCKS, 4, 1f + ((explosion.level.random.nextFloat() - 0.5f) / 10f), false);
+		level.playSound(null, explosion.x, explosion.y, explosion.z, SoundRegistry.get("entity.decay_exploder.detonate_overtone"), SoundSource.BLOCKS, 4, 1f + ((explosion.level.random.nextFloat() - 0.5f) / 10f));
+		level.playSound(null, explosion.x, explosion.y, explosion.z, SoundRegistry.get("entity.decay_exploder.detonate_undertone"), SoundSource.BLOCKS, 4, 1f + ((explosion.level.random.nextFloat() - 0.5f) / 10f));
 	}
 	
-	private Explosion explode(@Nullable Entity pExploder, @Nullable DamageSource pDamageSource, double pX, double pY, double pZ, float pSize, boolean pCausesFire, Explosion.BlockInteraction pMode) {
-		CustomizableExplosion explosion = new CustomizableExplosion(level, pExploder, pDamageSource, pX, pY, pZ, pSize, pCausesFire, pMode);
+	private Explosion explode(@Nullable Entity pExploder, double pX, double pY, double pZ) {
+		CustomizableExplosion explosion = new CustomizableExplosion(level, pExploder, OriModDamageSources.DECAY, pX, pY, pZ, 1, false, Explosion.BlockInteraction.NONE);
 		explosion.damageMultiplier = 0.6;
 		explosion.falloffRangeMultiplier = 2.5;
 		if (net.minecraftforge.event.ForgeEventFactory.onExplosionStart(level, explosion)) return explosion;
@@ -180,16 +180,8 @@ public class DecayExploder extends Mob {
 		explosion.explode();
 		explosion.finalizeExplosion(level.isClientSide);
 		
-		if (level instanceof ServerLevel srvLvl) {
-			if (pMode == Explosion.BlockInteraction.NONE) {
-				explosion.clearToBlow();
-			}
-			for (ServerPlayer serverplayer : srvLvl.getPlayers($ -> true)) {
-				if (serverplayer.distanceToSqr(pX, pY, pZ) < 4096.0D) {
-					serverplayer.connection.send(new ClientboundExplodePacket(pX, pY, pZ, pSize, explosion.getToBlow(), explosion.getHitPlayers().get(serverplayer)));
-				}
-			}
-		}
+		// Do not send to client.
+		
 		return explosion;
 	}
 	
@@ -199,12 +191,11 @@ public class DecayExploder extends Mob {
 		if (!this.level.isClientSide()) {
 			if (deathTime == TIME_TO_BLOW - 1) {
 				if (isTripped) {
-					// TODO: Explode
 					// public Explosion explode(@Nullable Entity pExploder, @Nullable DamageSource pDamageSource, @Nullable ExplosionDamageCalculator pContext, double pX, double pY, double pZ, float pSize, boolean pCausesFire, Explosion.BlockInteraction pMode) {
-					explode(this, OriModDamageSources.DECAY, getX(), getY() + 1, getZ(), 1f, false, Explosion.BlockInteraction.BREAK);
+					explode(this, getX(), getY() + 0.5, getZ());
 				}
 			} else if (deathTime == TIME_TO_BLOW) {
-				level.broadcastEntityEvent(this, (byte) 60);
+				level.broadcastEntityEvent(this, (byte)60);
 				remove(Entity.RemovalReason.KILLED);
 			}
 		}

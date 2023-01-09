@@ -4,6 +4,7 @@ import etithespirit.orimod.OriMod;
 
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.decay.IDecayBlockCommon;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.MutableComponent;
@@ -96,7 +97,7 @@ public abstract class DecayLogBase extends RotatedPillarBlock implements IDecayB
 	
 	@Override
 	public MutableComponent getName() {
-		return StaticData.getNameAsDecay(super.getName());
+		return SpiritItemCustomizations.getNameAsDecay(super.getName());
 	}
 	
 }

@@ -6,6 +6,8 @@ import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
@@ -132,14 +134,14 @@ public class LumoWand extends Item {
 	
 	@Override
 	public void appendHoverText(@Nullable ItemStack stack, @Nullable Level worldIn, List<Component> tooltip, @Nullable TooltipFlag flagIn) {
-		tooltip.add(Component.translatable("tooltip.orimod.lumowand.1"));
-		tooltip.add(Component.translatable("tooltip.orimod.lumowand.2"));
-		tooltip.add(Component.translatable("tooltip.orimod.lumowand.3"));
-		tooltip.add(Component.translatable("tooltip.orimod.lumowand.4"));
+		tooltip.add(Component.translatable("tooltip.orimod.lumowand.1").withStyle(ChatFormatting.BLUE));
+		tooltip.add(Component.translatable("tooltip.orimod.lumowand.2").withStyle(ChatFormatting.BLUE));
+		tooltip.add(Component.translatable("tooltip.orimod.lumowand.3").withStyle(ChatFormatting.BLUE));
+		tooltip.add(Component.translatable("tooltip.orimod.lumowand.4").withStyle(ChatFormatting.BLUE));
 	}
 	
 	@Override
 	public Component getName(ItemStack pStack) {
-		return StaticData.getNameAsLight(super.getName(pStack));
+		return SpiritItemCustomizations.getNameAsLight(super.getName(pStack));
 	}
 }

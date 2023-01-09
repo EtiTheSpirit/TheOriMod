@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "orimod:item/armor/luxen_gorlek_netherite_alloy_helmet"
+  }
+}

@@ -1,7 +1,9 @@
 package etithespirit.orimod.client.render;
 
+import com.mojang.blaze3d.vertex.DefaultVertexFormat;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
+import com.mojang.blaze3d.vertex.VertexFormat;
 import com.mojang.math.Quaternion;
 import com.mojang.math.Vector3f;
 import etithespirit.orimod.GeneralUtils;
@@ -12,16 +14,20 @@ import etithespirit.orimod.client.render.model.SpiritArmorModelVanillaCompatible
 import etithespirit.orimod.client.render.model.SpiritModel;
 import etithespirit.orimod.common.tags.OriModItemTags;
 import etithespirit.orimod.spirit.SpiritIdentifier;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.Model;
 import net.minecraft.client.model.PlayerModel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.renderer.MultiBufferSource;
+import net.minecraft.client.renderer.RenderStateShard;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.ShaderInstance;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
 import net.minecraft.client.renderer.entity.ItemRenderer;
 import net.minecraft.client.renderer.entity.LivingEntityRenderer;
 import net.minecraft.client.renderer.entity.player.PlayerRenderer;
+import net.minecraft.client.renderer.texture.OverlayTexture;
 import net.minecraft.client.resources.model.BakedModel;
 import net.minecraft.core.Direction;
 import net.minecraft.resources.ResourceLocation;
@@ -37,10 +43,27 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.client.event.RenderPlayerEvent;
 
+import java.io.IOException;
+import java.util.function.Function;
+
 /**
  * Responsible for overriding the Player renderer such that they render as a Spirit.
  */
 public class RenderPlayerAsSpirit {
+	
+	private static final RenderStateShard.ShaderStateShard ARMOR_TRANSLUCENT_NO_CULL_SHADER = new RenderStateShard.ShaderStateShard(() -> {
+		try {
+			return new ShaderInstance(Minecraft.getInstance().getResourceManager(), OriMod.rsrc("rendertype_armor_translucent_no_cull"), DefaultVertexFormat.NEW_ENTITY);
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
+	});
+	
+	private static final Function<ResourceLocation, RenderType> ARMOR_TRANSLUCENT_NO_CULL = Util.memoize((tex) -> {
+		RenderType.CompositeState rendertype$compositestate = RenderType.CompositeState.builder().setShaderState(ARMOR_TRANSLUCENT_NO_CULL_SHADER).setTextureState(new RenderStateShard.TextureStateShard(tex, false, false)).setTransparencyState(RenderType.TRANSLUCENT_TRANSPARENCY).setCullState(RenderType.NO_CULL).setLightmapState(RenderType.LIGHTMAP).setOverlayState(RenderType.OVERLAY).setLayeringState(RenderType.VIEW_OFFSET_Z_LAYERING).createCompositeState(true);
+		return RenderType.create("armor_translucent_no_cull", DefaultVertexFormat.NEW_ENTITY, VertexFormat.Mode.QUADS, 256, true, false, rendertype$compositestate);
+	});
 	
 	/**
 	 * The texture for a spirit.
@@ -148,7 +171,7 @@ public class RenderPlayerAsSpirit {
 					ResourceLocation armorRsrc = ArmorRenderHelper.getArmorResource(player, item, slot, OriMod.MODID, null);
 					
 					// Get the buffer for the armor.
-					VertexConsumer drawBuffer = ItemRenderer.getArmorFoilBuffer(bufferProvider, RenderType.armorCutoutNoCull(armorRsrc), false, item.hasFoil());
+					VertexConsumer drawBuffer = ItemRenderer.getArmorFoilBuffer(bufferProvider, ARMOR_TRANSLUCENT_NO_CULL.apply(armorRsrc), false, item.hasFoil());
 					
 					IArmorVisibilityProvider targetArmor = item.is(OriModItemTags.SPECIALIZED_SPIRIT_ARMOR) ? ARMOR_SPECIAL : ARMOR_VANILLA;
 					
@@ -182,9 +205,9 @@ public class RenderPlayerAsSpirit {
 						g = (float) (itemClr >> 8 & 255) / 255.0F;
 						b = (float) (itemClr & 255) / 255.0F;
 						
-						((Model)targetArmor).renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, r, g, b, 1);
+						((Model)targetArmor).renderToBuffer(mtx, drawBuffer, packedLight, OverlayTexture.NO_OVERLAY, r, g, b, 1);
 					} else {
-						((Model)targetArmor).renderToBuffer(mtx, drawBuffer, packedLight, 0xFFFFFF, 1, 1, 1, 1);
+						((Model)targetArmor).renderToBuffer(mtx, drawBuffer, packedLight, OverlayTexture.NO_OVERLAY, 1, 1, 1, 1);
 					}
 				}
 				renderThirdPersonItems(mtx, bufferProvider, packedLight, player);

@@ -1,14 +1,24 @@
 {
 	"values": [
-		"orimod:debug_helmet",
-		"orimod:debug_chestplate",
-		"orimod:debug_leggings",
-		"orimod:debug_boots",
-
 		"orimod:light_helmet",
 		"orimod:light_chestplate",
 		"orimod:light_leggings",
 		"orimod:light_boots",
+
+		"orimod:gorlek_steel_helmet",
+		"orimod:gorlek_steel_chestplate",
+		"orimod:gorlek_steel_leggings",
+		"orimod:gorlek_steel_boots",
+
+		"orimod:gorlek_netherite_alloy_helmet",
+		"orimod:gorlek_netherite_alloy_chestplate",
+		"orimod:gorlek_netherite_alloy_leggings",
+		"orimod:gorlek_netherite_alloy_boots",
+
+		"orimod:luxen_gorlek_netherite_alloy_helmet",
+		"orimod:luxen_gorlek_netherite_alloy_chestplate",
+		"orimod:luxen_gorlek_netherite_alloy_leggings",
+		"orimod:luxen_gorlek_netherite_alloy_boots",
 
 		"minecraft:leather_boots",
 		"minecraft:leather_leggings",

@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 
 /**
  * Default implementations for sound behaviors on blocks.
@@ -35,7 +36,7 @@ public final class DefaultAcquisitionImplementations {
 	 * @param isStandingIn Whether or not the block that was associated with a custom material is the one that is being stood inside of (if false, the block associated is being walked on top of)
 	 * @return A better suited Spirit Material given the context of the given wood block.
 	 */
-	public static @Nonnull SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
+	public static @Nullable	SpiritMaterial getWoodMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		Level world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
@@ -63,11 +64,15 @@ public final class DefaultAcquisitionImplementations {
 				}
 			}
 		} else {
-			if (world.isRainingAt(on)) {
+			if (world.isRainingAt(on.above())) {
 				return SpiritMaterial.WOOD_WET;
+			} else {
+				//return SpiritMaterial.WOOD_DRY;
+				return null; // Reason: It is possible to register both a function (this) and a static binding. The static binding must hold the default value or else it wreaks havoc on special block
+				// overrides (i.e. smithing table was set to metal but never played its metallic sound because of the non-null return value here).
 			}
 		}
-		return SpiritMaterial.WOOD_DRY;
+		return null;
 	}
 	
 	/**
@@ -78,7 +83,7 @@ public final class DefaultAcquisitionImplementations {
 	 * @param isStandingIn Whether or not the block that was associated with a custom material is the one that is being stood inside of (if false, the block associated is being walked on top of)
 	 * @return A better suited Spirit Material given the context of the given water block.
 	 */
-	public static @Nonnull SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
+	public static @Nullable SpiritMaterial getWaterMaterial(Entity entity, BlockPos on, BlockPos in, boolean isStandingIn) {
 		Level world = entity.getCommandSenderWorld();
 		if (isStandingIn) {
 			BlockState inBlock = world.getBlockState(in);
@@ -94,7 +99,7 @@ public final class DefaultAcquisitionImplementations {
 				return SpiritMaterial.WATER_DEEP;
 			}
 		}
-		return SpiritMaterial.WATER_SHALLOW;
+		return null;
 	}
 	
 }

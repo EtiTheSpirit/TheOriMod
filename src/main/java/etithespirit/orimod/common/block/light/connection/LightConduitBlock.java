@@ -1,7 +1,7 @@
 package etithespirit.orimod.common.block.light.connection;
 
 
-import etithespirit.orimod.common.block.IToolRequirementProvider;
+import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
 import etithespirit.orimod.energy.ILightEnergyGenerator;
@@ -42,7 +42,7 @@ import static net.minecraft.world.level.block.state.properties.BlockStatePropert
 /**
  * Represents a Light Conduit.
  */
-public class LightConduitBlock extends ConnectableLightTechBlock implements IToolRequirementProvider, SimpleWaterloggedBlock {
+public class LightConduitBlock extends ConnectableLightTechBlock implements IBlockTagProvider, SimpleWaterloggedBlock {
 	
 	private static final VoxelShape CORE = Block.box(4, 4, 4, 12, 12, 12);
 	

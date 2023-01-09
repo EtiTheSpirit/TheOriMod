@@ -9,6 +9,7 @@ import etithespirit.orimod.client.gui.health.SpiritHealthGui;
 import etithespirit.orimod.client.gui.health.heart.HeartTexture;
 import etithespirit.orimod.command.SetSpiritCommand;
 import etithespirit.orimod.common.datamanagement.WorldLoading;
+import etithespirit.orimod.common.item.data.SpiritItemCustomizations;
 import etithespirit.orimod.common.tile.light.LightEnergyHandlingTile;
 import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.datagen.BlockToolRelations;
@@ -60,6 +61,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.world.ForgeChunkManager;
 import net.minecraftforge.data.event.GatherDataEvent;
 import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
@@ -86,7 +88,7 @@ public final class OriMod {
 	
 	private static boolean gotUseTrace = false;
 	private static boolean useTrace = false;
-	private static boolean shouldUseOriModTraceLogging() {
+	public static boolean shouldUseOriModTraceLogging() {
 		if (!gotUseTrace) {
 			useTrace = System.getProperty("sun.java.command", "").contains("--useOriModTraceLogs");
 			gotUseTrace = true;
@@ -166,6 +168,7 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(CapabilityRegistry::registerPlayerCaps);
 		MinecraftForge.EVENT_BUS.addListener(WorldLoading::onPlayerClone);
 		MinecraftForge.EVENT_BUS.addGenericListener(Entity.class, CapabilityRegistry::attachPlayerCaps);
+		MinecraftForge.EVENT_BUS.addListener(SpiritItemCustomizations::overrideDurabilityTooltip);
 		
 		VanillaBindings.initialize();
 		OriModBindings.initialize();
@@ -188,9 +191,7 @@ public final class OriMod {
 		// For TEs
 		// MinecraftForge.EVENT_BUS.addListener(UpdateHelper::onBlockChanged);
 		
-		MinecraftForge.EVENT_BUS.addListener(SpiritHealthGui::cancelHealthRender);
-		
-		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityAttacked);
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOWEST, DamageMarshaller::onEntityAttacked);
 		MinecraftForge.EVENT_BUS.addListener(DamageMarshaller::onEntityDamaged);
 		
 		MinecraftForge.EVENT_BUS.addListener(SpiritSize::onPlayerTickedCommon);
@@ -268,6 +269,10 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onKeyPressed);
 		MinecraftForge.EVENT_BUS.addListener(SpiritJump::onPlayerTicked);
 		*/
+		
+		
+		MinecraftForge.EVENT_BUS.addListener(SpiritHealthGui::cancelHealthRender);
+		
 		MinecraftForge.EVENT_BUS.addListener(SpiritInput::onKeyPressed);
 		//MinecraftForge.EVENT_BUS.addListener(SpiritInput::movementChanged);
 		
@@ -354,7 +359,10 @@ public final class OriMod {
 		EnvironmentalAffinityAPI.validate();
 		
 		if (!FMLEnvironment.production) {
-			HeartTexture.validateCorrectTextureResolution();
+			if (FMLEnvironment.dist.isClient()) {
+				HeartTexture.validateCorrectTextureResolution();
+			}
+			ItemRegistry.validateLightRepairableTags();
 		}
 	}
 	

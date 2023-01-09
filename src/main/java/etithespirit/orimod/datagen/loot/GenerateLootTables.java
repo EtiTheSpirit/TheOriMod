@@ -1,33 +1,23 @@
 package etithespirit.orimod.datagen.loot;
 
-import com.google.common.collect.Sets;
 import com.mojang.datafixers.util.Pair;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.registry.world.BlockRegistry;
-import etithespirit.orimod.registry.world.FluidRegistry;
-import net.minecraft.core.Registry;
-import net.minecraft.data.CachedOutput;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.loot.BlockLoot;
 import net.minecraft.data.loot.LootTableProvider;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.LiquidBlock;
-import net.minecraft.world.level.material.Fluid;
-import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.LootTables;
 import net.minecraft.world.level.storage.loot.ValidationContext;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSet;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
-import net.minecraftforge.registries.RegistryObject;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
-import java.util.Set;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
@@ -93,7 +83,7 @@ public class GenerateLootTables extends LootTableProvider {
 			
 			add(BlockRegistry.GORLEK_ORE.get(), block -> createOreDrop(block, ItemRegistry.RAW_GORLEK_ORE.get()));
 			dropSelf(BlockRegistry.RAW_GORLEK_ORE_BLOCK.get());
-			dropSelf(BlockRegistry.GORLEK_METAL_BLOCK.get());
+			dropSelf(BlockRegistry.GORLEK_STEEL_BLOCK.get());
 			dropSelf(BlockRegistry.GORLEK_NETHERITE_ALLOY_BLOCK.get());
 			
 			dropSelf(BlockRegistry.LIGHT_CAPACITOR.get());

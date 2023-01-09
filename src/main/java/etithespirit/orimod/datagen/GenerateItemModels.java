@@ -38,24 +38,60 @@ public final class GenerateItemModels extends ItemModelProvider {
 		generateToolItem(ItemRegistry.LUMO_WAND, "tools");
 		generateShieldItem(ItemRegistry.LIGHT_SHIELD, "combat");
 		generateItem(ItemRegistry.POISON_BUCKET, "fluid");
+		
 		generateBowItem(ItemRegistry.SPIRIT_ARC, "combat");
-		generateToolItem(ItemRegistry.LIGHT_SWORD, "combat");
+		
 		generateToolItem(ItemRegistry.LIGHT_PICKAXE, "tools");
 		generateToolItem(ItemRegistry.LIGHT_SHOVEL, "tools");
 		generateToolItem(ItemRegistry.LIGHT_AXE, "tools");
+		generateToolItem(ItemRegistry.LIGHT_SWORD, "combat");
 		generateToolItem(ItemRegistry.LIGHT_HOE, "tools");
+		
+		generateToolItem(ItemRegistry.GORLEK_STEEL_PICKAXE, "tools");
+		generateToolItem(ItemRegistry.GORLEK_STEEL_SHOVEL, "tools");
+		generateToolItem(ItemRegistry.GORLEK_STEEL_AXE, "tools");
+		generateToolItem(ItemRegistry.GORLEK_STEEL_SWORD, "combat");
+		generateToolItem(ItemRegistry.GORLEK_STEEL_HOE, "tools");
+		
+		generateToolItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_PICKAXE, "tools");
+		generateToolItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_SHOVEL, "tools");
+		generateToolItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_AXE, "tools");
+		generateToolItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_SWORD, "combat");
+		generateToolItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_HOE, "tools");
+		
+		generateToolItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_PICKAXE, "tools");
+		generateToolItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_SHOVEL, "tools");
+		generateToolItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_AXE, "tools");
+		generateToolItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_SWORD, "combat");
+		generateToolItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_HOE, "tools");
+		
 		generateItem(ItemRegistry.HARDLIGHT_SHARD, "crafting");
 		generateItem(ItemRegistry.BINDING_ESSENCE, "crafting");
 		generateItem(ItemRegistry.LARGE_LIGHT_LENS, "crafting");
 		
 		generateItem(ItemRegistry.LIGHT_HELMET, "armor");
 		generateItem(ItemRegistry.LIGHT_CHESTPLATE, "armor");
-		generateItem(ItemRegistry.LIGHT_LEGS, "armor");
+		generateItem(ItemRegistry.LIGHT_LEGGINGS, "armor");
 		generateItem(ItemRegistry.LIGHT_BOOTS, "armor");
 		
+		generateItem(ItemRegistry.GORLEK_STEEL_HELMET, "armor");
+		generateItem(ItemRegistry.GORLEK_STEEL_CHESTPLATE, "armor");
+		generateItem(ItemRegistry.GORLEK_STEEL_LEGGINGS, "armor");
+		generateItem(ItemRegistry.GORLEK_STEEL_BOOTS, "armor");
+		
+		generateItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_HELMET, "armor");
+		generateItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_CHESTPLATE, "armor");
+		generateItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_LEGGINGS, "armor");
+		generateItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_BOOTS, "armor");
+		
+		generateItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_HELMET, "armor");
+		generateItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_CHESTPLATE, "armor");
+		generateItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_LEGGINGS, "armor");
+		generateItem(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_BOOTS, "armor");
+		
 		generateItem(ItemRegistry.RAW_GORLEK_ORE, "ore");
-		generateItem(ItemRegistry.GORLEK_INGOT, "ingot");
-		generateItem(ItemRegistry.GORLEK_NUGGET, "ingot");
+		generateItem(ItemRegistry.GORLEK_STEEL_INGOT, "ingot");
+		generateItem(ItemRegistry.GORLEK_STEEL_NUGGET, "ingot");
 		generateItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_INGOT, "ingot");
 		
 		OriMod.LOG.printf(Level.INFO, "Item models registered!");
