@@ -29,7 +29,7 @@ public abstract class InjectPlayerPlaySound extends LivingEntity implements ISel
 	 * @param ci The Mixin callback info.
 	 */
 	@Inject(method="playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at=@At("HEAD"), cancellable = true)
-	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
+	public void orimod$onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// See OverrideEntityPlaySound for what this garbage is.
 		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
 			return;

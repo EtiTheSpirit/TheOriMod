@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(StringDecomposer.class)
+@Deprecated
 public abstract class InjectIterateFormatted {
 	
 	// L99

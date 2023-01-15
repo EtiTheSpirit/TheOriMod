@@ -47,7 +47,7 @@ public abstract class InjectPlayerAttackTarget extends LivingEntity implements I
 			target = "Lnet/minecraft/world/level/Level;playSound(Lnet/minecraft/world/entity/player/Player;DDDLnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V"
 		)
 	)
-	public void interceptWorldPlaySound(Level world, @Nullable Player player, double x, double y, double z, SoundEvent soundIn, SoundSource category, float volume, float pitch) {
+	public void orimod$interceptWorldPlaySound(Level world, @Nullable Player player, double x, double y, double z, SoundEvent soundIn, SoundSource category, float volume, float pitch) {
 		Player localPlayer = selfProvider$player();
 		if (soundIn != null && SpiritIdentifier.isSpirit(localPlayer)) {
 			DamageLevel dLevel = damageLevelFromVanillaSoundEvent(soundIn);

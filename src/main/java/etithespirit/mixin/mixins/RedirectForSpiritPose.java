@@ -40,7 +40,7 @@ public abstract class RedirectForSpiritPose extends net.minecraftforge.common.ca
 			target="Lnet/minecraft/world/entity/Entity;getBoundingBoxForPose(Lnet/minecraft/world/entity/Pose;)Lnet/minecraft/world/phys/AABB;"
 		)
 	)
-	public AABB canEnterPose$getBoundingBoxForSpiritPose(Entity self, Pose pose) {
+	public AABB orimod$canEnterPose$getBoundingBoxForSpiritPose(Entity self, Pose pose) {
 		if (SpiritIdentifier.isSpirit(self)) {
 			// We are a spirit. This calls for some special handling.
 			EntityDimensions entitysize = SpiritSize.SPIRIT_SIZE_BY_POSE.get(pose);

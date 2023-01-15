@@ -37,7 +37,7 @@ public abstract class InjectUsesInnerModel<T extends LivingEntity, M extends Hum
 		// override all return statements.
 		cancellable = true
 	)
-	public void usesInnerModel$spirit(EquipmentSlot slotType, CallbackInfoReturnable<Boolean> ci) {
+	public void orimod$usesInnerModel$spirit(EquipmentSlot slotType, CallbackInfoReturnable<Boolean> ci) {
 		if (SpiritIdentifier.isSpirit(Minecraft.getInstance().player)) {
 			ci.setReturnValue(false);
 		}

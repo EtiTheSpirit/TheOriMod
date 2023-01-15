@@ -46,7 +46,7 @@ public abstract class InjectAnvilMenuCreateResult extends ItemCombinerMenu imple
 			shift = At.Shift.AFTER
 		)
 	)
-	private void tweakOutputStack(CallbackInfo ci) {
+	private void orimod$tweakOutputStack(CallbackInfo ci) {
 		ItemStack stack = resultSlots.getItem(0);
 		if (stack.getItem() instanceof IOriModItemTierProvider tierProvider && tierProvider.getOriModTier().hasRepairLimits()) {
 			ItemStack theoreticalResult = stack.copy();

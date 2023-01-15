@@ -73,7 +73,7 @@ public abstract class InjectEntityPlaySound extends net.minecraftforge.common.ca
 	 * @param ci The Mixin callback info.
 	 */
 	@Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
-	public void onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
+	public void orimod$onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
 		// Now this is probably a really shitty idea, but basically I want to ensure maximum compatibility with other mixins.
 		// The basic gist is that when Entity.playSound is called, it goes here instead, right?
 		// So what if some other guy's class also wants to edit the sound?
