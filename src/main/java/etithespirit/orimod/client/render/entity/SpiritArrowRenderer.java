@@ -25,11 +25,14 @@ public class SpiritArrowRenderer<T extends SpiritArrow> extends ArrowRenderer<T>
 		super(ctx);
 	}
 	
-	public void render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack pMatrixStack, MultiBufferSource pBuffer, int pPackedLight) {
+	@Override
+	public void render(T pEntity, float pEntityYaw, float pPartialTicks, PoseStack renderMtxStack, MultiBufferSource pBuffer, int pPackedLight) {
 		pPackedLight = GeneralUtils.FULL_BRIGHT_LIGHT;
-		pMatrixStack.pushPose();
-		pMatrixStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90.0F));
-		pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot())));
+		renderMtxStack.pushPose();
+		renderMtxStack.mulPose(Vector3f.YP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.yRotO, pEntity.getYRot()) - 90.0F));
+		renderMtxStack.mulPose(Vector3f.ZP.rotationDegrees(Mth.lerp(pPartialTicks, pEntity.xRotO, pEntity.getXRot())));
+		
+		// TODO: Name these
 		float f = 0.0F;
 		float f1 = 0.5F;
 		float f3 = 0.15625F;
@@ -38,35 +41,35 @@ public class SpiritArrowRenderer<T extends SpiritArrow> extends ArrowRenderer<T>
 		float f9 = (float)pEntity.shakeTime - pPartialTicks;
 		if (f9 > 0.0F) {
 			float f10 = -Mth.sin(f9 * 3.0F) * f9;
-			pMatrixStack.mulPose(Vector3f.ZP.rotationDegrees(f10));
+			renderMtxStack.mulPose(Vector3f.ZP.rotationDegrees(f10));
 		}
 		
-		pMatrixStack.mulPose(Vector3f.XP.rotationDegrees(45.0F));
-		pMatrixStack.scale(f8, f8, f8);
-		pMatrixStack.translate(-4.0D, 0.0D, 0.0D);
-		VertexConsumer vertexconsumer = pBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(pEntity)));
-		PoseStack.Pose posestack$pose = pMatrixStack.last();
-		Matrix4f matrix4f = posestack$pose.pose();
-		Matrix3f matrix3f = posestack$pose.normal();
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, f, f3, -1, 0, 0, pPackedLight);
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, f3, f3, -1, 0, 0, pPackedLight);
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, f3, f7, -1, 0, 0, pPackedLight);
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, f, f7, -1, 0, 0, pPackedLight);
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, -2, f, f3, 1, 0, 0, pPackedLight);
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, 2, 2, f3, f3, 1, 0, 0, pPackedLight);
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, 2, f3, f7, 1, 0, 0, pPackedLight);
-		this.vertex(matrix4f, matrix3f, vertexconsumer, -7, -2, -2, f, f7, 1, 0, 0, pPackedLight);
+		renderMtxStack.mulPose(Vector3f.XP.rotationDegrees(45.0F));
+		renderMtxStack.scale(f8, f8, f8);
+		renderMtxStack.translate(-4.0D, 0.0D, 0.0D);
+		VertexConsumer renderer = pBuffer.getBuffer(RenderType.entityTranslucent(this.getTextureLocation(pEntity)));
+		PoseStack.Pose latestPose = renderMtxStack.last();
+		Matrix4f transform = latestPose.pose();
+		Matrix3f normalMtx = latestPose.normal();
+		this.vertex(transform, normalMtx, renderer, -7, -2, -2, f, f3, -1, 0, 0, pPackedLight);
+		this.vertex(transform, normalMtx, renderer, -7, -2, 2, f3, f3, -1, 0, 0, pPackedLight);
+		this.vertex(transform, normalMtx, renderer, -7, 2, 2, f3, f7, -1, 0, 0, pPackedLight);
+		this.vertex(transform, normalMtx, renderer, -7, 2, -2, f, f7, -1, 0, 0, pPackedLight);
+		this.vertex(transform, normalMtx, renderer, -7, 2, -2, f, f3, 1, 0, 0, pPackedLight);
+		this.vertex(transform, normalMtx, renderer, -7, 2, 2, f3, f3, 1, 0, 0, pPackedLight);
+		this.vertex(transform, normalMtx, renderer, -7, -2, 2, f3, f7, 1, 0, 0, pPackedLight);
+		this.vertex(transform, normalMtx, renderer, -7, -2, -2, f, f7, 1, 0, 0, pPackedLight);
 		
 		for(int j = 0; j < 4; ++j) {
-			pMatrixStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
-			this.vertex(matrix4f, matrix3f, vertexconsumer, -8, -2, 0, f, f, 0, 1, 0, pPackedLight);
-			this.vertex(matrix4f, matrix3f, vertexconsumer, 8, -2, 0, f1, f, 0, 1, 0, pPackedLight);
-			this.vertex(matrix4f, matrix3f, vertexconsumer, 8, 2, 0, f1, f3, 0, 1, 0, pPackedLight);
-			this.vertex(matrix4f, matrix3f, vertexconsumer, -8, 2, 0, f, f3, 0, 1, 0, pPackedLight);
+			renderMtxStack.mulPose(Vector3f.XP.rotationDegrees(90.0F));
+			this.vertex(transform, normalMtx, renderer, -8, -2, 0, f, f, 0, 1, 0, pPackedLight);
+			this.vertex(transform, normalMtx, renderer, 8, -2, 0, f1, f, 0, 1, 0, pPackedLight);
+			this.vertex(transform, normalMtx, renderer, 8, 2, 0, f1, f3, 0, 1, 0, pPackedLight);
+			this.vertex(transform, normalMtx, renderer, -8, 2, 0, f, f3, 0, 1, 0, pPackedLight);
 		}
 		
-		pMatrixStack.popPose();
-		super.render(pEntity, pEntityYaw, pPartialTicks, pMatrixStack, pBuffer, pPackedLight);
+		renderMtxStack.popPose();
+		super.render(pEntity, pEntityYaw, pPartialTicks, renderMtxStack, pBuffer, pPackedLight);
 	}
 	
 	@Override

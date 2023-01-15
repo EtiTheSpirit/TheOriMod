@@ -141,7 +141,6 @@ public class SpiritHealthGui implements IGuiOverlay {
 		int currentX = x;
 		ExtendedHeartType container = ExtendedHeartType.getContainerForEntity(forEntity);
 		ExtendedHeartType heart = ExtendedHeartType.getBaseHeartForEntity(forEntity);
-		boolean isRadiant = container == ExtendedHeartType.RADIANT_CONTAINER;
 		
 		// CONTAINERS
 		int currentHeartIndex = currentRowIndex * 10;
@@ -166,9 +165,6 @@ public class SpiritHealthGui implements IGuiOverlay {
 				currentY -= 2;
 			}
 			IHeartRenderType.drawSingle(poseStack, heart, forEntity, currentX, currentY, halfHeartsToDrawNow == 1, flash);
-			if (isRadiant) {
-				IHeartRenderType.drawSingle(poseStack, ExtendedHeartType.RADIANT_OVERLAY, forEntity, currentX, currentY, halfHeartsToDrawNow == 1, flash);
-			}
 			currentX += 8;
 			halfHeartsToDrawNow -= 2;
 			halfHeartsToDraw -= 2;
@@ -181,7 +177,7 @@ public class SpiritHealthGui implements IGuiOverlay {
 			if (currentHeartIndex == regenHeartWaveIndex) {
 				currentY -= 2;
 			}
-			IHeartRenderType.drawSingle(poseStack, ExtendedHeartType.VANILLA_ABSORBING, forEntity, currentX, currentY, absorbHeartsToDrawNow == 1, flash);
+			IHeartRenderType.drawSingle(poseStack, ExtendedHeartType.ABSORB, forEntity, currentX, currentY, absorbHeartsToDrawNow == 1, flash);
 			currentX += 8;
 			absorbHeartsToDrawNow -= 2;
 			absorbHalfHeartsToDraw -= 2;

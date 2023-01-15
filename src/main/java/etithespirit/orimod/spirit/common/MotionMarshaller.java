@@ -58,6 +58,8 @@ public final class MotionMarshaller {
 		if (capsCtr.isEmpty()) return;
 		
 		SpiritCapabilities caps = capsCtr.get();
+		if (!caps.isSpirit()) return;
+		
 		boolean ok = caps.isClinging(player);
 		if (!ok) return;
 		
@@ -79,6 +81,8 @@ public final class MotionMarshaller {
 		if (capsCtr.isEmpty()) return;
 		
 		SpiritCapabilities caps = capsCtr.get();
+		if (!caps.isSpirit()) return;
+		
 		boolean doWallJump = wallPos != null;
 		boolean ok = doWallJump ? caps.tryWallJump(player) : caps.tryAirJump(player);
 		if (!ok && doWallJump) {
@@ -120,6 +124,7 @@ public final class MotionMarshaller {
 		if (capsCtr.isEmpty()) return;
 		
 		SpiritCapabilities caps = capsCtr.get();
+		if (!caps.isSpirit()) return;
 		
 		boolean isInFluid = player.isInWaterOrBubble() || player.isInLava();
 		Vec3 movementClamp = isInFluid ? new Vec3(1, 1, 1) : new Vec3(1, 0, 1);
@@ -153,6 +158,8 @@ public final class MotionMarshaller {
 		if (capsCtr.isEmpty()) return;
 		
 		SpiritCapabilities caps = capsCtr.get();
+		if (!caps.isSpirit()) return;
+		
 		caps.setClingDesire(wantsToCling);
 	}
 	
@@ -160,17 +167,23 @@ public final class MotionMarshaller {
 	public static void onEntityJumped(LivingEvent.LivingJumpEvent event) {
 		LivingEntity entity = event.getEntity();
 		if (entity instanceof Player player) {
-			player.push(0, 0.2, 0);
-			SpiritSoundPlayer.playJumpSound(player, 1);
-			
 			Optional<SpiritCapabilities> capsCtr = SpiritCapabilities.getCaps(player);
 			if (capsCtr.isEmpty()) return;
 			SpiritCapabilities caps = capsCtr.get();
+			
+			if (!caps.isSpirit()) return;
+			player.push(0, 0.2, 0);
+			SpiritSoundPlayer.playJumpSound(player, 1);
 			caps.triggerAirJumpCooldown();
 		}
 	}
 	
 	public static class Client {
+		
+		private static boolean isSpirit(Player plr) {
+			Optional<SpiritCapabilities> caps = SpiritCapabilities.getCaps(plr);
+			return caps.map(SpiritCapabilities::isSpirit).orElse(false);
+		}
 		
 		public static void tryPerformDash() {
 			LocalPlayer plr = Minecraft.getInstance().player;
@@ -182,6 +195,7 @@ public final class MotionMarshaller {
 		public static void tryJump() {
 			LocalPlayer plr = Minecraft.getInstance().player;
 			if (plr == null) return;
+			if (!isSpirit(plr)) return;
 			
 			BlockPos wallPos = Utilities.getBlockForBestWall(plr);
 			if (wallPos == null) {
@@ -196,9 +210,11 @@ public final class MotionMarshaller {
 			LocalPlayer plr = Minecraft.getInstance().player;
 			if (plr == null) return;
 			LazyOptional<SpiritCapabilities> capsCtr = plr.getCapability(SpiritCapabilities.INSTANCE);
+			
 			if (capsCtr.isPresent()) {
 				Optional<SpiritCapabilities> capsOpt = capsCtr.resolve();
 				if (capsOpt.isEmpty()) return;
+				if (!capsOpt.get().isSpirit()) return;
 				capsOpt.get().setClingDesire(cling);
 				ReplicatePlayerMovement.Client.replicateClingDesire(cling);
 			}

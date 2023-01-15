@@ -182,8 +182,6 @@ public final class ReplicateSpiritStatus {
 							Player player = world.getPlayerByUUID(uuid);
 							if (player != null) {
 								SpiritIdentifier.setSpirit(player, isSpirit);
-								player.refreshDimensions();
-								EffectEnforcement.updatePlayerAttrs(player);
 							}
 						});
 					}

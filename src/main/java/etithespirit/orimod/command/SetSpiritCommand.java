@@ -165,7 +165,7 @@ public class SetSpiritCommand {
 		
 		if (src.getEntity() instanceof Player sender) {
 			if (sender.equals(player)) {
-				if (SpiritPermissions.getPermissions().get(sender).canChange() && sender.hasPermissions(OriModConfigs.CHANGE_MODEL_SELF_LEVEL.get())) {
+				if (sender.hasPermissions(OriModConfigs.CHANGE_MODEL_SELF_LEVEL.get())) {
 					SpiritIdentifier.setSpiritNetworked(sender, isSpirit);
 					src.sendSuccess(Component.translatable("command.orimod.setspirit.success", sender.getName(), String.valueOf(isSpirit)), true);
 				} else {

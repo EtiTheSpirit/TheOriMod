@@ -12,6 +12,7 @@ import java.io.File;
 import java.util.Objects;
 import java.util.UUID;
 
+@Deprecated(forRemoval = true)
 public final class SpiritPermissions extends StoredUserList<GameProfile, SpiritPermissions.SpiritEntry> {
 	
 	public static final File SPIRIT_CHANGE_PERMISSIONS = new File("spirit_permissions.json");

@@ -7,7 +7,6 @@
     "InjectEntityPlaySound",
     "InjectPlayerAttackTarget",
     "InjectPlayerPlaySound",
-    "InjectSetBlockAndUpdate",
     "RedirectForSpiritPose"
   ],
   "client": [

@@ -32,6 +32,7 @@ public final class EffectEnforcement {
 	 * Removes the spirit speed, knockback, and health modifications.
 	 * @param player The player to modify.
 	 */
+	@SuppressWarnings("ConstantConditions")
 	public static void resetPlayerAttrs(Player player) {
 		AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
 		AttributeInstance knockbackResist = player.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
@@ -46,16 +47,15 @@ public final class EffectEnforcement {
 	 * Removes pre-existing spirit speed, knockback, and health modifications, then adds a set of new ones.
 	 * @param player The player to modify.
 	 */
+	@SuppressWarnings("ConstantConditions")
 	public static void updatePlayerAttrs(Player player) {
-		AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
-		AttributeInstance knockbackResist = player.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
-		AttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
-
-		maxHealth.removeModifier(HEALTH_MOD);
-		knockbackResist.removeModifier(KNOCKBACK_MOD);
-		speed.removeModifier(SPEED_MOD);
+		resetPlayerAttrs(player);
 		
 		if (SpiritIdentifier.isSpirit(player)) {
+			AttributeInstance maxHealth = player.getAttribute(Attributes.MAX_HEALTH);
+			AttributeInstance knockbackResist = player.getAttribute(Attributes.KNOCKBACK_RESISTANCE);
+			AttributeInstance speed = player.getAttribute(Attributes.MOVEMENT_SPEED);
+			
 			maxHealth.addTransientModifier(HEALTH_MOD);
 			knockbackResist.addTransientModifier(KNOCKBACK_MOD);
 			speed.addTransientModifier(SPEED_MOD);

@@ -32,22 +32,6 @@ public interface ISelfProvider {
 	}
 	
 	/**
-	 * Identical to "this", but treats the implementer like a ServerPlayer.
-	 * @return This instance as a {@link ServerPlayer}
-	 */
-	default ServerPlayer selfProvider$serverPlayer() {
-		return (ServerPlayer)this;
-	}
-	
-	/**
-	 * Identical to "this", but treats the implementer like a LocalPlayer.
-	 * @return This instance as a {@link LocalPlayer}
-	 */
-	default LocalPlayer selfProvider$clientPlayer() {
-		return (LocalPlayer)this;
-	}
-	
-	/**
 	 * Identical to "this", but treats the implementer like a Level.
 	 * @return This instance as a {@link Level}
 	 */

@@ -52,6 +52,7 @@ public enum ExtendedHeartType implements IHeartRenderType {
 	POISONED(HeartTexture.POISONED),
 	WITHERED(HeartTexture.WITHERING),
 	FROZEN(HeartTexture.FROZEN),
+	ABSORB(HeartTexture.ABSORB),
 	
 	DECAYING(HeartTexture.DECAY),
 	DECAYING_POISONED(HeartTexture.DECAY_POISONED),
@@ -72,9 +73,12 @@ public enum ExtendedHeartType implements IHeartRenderType {
 		boolean poisoned = entity.hasEffect(MobEffects.POISON);
 		boolean wither = entity.hasEffect(MobEffects.WITHER);
 		boolean isFrozen = entity.isFullyFrozen();
+		boolean isRadiant = entity.hasEffect(EffectRegistry.RADIANT.get());
 		
 		if (decaying) {
-			if (wither) {
+			if (isRadiant) {
+				return RADIANT;
+			} else if (wither) {
 				return DECAYING_WITHERED;
 			} else if (poisoned) {
 				return DECAYING_POISONED;
@@ -82,13 +86,15 @@ public enum ExtendedHeartType implements IHeartRenderType {
 			return DECAYING;
 		} else {
 			if (isFrozen) {
-				return VANILLA_FROZEN;
+				return FROZEN;
+			} else if (isRadiant) {
+				return RADIANT;
 			} else if (wither) {
-				return VANILLA_WITHERED;
+				return WITHERED;
 			} else if (poisoned) {
-				return VANILLA_POISONED;
+				return POISONED;
 			}
-			return VANILLA_NORMAL;
+			return NORMAL;
 		}
 	}
 	

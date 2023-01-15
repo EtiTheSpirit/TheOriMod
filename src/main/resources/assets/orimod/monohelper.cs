@@ -4,9 +4,18 @@ namespace HelperMakeAllAudioMono {
 	internal class Program {
 
 		private static void Convert(FileInfo soundFile) {
-			FileInfo clone = soundFile.CopyTo(soundFile.FullName + ".stereo");
-			Process.Start("ffmpeg", $"-i \"{clone.FullName}\" -f ogg -y -ac 1 \"{soundFile.FullName}\"").WaitForExit();
+			FileInfo target = new FileInfo(soundFile.FullName + ".stereo");
+			FileInfo clone;
+			if (target.Exists) {
+				clone = new FileInfo(soundFile.FullName + ".tmp");
+				if (clone.Exists) clone.Delete();
+				soundFile.CopyTo(clone.FullName);
 
+			} else {
+				clone = soundFile.CopyTo(soundFile.FullName + ".stereo");
+			}
+
+			Process.Start("ffmpeg", $"-i \"{clone.FullName}\" -f ogg -y -ac 1 \"{soundFile.FullName}\"").WaitForExit();
 			Console.ForegroundColor = ConsoleColor.Green;
 			Console.WriteLine($"Replaced {soundFile.FullName}");
 			Console.ForegroundColor = ConsoleColor.White;
