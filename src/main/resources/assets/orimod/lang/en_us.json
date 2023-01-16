@@ -314,5 +314,7 @@
 	"command.orimod.setspirit.failure.set_abilities_other" : "§cYou do not have permission to set the abilities of other Spirits.",
 	"command.orimod.setspirit.failure.set_abilities_self" : "§cYou do not have permission to set your own abilities.",
 
-	"command.orimod.setspirit.success.ability" : "Success! Data belonging to %1$s has been set to "
+	"command.orimod.setspirit.success.ability" : "Success! Data belonging to %1$s has been set to ",
+
+	"command.setspirit.error.nocaps" : "Your player data is missing crucial data. Please report this bug (you can find the report link in the Mods menu on the title screen). Try rejoining or changing dimensions."
 }
