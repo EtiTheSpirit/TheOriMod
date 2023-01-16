@@ -77,5 +77,5 @@ public class SpiritArrowRenderer<T extends SpiritArrow> extends ArrowRenderer<T>
 		return RSRC;
 	}
 	
-	private static final ResourceLocation RSRC = new ResourceLocation(OriMod.MODID, "textures/entity/projectile/spirit_arrow.png");
+	private static final ResourceLocation RSRC = OriMod.rsrc("textures/entity/projectile/spirit_arrow.png");
 }
