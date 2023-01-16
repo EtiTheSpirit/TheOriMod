@@ -4,14 +4,16 @@ package etithespirit.orimod.networking.spirit;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.annotation.ServerUseOnly;
+import etithespirit.orimod.common.capabilities.SpiritCapabilities;
+import etithespirit.orimod.config.OriModConfigs;
 import etithespirit.orimod.networking.ReplicationData;
 import etithespirit.orimod.player.EffectEnforcement;
 import etithespirit.orimod.registry.advancements.AdvancementRegistry;
-import etithespirit.orimod.server.persistence.SpiritPermissions;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
+import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
@@ -25,6 +27,7 @@ import javax.annotation.Nonnull;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -126,10 +129,9 @@ public final class ReplicateSpiritStatus {
 							sender.getStringUUID()
 						);
 					}
-					
-					SpiritPermissions.ChangePermissions changePermissions = SpiritPermissions.getPermissions().get(sender);
+
 					boolean desiredState;
-					if (changePermissions.canChange()) {
+					if (sender.hasPermissions(OriModConfigs.CHANGE_MODEL_SELF_LEVEL.get())) {
 						desiredState = msg.wantsToBeSpirit(sender); // Invert the current state on this side and send that to them.
 					} else {
 						// The player cannot change. Reject it, and inform the client of the necessary change back to their previous state.
