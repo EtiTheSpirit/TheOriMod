@@ -3,11 +3,10 @@ package etithespirit.mixin.helpers;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
 
-import java.util.HashMap;
-
 /**
  * Literally just SoundEvent as a different class.
  */
+@Deprecated(forRemoval = true)
 public class DuplicateSoundEvent extends SoundEvent {
 	
 	private final ResourceLocation location;

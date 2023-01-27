@@ -55,6 +55,10 @@ public final class BlockRegistry {
 	/** */ public static final RegistryObject<Block> FORLORN_STONE_LINE = BLOCKS.register("forlorn_stone_line", ForlornStoneLineBlock::new);
 	/** */ public static final RegistryObject<Block> FORLORN_STONE_OMNI = BLOCKS.register("forlorn_stone_omni", ForlornStoneOmniBlock::new);
 	
+	/** */ public static final RegistryObject<Block> FORLORN_STONE_BRICK_SLAB = BLOCKS.register("forlorn_stone_brick_slab", ForlornStoneBlock.Slab::new);
+	/** */ public static final RegistryObject<Block> FORLORN_STONE_BRICK_STAIRS = BLOCKS.register("forlorn_stone_brick_stairs", ForlornStoneBlock.Stairs::new);
+	/** */ public static final RegistryObject<Block> FORLORN_STONE_BRICK_WALL = BLOCKS.register("forlorn_stone_brick_wall", ForlornStoneBlock.Wall::new);
+	
 	/** */ public static final RegistryObject<Block> HARDLIGHT_GLASS = BLOCKS.register("hardlight_block", HardLightBlock::new);
 	/** */ public static final RegistryObject<Block> LIGHT_REPAIR_BOX = BLOCKS.register("light_repair_box", LightRepairBoxBlock::new);
 	
@@ -62,6 +66,7 @@ public final class BlockRegistry {
 	/** */ public static final RegistryObject<Block> RAW_GORLEK_ORE_BLOCK = BLOCKS.register("raw_gorlek_ore_block", RawGorlekOreBlock::new);
 	/** */ public static final RegistryObject<Block> GORLEK_STEEL_BLOCK = BLOCKS.register("gorlek_steel_block", GorlekSteelBlock::new);
 	/** */ public static final RegistryObject<Block> GORLEK_NETHERITE_ALLOY_BLOCK = BLOCKS.register("gorlek_netherite_alloy_block", GorlekNetheriteAlloyBlock::new);
+	
 	
 	
 	/////////////////////////////////////////////////////////////////////////////////////

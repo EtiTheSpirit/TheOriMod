@@ -94,13 +94,6 @@ public enum UniversalOriModItemTier implements ArmorMaterial, Tier {
 	public static final String LAST_KNOWN_MAX_DAMAGE_KEY = "LastDamageBeforeIngotRepair";
 	
 	/**
-	 * The key for the value associated with any additional Luxen repair points that the item can use. This value is set when repairing an item before using the reconstructor on it, so that
-	 * people don't miss out on potential reconstructor use that they could have leveraged if they reconstructed <em>before</em> repairing.
-	 */
-	@Deprecated(forRemoval = true)
-	public static final String ADDITIONAL_LUXEN_REPAIR_BUFFER_ROOM = "CarriedOverLuxenRepairExtra";
-	
-	/**
 	 * Create a new universal item tier that can be used for both ArmorItem (material) and TieredItem (tier)
 	 * @param id The ID of this tier or material.
 	 * @param toolTierLevel For tools, this is the mining level of the tool.
@@ -151,7 +144,7 @@ public enum UniversalOriModItemTier implements ArmorMaterial, Tier {
 		this.precalculatedArmorDurability = new int[] {
 			// To future Xan, asking "where the hell did these values come from?"
 			// You went to the Minecraft wiki and found the durability values for each Netherite armor piece.
-			// You then figured out what the ratio from their durability to netherite's base durability (2031) was.
+			// You then figured out what the ratio from the individual armor piece's durability to netherite's base durability for tools (2031) was.
 			Math.round((407f/2031f) * baseDurability),
 			Math.round((592f/2031f) * baseDurability),
 			Math.round((555f/2031f) * baseDurability),
@@ -234,10 +227,16 @@ public enum UniversalOriModItemTier implements ArmorMaterial, Tier {
 		return enchantability;
 	}
 	
+	//FIXME: How does reobf work? There is a crash caused by a missing method because reobf only turns getEnchantmentValue into one of the two searge methods.
+	public int m_6601_() { return getEnchantmentValue(); }
+	
 	@Override
 	public Ingredient getRepairIngredient() {
 		return repairIngredient.get();
 	}
+	
+	//FIXME: How does reobf work? There is a crash caused by a missing method because reobf only turns getEnchantmentValue into one of the two searge methods.
+	public Ingredient m_6282_() { return getRepairIngredient(); }
 	
 	public Item.Properties getItemProperties() {
 		Item.Properties props = baseProperties.get();

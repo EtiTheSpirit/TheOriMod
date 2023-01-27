@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/wall_inventory",
+  "textures": {
+    "wall": "orimod:block/forlorn_stone/base/forlorn_stone_brick_wall"
+  }
+}

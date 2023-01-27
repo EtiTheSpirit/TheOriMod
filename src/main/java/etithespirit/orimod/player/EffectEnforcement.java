@@ -1,10 +1,15 @@
 package etithespirit.orimod.player;
 
+import etithespirit.orimod.registry.gameplay.ItemRegistry;
 import etithespirit.orimod.spirit.SpiritIdentifier;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.AttributeInstance;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.event.TickEvent;
 
 /**
  * This class manages the speed, health, and knockback resistance of Spirits.
@@ -26,7 +31,7 @@ public final class EffectEnforcement {
 	public static final AttributeModifier KNOCKBACK_MOD = new AttributeModifier(SPIRIT_EFFECT_KNOCKBACK_UUID, 1.0D, AttributeModifier.Operation.ADDITION);
 	
 	/** This attribute makes Spirits have only half the health of a player. */
-	public static final AttributeModifier HEALTH_MOD = new AttributeModifier(SPIRIT_EFFECT_MAX_HEALTH_UUID, -0.5D, AttributeModifier.Operation.MULTIPLY_TOTAL);
+	public static final AttributeModifier HEALTH_MOD = new AttributeModifier(SPIRIT_EFFECT_MAX_HEALTH_UUID, -10D, AttributeModifier.Operation.ADDITION);
 	
 	/**
 	 * Removes the spirit speed, knockback, and health modifications.
@@ -59,6 +64,27 @@ public final class EffectEnforcement {
 			maxHealth.addTransientModifier(HEALTH_MOD);
 			knockbackResist.addTransientModifier(KNOCKBACK_MOD);
 			speed.addTransientModifier(SPEED_MOD);
+		}
+	}
+	
+	/**
+	 * Removes darkness if the player is wearing a full luxen gorlek-netherite alloy set.
+	 * @param pTick
+	 */
+	public static void onPlayerTick(TickEvent.PlayerTickEvent pTick) {
+		Player plr = pTick.player;
+		if (plr != null && plr.hasEffect(MobEffects.DARKNESS)) {
+			ItemStack helm = plr.getItemBySlot(EquipmentSlot.HEAD);
+			ItemStack chest = plr.getItemBySlot(EquipmentSlot.CHEST);
+			ItemStack legs = plr.getItemBySlot(EquipmentSlot.LEGS);
+			ItemStack boots = plr.getItemBySlot(EquipmentSlot.FEET);
+			boolean megaHelm = helm.is(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_HELMET.get());
+			boolean megaChest = chest.is(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_CHESTPLATE.get());
+			boolean megaLegs = legs.is(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_LEGGINGS.get());
+			boolean megaBoots = boots.is(ItemRegistry.LUXEN_GORLEK_NETHERITE_ALLOY_BOOTS.get());
+			if (megaHelm && megaChest && megaLegs && megaBoots) {
+				plr.removeEffect(MobEffects.DARKNESS);
+			}
 		}
 	}
 	

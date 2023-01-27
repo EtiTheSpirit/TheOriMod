@@ -12,6 +12,7 @@ import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.stats.Stats;
+import net.minecraft.util.Mth;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.entity.Entity;
@@ -19,11 +20,14 @@ import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BowItem;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.UseAnim;
 import net.minecraft.world.item.enchantment.Enchantments;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
+import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Map;
 
 public class SpiritArc extends BowItem implements IModelPredicateProvider {
@@ -61,7 +65,7 @@ public class SpiritArc extends BowItem implements IModelPredicateProvider {
 		return onStack.getOrCreateTag().getBoolean(IS_CHARGED_KEY); // Returns false if the key does not exist.
 	}
 	
-	private void shootWithoutInheritedVelocity(SpiritArrow arrow, Entity shooter, float pVelocity, float pInaccuracy) {
+	private void shootWithoutInheritedVelocity(SpiritArrow arrow, Entity shooter, double pVelocity, double pInaccuracy) {
 		Vec3 lookVector = shooter.getLookAngle();
 		arrow.shoot(lookVector.x, lookVector.y, lookVector.z, pVelocity, pInaccuracy);
 	}
@@ -83,7 +87,7 @@ public class SpiritArc extends BowItem implements IModelPredicateProvider {
 			SpiritArrow projectile = new SpiritArrow(EntityRegistry.SPIRIT_ARROW.get(), pLevel);
 			projectile.setOwner(pLivingEntity);
 			
-			float damage = chargedShot ? 5 : 2;
+			float damage = chargedShot ? 6 : 2;
 			int power = pStack.getEnchantmentLevel(Enchantments.POWER_ARROWS);
 			if (power > 0) {
 				damage += (power / 2f) + 0.5f;
@@ -101,11 +105,11 @@ public class SpiritArc extends BowItem implements IModelPredicateProvider {
 			projectile.setBaseDamage(damage);
 			projectile.setCritArrow(chargedShot);
 			projectile.setPos(pLivingEntity.getX(), pLivingEntity.getEyeY(), pLivingEntity.getZ());
-			shootWithoutInheritedVelocity(projectile, pLivingEntity, chargedShot ? 6f : 1.6f, chargedShot ? 0 : 0.1f);
+			shootWithoutInheritedVelocity(projectile, pLivingEntity, chargedShot ? 6 : 1.6, chargedShot ? 0 : 0.1);
 			pLevel.addFreshEntity(projectile);
 		}
 		if (pLivingEntity instanceof Player player) player.awardStat(Stats.ITEM_USED.get(this));
-		pStack.hurtAndBreak(chargedShot ? 2 : 1, pLivingEntity, item -> {});
+		pStack.hurtAndBreak(chargedShot ? 3 : 1, pLivingEntity, item -> {});
 	}
 	
 	@Override
@@ -163,11 +167,17 @@ public class SpiritArc extends BowItem implements IModelPredicateProvider {
 	}
 	
 	@Override
+	public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
+		super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+		SpiritItemCustomizations.appendDefaultLightToolRepairHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
+	}
+	
+	@Override
 	public void getPredicates(Map<ResourceLocation, ItemPropertyFunction> result) {
 		ItemPropertyFunction func = ((pStack, pLevel, pEntity, pSeed) -> {
 			if (pStack.is(SpiritArc.this)) {
 				if (pEntity == null) return 0;
-				if (pEntity.isUsingItem()) {
+				if (pEntity.isUsingItem() && pEntity.getUseItem().is(SpiritArc.this)) {
 					int remainingTicks = pEntity.getUseItemRemainingTicks();
 					if (remainingTicks <= CHARGED_AFTER_TICKS) return 3;
 					if (remainingTicks <= READY_TO_FIRE_AFTER_TICKS) return 2;

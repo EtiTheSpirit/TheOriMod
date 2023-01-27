@@ -94,6 +94,8 @@ public final class GenerateItemModels extends ItemModelProvider {
 		generateItem(ItemRegistry.GORLEK_STEEL_NUGGET, "ingot");
 		generateItem(ItemRegistry.GORLEK_NETHERITE_ALLOY_INGOT, "ingot");
 		
+		generateItem(ItemRegistry.SPIRIT_APPLE, "food");
+		
 		OriMod.LOG.printf(Level.INFO, "Item models registered!");
 	}
 	

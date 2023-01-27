@@ -11,9 +11,13 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RotatedPillarBlock;
+import net.minecraft.world.level.block.SlabBlock;
+import net.minecraft.world.level.block.StairBlock;
+import net.minecraft.world.level.block.WallBlock;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.Property;
+import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraftforge.client.model.generators.BlockModelBuilder;
 import net.minecraftforge.client.model.generators.BlockStateProvider;
 import net.minecraftforge.client.model.generators.ConfiguredModel;
@@ -169,6 +173,80 @@ public final class BlockGenerationTools {
 		public static void simpleBlockItem(BlockStateProvider provider, Block block, ModelFile model) {
 			//provider.itemModels().getBuilder(ModelProvider.ITEM_FOLDER + "/" + ModelProvider.BLOCK_FOLDER + "/" + Assets.key(block).getPath()).parent(model);
 			provider.simpleBlockItem(block, model);
+		}
+		
+		public static void registerSlabAndItem(BlockStateProvider provider, RegistryObject<? extends Block> blockReg) {
+			registerSlabAndItem(provider, blockReg, null);
+		}
+		
+		public static void registerSlabAndItem(BlockStateProvider provider, RegistryObject<? extends Block> blockReg, @Nullable String textureSubPath) {
+			SlabBlock block = (SlabBlock)blockReg.get();
+			ModelFile[] models = Models.slabAll(provider, block, textureSubPath);
+			ModelFile lower = models[0];
+			ModelFile upper = models[1];
+			ModelFile doubleSlab = models[2];
+			/*
+			for (SlabType slabType : SlabType.values()) {
+				VariantBlockStateBuilder.PartialBlockstate builder = provider.getVariantBuilder(block).partialState().with(SlabBlock.TYPE, slabType);
+				switch (slabType) {
+					case TOP -> builder.modelForState().modelFile(upper).addModel();
+					case BOTTOM -> builder.modelForState().modelFile(lower).addModel();
+					case DOUBLE -> builder.modelForState().modelFile(doubleSlab).addModel();
+				}
+				OriMod.LOG.printf(Level.INFO, "Made slab block for %s of type SlabType=%s", blockReg.getId(), slabType.name());
+			}*/
+			provider.slabBlock(block, lower,upper,doubleSlab);
+			OriMod.LOG.printf(Level.INFO, "Generated slab for %s", blockReg.getId());
+			
+			provider.simpleBlockItem(block, lower);
+			OriMod.LOG.printf(Level.INFO, "Generated inventory model for slab %s", blockReg.getId());
+			
+		}
+		
+		public static void registerWallAndItem(BlockStateProvider provider, RegistryObject<? extends Block> blockReg) {
+			registerWallAndItem(provider, blockReg, null);
+		}
+		
+		public static void registerWallAndItem(BlockStateProvider provider, RegistryObject<? extends Block> blockReg, @Nullable String textureSubPath) {
+			WallBlock block = (WallBlock)blockReg.get();
+			/*
+			ModelFile[] modelsAndItem = Models.wall(provider, block, textureSubPath);
+			ModelFile post = modelsAndItem[0];
+			ModelFile side = modelsAndItem[1];
+			ModelFile sideTall = modelsAndItem[2];
+			provider.wallBlock(block, post, side, sideTall);
+			*/
+			
+			ResourceLocation texture = Assets.blockTexture(block, textureSubPath);
+			provider.wallBlock(block, texture);
+			OriMod.LOG.printf(Level.INFO, "Generated wall for %s", blockReg.getId().toString());
+			
+			ModelFile invMdl = provider.itemModels().wallInventory(Assets.name(block, textureSubPath), texture);
+			provider.simpleBlockItem(block, invMdl);
+			//provider.simpleBlockItem(block, post);
+			OriMod.LOG.printf(Level.INFO, "Generated inventory model for wall %s", blockReg.getId().toString());
+		}
+		
+		public static void registerStairsAndItem(BlockStateProvider provider, RegistryObject<? extends Block> blockReg) {
+			registerStairsAndItem(provider, blockReg, null);
+		}
+		
+		public static void registerStairsAndItem(BlockStateProvider provider, RegistryObject<? extends Block> blockReg, @Nullable String textureSubPath) {
+			StairBlock block = (StairBlock)blockReg.get();
+			/*
+			ModelFile[] stairParts = Models.stairsAll(provider, block, textureSubPath);
+			ModelFile base = stairParts[0];
+			ModelFile inner = stairParts[1];
+			ModelFile outer = stairParts[2];
+			provider.stairsBlock(block, base, inner, outer);
+			*/
+			ResourceLocation texture = Assets.blockTexture(block, textureSubPath);
+			provider.stairsBlock(block, texture);
+			OriMod.LOG.printf(Level.INFO, "Generated stairs for %s", blockReg.getId().toString());
+			
+			ModelFile invMdl = provider.itemModels().stairs(Assets.name(block, textureSubPath), texture, texture, texture);
+			provider.simpleBlockItem(block, invMdl);
+			OriMod.LOG.printf(Level.INFO, "Generated inventory model for stairs %s", blockReg.getId().toString());
 		}
 		
 	}
@@ -781,6 +859,70 @@ public final class BlockGenerationTools {
 		
 		public static ModelFile cubeColumnHorizontal(BlockStateProvider provider, Block block) {
 			return cubeColumnHorizontal(provider, block, null);
+		}
+		
+		public static ModelFile[] slab(BlockStateProvider provider, SlabBlock slabBlock) {
+			return slab(provider, slabBlock, null);
+		}
+		
+		public static ModelFile[] slab(BlockStateProvider provider, SlabBlock slabBlock, @Nullable String textureSubPath) {
+			return new ModelFile[] {
+				provider.models().slab(Assets.name(slabBlock, textureSubPath) + "_bottom", Assets.blockTexture(slabBlock, textureSubPath, "side"), Assets.blockTexture(slabBlock, textureSubPath, "bottom"), Assets.blockTexture(slabBlock, textureSubPath, "top")),
+				provider.models().slabTop(Assets.name(slabBlock, textureSubPath) + "_top", Assets.blockTexture(slabBlock, textureSubPath, "side"), Assets.blockTexture(slabBlock, textureSubPath, "bottom"), Assets.blockTexture(slabBlock, textureSubPath, "top")),
+				provider.models().cubeBottomTop(Assets.name(slabBlock, textureSubPath) + "_double", Assets.blockTexture(slabBlock, textureSubPath, "side"), Assets.blockTexture(slabBlock, textureSubPath, "bottom"), Assets.blockTexture(slabBlock, textureSubPath, "top"))
+			};
+		}
+		
+		
+		public static ModelFile[] slabAll(BlockStateProvider provider, SlabBlock slabBlock) {
+			return slabAll(provider, slabBlock, null);
+		}
+		
+		public static ModelFile[] slabAll(BlockStateProvider provider, SlabBlock slabBlock, @Nullable String textureSubPath) {
+			ResourceLocation tex = Assets.blockTexture(slabBlock, textureSubPath);
+			return new ModelFile[] {
+				provider.models().slab(Assets.name(slabBlock, textureSubPath) + "_bottom", tex, tex, tex),
+				provider.models().slabTop(Assets.name(slabBlock, textureSubPath) + "_top", tex, tex, tex),
+				provider.models().cubeAll(Assets.name(slabBlock, textureSubPath) + "_double", tex)
+			};
+		}
+		
+		public static ModelFile[] wall(BlockStateProvider provider, WallBlock wallBlock) {
+			return wall(provider, wallBlock, null);
+		}
+		
+		public static ModelFile[] wall(BlockStateProvider provider, WallBlock wallBlock, @Nullable String textureSubPath) {
+			return new ModelFile[] {
+				provider.models().wallPost(Assets.name(wallBlock, textureSubPath), Assets.blockTexture(wallBlock, textureSubPath)),
+				provider.models().wallSide(Assets.name(wallBlock, textureSubPath), Assets.blockTexture(wallBlock, textureSubPath)),
+				provider.models().wallSideTall(Assets.name(wallBlock, textureSubPath), Assets.blockTexture(wallBlock, textureSubPath))
+			};
+		}
+		
+		public static ModelFile[] stairs(BlockStateProvider provider, StairBlock stairBlock) {
+			return stairs(provider, stairBlock, null);
+		}
+		
+		public static ModelFile[] stairs(BlockStateProvider provider, StairBlock stairBlock, @Nullable String textureSubPath) {
+			return new ModelFile[] {
+				provider.models().stairs(Assets.name(stairBlock, textureSubPath), Assets.blockTexture(stairBlock, textureSubPath, "side"), Assets.blockTexture(stairBlock, textureSubPath, "bottom"), Assets.blockTexture(stairBlock, textureSubPath, "top")),
+				provider.models().stairsInner(Assets.name(stairBlock, textureSubPath), Assets.blockTexture(stairBlock, textureSubPath, "side"), Assets.blockTexture(stairBlock, textureSubPath, "bottom"), Assets.blockTexture(stairBlock, textureSubPath, "top")),
+				provider.models().stairsOuter(Assets.name(stairBlock, textureSubPath), Assets.blockTexture(stairBlock, textureSubPath, "side"), Assets.blockTexture(stairBlock, textureSubPath, "bottom"), Assets.blockTexture(stairBlock, textureSubPath, "top"))
+			};
+		}
+		
+		
+		public static ModelFile[] stairsAll(BlockStateProvider provider, StairBlock stairBlock) {
+			return stairs(provider, stairBlock, null);
+		}
+		
+		public static ModelFile[] stairsAll(BlockStateProvider provider, StairBlock stairBlock, @Nullable String textureSubPath) {
+			ResourceLocation tex = Assets.blockTexture(stairBlock, textureSubPath);
+			return new ModelFile[] {
+				provider.models().stairs(Assets.name(stairBlock, textureSubPath), tex, tex, tex),
+				provider.models().stairsInner(Assets.name(stairBlock, textureSubPath), tex, tex, tex),
+				provider.models().stairsOuter(Assets.name(stairBlock, textureSubPath), tex, tex, tex)
+			};
 		}
 		
 	}

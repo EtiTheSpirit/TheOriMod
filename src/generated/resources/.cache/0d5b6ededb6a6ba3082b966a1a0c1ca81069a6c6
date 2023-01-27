@@ -1,4 +1,4 @@
-// 1.19.2	2023-01-03T07:54:17.5104329	Item Models: orimod
+// 1.19.2	2023-01-22T13:40:07.9166065	Item Models: orimod
 d557d9dba2e7793ff4437741f13639d844f2e0a5 assets/orimod/models/item/binding_essence.json
 7d3047672f20a6bafa7d97bd86065bdcffbdfdf8 assets/orimod/models/item/decay_poison_bucket.json
 7f1daaf6777eda88ec67ee2fe8a5fc3a6b36ec1a assets/orimod/models/item/gorlek_netherite_alloy_axe.json
@@ -46,6 +46,7 @@ b737bf5ab6af5111e3e6010f91b364ce2fd65ae1 assets/orimod/models/item/luxen_gorlek_
 af78e8026364f1170c8fad524b2cf6270f546a8a assets/orimod/models/item/luxen_gorlek_netherite_alloy_shovel.json
 71590c7743f24a3f9f32cd417f93a5b2aa52e319 assets/orimod/models/item/luxen_gorlek_netherite_alloy_sword.json
 983b53405a985fe81c5660e8c80f7f9567e049e1 assets/orimod/models/item/raw_gorlek_ore.json
+a5b3db9496ff5e8dd3c8737b66e336da1a267b24 assets/orimod/models/item/spirit_apple.json
 2f7319d87bd2ff2117c8c614cb0c95ba99c25b86 assets/orimod/models/item/spirit_arc.json
 3f8c1301944571e6bdae553ee156f9975aff6b75 assets/orimod/models/item/spirit_arc_pulling_0.json
 d15ef98f942f77aa0f59022b6405d7aa045b0648 assets/orimod/models/item/spirit_arc_pulling_1.json

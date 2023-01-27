@@ -54,7 +54,8 @@ public class OriModConfigs {
 	
 	public static ForgeConfigSpec.BooleanValue DEFAULT_SPIRIT_STATE;
 	public static ForgeConfigSpec.BooleanValue FORCE_STATE;
-	public static ForgeConfigSpec.BooleanValue ALLOW_CHANGING_BY_DEFAULT;
+	
+	public static ForgeConfigSpec.BooleanValue USE_HEALTH_DIVISION;
 	
 	public static ForgeConfigSpec.DoubleValue LUX_TO_RF_RATIO;
 	public static ForgeConfigSpec.BooleanValue USE_ENV_POWER;
@@ -270,11 +271,11 @@ public class OriModConfigs {
 		builder.push(current);
 		DEFAULT_SPIRIT_STATE = createBoolean(builder, current, "default_state", true, false);
 		FORCE_STATE = createBoolean(builder, current, "force_state", false, false);
-		ALLOW_CHANGING_BY_DEFAULT = createBoolean(builder, current, "allow_changes_default", true, false);
 		CHANGE_MODEL_SELF_LEVEL = createIntRange(builder, current, "change_model_self_level", 2, 1, 4, false);
 		CHANGE_MODEL_OTHERS_LEVEL = createIntRange(builder, current, "change_model_self_level", 4, 1, 4, false);
 		CHANGE_ABILITIES_SELF_LEVEL = createIntRange(builder, current, "change_abilities_self_level", 2, 1, 4, false);
 		CHANGE_ABILITIES_OTHERS_LEVEL = createIntRange(builder, current, "change_abilities_self_level", 4, 1, 4, false);
+		USE_HEALTH_DIVISION = createBoolean(builder, current, "use_old_maxhealth", false, true);
 		builder.pop();
 		
 		current = "spirit_limits";

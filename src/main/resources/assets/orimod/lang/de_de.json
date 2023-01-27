@@ -1,0 +1,324 @@
+{
+  "item.orimod.light_shield" : "Hardlight Shield",
+  "item.orimod.spirit_arc" : "Hardlight Arc Bow",
+
+  "item.orimod.light_pickaxe" : "Hardlight Pickaxe",
+  "item.orimod.light_shovel" : "Hardlight Shovel",
+  "item.orimod.light_axe" : "Hardlight Axe",
+  "item.orimod.light_sword" : "Hardlight Sword",
+  "item.orimod.light_hoe" : "Hardlight Hoe",
+
+  "item.orimod.gorlek_steel_pickaxe" : "Gorlek Steel Pickaxe",
+  "item.orimod.gorlek_steel_shovel" : "Gorlek Steel Shovel",
+  "item.orimod.gorlek_steel_axe" : "Gorlek Steel Axe",
+  "item.orimod.gorlek_steel_sword" : "Gorlek Steel Sword",
+  "item.orimod.gorlek_steel_hoe" : "Gorlek Steel Hoe",
+
+  "item.orimod.gorlek_netherite_alloy_pickaxe" : "Gorlek-Netherite Alloy Pickaxe",
+  "item.orimod.gorlek_netherite_alloy_shovel" : "Gorlek-Netherite Alloy Shovel",
+  "item.orimod.gorlek_netherite_alloy_axe" : "Gorlek-Netherite Alloy Axe",
+  "item.orimod.gorlek_netherite_alloy_sword" : "Gorlek-Netherite Alloy Sword",
+  "item.orimod.gorlek_netherite_alloy_hoe" : "Gorlek-Netherite Alloy Hoe",
+
+  "item.orimod.luxen_gorlek_netherite_alloy_pickaxe" : "Luxen Gorlek-Netherite Alloy Pickaxe",
+  "item.orimod.luxen_gorlek_netherite_alloy_shovel" : "Luxen Gorlek-Netherite Alloy Shovel",
+  "item.orimod.luxen_gorlek_netherite_alloy_axe" : "Luxen Gorlek-Netherite Alloy Axe",
+  "item.orimod.luxen_gorlek_netherite_alloy_sword" : "Luxen Gorlek-Netherite Alloy Sword",
+  "item.orimod.luxen_gorlek_netherite_alloy_hoe" : "Luxen Gorlek-Netherite Alloy Hoe",
+
+  "item.orimod.binding_essence" : "Binding Essence",
+  "item.orimod.large_light_lens" : "Large Luxen Lens",
+  "item.orimod.hardlight_shard" : "Hardlight Shard",
+  "item.orimod.light_focal_hub" : "Focal Hub",
+
+  "item.orimod.light_helmet" : "Hardlight Helmet",
+  "item.orimod.light_chestplate" : "Hardlight Chestplate",
+  "item.orimod.light_leggings" : "Hardlight Leggings",
+  "item.orimod.light_boots" : "Hardlight Boots",
+
+  "item.orimod.gorlek_steel_helmet" : "Gorlek Steel Helmet",
+  "item.orimod.gorlek_steel_chestplate" : "Gorlek Steel Chestplate",
+  "item.orimod.gorlek_steel_leggings" : "Gorlek Steel Leggings",
+  "item.orimod.gorlek_steel_boots" : "Gorlek Steel Boots",
+
+  "item.orimod.gorlek_netherite_alloy_helmet" : "Gorlek-Netherite Alloy Helmet",
+  "item.orimod.gorlek_netherite_alloy_chestplate" : "Gorlek-Netherite Alloy Chestplate",
+  "item.orimod.gorlek_netherite_alloy_leggings" : "Gorlek-Netherite Alloy Leggings",
+  "item.orimod.gorlek_netherite_alloy_boots" : "Gorlek-Netherite Alloy Boots",
+
+  "item.orimod.luxen_gorlek_netherite_alloy_helmet" : "Luxen Gorlek-Netherite Alloy Helmet",
+  "item.orimod.luxen_gorlek_netherite_alloy_chestplate" : "Luxen Gorlek-Netherite Alloy Chestplate",
+  "item.orimod.luxen_gorlek_netherite_alloy_leggings" : "Luxen Gorlek-Netherite Alloy Leggings",
+  "item.orimod.luxen_gorlek_netherite_alloy_boots" : "Luxen Gorlek-Netherite Alloy Boots",
+
+  "item.orimod.raw_gorlek_ore" : "Raw Gorlek Ore",
+  "item.orimod.gorlek_steel_nugget" : "Gorlek Steel Nugget",
+  "item.orimod.gorlek_steel_ingot" : "Gorlek Steel Ingot",
+  "item.orimod.gorlek_netherite_alloy_ingot" : "Gorlek-Netherite Alloy Ingot",
+
+  "tooltip.orimod.focuslight.1" : "This tool can be repaired",
+  "tooltip.orimod.focuslight.2" : "in a Luxen Reconstructor.",
+  "tooltip.orimod.focuslight.3" : "Repair Cost: ",
+
+  "tooltip.orimod.focuslight.self.1a" : "Spirits can also ",
+  "tooltip.orimod.focuslight.self.1b" : "sneak+use",
+  "tooltip.orimod.focuslight.self.2a" : "to sacrifice ",
+  "tooltip.orimod.focuslight.self.2b" : "%s health",
+  "tooltip.orimod.focuslight.self.3a" : "for ",
+  "tooltip.orimod.focuslight.self.3b" : "+%s durability.",
+
+  "tooltip.orimod.lumowand.1" : "Press Use to swap the",
+  "tooltip.orimod.lumowand.2" : "color of a block that",
+  "tooltip.orimod.lumowand.3" : "appears to use Light",
+  "tooltip.orimod.lumowand.4" : "energy.",
+
+  "tooltip.orimod.durability.physical" : "Physical Durability: %s/%s",
+  "tooltip.orimod.durability.luxen" : "Hardlight Integrity: %s/%s",
+  "tooltip.orimod.durability.repairlimit.1" : "Can Reconstruct Up To: %s",
+  "tooltip.orimod.durability.repairlimit.2" : "To repair more than this amount",
+  "tooltip.orimod.durability.repairlimit.3" : "you must use an Anvil with the",
+  "tooltip.orimod.durability.repairlimit.4" : "appropriate repair ingredient.",
+
+  "info.orimod.lumowand.autoon" : "Automatic Connections: On",
+  "info.orimod.lumowand.autooff" : "Automatic Connections: Off",
+
+  "info.orimod.lumowand.colorswap.blue" : "Color: Blue",
+  "info.orimod.lumowand.colorswap.orange" : "Color: Orange",
+
+  "info.orimod.lumowand.dbg_charge" : "DEBUG: Applied/Removed charge to this block.",
+
+  "input.orimod.dash" : "Dash",
+  "input.orimod.climb" : "Climb",
+  "input.orimod.cling" : "Wall Cling",
+
+  "entity.orimod.spirit.name" : "Spirit",
+  "entity.orimod.spirit_arrow" : "Hardlight Arc Bolt",
+
+  "advancement.orimod.become_spirit" : "Born from The Light",
+  "advancement.orimod.become_spirit.description" : "Become a Spirit.",
+
+  "itemGroup.orimod.blocks" : "Ori Mod Blocks",
+  "itemGroup.orimod.spirit_combat" : "Spirit Combat",
+  "itemGroup.orimod.spirit_tools" : "Spirit Tools",
+  "itemGroup.orimod.spirit_machinery" : "Luxen Machinery",
+  "itemGroup.orimod.spirit_machinery_parts" : "Luxen Machinery Parts",
+  "itemGroup.orimod.spirit_decoration" : "Ori Mod Decoration",
+  "itemGroup.orimod.decay" : "Decay-Infected Blocks",
+
+  "block.orimod.decay_log" : "Decaying Petrified Log",
+  "block.orimod.decay_dirt_mycelium" : "Earthy Decay Mycelium",
+  "block.orimod.decay_plantmatter_mycelium" : "Planty Decay Mycelium",
+  "block.orimod.stripped_decay_log" : "Stripped Decaying Petrified Log",
+  "block.orimod.decay_surface_mycelium" : "Decay Mycelium Coating",
+  "block.orimod.decay_log_cured" : "Petrified Log",
+  "block.orimod.stripped_decay_log_cured" : "Stripped Petrified Log",
+  "block.orimod.decay_poison" : "Decay Poison",
+
+  "block.orimod.light_capacitor" : "Luxen Capacitor",
+  "block.orimod.light_capacitor.tip" : "Stores Luxen for later use.",
+
+  "block.orimod.light_conduit" : "Luxen Conduit",
+  "block.orimod.light_conduit.tip" : "§3Links devices together to route power.",
+
+  "block.orimod.solid_light_conduit" : "Airtight Luxen Conduit",
+  "block.orimod.solid_light_conduit.tip" : "§3Links devices together to route power.",
+
+  "block.orimod.light_to_redstone_signal" : "Luxen Detector",
+  "block.orimod.light_to_redstone_signal.tip" : "§3Produces a redstone signal when powered.",
+
+  "block.orimod.light_to_rf" : "Luxen Flux Inducer",
+  "block.orimod.light_to_rf.tip" : "§3Converts Luxen to RF.",
+
+  "block.orimod.infinite_light_source" : "Infinite Luxen Source",
+  "block.orimod.infinite_light_source.tip" : "§3Provides unlimited power at an unlimited rate.",
+
+  "block.orimod.solar_generator" : "Solar Luxen Generator",
+  "block.orimod.solar_generator.tip" : "§3Converts sky light into Luxen",
+
+  "block.orimod.thermal_generator" : "Thermal Luxen Generator",
+  "block.orimod.thermal_generator.tip" : "§3Converts heat into Luxen. Optimal in The Nether.",
+
+  "block.orimod.light_repair_box" : "Luxen Reconstructor",
+  "block.orimod.light_repair_box.tip" : "§3Consumes Luxen to repair hardlight items.",
+  "container.orimod.light_repair_device" : "Luxen Reconstructor",
+
+  "block.orimod.forlorn_stone" : "Forlorn Stone",
+  "block.orimod.forlorn_stone_bricks" : "Forlorn Stone Bricks",
+  "block.orimod.forlorn_stone_line" : "Forlorn Stone (Line)",
+  "block.orimod.forlorn_stone_omni" : "Forlorn Stone (Center)",
+
+  "block.orimod.hardlight_block" : "Block of Hardlight",
+
+  "block.orimod.gorlek_ore" : "Gorlek Ore",
+  "block.orimod.raw_gorlek_ore_block" : "Block of Raw Gorlek Ore",
+  "block.orimod.gorlek_steel_block" : "Block of Gorlek Metal",
+  "block.orimod.gorlek_netherite_alloy_block" : "Block of Gorlek-Netherite Alloy",
+
+  "item.orimod.lumo_wand" : "Lumo Wand",
+  "item.orimod.decay_poison_bucket" : "Decay Poison Bucket",
+
+  "effect.orimod.decay" : "Decay",
+  "effect.orimod.radiant" : "Radiant",
+
+  "death.attack.decay" : "%s was silenced by The Decay.",
+  "death.attack.decay.player" : "%2$s silenced $1$s with The Decay.",
+
+  "death.attack.light" : "%s was incinerated with Light energy.",
+  "death.attack.light.player" : "%2$s incinerated %1$s with Light energy.",
+
+  "death.attack.spirit_arc" : "%s was pierced by hard Light.",
+  "death.attack.spirit_arc.player" : "%2$s pierced %1$s with Hard Light.",
+
+  "death.attack.self_energy" : "%s sacrificed too much of their internal Light.",
+  "death.attack.self_energy.player" : "%2$s tricked %1$s into spending too much of their internal Light.",
+
+  "orimod.spirit_restrictions.no_meat" : "You know you can't eat this. You're a herbivore!",
+
+  "config.orimod.general" : "General Configuration",
+
+  "config.orimod.spirit_abilities" : "Spirit Abilities",
+
+  "config.orimod.spirit_abilities.def_jump_type" : "Default Known Jump Ability",
+  "config.orimod.spirit_abilities.def_jump_type.description" : "What type of jumping Spirits can do as soon as they become one.",
+
+  "config.orimod.spirit_abilities.def_dash_type" : "Default Known Dash Ability",
+  "config.orimod.spirit_abilities.def_dash_type.description" : "What type of dashing Spirits can do as soon as they become one.",
+
+  "config.orimod.spirit_abilities.def_wall_jump" : "Know Wall Jump/Cling By Default",
+  "config.orimod.spirit_abilities.def_wall_jump.description" : "Whether or not Spirit players will know to wall jump and wall cling as soon as they become one.",
+
+
+
+  "config.orimod.spirit_management" : "Spirit State Management",
+
+  "config.orimod.spirit_management.default_state" : "Default State",
+  "config.orimod.spirit_management.default_state.description" : "The Default State mandates whether or not new saves (or new players, on servers) will start out as a Spirit by default.",
+
+  "config.orimod.spirit_management.force_state" : "Forcefully Use the Default State",
+  "config.orimod.spirit_management.force_state.description" : "If enabled, all players, including those that have the permission to change whether or not they are a Spirit, will be forced to either be a Player or a Spirit based on the Default State.",
+
+  "config.orimod.spirit_management.allow_changes_default" : "Allow Changing State",
+  "config.orimod.spirit_management.allow_changes_default.description" : "Whether or not to allow players to change between Player and Spirit. There is a permissions file that dictates who is explicitly allowed to, and who is explicitly not allowed to, which can be used to override this value per player.",
+
+  "config.orimod.spirit_management.change_model_self_level" : "Required op level to set self",
+  "config.orimod.spirit_management.change_model_self_level.description" : "What operator permission level must a player have to use /spirit set on themselves?",
+
+  "config.orimod.spirit_management.change_abilities_self_level" : "Required op level to change self abilities",
+  "config.orimod.spirit_management.change_abilities_self_level.description" : "What operator permission level must a player have to use /spirit ability on themselves?",
+
+  "config.orimod.spirit_management.change_model_others_level" : "Required op level to set others",
+  "config.orimod.spirit_management.change_model_others_level.description" : "What operator permission level must a player have to use /spirit set on other players?",
+
+  "config.orimod.spirit_management.change_abilities_others_level" : "Required op level to change others abilities",
+  "config.orimod.spirit_management.change_abilities_others_level.description" : "What operator permission level must a player have to use /spirit ability on other players?",
+
+  "config.orimod.spirit_management.use_old_maxhealth": "Use Legacy Divided Max HP",
+  "config.orimod.spirit_management.use_old_maxhealth.description": "Before v2.0.0, the 5 heart limit was imposed by dividing the total max health by 2. This interfered with changes to max health adversely, and so it was changed to subtraction instead. If this change has broken your server or save, turn this setting on to go back to the old divide method.",
+
+
+  "config.orimod.spirit_limits" : "Spirit Mechanics and Limits",
+
+  "config.orimod.spirit_limits.only_eat_plants" : "Allow Eating Only Plants",
+  "config.orimod.spirit_limits.only_eat_plants.description" : "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
+
+  "config.orimod.spirit_limits.self_repair_limits" : "Spirit Self-Powered Light Tools",
+  "config.orimod.spirit_limits.self_repair_limits.description" : "Some tools and devices allow Spirits to use their own life energy as a means of repair. This determines the extent in which that is possible.",
+
+  "config.orimod.spirit_limits.anyone_can_self_repair" : "Allow Normal Players To Self-Repair Light Tools",
+  "config.orimod.spirit_limits.anyone_can_self_repair.description" : "Under normal circumstances, non-spirit players cannot use their life to repair hardlight tools. If this is true, this limitation is bypassed.",
+
+  "config.orimod.spirit_limits.self_repair_damage" : "Spirit Self-Powered Repair Cost",
+  "config.orimod.spirit_limits.self_repair_damage.description" : "How much health does a single self-powered repair take? Note that 2 health is 1 heart.",
+
+  "config.orimod.spirit_limits.self_repair_earnings" : "Spirit Self-Powered Repair Amount",
+  "config.orimod.spirit_limits.self_repair_earnings.description" : "How much durability gets restored when repairing with your own energy?",
+
+  "config.orimod.light_energy" : "Luxen Configuration (Light Technology)",
+
+  "config.orimod.light_energy.rf_to_lux" : "RF to Luxen Conversion Ratio",
+  "config.orimod.light_energy.rf_to_lux.description" : "How much §cRF §fis required to get 1 §bLuxen.",
+
+  "config.orimod.light_energy.env_power" : "Environmental Light Efficiency",
+  "config.orimod.light_energy.env_power.description" : "§cThis is not yet functional.§f If enabled, environments of §5Decay §for §bLight §fwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §fenvironments and easier in §bLight §fenvironments.",
+
+  "config.orimod.light_energy.show_rf" : "RF Equivalent Display",
+  "config.orimod.light_energy.show_rf.description" : "§dRequires mod: Jade §r-- This determines when to display the RF equivalent of any given amount of Luxen.",
+
+  "config.orimod.rendering" : "Rendering Configuration",
+
+  "config.orimod.rendering.assembly_debug" : "Render AOS Debug Info",
+  "config.orimod.rendering.assembly_debug.description" : "The §bA§fssembly §bO§fptimization §bS§fystem is responsible for allowing excessively large machines to have low CPU usage. This option will cause debugging info for the AOS to show when the debug menu (F3) is open. §cThis feature can make the debug menu very laggy!§f",
+
+  "config.orimod.rendering.override_health_rendering" : "Override Health Renderer",
+  "config.orimod.rendering.override_health_rendering.description" : "If enabled, the vanilla heart renderer (on your HUD) is disabled and replaced with a near-identical implementation from this mod. This enables support for custom heart types when inflicted with effects like Decay, but may also cause compatibility issues with mods that change how health renders.",
+
+  "config.orimod.world" : "World Configuration",
+
+  "config.orimod.world.spirit_materials" : "Spirit Step Sound Bindings",
+  "config.orimod.world.spirit_materials.description" : "Binds blocks or block states to a specific SpiritMaterial, which changes the sound when stepping on a block of that material.",
+
+  "config.orimod.world.decay.spreading" : "General Decay Spreading",
+  "config.orimod.world.decay.spreading.description" : "Dictates how all §5Decay §fspreads in the world. It can either spread (spreads on random ticks, replaces blocks it can infect), not spread, or flat out not exist (it will cure or remove itself on random ticks)",
+
+  "config.orimod.world.decay.surface_coating" : "Decay Surface Mycelium Spreading",
+  "config.orimod.world.decay.surface_coating.description" : "Dictates how all §5Decay Surface Mycelium §fspreads in the world. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+
+  "config.orimod.world.decay.fluid" : "Decay Poison Spreading",
+  "config.orimod.world.decay.fluid.description" : "Dictates how all §5Decay Poison §fspreads in the world. This block is particularly aggressive in that it infects and replaces water. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+
+  "config.orimod.world.decay.diagonal_spread" : "Allow Diagonal Spreading",
+  "config.orimod.world.decay.diagonal_spread.description" : "If enabled, §5Decay §fblocks can spread diagonally by one block. This has somewhat of a performance impact (albeit minor). If disabled, they will only spread to the six direct neighbors to any given block, but can leverage a performance boost.",
+
+  "config.orimod.assembly_optimization_system.keep_chunks_alive" : "Keep Chunks Alive",
+  "config.orimod.assembly_optimization_system.keep_chunks_alive.description" : "This can be used to keep chunks containing functional Light tech (§7meaning they must be doing something with their energy§f) alive. This §aimproves gameplay by allowing tech to operate whilst unattended §fat the cost of §cmore CPU usage (the usage scales with how much is going on)§f.",
+
+  "config.orimod.assembly_optimization_system.max_assembly_iterations" : "Maximum Assembly Branches",
+  "config.orimod.assembly_optimization_system.max_assembly_iterations.description" : "Big sets of wires and devices are complicated. This setting decides how many + or T shaped wire joints the system can go through when searching for connected technology blocks. If there's too many branches, the system determines the assembly to be too complicated and gives up partway through. Higher values allow more largely interconnected machines, but also introduce a significant amount of server lag when changing the wiring (thankfully, there is not lag from the system existing, only from it changing).",
+
+  "waila.orimod.energy.word_storage" : "Storage",
+  "waila.orimod.energy.luxen_amount" : "%1$s Luxen",
+  "waila.orimod.energy.lum_amount" : "%1$s Lum",
+  "waila.orimod.energy.rf_amount" : "%1$s RF",
+
+  "waila.orimod.energy.word_output" : "Output",
+  "waila.orimod.energy.word_draw" : "Power Draw",
+  "waila.orimod.energy.word_tick" : "tick",
+
+  "waila.orimod.forlorn.word_skin" : "Skin",
+  "waila.orimod.forlorn.word_blue" : "Blue",
+  "waila.orimod.forlorn.word_orange" : "Orange",
+
+  "waila.orimod.energy.word_conversion" : "Conversion Note",
+  "waila.orimod.energy.word_warning" : "Warning",
+  "waila.orimod.energy.overload" : "System overloaded! Not enough power!",
+
+  "waila.orimod.env_flux" : "Affected by Environmental Flux",
+  "waila.orimod.decaysafetrue" : "Actively Decaying: §bNo §a(Safe!)",
+  "waila.orimod.decaysafefalse" : "Actively Decaying: §5Yes §c(Danger!)",
+
+  "config.jade.plugin_orimod.show_auto" : "Display autoconnection state of tech",
+  "config.jade.plugin_orimod.show_decay_state" : "Show safety of petrified blocks",
+  "config.jade.plugin_orimod.show_forlorn_skin" : "Show whether a Forlorn-style block is Blue or Orange",
+  "config.jade.plugin_orimod.show_energy" : "Show stored Luxen in tech blocks",
+
+  "command.orimod.setspirit.success" : "Success! Player %1$s has been updated. Their state of being a Spirit has changed to: %2$s",
+  "command.orimod.setspirit.success.self" : "Success! Your state of being a Spirit has changed to: %1$s",
+  "command.orimod.getspirit.status" : "Player %1$s has a spirit state of: %2$s",
+  "command.orimod.setspirit.failure.set_spirit_self" : "§cYou do not have permission to set whether or not you are a Spirit.",
+  "command.orimod.setspirit.failure.set_spirit_other" : "§cYou do not have permission to change if other players are Spirits.",
+  "command.orimod.setspirit.failure.server_forces_state" : "§cThis server or save is enforcing that players always use the current state. You cannot change it.",
+  "command.orimod.setspirit.failure.unknown_ability" : "§cUnknown ability.",
+  "command.orimod.setspirit.invalid.ability_value" : "§cInvalid value for this ability.",
+
+  "command.orimod.setspirit.failure.set_abilities_other" : "§cYou do not have permission to set the abilities of other Spirits.",
+  "command.orimod.setspirit.failure.set_abilities_self" : "§cYou do not have permission to set your own abilities.",
+
+  "command.orimod.setspirit.success.ability" : "Success! Data belonging to %1$s has been set to ",
+
+  "command.orimod.getstatedata" : "New players are spirits? %s (%s)",
+  "command.orimod.getstatedata.enforce" : "Enforcing this state on all players constantly",
+  "command.orimod.getstatedata.not_enforce" : "Players may change",
+  "command.orimod.setstatedata" : "Settings updated. New players will be spirits? %s. Is this state enforced on all players? %s.",
+
+  "command.setspirit.error.nocaps" : "Your player data is missing crucial data. Please report this bug (you can find the report link in the Mods menu on the title screen). Try rejoining or changing dimensions."
+}

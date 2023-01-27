@@ -6,6 +6,7 @@ import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarsha
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tile.light.implementations.SolarGeneratorTile;
 import etithespirit.orimod.common.tags.PresetBlockTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
@@ -43,7 +44,7 @@ public class SolarGeneratorBlock extends ConnectableLightTechBlock implements IB
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
 		super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-		pTooltip.add(Component.translatable("block.orimod.solar_generator.tip"));
+		pTooltip.add(Component.translatable("block.orimod.solar_generator.tip").withStyle(ChatFormatting.DARK_AQUA));
 	}
 	
 	@Nullable

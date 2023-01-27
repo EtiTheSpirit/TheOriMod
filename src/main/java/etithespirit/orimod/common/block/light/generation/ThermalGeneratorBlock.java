@@ -6,6 +6,7 @@ import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarsha
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import etithespirit.orimod.common.tile.light.implementations.ThermalGeneratorTile;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.BlockTags;
@@ -38,7 +39,7 @@ public class ThermalGeneratorBlock extends ConnectableLightTechBlock implements 
 	
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
-		pTooltip.add(Component.translatable("block.orimod.thermal_generator.tip"));
+		pTooltip.add(Component.translatable("block.orimod.thermal_generator.tip").withStyle(ChatFormatting.DARK_AQUA));
 	}
 	
 	/**

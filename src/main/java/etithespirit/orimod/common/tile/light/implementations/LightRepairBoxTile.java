@@ -1,5 +1,6 @@
 package etithespirit.orimod.common.tile.light.implementations;
 
+import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.annotation.ServerUseOnly;
 import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.client.render.hud.LightRepairDeviceMenu;
@@ -41,7 +42,7 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	public static final float CONSUMPTION_RATE = 0.25f;
 	public static final int CONTAINER_SIZE = 9;
 	private NonNullList<ItemStack> items = NonNullList.withSize(CONTAINER_SIZE, ItemStack.EMPTY);
-	private final LightTechLooper SOUND;
+	private @ClientUseOnly Optional<LightTechLooper> SOUND = Optional.empty();
 	private int nextItem = 0;
 	
 	private final @ServerUseOnly EnergyReservoir consumerHelper = new EnergyReservoir(Float.POSITIVE_INFINITY); // Unlike other devices, this has a conditional cost, so it can store a theoretical unlimited amount of power
@@ -55,14 +56,26 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	
 	public LightRepairBoxTile(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(TileEntityRegistry.LIGHT_REPAIR_BOX.get(), pWorldPosition, pBlockState);
-		SOUND = new LightTechLooper(
+		
+	}
+	
+	@Override
+	public void setLevel(Level pLevel) {
+		super.setLevel(pLevel);
+		if (level.isClientSide) {
+			createLoopedSound();
+		}
+	}
+	
+	private void createLoopedSound() {
+		SOUND = Optional.of(new LightTechLooper(
 			this,
 			SoundRegistry.get("tile.light_tech.generic.activate"),
 			SoundRegistry.get("tile.light_tech.generic.active_loop"),
 			SoundRegistry.get("tile.light_tech.generic.deactivate")
-		);
+		));
 		// SOUND.setRange(4);
-		SOUND.setBaseVolume(0.3f);
+		SOUND.get().setBaseVolume(0.3f);
 	}
 	
 	@Override
@@ -220,7 +233,7 @@ public class LightRepairBoxTile extends LightEnergyHandlingTile implements MenuP
 	 * @return A reference to the sound that this emits.
 	 */
 	@Override
-	public LightTechLooper getSoundInstance() {
+	public Optional<LightTechLooper> getSoundInstance() {
 		return SOUND;
 	}
 	

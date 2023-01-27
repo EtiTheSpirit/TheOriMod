@@ -26,6 +26,7 @@ import net.minecraftforge.event.AnvilUpdateEvent;
 import net.minecraftforge.event.entity.player.AnvilRepairEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 
+import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.util.List;
 
@@ -97,10 +98,8 @@ public final class SpiritItemCustomizations {
 		if (stack.getItem() instanceof IOriModItemTierProvider tierProvider) {
 			List<Component> tips = tooltipEvent.getToolTip();
 			
-			
 			UniversalOriModItemTier tier = tierProvider.getOriModTier();
 			if (tier.getLuxenRepairCost().isPresent() && tier.getLuxenRepairLimit().isPresent()) {
-				
 				int durabilityIndex = -1;
 				for (int index = tips.size() - 1; index >= 0; index--) {
 					MutableComponent tip = (MutableComponent) tips.get(index);
@@ -120,10 +119,10 @@ public final class SpiritItemCustomizations {
 				if (durabilityIndex != -1 && isDamaged) {
 					tips.add(durabilityIndex + 1, Component.translatable("tooltip.orimod.durability.physical", health, maxDamage));
 					tips.remove(durabilityIndex);
-					tips.add(durabilityIndex + 1, Component.translatable("tooltip.orimod.durability.repairlimit.1", maxHealth).withStyle(ExtendedChatColors.LIGHT));
-					tips.add(durabilityIndex + 2, Component.translatable("tooltip.orimod.durability.repairlimit.2").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
-					tips.add(durabilityIndex + 3, Component.translatable("tooltip.orimod.durability.repairlimit.3").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
-					tips.add(durabilityIndex + 4, Component.translatable("tooltip.orimod.durability.repairlimit.4").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
+					tips.add(durabilityIndex + 2, Component.translatable("tooltip.orimod.durability.repairlimit.1", maxHealth).withStyle(ExtendedChatColors.LIGHT));
+					tips.add(durabilityIndex + 3, Component.translatable("tooltip.orimod.durability.repairlimit.2").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
+					tips.add(durabilityIndex + 4, Component.translatable("tooltip.orimod.durability.repairlimit.3").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
+					tips.add(durabilityIndex + 5, Component.translatable("tooltip.orimod.durability.repairlimit.4").withStyle(ExtendedChatColors.GRAY_PAIR.dark));
 				} else if (isDamaged) {
 					tips.add(Component.translatable("tooltip.orimod.durability.physical", health, maxDamage));
 					tips.add(Component.translatable("tooltip.orimod.durability.repairlimit.1", maxHealth).withStyle(ExtendedChatColors.LIGHT));
@@ -165,8 +164,13 @@ public final class SpiritItemCustomizations {
 		return Math.max(stack.getMaxDamage() - getMaxLuxenReconstructionDurability(stack), 0);
 	}
 	
+	public static @Nonnull InteractionResultHolder<ItemStack> useStackForSelfRepair(Level pLevel, Player pPlayer, InteractionHand pUsedHand, Function3<Level, Player, InteractionHand, InteractionResultHolder<ItemStack>> superUse) {
+		InteractionResultHolder<ItemStack> holder = useStackForSelfRepairNullable(pLevel, pPlayer, pUsedHand, superUse);
+		return holder != null ? holder : InteractionResultHolder.pass(pPlayer.getItemInHand(pUsedHand));
+	}
+	
 	@Nullable
-	public static InteractionResultHolder<ItemStack> useStackForSelfRepair(Level pLevel, Player pPlayer, InteractionHand pUsedHand, Function3<Level, Player, InteractionHand, InteractionResultHolder<ItemStack>> superUse) {
+	private static InteractionResultHolder<ItemStack> useStackForSelfRepairNullable(Level pLevel, Player pPlayer, InteractionHand pUsedHand, Function3<Level, Player, InteractionHand, InteractionResultHolder<ItemStack>> superUse) {
 		if (pPlayer.isSecondaryUseActive()) {
 			ItemStack item = pPlayer.getItemInHand(pUsedHand);
 			if (item.getDamageValue() > 0) {

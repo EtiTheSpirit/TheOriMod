@@ -71,7 +71,7 @@ public final class ReplicatePlayerMovement {
 	public static final class Server {
 		
 		public static void registerServerPackets() {
-			INSTANCE.registerMessage(ReplicationData.nextID(), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicatePlayerMovement.Server::onServerEvent);
+			INSTANCE.registerMessage(ReplicationData.nextID(false), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicatePlayerMovement.Server::onServerEvent);
 		}
 		
 		private static void onServerEvent(Packet packet, Supplier<NetworkEvent.Context> ctx) {

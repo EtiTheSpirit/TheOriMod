@@ -83,6 +83,9 @@ public final class SpiritCapabilities implements ICapabilitySerializable<Compoun
 	 * @param isSpirit True if they should be a spirit, false if not.
 	 */
 	public void setSpirit(boolean isSpirit) {
+		if (OriModConfigs.FORCE_STATE.get()) {
+			isSpirit = OriModConfigs.DEFAULT_SPIRIT_STATE.get();
+		}
 		isSpiritInternal = isSpirit;
 	}
 	
@@ -372,7 +375,9 @@ public final class SpiritCapabilities implements ICapabilitySerializable<Compoun
 	 * @return Whether or not the player, given the current settings and state, should be a spirit.
 	 */
 	public boolean isSpirit() {
-		if (OriModConfigs.FORCE_STATE.get()) return OriModConfigs.DEFAULT_SPIRIT_STATE.get();
+		if (OriModConfigs.FORCE_STATE.get()) {
+			isSpiritInternal = OriModConfigs.DEFAULT_SPIRIT_STATE.get();
+		}
 		return isSpiritInternal;
 	}
 	
@@ -439,7 +444,7 @@ public final class SpiritCapabilities implements ICapabilitySerializable<Compoun
 	public Component dumpToComponent() {
 		if (isSpirit()) {
 			return Component.literal("SpiritCapabilities[").withStyle(ChatFormatting.WHITE)
-				.append(ChatHelper.keyToValue("isSpirit", ChatHelper.ofBoolean(isSpirit())))
+				.append(ChatHelper.keyToValue("isSpirit", ChatHelper.ofBooleanYN(isSpirit())))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
 				.append(ChatHelper.keyToValue("jumpSettings", airJumpAbility.dumpToComponent(canWallJump)))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
@@ -447,7 +452,7 @@ public final class SpiritCapabilities implements ICapabilitySerializable<Compoun
 				.append(Component.literal("]").withStyle(ChatFormatting.WHITE));
 		} else {
 			return Component.literal("SpiritCapabilities[").withStyle(ChatFormatting.WHITE)
-				.append(ChatHelper.keyToValue("isSpirit", ChatHelper.ofBoolean(isSpirit())))
+				.append(ChatHelper.keyToValue("isSpirit", ChatHelper.ofBooleanYN(isSpirit())))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
 				.append(ChatHelper.keyToValue("jumpSettings", Component.literal("[N/A]").withStyle(ChatFormatting.DARK_GRAY)))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))

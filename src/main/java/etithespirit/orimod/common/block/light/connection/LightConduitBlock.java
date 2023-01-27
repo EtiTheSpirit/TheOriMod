@@ -10,6 +10,7 @@ import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.SoundRegistry;
 import etithespirit.orimod.util.Bit32;
 import etithespirit.orimod.common.tags.PresetBlockTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -192,7 +193,7 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IBlo
 	@Override
 	public void appendHoverText(ItemStack pStack, @org.jetbrains.annotations.Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
 		super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-		pTooltip.add(Component.translatable("block.orimod.light_conduit.tip"));
+		pTooltip.add(Component.translatable("block.orimod.light_conduit.tip").withStyle(ChatFormatting.DARK_AQUA));
 	}
 	
 }

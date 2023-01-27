@@ -17,6 +17,15 @@ public final class ChatHelper {
 		return Component.literal("false").withStyle(ChatFormatting.RED);
 	}
 	
+	
+	public static MutableComponent ofBooleanYN(boolean value) {
+		if (value) {
+			return Component.translatable("gui.yes").withStyle(ChatFormatting.GREEN);
+		}
+		return Component.translatable("gui.no").withStyle(ChatFormatting.RED);
+	}
+	
+	
 	public static boolean canMyChinchillaPlaceThisDirtOnTopOfYourBlockOnTuesday() {
 		return false;
 	}

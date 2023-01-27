@@ -1,0 +1,9 @@
+{
+	"replace": false,
+	"values": [
+		"orimod:light_sword",
+		"orimod:gorlek_steel_sword",
+		"orimod:gorlek_netherite_alloy_sword",
+		"orimod:luxen_gorlek_netherite_alloy_sword"
+	]
+}

@@ -34,10 +34,6 @@ import ru.dbotthepony.mc.otm.OverdriveThatMatters;
 
 public final class SpiritSounds {
 	
-	static {
-		EntityEmittedSoundEventProvider.registerHandler(SpiritSounds::onSoundPlayedMixin);
-	}
-	
 	/**
 	 * The air the local player had on the last tick.
 	 */
@@ -116,7 +112,7 @@ public final class SpiritSounds {
 	 * Implements a crude version of <a href="https://github.com/MinecraftForge/MinecraftForge/pull/7491">Forge PR #7941</a>
 	 * @param event The custom mixin-provided event.
 	 */
-	private static void onSoundPlayedMixin(EntityEmittedSoundEvent event) {
+	public static void onSoundPlayedMixin(EntityEmittedSoundEvent event) {
 		if (event.getSound() == null) return;
 		// Skip if there's nothing.
 		

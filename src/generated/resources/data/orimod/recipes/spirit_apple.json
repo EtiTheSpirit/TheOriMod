@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "item": "minecraft:golden_apple"
+    },
+    "L": {
+      "item": "orimod:hardlight_block"
+    }
+  },
+  "pattern": [
+    "LLL",
+    "LAL",
+    "LLL"
+  ],
+  "result": {
+    "item": "orimod:spirit_apple"
+  }
+}

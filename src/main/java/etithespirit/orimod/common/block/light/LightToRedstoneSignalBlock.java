@@ -7,6 +7,7 @@ import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarsha
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import etithespirit.orimod.common.tile.light.implementations.LightToRedstoneSignalTile;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -91,7 +92,7 @@ public class LightToRedstoneSignalBlock extends ConnectableLightTechBlock implem
 	@Override
 	public void appendHoverText(ItemStack pStack, @org.jetbrains.annotations.Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
 		super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-		pTooltip.add(Component.translatable("block.orimod.light_to_redstone_signal.tip"));
+		pTooltip.add(Component.translatable("block.orimod.light_to_redstone_signal.tip").withStyle(ChatFormatting.DARK_AQUA));
 	}
 	
 	

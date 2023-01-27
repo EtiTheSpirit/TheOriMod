@@ -1,0 +1,9 @@
+{
+	"replace": false,
+	"values": [
+		"orimod:light_pickaxe",
+		"orimod:gorlek_steel_pickaxe",
+		"orimod:gorlek_netherite_alloy_pickaxe",
+		"orimod:luxen_gorlek_netherite_alloy_pickaxe"
+	]
+}

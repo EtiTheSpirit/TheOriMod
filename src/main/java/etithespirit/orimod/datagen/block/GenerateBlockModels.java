@@ -48,6 +48,11 @@ public final class GenerateBlockModels extends BlockStateProvider {
 		
 		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.FORLORN_STONE, "forlorn_stone/base");
 		BlockGenerationTools.Common.registerBlockAndItem(this, BlockRegistry.FORLORN_STONE_BRICKS, "forlorn_stone/base");
+		BlockGenerationTools.Common.registerSlabAndItem(this, BlockRegistry.FORLORN_STONE_BRICK_SLAB, "forlorn_stone/base");
+		BlockGenerationTools.Common.registerWallAndItem(this, BlockRegistry.FORLORN_STONE_BRICK_WALL, "forlorn_stone/base");
+		BlockGenerationTools.Common.registerStairsAndItem(this, BlockRegistry.FORLORN_STONE_BRICK_STAIRS, "forlorn_stone/base");
+		
+		
 		BlockGenerationTools.ForlornDecorativeBlockCode.fullBlockAndItem(this, BlockRegistry.FORLORN_STONE_OMNI, "forlorn_stone/omni");
 		BlockGenerationTools.ForlornDecorativeBlockCode.pillarBlockAndItem(this, BlockRegistry.FORLORN_STONE_LINE, "forlorn_stone/line");
 		

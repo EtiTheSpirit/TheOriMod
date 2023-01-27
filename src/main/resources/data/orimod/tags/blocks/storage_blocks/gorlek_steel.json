@@ -1,4 +1,5 @@
 {
+	"replace": false,
 	"values": [
 		"orimod:gorlek_steel_block"
 	]

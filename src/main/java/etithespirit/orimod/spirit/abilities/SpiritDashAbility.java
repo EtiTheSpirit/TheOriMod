@@ -59,7 +59,7 @@ public enum SpiritDashAbility {
 	public MutableComponent dumpToComponent() {
 		if (!canDashInternal) {
 			return Component.literal("DashSettings[").withStyle(ChatFormatting.WHITE)
-				.append(ChatHelper.keyToValue("canDash", ChatHelper.ofBoolean(false)))
+				.append(ChatHelper.keyToValue("canDash", ChatHelper.ofBooleanYN(false)))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
 				.append(ChatHelper.keyToValue("allowAirDash", Component.literal("N/A").withStyle(ChatFormatting.DARK_GRAY)))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
@@ -67,11 +67,11 @@ public enum SpiritDashAbility {
 				.append(Component.literal("]").withStyle(ChatFormatting.WHITE));
 		} else {
 			return Component.literal("DashSettings[").withStyle(ChatFormatting.WHITE)
-				.append(ChatHelper.keyToValue("canDash", ChatHelper.ofBoolean(true)))
+				.append(ChatHelper.keyToValue("canDash", ChatHelper.ofBooleanYN(true)))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
-				.append(ChatHelper.keyToValue("allowAirDash", ChatHelper.ofBoolean(inAir)))
+				.append(ChatHelper.keyToValue("allowAirDash", ChatHelper.ofBooleanYN(inAir)))
 				.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
-				.append(ChatHelper.keyToValue("allowWaterDash", ChatHelper.ofBoolean(inWater)))
+				.append(ChatHelper.keyToValue("allowWaterDash", ChatHelper.ofBooleanYN(inWater)))
 				.append(Component.literal("]").withStyle(ChatFormatting.WHITE));
 		}
 	}

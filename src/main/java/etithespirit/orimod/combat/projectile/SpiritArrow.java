@@ -2,6 +2,7 @@ package etithespirit.orimod.combat.projectile;
 
 import etithespirit.orimod.combat.damage.OriModDamageSources;
 import etithespirit.orimod.registry.SoundRegistry;
+import net.minecraft.util.Mth;
 import net.minecraft.world.damagesource.DamageSource;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EntityType;
@@ -47,6 +48,27 @@ public class SpiritArrow extends AbstractArrow {
 		this.discard();
 	}
 	
+	/**
+	 * Shoot but with doubles
+	 */
+	public void shoot(double pX, double pY, double pZ, double pVelocity, double pInaccuracy) {
+		Vec3 vec3 = (new Vec3(pX, pY, pZ)).normalize();
+		if (pInaccuracy > 0) {
+			vec3 = vec3.add(
+				this.random.triangle(0.0D, 0.0172275D * pInaccuracy),
+				this.random.triangle(0.0D, 0.0172275D * pInaccuracy),
+				this.random.triangle(0.0D, 0.0172275D * pInaccuracy)
+			).normalize();
+		}
+		vec3 = vec3.scale(pVelocity);
+		this.setDeltaMovement(vec3);
+		double d0 = vec3.horizontalDistance();
+		this.setYRot((float)(Mth.atan2(vec3.x, vec3.z) * Mth.RAD_TO_DEG));
+		this.setXRot((float)(Mth.atan2(vec3.y, d0) * Mth.RAD_TO_DEG));
+		this.yRotO = this.getYRot();
+		this.xRotO = this.getXRot();
+	}
+	
 	@Override
 	public void tick() {
 		super.tick();
@@ -54,16 +76,24 @@ public class SpiritArrow extends AbstractArrow {
 	}
 	
 	@Override
+	protected void tickDespawn() {
+		ticksAlive++;
+		if (ticksAlive > 1200) {
+			discard();
+		}
+	}
+	
+	@Override
 	protected void onHitEntity(EntityHitResult result) {
 		Entity shooter = this.getOwner();
 		Entity victim = result.getEntity();
-		if (shooter.equals(victim)) {
-			if (ticksAlive < 10) return;
+		if (!canHitEntity(victim)) {
+			return;
 		}
 		
 		DamageSource damage;
 		double baseDamage = this.getBaseDamage();
-		baseDamage *= 1 + this.random.nextDouble() / 7;
+		// baseDamage *= 1 + this.random.nextDouble() / 7;
 		
 		if (shooter == null) {
 			damage = OriModDamageSources.spiritArc(this, this);

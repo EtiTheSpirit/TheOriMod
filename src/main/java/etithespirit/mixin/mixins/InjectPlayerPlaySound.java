@@ -1,6 +1,5 @@
 package etithespirit.mixin.mixins;
 
-import etithespirit.mixin.helpers.DuplicateSoundEvent;
 import etithespirit.mixin.helpers.ISelfProvider;
 import etithespirit.orimod.event.EntityEmittedSoundEvent;
 import etithespirit.orimod.event.EntityEmittedSoundEventProvider;
@@ -21,6 +20,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public abstract class InjectPlayerPlaySound extends LivingEntity implements ISelfProvider {
 	private InjectPlayerPlaySound(EntityType<? extends LivingEntity> pEntityType, Level pLevel) { super(pEntityType, pLevel); }
 	
+	private boolean orimod$playedSoundAlready = false;
 	/**
 	 * This method is injected to intercept sounds and pipe them to my custom sound event.
 	 * @param soundIn The sound being played.
@@ -30,11 +30,7 @@ public abstract class InjectPlayerPlaySound extends LivingEntity implements ISel
 	 */
 	@Inject(method="playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at=@At("HEAD"), cancellable = true)
 	public void orimod$onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
-		// See OverrideEntityPlaySound for what this garbage is.
-		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
-			return;
-		}
-		
+		if (orimod$playedSoundAlready) return;
 		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(selfProvider$entity(), null, this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
@@ -43,7 +39,10 @@ public abstract class InjectPlayerPlaySound extends LivingEntity implements ISel
 		
 		if (evt.wasModified()) {
 			// See OverrideEntityPlaySound for what this garbage is.
-			playSound(new DuplicateSoundEvent(evt.getSound()), evt.getVolume(), evt.getPitch());
+			//playSound(new DuplicateSoundEvent(evt.getSound()), evt.getVolume(), evt.getPitch());
+			orimod$playedSoundAlready = true;
+			playSound(evt.getSound(), evt.getVolume(), evt.getPitch());
+			orimod$playedSoundAlready = false;
 			ci.cancel();
 		}
 	}

@@ -48,7 +48,7 @@ public final class EntityRegistry {
 			AttributeSupplier.builder()
 				.add(Attributes.MAX_HEALTH, 0.05)
 		        .add(Attributes.MOVEMENT_SPEED, 0)
-		        .add(Attributes.KNOCKBACK_RESISTANCE, 100D)
+		        .add(Attributes.KNOCKBACK_RESISTANCE, 1D)
 				.add(Attributes.FOLLOW_RANGE, 0)
 				.add(Attributes.ATTACK_KNOCKBACK, 0)
 				.add(Attributes.ATTACK_DAMAGE, 10)

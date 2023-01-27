@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "orimod:block/forlorn_stone/base/forlorn_stone_brick_slab_bottom"
+    },
+    "type=double": {
+      "model": "orimod:block/forlorn_stone/base/forlorn_stone_brick_slab_double"
+    },
+    "type=top": {
+      "model": "orimod:block/forlorn_stone/base/forlorn_stone_brick_slab_top"
+    }
+  }
+}

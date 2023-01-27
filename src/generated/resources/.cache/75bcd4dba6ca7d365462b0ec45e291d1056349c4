@@ -1,11 +1,11 @@
-// 1.19.2	2022-12-28T10:29:45.186343	Tags for minecraft:block
+// 1.19.2	2023-01-27T09:30:09.9325549	Tags for minecraft:block
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/beacon_base_blocks.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/dampens_vibrations.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/dragon_immune.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/impermeable.json
-16c89461eb6a71192d5e1efa3bfe45dbf4d7bc50 data/minecraft/tags/blocks/mineable/pickaxe.json
+f361414c1871ebad35158ad8998abaf6da57c747 data/minecraft/tags/blocks/mineable/pickaxe.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/needs_diamond_tool.json
 afa7295c491d9949eeac5bae912be73c5850e3d1 data/minecraft/tags/blocks/needs_iron_tool.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/occludes_vibration_signals.json
 0f89ec83d80708a2573178b82120484ddce000fe data/minecraft/tags/blocks/wither_immune.json
-fec0ed8ba266981be219828e8362ad3417ac38a6 data/orimod/tags/blocks/aligned/aligned_light.json
+c60ba01eed8b841e913945a90c11ebf72f18d6fb data/orimod/tags/blocks/aligned/aligned_light.json

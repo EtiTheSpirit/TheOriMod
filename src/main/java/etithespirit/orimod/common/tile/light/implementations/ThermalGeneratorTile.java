@@ -1,5 +1,6 @@
 package etithespirit.orimod.common.tile.light.implementations;
 
+import etithespirit.orimod.annotation.ClientUseOnly;
 import etithespirit.orimod.aos.ConnectionHelper;
 import etithespirit.orimod.client.audio.LightTechLooper;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
@@ -21,10 +22,12 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Material;
 
+import java.util.Optional;
+
 public class ThermalGeneratorTile extends LightEnergyHandlingTile implements IAmbientSoundEmitter, IServerUpdatingTile, IClientUpdatingTile, ILightEnergyGenerator {
 	
 	public static final float PEAK_GENERATION_RATE = 1/4f;
-	private final LightTechLooper looper;
+	private @ClientUseOnly Optional<LightTechLooper> looper = Optional.empty();
 	private final EnergyReservoir generatorHelper = new EnergyReservoir(PEAK_GENERATION_RATE * (7/5f));
 	private final BlockPos[] neighborPositions = new BlockPos[6];
 	private float lastHeat = 0;
@@ -35,17 +38,28 @@ public class ThermalGeneratorTile extends LightEnergyHandlingTile implements IAm
 	
 	public ThermalGeneratorTile(BlockPos at, BlockState state) {
 		super(TileEntityRegistry.THERMAL_GENERATOR.get(), at, state);
-		looper = new LightTechLooper(
-			this,
-			null,
-			SoundRegistry.get("tile.light_tech.thermal.loop"),
-			null
-		);
-		looper.setBaseVolume(0.4f);
 		int index = 0;
 		for (Direction dir : Direction.values()) {
 			neighborPositions[index++] = at.relative(dir).immutable();
 		}
+	}
+	
+	@Override
+	public void setLevel(Level pLevel) {
+		super.setLevel(pLevel);
+		if (pLevel.isClientSide) {
+			createLoopedSound();
+		}
+	}
+	
+	private void createLoopedSound() {
+		looper = Optional.of(new LightTechLooper(
+			this,
+			null,
+			SoundRegistry.get("tile.light_tech.thermal.loop"),
+			null
+		));
+		looper.get().setBaseVolume(0.4f);
 	}
 	
 	/**
@@ -109,7 +123,7 @@ public class ThermalGeneratorTile extends LightEnergyHandlingTile implements IAm
 	 * @return A reference to the sound that this emits.
 	 */
 	@Override
-	public LightTechLooper getSoundInstance() {
+	public Optional<LightTechLooper> getSoundInstance() {
 		return looper;
 	}
 	

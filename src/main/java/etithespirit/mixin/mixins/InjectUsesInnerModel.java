@@ -30,6 +30,7 @@ public abstract class InjectUsesInnerModel<T extends LivingEntity, M extends Hum
 	 * @param slotType The slot type for the armor.
 	 * @param ci Mixin callback information.
 	 */
+	/*
 	@Inject (
 		method = "usesInnerModel(Lnet/minecraft/world/entity/EquipmentSlot;)Z",
 		at = @At ("RETURN"), // No particular return ordinal is required here
@@ -37,9 +38,13 @@ public abstract class InjectUsesInnerModel<T extends LivingEntity, M extends Hum
 		// override all return statements.
 		cancellable = true
 	)
+	*/
 	public void orimod$usesInnerModel$spirit(EquipmentSlot slotType, CallbackInfoReturnable<Boolean> ci) {
 		if (SpiritIdentifier.isSpirit(Minecraft.getInstance().player)) {
 			ci.setReturnValue(false);
 		}
 	}
+	
+	// FIXME: This mixin causes an error when rendering armor stands (draws the wrong armor part). Rather than replacing the return value of this method, an injection needs to run when it is called.
+	// Technically, this mixin should be obsolete because of the custom spirit armor model, but this botches the forced fallback.
 }

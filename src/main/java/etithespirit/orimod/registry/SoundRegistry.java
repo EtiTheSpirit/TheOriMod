@@ -1,8 +1,5 @@
 package etithespirit.orimod.registry;
 
-import com.mojang.serialization.codecs.CompoundListCodec;
-import com.mojang.serialization.codecs.RecordCodecBuilder;
-import etithespirit.mixin.helpers.DuplicateSoundEvent;
 import etithespirit.orimod.OriMod;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvent;
@@ -18,8 +15,6 @@ public final class SoundRegistry {
 	
 	private static final DeferredRegister<SoundEvent> SOUND_REGISTRY = DeferredRegister.create(ForgeRegistries.SOUND_EVENTS, OriMod.MODID);
 	
-	
-	
 	public static final HashMap<String, RegistryObject<SoundEvent>> SOUNDS = new HashMap<>();
 	
 	public static @Nonnull SoundEvent get(@Nonnull String soundEventName) {
@@ -31,7 +26,7 @@ public final class SoundRegistry {
 	}
 	
 	public static void registerSound(String soundEventName) {
-		SOUNDS.put(soundEventName, SOUND_REGISTRY.register(soundEventName, () -> new DuplicateSoundEvent(new ResourceLocation(OriMod.MODID, soundEventName))));
+		SOUNDS.put(soundEventName, SOUND_REGISTRY.register(soundEventName, () -> new SoundEvent(new ResourceLocation(OriMod.MODID, soundEventName))));
 	}
 	
 	

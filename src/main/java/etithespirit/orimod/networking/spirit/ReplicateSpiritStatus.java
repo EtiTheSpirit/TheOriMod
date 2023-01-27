@@ -11,10 +11,13 @@ import etithespirit.orimod.player.EffectEnforcement;
 import etithespirit.orimod.registry.advancements.AdvancementRegistry;
 import etithespirit.orimod.spirit.SpiritIdentifier;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.server.players.PlayerList;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.event.entity.player.PlayerEvent;
@@ -26,8 +29,10 @@ import net.minecraftforge.network.simple.SimpleChannel;
 import javax.annotation.Nonnull;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -86,7 +91,7 @@ public final class ReplicateSpiritStatus {
 	public static final class Server {
 		
 		public static void registerServerPackets() {
-			INSTANCE.registerMessage(ReplicationData.nextID(), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateSpiritStatus.Server::onServerEvent);
+			INSTANCE.registerMessage(ReplicationData.nextID(false), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateSpiritStatus.Server::onServerEvent);
 		}
 		
 		private static void onServerEvent(Packet msg, Supplier<NetworkEvent.Context> ctx) {
@@ -161,14 +166,28 @@ public final class ReplicateSpiritStatus {
 		public static void tellEveryonePlayerSpiritStatus(Player player, boolean isSpirit) {
 			SpiritIdentifier.setSpirit(player, isSpirit);
 			INSTANCE.send(PacketDistributor.ALL.noArg(), Packet.toChangeModelOf(player, isSpirit));
-			AdvancementRegistry.BECOME_SPIRIT.trigger((ServerPlayer) player);
+			if (isSpirit) AdvancementRegistry.BECOME_SPIRIT.trigger((ServerPlayer) player);
+		}
+
+		/**
+		 * For use when the default state is changed or the forced state is changed.
+		 *
+		 * @param isSpirit The new state of whether or not they are a spirit.
+		 */
+		@ServerUseOnly
+		public static void forcedStateChanged(MinecraftServer server, boolean isSpirit) {
+			for (ServerPlayer player : server.getPlayerList().getPlayers()) {
+				SpiritIdentifier.setSpirit(player, isSpirit);
+				if (isSpirit) AdvancementRegistry.BECOME_SPIRIT.trigger(player);
+			}
+			INSTANCE.send(PacketDistributor.ALL.noArg(), Packet.toChangeModelsOfAll(server, isSpirit));
 		}
 	}
 
 	public static final class Client {
 		
 		public static void registerClientPackets() {
-			ReplicateSpiritStatus.INSTANCE.registerMessage(ReplicationData.nextID(), Packet.class, ReplicateSpiritStatus.PACKET_TO_BUFFER, ReplicateSpiritStatus.BUFFER_TO_PACKET, ReplicateSpiritStatus.Client::onClientEvent);
+			ReplicateSpiritStatus.INSTANCE.registerMessage(ReplicationData.nextID(true), Packet.class, ReplicateSpiritStatus.PACKET_TO_BUFFER, ReplicateSpiritStatus.BUFFER_TO_PACKET, ReplicateSpiritStatus.Client::onClientEvent);
 		}
 		
 		
@@ -178,7 +197,7 @@ public final class ReplicateSpiritStatus {
 					// We've received word from the server of one or more players' models changing.
 					// Let's update our data.
 					// The server sent this, so it's safe to assume the value is acceptable.
-					Level world = Minecraft.getInstance().level;
+					ClientLevel world = Minecraft.getInstance().level;
 					if (world != null) {
 						msg.playerSpiritStateMappings.forEach((uuid, isSpirit) -> {
 							Player player = world.getPlayerByUUID(uuid);
@@ -283,6 +302,18 @@ public final class ReplicateSpiritStatus {
 			boolean isClient = player.level.isClientSide;
 			EventType evt = isClient ? EventType.TRY_CHANGE_MODEL : EventType.UPDATE_PLAYER_MODELS;
 			return new Packet(evt, Map.of(player.getUUID(), beSpirit));
+		}
+		
+		/**
+		 * Constructs a packet that sets the state of every player in the server.
+		 * @param beSpirit
+		 * @return
+		 */
+		public static Packet toChangeModelsOfAll(MinecraftServer inServer, boolean beSpirit) {
+			EventType evt = EventType.UPDATE_PLAYER_MODELS;
+			Map<UUID, Boolean> map = new HashMap();
+			inServer.getPlayerList().getPlayers().forEach(plr -> map.put(plr.getUUID(), beSpirit));
+			return new Packet(evt, map);
 		}
 		
 		/**

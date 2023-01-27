@@ -15,8 +15,10 @@ import oshi.util.tuples.Pair;
 
 import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -29,6 +31,7 @@ public final class SpiritMaterialGetter {
 	private static ImmutableMap<String, SpiritMaterialContainer> ALL_CONTAINERS_IMMUTABLE;
 	private static final Map<StatePair, SpiritMaterialContainer> LAST_KNOWN_CONTAINERS = new HashMap<>();
 	private static final Map<StatePair, SpiritMaterial> LAST_KNOWN_RESULTS = new HashMap<>();
+	private static List<String> ORDERED_CONTAINER_KEYS;
 	
 	/**
 	 * Using all known lookups for custom materials, this returns the appropriate material given an entity, the block it is standing on, and the block it is standing inside of.
@@ -50,6 +53,12 @@ public final class SpiritMaterialGetter {
 		
 		if (ALL_CONTAINERS_IMMUTABLE == null) {
 			ALL_CONTAINERS_IMMUTABLE = SpiritMaterialContainer.getAllContainers();
+			ORDERED_CONTAINER_KEYS = new ArrayList<>();
+			for (String modId : ALL_CONTAINERS_IMMUTABLE.keySet()) {
+				if (modId.equals("minecraft")) continue;
+				ORDERED_CONTAINER_KEYS.add(modId);
+			}
+			ORDERED_CONTAINER_KEYS.add("minecraft");
 		}
 		
 		SpiritMaterial result = LAST_KNOWN_RESULTS.get(these);
@@ -63,7 +72,7 @@ public final class SpiritMaterialGetter {
 		}
 		
 		result = SpiritMaterial.INHERITED;
-		for (String modId : ALL_CONTAINERS_IMMUTABLE.keySet()) {
+		for (String modId : ORDERED_CONTAINER_KEYS) {
 			materialContainer = ALL_CONTAINERS_IMMUTABLE.get(modId);
 			if (materialContainer == null) throw new NullPointerException();
 			if (!materialContainer.shouldHandle(on, in)) continue;

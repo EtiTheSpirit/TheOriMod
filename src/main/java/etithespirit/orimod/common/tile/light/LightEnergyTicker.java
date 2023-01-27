@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.entity.BlockEntityTicker;
 import net.minecraft.world.level.block.state.BlockState;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 /**
  * A universal ticker for all Light-based tile entities.
@@ -141,11 +142,14 @@ public abstract class LightEnergyTicker<T extends BlockEntity> implements BlockE
 			
 			// TODO: Fix issue where players can spam the shit out of these blocks and blast really loud looping audio
 			if (be instanceof IAmbientSoundEmitter cap) {
-				LightTechLooper sound = cap.getSoundInstance();
-				if (cap.soundShouldBePlaying()) {
-					sound.play();
-				} else {
-					sound.stop();
+				Optional<LightTechLooper> sound = cap.getSoundInstance();
+				if (sound.isPresent()) {
+					LightTechLooper soundInstance = sound.get();
+					if (cap.soundShouldBePlaying()) {
+						soundInstance.play();
+					} else {
+						soundInstance.stop();
+					}
 				}
 			}
 			

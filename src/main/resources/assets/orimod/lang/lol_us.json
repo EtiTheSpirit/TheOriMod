@@ -1,0 +1,330 @@
+{
+  "item.orimod.light_shield" : "glowy kitty protecor",
+  "item.orimod.spirit_arc" : "glowy bowz",
+
+  "item.orimod.light_pickaxe" : "brite pikats",
+  "item.orimod.light_shovel" : "brite diggy",
+  "item.orimod.light_axe" : "brite aks",
+  "item.orimod.light_sword" : "brite sowrd",
+  "item.orimod.light_hoe" : "brite hoe",
+
+  "item.orimod.gorlek_steel_pickaxe" : "picat like bufalo bugs makes",
+  "item.orimod.gorlek_steel_shovel" : "dig like bufalo bugs makes",
+  "item.orimod.gorlek_steel_axe" : "aks like bufalo bug makes",
+  "item.orimod.gorlek_steel_sword" : "sowrd like bufalo bug makes",
+  "item.orimod.gorlek_steel_hoe" : "hoe like bufalo bug makes",
+
+  "item.orimod.gorlek_netherite_alloy_pickaxe" : "super strong picats",
+  "item.orimod.gorlek_netherite_alloy_shovel" : "super strong digger",
+  "item.orimod.gorlek_netherite_alloy_axe" : "super strong aks",
+  "item.orimod.gorlek_netherite_alloy_sword" : "super strong sowrd",
+  "item.orimod.gorlek_netherite_alloy_hoe" : "super strong hoe why did i make it",
+
+  "item.orimod.luxen_gorlek_netherite_alloy_pickaxe" : "VERY VERY STRONG PICATS",
+  "item.orimod.luxen_gorlek_netherite_alloy_shovel" : "VERY VERY STRONG DIGGY",
+  "item.orimod.luxen_gorlek_netherite_alloy_axe" : "VERY VERY STRONG AKS",
+  "item.orimod.luxen_gorlek_netherite_alloy_sword" : "VERY VERY STRONG SOWRD",
+  "item.orimod.luxen_gorlek_netherite_alloy_hoe" : "VERY VERY STRONG HOE",
+
+  "item.orimod.binding_essence" : "finally i can hold the dot",
+  "item.orimod.large_light_lens" : "i can see forever",
+  "item.orimod.hardlight_shard" : "shiny that is also light",
+  "item.orimod.light_focal_hub" : "what",
+
+  "item.orimod.light_helmet" : "brite hat",
+  "item.orimod.light_chestplate" : "brite shirt",
+  "item.orimod.light_leggings" : "brite pants",
+  "item.orimod.light_boots" : "brite shuz",
+
+  "item.orimod.gorlek_steel_helmet" : "bufalo bug hat",
+  "item.orimod.gorlek_steel_chestplate" : "bufalo bug shirt",
+  "item.orimod.gorlek_steel_leggings" : "bufalo bug pants",
+  "item.orimod.gorlek_steel_boots" : "bufalo bug shuz",
+
+  "item.orimod.gorlek_netherite_alloy_helmet" : "super strong hat",
+  "item.orimod.gorlek_netherite_alloy_chestplate" : "super strong shirt",
+  "item.orimod.gorlek_netherite_alloy_leggings" : "super strong pants",
+  "item.orimod.gorlek_netherite_alloy_boots" : "super strong shuz",
+
+  "item.orimod.luxen_gorlek_netherite_alloy_helmet" : "VERY VERY STRONG HAT",
+  "item.orimod.luxen_gorlek_netherite_alloy_chestplate" : "VERY VERY STRONG SHIRT",
+  "item.orimod.luxen_gorlek_netherite_alloy_leggings" : "VERY VERY STRONG PANTS",
+  "item.orimod.luxen_gorlek_netherite_alloy_boots" : "VERY VERY STRONG SHUZ",
+
+  "item.orimod.raw_gorlek_ore" : "rock that bufalo bug likes",
+  "item.orimod.gorlek_steel_nugget" : "bufalo bug metal ball",
+  "item.orimod.gorlek_steel_ingot" : "bufalo bug metal",
+  "item.orimod.gorlek_netherite_alloy_ingot" : "super strong metal",
+
+  "item.orimod.spirit_apple" : "lite kitty apol",
+
+  "tooltip.orimod.focuslight.1" : "u can fix this if",
+  "tooltip.orimod.focuslight.2" : "u put it in glowy boks.",
+  "tooltip.orimod.focuslight.3" : "sips of lite: ",
+
+  "tooltip.orimod.focuslight.self.1a" : "lite cats can also ",
+  "tooltip.orimod.focuslight.self.1b" : "hide+use",
+  "tooltip.orimod.focuslight.self.2a" : "to hurt ",
+  "tooltip.orimod.focuslight.self.2b" : "%s health",
+  "tooltip.orimod.focuslight.self.3a" : "and fix ",
+  "tooltip.orimod.focuslight.self.3b" : "+%s points",
+
+  "tooltip.orimod.lumowand.1" : "use to make the blu",
+  "tooltip.orimod.lumowand.2" : "turn orinj and the",
+  "tooltip.orimod.lumowand.3" : "orinj to blu its",
+  "tooltip.orimod.lumowand.4" : "really cool try it",
+
+  "tooltip.orimod.durability.physical" : "brokn lvl: %s/%s",
+  "tooltip.orimod.durability.luxen" : "lite sips left: %s/%s",
+  "tooltip.orimod.durability.repairlimit.1" : "can use glowy boks up to %s",
+  "tooltip.orimod.durability.repairlimit.2" : "if u wanna fiks more than dis",
+  "tooltip.orimod.durability.repairlimit.3" : "u gotta use the super strong",
+  "tooltip.orimod.durability.repairlimit.4" : "metal instead of glowy boks",
+
+  "info.orimod.lumowand.autoon" : "Automatic Connections: On",
+  "info.orimod.lumowand.autooff" : "Automatic Connections: Off",
+
+  "info.orimod.lumowand.colorswap.blue" : "its blu now!!",
+  "info.orimod.lumowand.colorswap.orange" : "its oranj now!!",
+
+  "info.orimod.lumowand.dbg_charge" : "DEBUG: Applied/Removed charge to this block.",
+
+  "input.orimod.dash" : "zoomies",
+  "input.orimod.climb" : "clibm",
+  "input.orimod.cling" : "ACTIVATE CLAWS",
+
+  "entity.orimod.spirit.name" : "lite kitty",
+  "entity.orimod.spirit_arrow" : "sharp lite stick",
+
+  "advancement.orimod.become_spirit" : "leaf",
+  "advancement.orimod.become_spirit.description" : "become lite kitty",
+
+  "itemGroup.orimod.blocks" : "lite kitty bloks",
+  "itemGroup.orimod.spirit_combat" : "lite kitty fite stuff",
+  "itemGroup.orimod.spirit_tools" : "lite kitty tulz",
+  "itemGroup.orimod.spirit_machinery" : "lite bloks",
+  "itemGroup.orimod.spirit_machinery_parts" : "lite partz",
+  "itemGroup.orimod.spirit_decoration" : "fancy lite bloks",
+  "itemGroup.orimod.decay" : "yuky bloks",
+
+  "block.orimod.decay_log" : "yuky tree",
+  "block.orimod.decay_dirt_mycelium" : "yuky dirt",
+  "block.orimod.decay_plantmatter_mycelium" : "yuky grass",
+  "block.orimod.stripped_decay_log" : "yuky bald tree",
+  "block.orimod.decay_surface_mycelium" : "yuky goop",
+  "block.orimod.decay_log_cured" : "yuky tree",
+  "block.orimod.stripped_decay_log_cured" : "yuky bald tree",
+  "block.orimod.decay_poison" : "yuky ouch water",
+
+  "block.orimod.light_capacitor" : "lite holder",
+  "block.orimod.light_capacitor.tip" : "§3keeps lite fur win u need it",
+
+  "block.orimod.light_conduit" : "lite straw",
+  "block.orimod.light_conduit.tip" : "puts lite bloks together",
+
+  "block.orimod.solid_light_conduit" : "lite straw in glass",
+  "block.orimod.solid_light_conduit.tip" : "puts lite bloks together",
+
+  "block.orimod.light_to_redstone_signal" : "lite watcher",
+  "block.orimod.light_to_redstone_signal.tip" : "makes red power when lite is in it",
+
+  "block.orimod.light_to_rf" : "lite zapper",
+  "block.orimod.light_to_rf.tip" : "turns lite into red zappy power",
+
+  "block.orimod.infinite_light_source" : "IT IS SO BRIGHT",
+  "block.orimod.infinite_light_source.tip" : "HELP IT WILL NOT TURN DOWN!!!!!!!!",
+
+  "block.orimod.solar_generator" : "sun holder",
+  "block.orimod.solar_generator.tip" : "§3makes sun lite into blu lite",
+
+  "block.orimod.thermal_generator" : "hot lite box",
+  "block.orimod.thermal_generator.tip" : "it is very warm and makes blu lite",
+
+  "block.orimod.light_repair_box" : "glowy boks",
+  "block.orimod.light_repair_box.tip" : "takes blu lite and fikses tulz",
+  "container.orimod.light_repair_device" : "glowy boks",
+
+  "block.orimod.forlorn_stone" : "cold rock",
+  "block.orimod.forlorn_stone_bricks" : "cold rock staks",
+  "block.orimod.forlorn_stone_line" : "cold rock with line",
+  "block.orimod.forlorn_stone_omni" : "cold rock with dots",
+  "block.orimod.forlorn_stone_brick_stairs": "cold rock stares",
+  "block.orimod.forlorn_stone_brick_wall": "cold rock wall",
+  "block.orimod.forlorn_stone_brick_slab": "cold rock slab",
+
+  "block.orimod.hardlight_block" : "very brite blok",
+
+  "block.orimod.gorlek_ore" : "bufalo bug rock",
+  "block.orimod.raw_gorlek_ore_block" : "bufalo bug rocks",
+  "block.orimod.gorlek_steel_block" : "bufalo bug metal blok",
+  "block.orimod.gorlek_netherite_alloy_block" : "very strong bufalo bug blok",
+
+  "item.orimod.lumo_wand" : "lite stick",
+  "item.orimod.decay_poison_bucket" : "yuky bukit",
+
+  "effect.orimod.decay" : "very bad",
+  "effect.orimod.radiant" : "i am brite",
+
+  "death.attack.decay" : "%s got sick and died :(",
+  "death.attack.decay.player" : "%2$s kil $1$s by makin tem sick!!",
+
+  "death.attack.light" : "%s lookd at the sun",
+  "death.attack.light.player" : "%2$s trick %1$s to look at the sun.",
+
+  "death.attack.spirit_arc" : "%s got stabby by lite stik",
+  "death.attack.spirit_arc.player" : "%2$s stab %1$s with a lite stik.",
+
+  "death.attack.self_energy" : "%s forget they need lite too",
+  "death.attack.self_energy.player" : "%2$s made %1$s forget they need lite",
+
+  "orimod.spirit_restrictions.no_meat" : "this is not tasty any mor :(",
+
+  "config.orimod.general" : "idk optinz",
+
+  "config.orimod.spirit_abilities" : "lite kitty triks",
+
+  "config.orimod.spirit_abilities.def_jump_type" : "jump",
+  "config.orimod.spirit_abilities.def_jump_type.description" : "how many times can u jump on the air",
+
+  "config.orimod.spirit_abilities.def_dash_type" : "zoomies",
+  "config.orimod.spirit_abilities.def_dash_type.description" : "where do u get the zoomies",
+
+  "config.orimod.spirit_abilities.def_wall_jump" : "walls",
+  "config.orimod.spirit_abilities.def_wall_jump.description" : "do u no how to climb walls",
+
+
+
+  "config.orimod.spirit_management" : "lite kitty control",
+
+  "config.orimod.spirit_management.default_state" : "be lite kitty normaly",
+
+  "config.orimod.spirit_management.force_state" : "always be the same",
+
+  "config.orimod.spirit_management.allow_changes_default" : "let catz change to lite kitty",
+
+  "config.orimod.spirit_management.change_model_self_level" : "how cool u gotta be to change urself",
+
+  "config.orimod.spirit_management.change_abilities_self_level" : "how cool u gotta be to change what u can do",
+
+  "config.orimod.spirit_management.change_model_others_level" : "how cool u gotta be to change the other catz",
+
+  "config.orimod.spirit_management.change_abilities_others_level" : "how cool u gotta be to change what other catz can do",
+
+
+  "config.orimod.spirit_limits" : "lite kitty triks",
+
+  "config.orimod.spirit_limits.only_eat_plants" : "only leafs",
+
+  "config.orimod.spirit_limits.self_repair_limits" : "when can u use ur own lite",
+
+  "config.orimod.spirit_limits.anyone_can_self_repair" : "use ur own lite to fiks stuf",
+
+  "config.orimod.spirit_limits.self_repair_damage" : "how much lite it takes",
+
+  "config.orimod.spirit_limits.self_repair_earnings" : "how much duz it fiks",
+
+  "config.orimod.light_energy" : "lite setinz",
+
+  "config.orimod.light_energy.rf_to_lux" : "how much red to get 1 blu lite",
+
+  "config.orimod.light_energy.env_power" : "lite from the world",
+
+  "config.orimod.light_energy.show_rf" : "show red also",
+
+  "config.orimod.rendering" : "wut u see",
+
+  "config.orimod.rendering.assembly_debug" : "Render AOS Debug Info",
+
+  "config.orimod.rendering.override_health_rendering" : "cool hartz",
+
+  "config.orimod.world" : "world setinz",
+
+  "config.orimod.world.spirit_materials" : "steppy",
+
+  "config.orimod.world.decay.spreading" : "yuky spreds",
+
+  "config.orimod.world.decay.surface_coating" : "yuky slime spreds",
+
+  "config.orimod.world.decay.fluid" : "yuky water spreds",
+
+  "config.orimod.world.decay.diagonal_spread" : "advanced yuky spreding",
+
+  "config.orimod.assembly_optimization_system.keep_chunks_alive" : "the world never slepz",
+
+  "config.orimod.assembly_optimization_system.max_assembly_iterations" : "how big can lite stuff get",
+
+  "waila.orimod.energy.word_storage" : "storij",
+  "waila.orimod.energy.luxen_amount" : "%1$s big lite sips",
+  "waila.orimod.energy.lum_amount" : "%1$s tiny lite sips",
+  "waila.orimod.energy.rf_amount" : "%1$s red",
+
+  "waila.orimod.energy.word_output" : "out",
+  "waila.orimod.energy.word_draw" : "how hungry",
+  "waila.orimod.energy.word_tick" : "tik",
+
+  "waila.orimod.forlorn.word_skin" : "color",
+  "waila.orimod.forlorn.word_blue" : "blu",
+  "waila.orimod.forlorn.word_orange" : "orinj",
+
+  "waila.orimod.energy.word_conversion" : "dis is important",
+  "waila.orimod.energy.word_warning" : "OH NO",
+  "waila.orimod.energy.overload" : "IT WANTZ MORE THAN U GOT",
+
+  "waila.orimod.env_flux" : "Affected by Environmental Flux",
+  "waila.orimod.decaysafetrue" : "Actively Decaying: §bNo §a(Safe!)",
+  "waila.orimod.decaysafefalse" : "Actively Decaying: §5Yes §c(Danger!)",
+
+  "config.jade.plugin_orimod.show_auto" : "Display autoconnection state of tech",
+  "config.jade.plugin_orimod.show_decay_state" : "Show safety of petrified blocks",
+  "config.jade.plugin_orimod.show_forlorn_skin" : "Show whether a Forlorn-style block is Blue or Orange",
+  "config.jade.plugin_orimod.show_energy" : "Show stored Luxen in tech blocks",
+
+  "command.orimod.setspirit.success" : "yis! %1$s is changd to lite kitty: %2$s",
+  "command.orimod.setspirit.success.self" : "yis! u r lite kitty: %1$s",
+  "command.orimod.getspirit.status" : "%1$s is lite kitty? %2$s",
+  "command.orimod.setspirit.failure.set_spirit_self" : "§cur not alowed",
+  "command.orimod.setspirit.failure.set_spirit_other" : "§cur not alowed",
+  "command.orimod.setspirit.failure.server_forces_state" : "§cthe setinz say u cant chanj",
+  "command.orimod.setspirit.failure.unknown_ability" : "§cidk this trik",
+  "command.orimod.setspirit.invalid.ability_value" : "§cidk this trik",
+
+  "command.orimod.setspirit.failure.set_abilities_other" : "§cu r not alowed to cuntrol other lite kittyz.",
+  "command.orimod.setspirit.failure.set_abilities_self" : "§cu r not alowed to chanj what u no",
+
+  "command.orimod.setspirit.success.ability" : "yis! %1$s is now ",
+
+  "command.orimod.getstatedata" : "new catz be lite kitty instead? %s (%s)",
+  "command.orimod.getstatedata.enforce" : "every kitty wil alwayz be like dis",
+  "command.orimod.getstatedata.not_enforce" : "catz can chooze",
+  "command.orimod.setstatedata" : "setinz chanjd. new catz will be lite kittyz: %s. will dey alwayz be? %s.",
+
+  "command.setspirit.error.nocaps" : "oh no!!! ur broken i think, try to go thru portal or go away den come bak",
+
+
+  "config.orimod.spirit_management.default_state.description": "The Default State mandates whether or not new saves (or new players, on servers) will start out as a Spirit by default.",
+  "config.orimod.spirit_management.force_state.description": "If enabled, all players, including those that have the permission to change whether or not they are a Spirit, will be forced to either be a Player or a Spirit based on the Default State.",
+  "config.orimod.spirit_management.allow_changes_default.description": "Whether or not to allow players to change between Player and Spirit. There is a permissions file that dictates who is explicitly allowed to, and who is explicitly not allowed to, which can be used to override this value per player.",
+  "config.orimod.spirit_management.change_model_self_level.description": "What operator permission level must a player have to use /spirit set on themselves?",
+  "config.orimod.spirit_management.change_abilities_self_level.description": "What operator permission level must a player have to use /spirit ability on themselves?",
+  "config.orimod.spirit_management.change_model_others_level.description": "What operator permission level must a player have to use /spirit set on other players?",
+  "config.orimod.spirit_management.change_abilities_others_level.description": "What operator permission level must a player have to use /spirit ability on other players?",
+  "config.orimod.spirit_limits.only_eat_plants.description": "Foodstuffs that classify as meat will be inedible by Spirits if this is enabled.",
+  "config.orimod.spirit_limits.self_repair_limits.description": "Some tools and devices allow Spirits to use their own life energy as a means of repair. This determines the extent in which that is possible.",
+  "config.orimod.spirit_limits.anyone_can_self_repair.description": "Under normal circumstances, non-spirit players cannot use their life to repair hardlight tools. If this is true, this limitation is bypassed.",
+  "config.orimod.spirit_limits.self_repair_damage.description": "How much health does a single self-powered repair take? Note that 2 health is 1 heart.",
+  "config.orimod.spirit_limits.self_repair_earnings.description": "How much durability gets restored when repairing with your own energy?",
+  "config.orimod.light_energy.rf_to_lux.description": "How much §cRF §fis required to get 1 §bLuxen.",
+  "config.orimod.light_energy.env_power.description": "§cThis is not yet functional.§f If enabled, environments of §5Decay §for §bLight §fwill reduce or improve the efficiency of Light-based devices, making it harder to run machines in §5Decay §fenvironments and easier in §bLight §fenvironments.",
+  "config.orimod.light_energy.show_rf.description": "§dRequires mod: Jade §r-- This determines when to display the RF equivalent of any given amount of Luxen.",
+  "config.orimod.rendering.assembly_debug.description": "The §bA§fssembly §bO§fptimization §bS§fystem is responsible for allowing excessively large machines to have low CPU usage. This option will cause debugging info for the AOS to show when the debug menu (F3) is open. §cThis feature can make the debug menu very laggy!§f",
+  "config.orimod.rendering.override_health_rendering.description": "If enabled, the vanilla heart renderer (on your HUD) is disabled and replaced with a near-identical implementation from this mod. This enables support for custom heart types when inflicted with effects like Decay, but may also cause compatibility issues with mods that change how health renders.",
+  "config.orimod.world.spirit_materials.description": "Binds blocks or block states to a specific SpiritMaterial, which changes the sound when stepping on a block of that material.",
+  "config.orimod.world.decay.spreading.description": "Dictates how all §5Decay §fspreads in the world. It can either spread (spreads on random ticks, replaces blocks it can infect), not spread, or flat out not exist (it will cure or remove itself on random ticks)",
+  "config.orimod.world.decay.surface_coating.description": "Dictates how all §5Decay Surface Mycelium §fspreads in the world. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+  "config.orimod.world.decay.fluid.description": "Dictates how all §5Decay Poison §fspreads in the world. This block is particularly aggressive in that it infects and replaces water. This setting functions identically to the normal spread setting otherwise. §cThis is limited by the general spread settings§f.",
+  "config.orimod.world.decay.diagonal_spread.description": "If enabled, §5Decay §fblocks can spread diagonally by one block. This has somewhat of a performance impact (albeit minor). If disabled, they will only spread to the six direct neighbors to any given block, but can leverage a performance boost.",
+  "config.orimod.assembly_optimization_system.keep_chunks_alive.description": "This can be used to keep chunks containing functional Light tech (§7meaning they must be doing something with their energy§f) alive. This §aimproves gameplay by allowing tech to operate whilst unattended §fat the cost of §cmore CPU usage (the usage scales with how much is going on)§f.",
+  "config.orimod.assembly_optimization_system.max_assembly_iterations.description": "Big sets of wires and devices are complicated. This setting decides how many + or T shaped wire joints the system can go through when searching for connected technology blocks. If there's too many branches, the system determines the assembly to be too complicated and gives up partway through. Higher values allow more largely interconnected machines, but also introduce a significant amount of server lag when changing the wiring (thankfully, there is not lag from the system existing, only from it changing).",
+  "config.orimod.spirit_management.use_old_maxhealth": "Use Legacy Divided Max HP",
+  "config.orimod.spirit_management.use_old_maxhealth.description": "Before v2.0.0, the 5 heart limit was imposed by dividing the total max health by 2. This interfered with changes to max health adversely, and so it was changed to subtraction instead. If this change has broken your server or save, turn this setting on to go back to the old divide method."
+}

@@ -21,19 +21,20 @@ ${mod_desc}
 - §bMoon Studios§r - Open ended lore is what makes stuff like this feel cohesive.
 §o* Without you, this mod could not work the way it does today! *§r
 
-§lForge Discord Mention Honorarium:§r
-These folks in the Forge discord helped me out so much with the development of the mod that it's only fair to list their names here.
+§lCommunity Mention Honorarium:§r
+These folks in the community, primarily the Forge discord, helped me out so much with the development of the mod that it's only fair to list their names here.
 - §cMcJty§r - You have the patience of a saint. Genuinely speechless.
 - §cRobotGryphon§r - Made Compact Machines, where I sourced instrumental debug render code from.
-- §bSizableShrimp§r - Made some helpful stuff for Gradle that enables better tooling for the mod.
-- §bgigaherz§r - Made GraphLib, which, while unused, was very helpful in figuring out Light tech.
-- §bmisode§r - The Worldgen Wizard, instrumental in getting Gorlek Crystals to work.
-- §6Random§r
-- §6diesieben07§r
-- §6Commable§r
-- §6Lupicus§r
-- §6XFactHD§r
+- §6SizableShrimp§r - Made some helpful stuff for Gradle that enables better tooling for the mod.
+- §6misode§r - The Worldgen Wizard, instrumental in getting Gorlek Crystals to work.
+- §6Commoble§r - Just helpful all around, so many code examples.
+§7And also thanks to: §6gigaherz§r, §6XFactHD§7, §6Random§7, §6diesieben07§7, and §6Lupicus§7 in the Forge Discord.§r
 §o* Thank you all for your help! *§r
+
+§lOther Helpers:§r
+- §eDesync§r - Volunteered to provide German translations.
+- §eGoldenschmidt§r - Made a §olot §rof bug reports, which helps make the mod better for everyone.
+§o* Thank you for your contributions! *§r
 '''
 # A dependency - use the . to indicate dependency for a specific modid. Dependencies are optional.
 [[dependencies.${mod_id}]] #optional

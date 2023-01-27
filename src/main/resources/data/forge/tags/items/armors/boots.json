@@ -1,0 +1,9 @@
+{
+	"replace": false,
+	"values": [
+		"orimod:light_boots",
+		"orimod:gorlek_steel_boots",
+		"orimod:gorlek_netherite_alloy_boots",
+		"orimod:luxen_gorlek_netherite_alloy_boots"
+	]
+}

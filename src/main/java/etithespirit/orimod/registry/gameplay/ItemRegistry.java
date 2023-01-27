@@ -1,5 +1,6 @@
 package etithespirit.orimod.registry.gameplay;
 
+import com.mojang.datafixers.util.Pair;
 import etithespirit.orimod.OriMod;
 import etithespirit.orimod.common.item.IModelPredicateProvider;
 import etithespirit.orimod.common.item.armor.OriModArmorItem;
@@ -22,12 +23,19 @@ import etithespirit.orimod.registry.world.FluidRegistry;
 import net.minecraft.client.renderer.item.ItemProperties;
 import net.minecraft.client.renderer.item.ItemPropertyFunction;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.effect.MobEffects;
+import net.minecraft.world.food.FoodData;
+import net.minecraft.world.food.FoodProperties;
+import net.minecraft.world.food.Foods;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.BucketItem;
 import net.minecraft.world.item.CreativeModeTab;
+import net.minecraft.world.item.EnchantedGoldenAppleItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.TieredItem;
 import net.minecraft.world.level.block.Block;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -39,6 +47,7 @@ import net.minecraftforge.registries.RegistryObject;
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * Registers all items of the mod to the game.
@@ -55,7 +64,7 @@ public final class ItemRegistry {
 	/***/ public static final RegistryObject<Item> LUMO_WAND = ITEMS.register("lumo_wand", LumoWand::new);
 	
 	//WATER_BUCKET = registerItem("water_bucket", new BucketItem(Fluids.WATER, (new Item.Properties()).craftRemainder(BUCKET).stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
-	/***/ public static final RegistryObject<Item> POISON_BUCKET = ITEMS.register("decay_poison_bucket", () -> new BucketItem(FluidRegistry.DECAY_FLUID_STATIC::get, (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
+	/***/ public static final RegistryObject<Item> POISON_BUCKET = ITEMS.register("decay_poison_bucket", () -> new BucketItem(FluidRegistry.DECAY_FLUID_STATIC, (new Item.Properties()).craftRemainder(Items.BUCKET).stacksTo(1).tab(CreativeModeTab.TAB_MISC)));
 	
 	/***/ public static final RegistryObject<Item> HARDLIGHT_SHARD = ITEMS.register("hardlight_shard", HardlightShardItem::new);
 	/***/ public static final RegistryObject<Item> BINDING_ESSENCE = ITEMS.register("binding_essence", BindingEssenceItem::new);
@@ -112,9 +121,24 @@ public final class ItemRegistry {
 	public static final RegistryObject<Item> GORLEK_STEEL_NUGGET = ITEMS.register("gorlek_steel_nugget", GorlekIngotNuggetItem::new);
 	public static final RegistryObject<Item> GORLEK_NETHERITE_ALLOY_INGOT = ITEMS.register("gorlek_netherite_alloy_ingot", GorlekNetheriteAlloyIngot::new);
 	
+	public static final RegistryObject<Item> SPIRIT_APPLE;
+	
 	
 	static {
 		RegistryObject<Item>[] entries;
+		
+		//new EnchantedGoldenAppleItem((new Item.Properties()).tab(CreativeModeTab.TAB_FOOD).rarity(Rarity.EPIC).food((new FoodProperties.Builder())))
+		FoodProperties spiritAppleProps = new FoodProperties.Builder()
+			.nutrition(4)
+			.saturationMod(1.2F)
+			.effect(() -> new MobEffectInstance(MobEffects.REGENERATION, 3600, 2), 1.0F)
+			.effect(() -> new MobEffectInstance(MobEffects.DAMAGE_RESISTANCE, 3600, 1), 1.0F)
+			.effect(() -> new MobEffectInstance(EffectRegistry.RADIANT.get(), 6000, 0), 1.0F)
+			.alwaysEat()
+			.build();
+		
+		SPIRIT_APPLE = ITEMS.register("spirit_apple", () -> new EnchantedGoldenAppleItem(new Item.Properties().tab(CreativeModeTab.TAB_FOOD).rarity(Rarity.EPIC).food(spiritAppleProps)));
+		
 		
 		entries = OriModArmorItem.autoRegisterAllSlotsOfType(ITEMS, UniversalOriModItemTier.LIGHT);
 		LIGHT_HELMET = entries[0];
@@ -128,7 +152,6 @@ public final class ItemRegistry {
 		GORLEK_STEEL_CHESTPLATE = entries[1];
 		GORLEK_STEEL_LEGGINGS = entries[2];
 		GORLEK_STEEL_BOOTS = entries[3];
-		
 		
 		entries = OriModArmorItem.autoRegisterAllSlotsOfType(ITEMS, UniversalOriModItemTier.GORLEK_NETHERITE_ALLOY);
 		GORLEK_NETHERITE_ALLOY_HELMET = entries[0];

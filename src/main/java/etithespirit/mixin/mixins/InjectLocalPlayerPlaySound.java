@@ -1,7 +1,6 @@
 package etithespirit.mixin.mixins;
 
 import com.mojang.authlib.GameProfile;
-import etithespirit.mixin.helpers.DuplicateSoundEvent;
 import etithespirit.mixin.helpers.ISelfProvider;
 import etithespirit.orimod.event.EntityEmittedSoundEvent;
 import etithespirit.orimod.event.EntityEmittedSoundEventProvider;
@@ -10,12 +9,9 @@ import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundSource;
-import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.entity.player.ProfilePublicKey;
 import org.jetbrains.annotations.Nullable;
-import org.spongepowered.asm.mixin.Intrinsic;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -25,6 +21,9 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
  */
 @Mixin(LocalPlayer.class)
 public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer implements ISelfProvider {
+	
+	private boolean orimod$playedSoundAlready = false;
+	private boolean orimod$playedNotifySoundAlready = false;
 	
 	
 	public InjectLocalPlayerPlaySound(ClientLevel pClientLevel, GameProfile pGameProfile, @Nullable ProfilePublicKey pProfilePublicKey) {
@@ -40,11 +39,7 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 	 */
 	@Inject(method = "playSound(Lnet/minecraft/sounds/SoundEvent;FF)V", at = @At("HEAD"), cancellable = true)
 	public void orimod$onPlaySoundCalled(SoundEvent soundIn, float volume, float pitch, CallbackInfo ci) {
-		// See OverrideEntityPlaySound for what this garbage is.
-		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
-			return;
-		}
-		
+		if (orimod$playedSoundAlready) return;
 		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(this, selfProvider$player(), this.getX(), this.getY(), this.getZ(), soundIn, this.getSoundSource(), volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
@@ -53,7 +48,10 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 		
 		if (evt.wasModified()) {
 			// See OverrideEntityPlaySound for what this garbage is.
-			playSound(new DuplicateSoundEvent(evt.getSound()), evt.getVolume(), evt.getPitch());
+			//playSound(new DuplicateSoundEvent(evt.getSound()), evt.getVolume(), evt.getPitch());
+			orimod$playedSoundAlready = true;
+			playSound(evt.getSound(), evt.getVolume(), evt.getPitch());
+			orimod$playedSoundAlready = false;
 			ci.cancel();
 		}
 	}
@@ -68,11 +66,7 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 	 */
 	@Inject(method = "playNotifySound(Lnet/minecraft/sounds/SoundEvent;Lnet/minecraft/sounds/SoundSource;FF)V", at = @At("HEAD"), cancellable = true)
 	public void orimod$onPlaySoundCalledWithCategory(SoundEvent soundIn, SoundSource category, float volume, float pitch, CallbackInfo ci) {
-		// See OverrideEntityPlaySound for what this garbage is.
-		if (soundIn instanceof DuplicateSoundEvent dup && dup.isDuplicate) {
-			return;
-		}
-		
+		if (orimod$playedNotifySoundAlready) return;
 		EntityEmittedSoundEvent evt = EntityEmittedSoundEventProvider.getSound(this, selfProvider$player(), this.getX(), this.getY(), this.getZ(), soundIn, category, volume, pitch);
 		if (evt.isCanceled()) {
 			ci.cancel();
@@ -81,7 +75,10 @@ public abstract class InjectLocalPlayerPlaySound extends AbstractClientPlayer im
 		
 		if (evt.wasModified()) {
 			// See OverrideEntityPlaySound for what this garbage is.
-			playNotifySound(new DuplicateSoundEvent(evt.getSound()), evt.getCategory(), evt.getVolume(), evt.getPitch());
+			//playNotifySound(new DuplicateSoundEvent(evt.getSound()), evt.getCategory(), evt.getVolume(), evt.getPitch());
+			orimod$playedNotifySoundAlready = true;
+			playNotifySound(evt.getSound(), evt.getCategory(), evt.getVolume(), evt.getPitch());
+			orimod$playedNotifySoundAlready = false;
 			ci.cancel();
 		}
 	}

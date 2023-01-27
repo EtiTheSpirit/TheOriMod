@@ -1,0 +1,9 @@
+{
+	"replace": false,
+	"values": [
+		"orimod:light_chestplate",
+		"orimod:gorlek_steel_chestplate",
+		"orimod:gorlek_netherite_alloy_chestplate",
+		"orimod:luxen_gorlek_netherite_alloy_chestplate"
+	]
+}

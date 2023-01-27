@@ -106,7 +106,7 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             // property 'forge.enabledGameTestNamespaces', 'orimod'
 
-            args '--mixin=orimod.mixin.json --useOriModTraceLogs --username Dev#####'
+            args '"--mixin=orimod.mixin.json" "--useOriModTraceLogs" "--username Dev#####"'
 
             mods {
                 "${mod_id}" {
@@ -135,7 +135,7 @@ minecraft {
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             // property 'forge.enabledGameTestNamespaces', 'orimod'
 
-            args '--mixin=orimod.mixin.json --useOriModTraceLogs'
+            args '"--mixin=orimod.mixin.json" "--useOriModTraceLogs"'
 
             mods {
                 "${mod_id}" {
@@ -155,7 +155,7 @@ minecraft {
 
             // property 'forge.enabledGameTestNamespaces', 'orimod'
 
-            args '--mixin=orimod.mixin.json'
+            args '"--mixin=orimod.mixin.json"'
 
             mods {
                 "${mod_id}" {
@@ -255,6 +255,7 @@ dependencies {
     implementation fg.deobf("curse.maven:jade-324717:4096513") // full build
     compileOnly fg.deobf("ru.dbotthepony:overdrive-that-matters:1.0-SNAPSHOT")
     compileOnly fg.deobf("curse.maven:biomes-o-plenty-220318:4128419")
+    //implementation fg.deobf("curse.maven:terrablender-563928:4205706")
 
     // For more info...
     // http://www.gradle.org/docs/current/userguide/artifact_dependencies_tutorial.html

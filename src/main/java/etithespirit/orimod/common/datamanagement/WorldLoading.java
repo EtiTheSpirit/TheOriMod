@@ -58,9 +58,11 @@ public final class WorldLoading {
 		ReplicateSpiritStatus.Server.tellEveryonePlayerSpiritStatus(player, SpiritIdentifier.isSpirit(player));
 		player.refreshDimensions();
 		EffectEnforcement.updatePlayerAttrs(player);
+		ReplicateKnownAbilities.Server.tellAllCapsTo((ServerPlayer)player);
 	}
 	
 	public static void onChangeDimensionServer(PlayerEvent.PlayerChangedDimensionEvent evt) {
+		ReplicateSpiritStatus.Server.tellEveryonePlayerSpiritStatus(evt.getEntity(), SpiritIdentifier.isSpirit(evt.getEntity()));
 		ReplicateKnownAbilities.Server.tellAllCapsTo((ServerPlayer)evt.getEntity());
 	}
 	

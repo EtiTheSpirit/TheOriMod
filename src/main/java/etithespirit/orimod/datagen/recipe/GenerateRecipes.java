@@ -451,7 +451,7 @@ public class GenerateRecipes extends RecipeProvider {
 			.unlockedBy("get_diamond", AdvancementRegistry.PICKUP_DIAMONDS)
 			.define('F', ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE))
 			.define('S', ItemRegistry.HARDLIGHT_SHARD.get())
-			.define('N', Items.NETHERITE_SCRAP)
+			.define('N', BlockItem.BY_BLOCK.get(Blocks.IRON_BLOCK))
 			.pattern("FNF")
 			.pattern("NSN")
 			.pattern("FNF")
@@ -599,6 +599,48 @@ public class GenerateRecipes extends RecipeProvider {
 			.unlocks("get_gorlek_ore", Objects.requireNonNull(AdvancementRegistry.GET_PICKUP_ANY_GORLEK_ORE.get()))
 			.unlocks("get_netherite_ingot", Objects.requireNonNull(AdvancementRegistry.PICKUP_NETHERITE_INGOTS))
 			.save(recipeConsumer, OriMod.rsrc("merge_gorlek_and_netherite_reversed"));
+		
+		ShapedRecipeBuilder.shaped(ItemRegistry.SPIRIT_APPLE.get())
+			.unlockedBy("become_spirit", becomeSpirit)
+			.define('L', ItemRegistry.getBlockItemOf(BlockRegistry.HARDLIGHT_GLASS))
+			.define('A', Items.GOLDEN_APPLE)
+			.pattern("LLL")
+			.pattern("LAL")
+			.pattern("LLL")
+		.save(recipeConsumer);
+		
+		
+		ShapedRecipeBuilder.shaped(ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICK_SLAB), 6)
+			.unlockedBy("become_spirit", becomeSpirit)
+			.define('B', ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICKS))
+			.pattern("BBB")
+		.save(recipeConsumer);
+		
+		
+		ShapedRecipeBuilder.shaped(ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICK_STAIRS), 4)
+			.unlockedBy("become_spirit", becomeSpirit)
+			.define('B', ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICKS))
+			.pattern("B  ")
+			.pattern("BB ")
+			.pattern("BBB")
+		.save(recipeConsumer);
+		
+		
+		ShapedRecipeBuilder.shaped(ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICK_STAIRS), 4)
+			.unlockedBy("become_spirit", becomeSpirit)
+			.define('B', ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICKS))
+			.pattern("  B")
+			.pattern(" BB")
+			.pattern("BBB")
+		.save(recipeConsumer, OriMod.rsrc("forlorn_stone_brick_stairs_for_monsters"));
+		
+		
+		ShapedRecipeBuilder.shaped(ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICK_WALL), 6)
+			.unlockedBy("become_spirit", becomeSpirit)
+			.define('B', ItemRegistry.getBlockItemOf(BlockRegistry.FORLORN_STONE_BRICKS))
+			.pattern("BBB")
+			.pattern("BBB")
+		.save(recipeConsumer);
 		
 		//ShapedRecipeBuilder.shaped(ItemRegistry.LIGHT_STRONG_HELMET)
 		//UpgradeRecipeBuilder.smithing(ItemRegistry.LIGHT_HELMET.get(), )

@@ -16,7 +16,7 @@ import java.util.Optional;
 public final class OTMAndroidInterop {
 	
 	private static Boolean hasOTM = null;
-	private static Capability<MatteryPlayerCapability> otmCapsKey = CapabilityManager.get(new CapabilityToken<>() {});
+	private static final Capability<MatteryPlayerCapability> otmCapsKey = CapabilityManager.get(new CapabilityToken<>() {});
 	
 	/**
 	 * Returns whether or not the game has Overdrive That Matters installed, updating the cached value if necessary.

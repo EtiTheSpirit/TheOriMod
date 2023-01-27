@@ -1,0 +1,9 @@
+{
+	"replace": false,
+	"values": [
+		"#orimod:blocks/storage_blocks/gorlek_steel",
+		"#orimod:blocks/storage_blocks/gorlek_netherite_alloy",
+		"#orimod:blocks/storage_blocks/raw_gorlek_ore",
+		"#orimod:blocks/storage_blocks/hardlight"
+	]
+}

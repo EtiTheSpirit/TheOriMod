@@ -1,0 +1,8 @@
+{
+  "replace": false,
+  "values": [
+    "#orimod:ingots/gorlek_steel",
+    "#orimod:ingots/hardlight",
+    "#orimod:ingots/gorlek_netherite_alloy"
+  ]
+}

@@ -31,7 +31,7 @@ public enum SpiritJumpAbility {
 		return Component.literal("JumpSettings[").withStyle(ChatFormatting.WHITE)
 			.append(ChatHelper.keyToValue("jumpType", Component.literal(toString()).withStyle(ChatFormatting.AQUA)))
 			.append(Component.literal(", ").withStyle(ChatFormatting.GRAY))
-			.append(ChatHelper.keyToValue("canWallJump", ChatHelper.ofBoolean(bundledWallJumpValue)))
+			.append(ChatHelper.keyToValue("canWallJump", ChatHelper.ofBooleanYN(bundledWallJumpValue)))
 			.append(Component.literal("]").withStyle(ChatFormatting.WHITE));
 	}
 	

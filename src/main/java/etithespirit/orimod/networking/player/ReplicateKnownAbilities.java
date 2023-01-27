@@ -72,7 +72,7 @@ public final class ReplicateKnownAbilities {
 	public static final class Server {
 		
 		public static void registerServerPackets() {
-			INSTANCE.registerMessage(ReplicationData.nextID(), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateKnownAbilities.Server::onServerEvent);
+			INSTANCE.registerMessage(ReplicationData.nextID(false), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateKnownAbilities.Server::onServerEvent);
 		}
 		
 		public static void onServerEvent(Packet msg, Supplier<NetworkEvent.Context> ctx) {
@@ -142,7 +142,7 @@ public final class ReplicateKnownAbilities {
 	public static final class Client {
 		
 		public static void registerClientPackets() {
-			INSTANCE.registerMessage(ReplicationData.nextID(), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateKnownAbilities.Client::onClientEvent);
+			INSTANCE.registerMessage(ReplicationData.nextID(true), Packet.class, PACKET_TO_BUFFER, BUFFER_TO_PACKET, ReplicateKnownAbilities.Client::onClientEvent);
 		}
 		
 		public static void onClientEvent(Packet msg, Supplier<NetworkEvent.Context> ctx) {

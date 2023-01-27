@@ -78,13 +78,7 @@ public class SpiritShield extends ShieldItem implements IModelPredicateProvider 
 	@Override
 	public void appendHoverText(ItemStack pStack, @Nullable Level pLevel, List<Component> pTooltipComponents, TooltipFlag pIsAdvanced) {
 		super.appendHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
-		pTooltipComponents.add(Component.translatable("tooltip.orimod.focuslight.1"));
-		pTooltipComponents.add(Component.translatable("tooltip.orimod.focuslight.2"));
-		if (OriModConfigs.SELF_REPAIR_LIMITS.get().allowed) {
-			pTooltipComponents.add(Component.translatable("tooltip.orimod.focuslight.3"));
-			pTooltipComponents.add(Component.translatable("tooltip.orimod.focuslight.4", OriModConfigs.SELF_REPAIR_DAMAGE.get() / 2));
-			pTooltipComponents.add(Component.translatable("tooltip.orimod.focuslight.5", OriModConfigs.SELF_REPAIR_EARNINGS.get()));
-		}
+		SpiritItemCustomizations.appendDefaultLightToolRepairHoverText(pStack, pLevel, pTooltipComponents, pIsAdvanced);
 	}
 	
 	@Override
@@ -115,7 +109,7 @@ public class SpiritShield extends ShieldItem implements IModelPredicateProvider 
 					boolean isHolding = mainHand.is(lightShield); // Holding if its in main hand
 					if (!isHolding) {
 						isHolding = offHand.is(lightShield) && !mainHand.is(Items.SHIELD); // ... or offhand when the main shield is not being held.
-						// TODO: What hand does duel wielding shields prefer?
+						// Dual Weilding shields prefers the mainhand
 					}
 					
 					if (isHolding) {
@@ -123,10 +117,12 @@ public class SpiritShield extends ShieldItem implements IModelPredicateProvider 
 							// Player is holding a light shield and just blocked. Override the sound!
 							event.setSound(SpiritSoundProvider.getSpiritShieldImpactSound(false));
 							event.setPitch(SpiritSoundPlayer.getRandomPitch());
+							event.setVolume(event.getVolume() * 0.7f);
 						} else if (event.getSound().equals(SoundEvents.SHIELD_BREAK)) {
 							// Player is holding a light shield and just blocked. Override the sound!
 							event.setSound(SpiritSoundProvider.getSpiritShieldImpactSound(true));
 							event.setPitch(SpiritSoundPlayer.getRandomPitch());
+							event.setVolume(event.getVolume() * 0.7f);
 						}
 					}
 				}

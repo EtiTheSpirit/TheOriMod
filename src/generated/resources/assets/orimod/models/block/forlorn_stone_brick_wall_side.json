@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/template_wall_side",
+  "textures": {
+    "wall": "orimod:block/forlorn_stone/base/forlorn_stone_brick_wall"
+  }
+}

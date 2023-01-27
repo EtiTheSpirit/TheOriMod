@@ -56,13 +56,11 @@
 	"item.orimod.gorlek_steel_ingot" : "Gorlek Steel Ingot",
 	"item.orimod.gorlek_netherite_alloy_ingot" : "Gorlek-Netherite Alloy Ingot",
 
-	"tooltip.orimod.focuslight.1" : "This tool can be repaired",
+	"item.orimod.spirit_apple" : "Spirit Apple",
+
+	"tooltip.orimod.focuslight.1" : "This item can be repaired",
 	"tooltip.orimod.focuslight.2" : "in a Luxen Reconstructor.",
 	"tooltip.orimod.focuslight.3" : "Repair Cost: ",
-
-	"tooltip.orimod.focuslight.self.1" : "§3Spirits can also §bsneak+use",
-	"tooltip.orimod.focuslight.self.2" : "§3to sacrifice §b%s health §3and",
-	"tooltip.orimod.focuslight.self.3" : "§3restore +§b%s durability§3.",
 
 	"tooltip.orimod.focuslight.self.1a" : "Spirits can also ",
 	"tooltip.orimod.focuslight.self.1b" : "sneak+use",
@@ -73,7 +71,7 @@
 
 	"tooltip.orimod.lumowand.1" : "Press Use to swap the",
 	"tooltip.orimod.lumowand.2" : "color of a block that",
-	"tooltip.orimod.lumowand.3" : "(appears to) use Light",
+	"tooltip.orimod.lumowand.3" : "appears to use Light",
 	"tooltip.orimod.lumowand.4" : "energy.",
 
 	"tooltip.orimod.durability.physical" : "Physical Durability: %s/%s",
@@ -119,37 +117,41 @@
 	"block.orimod.decay_poison" : "Decay Poison",
 
 	"block.orimod.light_capacitor" : "Luxen Capacitor",
-	"block.orimod.light_capacitor.tip" : "§3Stores Luxen for later use.",
+	"block.orimod.light_capacitor.tip" : "Stores Luxen for later use.",
 	
 	"block.orimod.light_conduit" : "Luxen Conduit",
-	"block.orimod.light_conduit.tip" : "§3Links devices together to route power.",
+	"block.orimod.light_conduit.tip" : "Links devices together to route power.",
 	
 	"block.orimod.solid_light_conduit" : "Airtight Luxen Conduit",
-	"block.orimod.solid_light_conduit.tip" : "§3Links devices together to route power.",
+	"block.orimod.solid_light_conduit.tip" : "Links devices together to route power.",
 	
 	"block.orimod.light_to_redstone_signal" : "Luxen Detector",
-	"block.orimod.light_to_redstone_signal.tip" : "§3Produces a redstone signal when powered.",
+	"block.orimod.light_to_redstone_signal.tip" : "Produces a redstone signal when powered.",
 	
 	"block.orimod.light_to_rf" : "Luxen Flux Inducer",
-	"block.orimod.light_to_rf.tip" : "§3Converts Luxen to RF.",
+	"block.orimod.light_to_rf.tip" : "Converts Luxen to RF.",
 	
 	"block.orimod.infinite_light_source" : "Infinite Luxen Source",
-	"block.orimod.infinite_light_source.tip" : "§3Provides unlimited power at an unlimited rate.",
+	"block.orimod.infinite_light_source.tip" : "Provides unlimited power at an unlimited rate.",
 	
 	"block.orimod.solar_generator" : "Solar Luxen Generator",
-	"block.orimod.solar_generator.tip" : "§3Converts sky light into Luxen",
+	"block.orimod.solar_generator.tip" : "Converts sky light into Luxen",
 	
 	"block.orimod.thermal_generator" : "Thermal Luxen Generator",
-	"block.orimod.thermal_generator.tip" : "§3Converts heat into Luxen. Optimal in The Nether.",
+	"block.orimod.thermal_generator.tip" : "Converts heat into Luxen. Optimal in The Nether.",
 	
 	"block.orimod.light_repair_box" : "Luxen Reconstructor",
-	"block.orimod.light_repair_box.tip" : "§3Consumes Luxen to repair hardlight items.",
+	"block.orimod.light_repair_box.tip" : "Consumes Luxen to repair hardlight items.",
 	"container.orimod.light_repair_device" : "Luxen Reconstructor",
 
 	"block.orimod.forlorn_stone" : "Forlorn Stone",
 	"block.orimod.forlorn_stone_bricks" : "Forlorn Stone Bricks",
 	"block.orimod.forlorn_stone_line" : "Forlorn Stone (Line)",
 	"block.orimod.forlorn_stone_omni" : "Forlorn Stone (Center)",
+
+	"block.orimod.forlorn_stone_brick_stairs": "Forlorn Stone Brick Stairs",
+	"block.orimod.forlorn_stone_brick_wall": "Forlorn Stone Brick Wall",
+	"block.orimod.forlorn_stone_brick_slab": "Forlorn Stone Brick Slab",
 
 	"block.orimod.hardlight_block" : "Block of Hardlight",
 
@@ -215,6 +217,9 @@
 	
 	"config.orimod.spirit_management.change_abilities_others_level" : "Required op level to change others abilities",
 	"config.orimod.spirit_management.change_abilities_others_level.description" : "What operator permission level must a player have to use /spirit ability on other players?",
+
+	"config.orimod.spirit_management.use_old_maxhealth": "Use Legacy Divided Max HP",
+	"config.orimod.spirit_management.use_old_maxhealth.description": "Before v2.0.0, the 5 heart limit was imposed by dividing the total max health by 2. This interfered with changes to max health adversely, and so it was changed to subtraction instead. If this change has broken your server or save, turn this setting on to go back to the old divide method.",
 
 
 	"config.orimod.spirit_limits" : "Spirit Mechanics and Limits",
@@ -315,6 +320,11 @@
 	"command.orimod.setspirit.failure.set_abilities_self" : "§cYou do not have permission to set your own abilities.",
 
 	"command.orimod.setspirit.success.ability" : "Success! Data belonging to %1$s has been set to ",
+
+	"command.orimod.getstatedata" : "New players are spirits? %s (%s)",
+	"command.orimod.getstatedata.enforce" : "Enforcing this state on all players constantly",
+	"command.orimod.getstatedata.not_enforce" : "Players may change",
+	"command.orimod.setstatedata" : "Settings updated. New players will be spirits? %s. Is this state enforced on all players? %s.",
 
 	"command.setspirit.error.nocaps" : "Your player data is missing crucial data. Please report this bug (you can find the report link in the Mods menu on the title screen). Try rejoining or changing dimensions."
 }

@@ -88,7 +88,7 @@ public class SpiritHealthGui implements IGuiOverlay {
 		if (entity instanceof LivingEntity livingEntity) {
 			
 			float maxHealth = getEntityMaxHealth(livingEntity);
-			int currentHealthHalfHearts = Mth.ceil(livingEntity.getHealth());
+			int currentHealthHalfHearts = Mth.ceil(Math.min(livingEntity.getHealth(), maxHealth)); // FIXME: Changing dimensions causes health to render at 0?
 			int currentAbsorbHalfHearts = Mth.ceil(livingEntity.getAbsorptionAmount());
 			int totalHearts = currentHealthHalfHearts + currentAbsorbHalfHearts;
 			boolean doFlashEffect = remainingHealthBlinkTime > ticks && (remainingHealthBlinkTime - ticks) / 3L % 2L == 1L;

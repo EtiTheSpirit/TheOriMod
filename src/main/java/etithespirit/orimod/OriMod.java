@@ -1,6 +1,7 @@
 package etithespirit.orimod;
 
 
+import com.mojang.blaze3d.shaders.Effect;
 import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.datafixers.util.Pair;
 import etithespirit.orimod.apiimpl.EnvironmentalAffinityAPI;
@@ -21,12 +22,14 @@ import etithespirit.orimod.datagen.audio.GenerateSoundsJson;
 import etithespirit.orimod.datagen.features.GenerateBiomeFeatures;
 import etithespirit.orimod.datagen.loot.GenerateLootTables;
 import etithespirit.orimod.datagen.recipe.GenerateRecipes;
+import etithespirit.orimod.event.EntityEmittedSoundEventProvider;
 import etithespirit.orimod.modinterop.biomesoplenty.BiomesOPlentySpiritSoundProvider;
 import etithespirit.orimod.networking.player.ReplicateKnownAbilities;
 import etithespirit.orimod.networking.player.ReplicatePlayerMovement;
 import etithespirit.orimod.networking.potion.EffectModificationReplication;
 import etithespirit.orimod.networking.spirit.ReplicateSpiritStatus;
 import etithespirit.orimod.player.DamageMarshaller;
+import etithespirit.orimod.player.EffectEnforcement;
 import etithespirit.orimod.registry.advancements.AdvancementRegistry;
 import etithespirit.orimod.registry.world.BlockRegistry;
 import etithespirit.orimod.registry.gameplay.CapabilityRegistry;
@@ -206,14 +209,17 @@ public final class OriMod {
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::performAirSounds);
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityHurt);
 		MinecraftForge.EVENT_BUS.addListener(SpiritSounds::onEntityDied);
+		EntityEmittedSoundEventProvider.registerHandler(SpiritSounds::onSoundPlayedMixin);
 		
 		MinecraftForge.EVENT_BUS.addListener(MotionMarshaller::onEntityJumped);
 		MinecraftForge.EVENT_BUS.addListener(MotionMarshaller.Server::onServerTick);
 		
+		MinecraftForge.EVENT_BUS.addListener(EventPriority.LOW, EffectEnforcement::onPlayerTick);
+		
 		ReplicateSpiritStatus.Server.registerServerPackets();
 		EffectModificationReplication.Server.registerServerPackets();
-		ReplicatePlayerMovement.Server.registerServerPackets();
 		ReplicateKnownAbilities.Server.registerServerPackets();
+		ReplicatePlayerMovement.Server.registerServerPackets();
 		
 		event.enqueueWork(AdvancementRegistry::registerAll);
 		// event.enqueueWork(MenuRegistry::registerAll);
