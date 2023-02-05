@@ -27,7 +27,7 @@ public class ForlornStoneBlock extends Block implements IBlockTagProvider, IBloc
 	
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	
@@ -50,7 +50,7 @@ public class ForlornStoneBlock extends Block implements IBlockTagProvider, IBloc
 		
 		
 		@Override
-		public Iterable<TagKey<Block>> getTagsForBlock() {
+		public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 			return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 		}
 		
@@ -77,7 +77,7 @@ public class ForlornStoneBlock extends Block implements IBlockTagProvider, IBloc
 		
 		
 		@Override
-		public Iterable<TagKey<Block>> getTagsForBlock() {
+		public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 			return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 		}
 		
@@ -101,7 +101,7 @@ public class ForlornStoneBlock extends Block implements IBlockTagProvider, IBloc
 		}
 		
 		@Override
-		public Iterable<TagKey<Block>> getTagsForBlock() {
+		public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 			return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 		}
 		

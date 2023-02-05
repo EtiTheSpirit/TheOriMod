@@ -11,6 +11,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LightLayer;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class SolarGeneratorTile extends LightEnergyHandlingTile implements IServerUpdatingTile, ILightEnergyGenerator {
@@ -59,7 +60,7 @@ public class SolarGeneratorTile extends LightEnergyHandlingTile implements IServ
 		boolean isBlockPowered = current.getValue(ForlornAppearanceMarshaller.POWERED);
 		boolean shouldBePowered = lastGenerated > 0;
 		if (isBlockPowered != shouldBePowered) {
-			inLevel.setBlock(at, current.setValue(ForlornAppearanceMarshaller.POWERED, shouldBePowered), StaticData.REPLICATE_CHANGE);
+			utilSetPoweredStateTo(shouldBePowered);
 		}
 	}
 	

@@ -1,4 +1,4 @@
-// 1.19.2	2023-01-27T09:54:21.4529905	Block States: orimod
+// 1.19.2	2023-02-04T04:19:24.6198192	Block States: orimod
 7d0e0990f8adadf301ac49e62a0e32232e1c3caa assets/orimod/blockstates/decay_dirt_mycelium.json
 26fc54514894e6818d989ed0f02a42f1112b892f assets/orimod/blockstates/decay_log.json
 bafe5118787191397120405650d61e41f9608606 assets/orimod/blockstates/decay_plantmatter_mycelium.json
@@ -62,14 +62,14 @@ bcefdbc707185c24d6661b3b8364b17f449dac34 assets/orimod/models/block/glass.json
 b451c0d6a1cfdf10b375937d22e31f5b18f7fd54 assets/orimod/models/block/ore/blocks/gorlek_steel_block.json
 1ca358d8fac01e46dca03d12911baebeb54a93b9 assets/orimod/models/block/ore/deposits/gorlek_ore.json
 b75ab9bbf3cba494abb93d6cd45de6fab2e38511 assets/orimod/models/block/ore/deposits/raw_gorlek_ore_block.json
-ea9a6e68751d2be9057334d8f9ffd0f3ec4adeb6 assets/orimod/models/block/techblocks/conduits/connector/light_conduit-blue.json
-300121e0313804143e7dd5543a14400867ddccbe assets/orimod/models/block/techblocks/conduits/connector/light_conduit-orange.json
-b2264356d9600967d254f29ebde7480a92392769 assets/orimod/models/block/techblocks/conduits/core/light_conduit-core-blue.json
-49b5e502fbf79c298174d364a99067c731c9a861 assets/orimod/models/block/techblocks/conduits/core/light_conduit-core-orange.json
-db94386f9a0033c4a749179d2779af06589a34d3 assets/orimod/models/block/techblocks/conduits/solidconnector/solid_light_conduit-blue.json
-11e7111008197c099a6a57b32b9b377620efa21e assets/orimod/models/block/techblocks/conduits/solidconnector/solid_light_conduit-orange.json
-e21c25a6cf74fb6be07b2799e08d68d641d44118 assets/orimod/models/block/techblocks/conduits/solidcore/solid_light_conduit-core-blue.json
-fb5fb99051f03f5e66bc83ffaa15abfe38b94c94 assets/orimod/models/block/techblocks/conduits/solidcore/solid_light_conduit-core-orange.json
+1f09015a35c14fa1e16544dbf0fa2c44de1c3b30 assets/orimod/models/block/techblocks/conduits/connector/light_conduit-blue.json
+5a6426f97007fa8ef60159358f81431fe1a1751c assets/orimod/models/block/techblocks/conduits/connector/light_conduit-orange.json
+b72f14228d80766ad735db96e8fc8e98f6f59868 assets/orimod/models/block/techblocks/conduits/core/light_conduit-core-blue.json
+a5f260502565f4b0ecafa5691a2fa866dd969103 assets/orimod/models/block/techblocks/conduits/core/light_conduit-core-orange.json
+42f051761b1ec0fa84f5fe5823db9d9d31e9d3f2 assets/orimod/models/block/techblocks/conduits/solidconnector/solid_light_conduit-blue.json
+20b2446eaddbce9fa64f1f23e3d1941e61472bcc assets/orimod/models/block/techblocks/conduits/solidconnector/solid_light_conduit-orange.json
+03406c34753321466cfb5e01ae1ab302fca743c7 assets/orimod/models/block/techblocks/conduits/solidcore/solid_light_conduit-core-blue.json
+7e1a02c0867a58cad08b69784d7fb6597e7c8788 assets/orimod/models/block/techblocks/conduits/solidcore/solid_light_conduit-core-orange.json
 1c0b5f53216691d1463434b83ac54885b08aca87 assets/orimod/models/block/techblocks/conversion/light_repair_box_base.json
 3f7e4212dddf9114f38fbf391fc4c495b719f37e assets/orimod/models/block/techblocks/conversion/light_repair_box_blue.json
 f7d6021137dcbd0dfc2a5235cc7221fc28a58a14 assets/orimod/models/block/techblocks/conversion/light_repair_box_orange.json

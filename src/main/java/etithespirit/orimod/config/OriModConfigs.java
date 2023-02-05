@@ -297,7 +297,7 @@ public class OriModConfigs {
 		
 		current = "light_energy";
 		builder.push(current);
-		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 100, 0.0001D, 100000D, false);
+		LUX_TO_RF_RATIO = createDoubleRange(builder, current, "rf_to_lux", 250, 0.0001D, 100000D, false);
 		USE_ENV_POWER = createBoolean(builder, current, "env_power", true, false);
 		// SHOW_RF_WHEN = createEnum(builder, current, "show_rf", LightEnergyComponentProvider.ShowRFType.ONLY_WHEN_SNEAKING, false);
 		builder.pop();

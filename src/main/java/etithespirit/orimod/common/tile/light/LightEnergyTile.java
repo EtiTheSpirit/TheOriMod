@@ -9,6 +9,7 @@ import etithespirit.orimod.energy.ILightEnergyGenerator;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockState;
@@ -76,7 +77,7 @@ public abstract class LightEnergyTile extends BlockEntity implements IFirstTickL
 	 */
 	protected void utilSetPoweredStateTo(boolean desiredPower) {
 		if (level != null) {
-			level.setBlock(worldPosition, getBlockState().setValue(ForlornAppearanceMarshaller.POWERED, desiredPower), StaticData.REPLICATE_CHANGE | StaticData.DO_NOT_NOTIFY_NEIGHBORS | StaticData.DO_NOT_MAKE_NEIGHBORS_DROP);
+			level.setBlock(worldPosition, getBlockState().setValue(ForlornAppearanceMarshaller.POWERED, desiredPower), StaticData.SILENT_BLOCK_SWAP);
 		}
 	}
 	

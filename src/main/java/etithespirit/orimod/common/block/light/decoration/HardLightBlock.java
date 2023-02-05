@@ -65,7 +65,7 @@ public class HardLightBlock extends Block implements IBlockTagProvider, IBlockIt
 	
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	

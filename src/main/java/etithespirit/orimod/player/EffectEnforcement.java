@@ -10,6 +10,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.living.MobEffectEvent;
 
 /**
  * This class manages the speed, health, and knockback resistance of Spirits.
@@ -74,6 +75,7 @@ public final class EffectEnforcement {
 	public static void onPlayerTick(TickEvent.PlayerTickEvent pTick) {
 		Player plr = pTick.player;
 		if (plr != null && plr.hasEffect(MobEffects.DARKNESS)) {
+			// This code should be okay because it only executes when the Darkness effect is present.
 			ItemStack helm = plr.getItemBySlot(EquipmentSlot.HEAD);
 			ItemStack chest = plr.getItemBySlot(EquipmentSlot.CHEST);
 			ItemStack legs = plr.getItemBySlot(EquipmentSlot.LEGS);
@@ -87,5 +89,4 @@ public final class EffectEnforcement {
 			}
 		}
 	}
-	
 }

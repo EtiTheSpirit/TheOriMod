@@ -1,30 +1,45 @@
 package etithespirit.orimod.common.block.light.connection;
 
+import com.google.common.collect.ImmutableMap;
 import etithespirit.orimod.common.block.IBlockTagProvider;
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
 import etithespirit.orimod.energy.ILightEnergyGenerator;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.SoundRegistry;
+import etithespirit.orimod.registry.world.BlockRegistry;
 import etithespirit.orimod.util.Bit32;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
+import net.minecraftforge.common.Tags;
+import static net.minecraft.world.level.block.state.properties.BlockStateProperties.WATERLOGGED;
 
 import javax.annotation.Nullable;
 import java.util.List;
@@ -102,6 +117,43 @@ public class SolidLightConduitBlock extends ConnectableLightTechBlock implements
 	}
 	
 	@Override
+	@SuppressWarnings("deprecation")
+	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+		if (pState.getBlock() == this && pPlayer.getItemInHand(pHand).is(Tags.Items.TOOLS_PICKAXES)) {
+			if (!pLevel.isClientSide) {
+				BlockState newState = SixSidedUtils.copyDirs(BlockRegistry.LIGHT_CONDUIT.get().defaultBlockState(), pState); // Copy all six directional booleans.
+				newState = SixSidedUtils.copySingleProperty(newState, pState, IS_BLUE);
+				
+				// Quick thing: Is it surrounded by water on at least 2 sides?
+				Direction[] dirs = new Direction[] {
+					Direction.EAST,
+					Direction.NORTH,
+					Direction.WEST,
+					Direction.SOUTH
+				};
+				int adjWater = 0;
+				for (Direction dir : dirs) {
+					if (pLevel.getFluidState(pPos.offset(dir.getNormal())).is(Fluids.WATER)) {
+						adjWater++;
+						if (adjWater >= 2) break;
+					}
+				}
+				
+				// Waterlog the block if at least 2 of the 4 adjacent ones are water.
+				newState = newState.setValue(WATERLOGGED, adjWater >= 2);
+				pLevel.setBlock(pPos, newState, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
+				if (adjWater >= 2) pLevel.scheduleTick(pPos, newState.getFluidState().getType(), 5);
+				
+				ItemEntity item = new ItemEntity(pLevel, pPos.getX(), pPos.getY(), pPos.getZ(), new ItemStack(Items.GLASS));
+				pLevel.addFreshEntity(item);
+			}
+			pLevel.playSound(pPlayer, pPos, SoundEvents.ITEM_PICKUP, SoundSource.BLOCKS, 0.4f, 0.5f + (pLevel.getRandom().nextFloat() * 0.2f));
+			return InteractionResult.SUCCESS;
+		}
+		return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
+	}
+	
+	@Override
 	public boolean propagatesSkylightDown(BlockState pState, BlockGetter pReader, BlockPos pPos) {
 		return true;
 	}
@@ -114,7 +166,7 @@ public class SolidLightConduitBlock extends ConnectableLightTechBlock implements
 	
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	

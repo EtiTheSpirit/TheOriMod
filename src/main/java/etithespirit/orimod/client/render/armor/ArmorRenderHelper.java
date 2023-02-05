@@ -8,6 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 
 import javax.annotation.Nullable;
@@ -16,8 +17,7 @@ import java.util.Map;
 
 public class ArmorRenderHelper {
 	
-	private static final Map<String, ResourceLocation> ARMOR_LOCATION_CACHE = new HashMap<>();
-	private static final Map<String, ResourceLocation> MATERIAL_TO_NAME_BINDINGS = new HashMap<>();
+	private static final Map<ArmorMaterial, ResourceLocation> MATERIAL_TO_FULL_TEXTURE_BINDINGS = new HashMap<>();
 	
 	/**
 	 * A dummy biped armor layer. This is used for access to the getArmorResource method,
@@ -42,6 +42,7 @@ public class ArmorRenderHelper {
 			return DUMMY_BIP_ARMOR_LAYER.getArmorResource(entity, stack, slot, type);
 		}
 		
+		/*
 		ArmorItem item = (ArmorItem)stack.getItem();
 		String mtlName = item.getMaterial().getName();
 		ResourceLocation texture = MATERIAL_TO_NAME_BINDINGS.get(mtlName);
@@ -49,17 +50,32 @@ public class ArmorRenderHelper {
 			texture = new ResourceLocation(mtlName);
 			MATERIAL_TO_NAME_BINDINGS.put(mtlName, texture);
 		}
+		ResourceLocation realArmorLocation = ARMOR_LOCATION_CACHE.get(texture);
+		if (realArmorLocation != null) {
+			return realArmorLocation;
+		}
 		
 		String rsrcName = String.format(java.util.Locale.ROOT, "%s:textures/models/spirit_armor/%s/%s", declaringModId, texture.getNamespace(), texture.getPath());
 		if (type != null) rsrcName += "_" + type;
 		rsrcName += ".png";
+		realArmorLocation = new ResourceLocation(rsrcName);
+		ARMOR_LOCATION_CACHE.put(texture, realArmorLocation);
+		return realArmorLocation;
+		*/
 		
-		ResourceLocation rsrc = ARMOR_LOCATION_CACHE.get(rsrcName);
-		if (rsrc == null) {
-			rsrc = new ResourceLocation(rsrcName);
-			ARMOR_LOCATION_CACHE.put(rsrcName, rsrc);
-		}
+		ArmorItem item = (ArmorItem)stack.getItem();
+		ArmorMaterial mtl = item.getMaterial();
+		ResourceLocation result = MATERIAL_TO_FULL_TEXTURE_BINDINGS.get(mtl);
+		if (result != null) return result;
 		
-		return rsrc;
+		ResourceLocation texture = new ResourceLocation(mtl.getName());
+		String rsrcName = String.format(java.util.Locale.ROOT, "%s:textures/models/spirit_armor/%s/%s", declaringModId, texture.getNamespace(), texture.getPath());
+		if (type != null) rsrcName += "_" + type;
+		rsrcName += ".png";
+		
+		result = new ResourceLocation(rsrcName);
+		MATERIAL_TO_FULL_TEXTURE_BINDINGS.put(mtl, result);
+		return result;
+		
 	}
 }

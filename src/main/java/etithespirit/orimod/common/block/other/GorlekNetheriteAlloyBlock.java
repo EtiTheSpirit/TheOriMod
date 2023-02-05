@@ -28,7 +28,7 @@ public class GorlekNetheriteAlloyBlock extends Block implements IBlockTagProvide
 	}
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return ImmutableList.of(
 			BlockTags.MINEABLE_WITH_PICKAXE,
 			BlockTags.NEEDS_DIAMOND_TOOL,

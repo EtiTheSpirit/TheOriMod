@@ -83,11 +83,14 @@ public interface ILightEnergyStorage {
 	static float consumeFromGenerator(ILightEnergyGenerator generator, ILightEnergyConsumer consumer, float amount, boolean simulate) {
 		if (amount <= 0) return 0;
 		float realAmountTaken = generator.takeGeneratedEnergy(amount, true);
+		if (realAmountTaken == 0) return 0;
+		
 		float realAmountConsumed = consumer.consumeEnergy(realAmountTaken, true);
 		
 		// In a sane scenario, and for a scenario where only losses occur, amount will be larger than realAmountTaken, which will be larger than realAmountReceived
 		// thus, realAmountReceived is the grand representation of the actual transfer.
 		if (simulate) return realAmountConsumed;
+		
 		
 		generator.takeGeneratedEnergy(realAmountConsumed, false);
 		consumer.consumeEnergy(realAmountConsumed, false);
@@ -106,6 +109,8 @@ public interface ILightEnergyStorage {
 	static float consumeFromStorage(ILightEnergyStorage storage, ILightEnergyConsumer consumer, float amount, boolean simulate) {
 		if (amount <= 0) return 0;
 		float realAmountTaken = storage.extractLightFrom(amount, true);
+		if (realAmountTaken == 0) return 0;
+		
 		float realAmountConsumed = consumer.consumeEnergy(realAmountTaken, true);
 		
 		// In a sane scenario, and for a scenario where only losses occur, amount will be larger than realAmountTaken, which will be larger than realAmountReceived

@@ -19,7 +19,7 @@ public class RawGorlekOreBlock extends Block implements IBlockTagProvider, IBloc
 	}
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return List.of(
 			BlockTags.MINEABLE_WITH_PICKAXE,
 			BlockTags.NEEDS_IRON_TOOL

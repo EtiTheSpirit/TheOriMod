@@ -1,5 +1,6 @@
 {
   "parent": "minecraft:block/cube",
+  "ambientocclusion": false,
   "elements": [
     {
       "faces": {

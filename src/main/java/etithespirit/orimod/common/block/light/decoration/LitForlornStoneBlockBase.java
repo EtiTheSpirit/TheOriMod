@@ -38,10 +38,10 @@ public abstract class LitForlornStoneBlockBase extends Block implements IForlorn
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		
-		return this.defaultBlockState().setValue(POWERED, pContext.getLevel().hasNeighborSignal(pContext.getClickedPos())).setValue(ForlornAppearanceMarshaller.IS_BLUE, true);
+		return this.defaultBlockState().setValue(POWERED, false).setValue(ForlornAppearanceMarshaller.IS_BLUE, true);
 	}
 	
+	/*
 	@Override
 	@SuppressWarnings("deprecation")
 	public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
@@ -65,6 +65,7 @@ public abstract class LitForlornStoneBlockBase extends Block implements IForlorn
 		}
 		
 	}
+	*/
 	
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -72,7 +73,7 @@ public abstract class LitForlornStoneBlockBase extends Block implements IForlorn
 	}
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	

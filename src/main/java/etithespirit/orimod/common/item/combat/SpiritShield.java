@@ -7,6 +7,7 @@ import etithespirit.orimod.OriMod;
 import etithespirit.orimod.client.audio.SpiritSoundPlayer;
 import etithespirit.orimod.client.audio.SpiritSoundProvider;
 import etithespirit.orimod.client.render.item.SpiritShieldModel;
+import etithespirit.orimod.combat.damage.OriModDamageSources;
 import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.creative.OriModCreativeModeTabs;
 import etithespirit.orimod.common.item.IModelPredicateProvider;
@@ -34,6 +35,8 @@ import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.ShieldItem;
 import net.minecraft.world.item.TooltipFlag;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 
@@ -41,6 +44,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
 
+import net.minecraftforge.event.entity.living.ShieldBlockEvent;
 import org.jetbrains.annotations.Nullable;
 
 public class SpiritShield extends ShieldItem implements IModelPredicateProvider {
@@ -56,7 +60,7 @@ public class SpiritShield extends ShieldItem implements IModelPredicateProvider 
 		);
 	}
 	
-	public SpiritShield(Properties builder) {
+	private SpiritShield(Properties builder) {
 		super(builder);
 	}
 	
@@ -96,38 +100,9 @@ public class SpiritShield extends ShieldItem implements IModelPredicateProvider 
 		return SpiritItemCustomizations.getNameAsLight(super.getName(pStack));
 	}
 	
-	static {
-		EntityEmittedSoundEventProvider.registerHandler(event -> {
-			Entity ent = event.getEntity();
-			if (ent instanceof Player) {
-				Player player = (Player)ent;
-				if (player.isUsingItem()) {
-					ItemStack mainHand = player.getItemInHand(InteractionHand.MAIN_HAND);
-					ItemStack offHand = player.getItemInHand(InteractionHand.OFF_HAND);
-					Item lightShield = ItemRegistry.LIGHT_SHIELD.get();
-					
-					boolean isHolding = mainHand.is(lightShield); // Holding if its in main hand
-					if (!isHolding) {
-						isHolding = offHand.is(lightShield) && !mainHand.is(Items.SHIELD); // ... or offhand when the main shield is not being held.
-						// Dual Weilding shields prefers the mainhand
-					}
-					
-					if (isHolding) {
-						if (event.getSound().equals(SoundEvents.SHIELD_BLOCK)) {
-							// Player is holding a light shield and just blocked. Override the sound!
-							event.setSound(SpiritSoundProvider.getSpiritShieldImpactSound(false));
-							event.setPitch(SpiritSoundPlayer.getRandomPitch());
-							event.setVolume(event.getVolume() * 0.7f);
-						} else if (event.getSound().equals(SoundEvents.SHIELD_BREAK)) {
-							// Player is holding a light shield and just blocked. Override the sound!
-							event.setSound(SpiritSoundProvider.getSpiritShieldImpactSound(true));
-							event.setPitch(SpiritSoundPlayer.getRandomPitch());
-							event.setVolume(event.getVolume() * 0.7f);
-						}
-					}
-				}
-			}
-		});
+	@Override
+	public int getMaxDamage(ItemStack pStack) {
+		return 700;
 	}
 	
 	@Override

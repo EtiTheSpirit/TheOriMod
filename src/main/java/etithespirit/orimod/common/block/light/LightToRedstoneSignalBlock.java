@@ -77,8 +77,8 @@ public class LightToRedstoneSignalBlock extends ConnectableLightTechBlock implem
 	@SuppressWarnings("deprecation")
 	@Override
 	public int getSignal(BlockState pState, BlockGetter pLevel, BlockPos pPos, Direction pDirection) {
-		if (pState.getValue(ForlornAppearanceMarshaller.POWERED)) {
-			return 15;
+		if (pLevel.getBlockEntity(pPos) instanceof LightToRedstoneSignalTile tile) {
+			return tile.getRedstonePowerLevel();
 		}
 		return 0;
 	}
@@ -97,7 +97,7 @@ public class LightToRedstoneSignalBlock extends ConnectableLightTechBlock implem
 	
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 }

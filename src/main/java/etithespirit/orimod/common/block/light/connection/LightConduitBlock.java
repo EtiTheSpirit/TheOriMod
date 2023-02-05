@@ -2,27 +2,42 @@ package etithespirit.orimod.common.block.light.connection;
 
 
 import etithespirit.orimod.common.block.IBlockTagProvider;
+import etithespirit.orimod.common.block.StaticData;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.tile.light.implementations.LightConduitTile;
 import etithespirit.orimod.energy.ILightEnergyGenerator;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.info.coordinate.SixSidedUtils;
 import etithespirit.orimod.registry.SoundRegistry;
+import etithespirit.orimod.registry.world.BlockRegistry;
 import etithespirit.orimod.util.Bit32;
 import etithespirit.orimod.common.tags.PresetBlockTags;
 import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
+import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
+import net.minecraft.tags.BlockTags;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.item.BlockItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.SimpleWaterloggedBlock;
+import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
@@ -30,9 +45,12 @@ import net.minecraft.world.level.block.state.StateDefinition;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.Material;
+import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import net.minecraftforge.common.Tags;
+import net.minecraftforge.common.data.ForgeBlockTagsProvider;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -88,6 +106,26 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IBlo
 	@Override
 	public FluidState getFluidState(BlockState pState) {
 		return pState.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(pState);
+	}
+	
+	@Override
+	@SuppressWarnings("deprecation")
+	public InteractionResult use(BlockState pState, Level pLevel, BlockPos pPos, Player pPlayer, InteractionHand pHand, BlockHitResult pHit) {
+		ItemStack inHand = pPlayer.getItemInHand(pHand);
+		if (pState.getBlock() == this && inHand.getItem() instanceof BlockItem blockItem && blockItem.getBlock() == Blocks.GLASS) {
+			inHand.setCount(inHand.getCount() - 1);
+			if (!pLevel.isClientSide) {
+				BlockState newState = SixSidedUtils.copyDirs(BlockRegistry.SOLID_LIGHT_CONDUIT.get().defaultBlockState(), pState); // Copy all six directional booleans.
+				newState = SixSidedUtils.copySingleProperty(newState, pState, IS_BLUE);
+				
+				pLevel.setBlock(pPos, newState, Block.UPDATE_KNOWN_SHAPE | Block.UPDATE_ALL);
+			}
+			
+			SoundType glassSFX = Blocks.GLASS.getSoundType(Blocks.GLASS.defaultBlockState(), pLevel, pPos, pPlayer);
+			pLevel.playSound(pPlayer, pPos, glassSFX.getPlaceSound(), SoundSource.BLOCKS, glassSFX.getVolume(), glassSFX.getPitch());
+			return InteractionResult.SUCCESS;
+		}
+		return super.use(pState, pLevel, pPos, pPlayer, pHand, pHit);
 	}
 	
 	/**
@@ -186,7 +224,7 @@ public class LightConduitBlock extends ConnectableLightTechBlock implements IBlo
 	}
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	

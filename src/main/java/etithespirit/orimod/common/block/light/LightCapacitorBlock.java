@@ -6,6 +6,7 @@ import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarsha
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
 import etithespirit.orimod.common.tile.light.implementations.LightCapacitorTile;
 import etithespirit.orimod.common.tags.PresetBlockTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
@@ -49,7 +50,7 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IB
 	@Override
 	public void appendHoverText(ItemStack pStack, @org.jetbrains.annotations.Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
 		super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-		pTooltip.add(Component.translatable("block.orimod.light_capacitor.tip"));
+		pTooltip.add(Component.translatable("block.orimod.light_capacitor.tip").withStyle(ChatFormatting.DARK_AQUA));
 	}
 	
 	/**
@@ -76,7 +77,7 @@ public class LightCapacitorBlock extends ConnectableLightTechBlock implements IB
 	}
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	

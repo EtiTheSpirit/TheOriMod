@@ -20,7 +20,7 @@ public interface IForlornBlueOrangeBlock {
 	default void switchLuxenColor(Level world, BlockPos at) {
 		if (!world.isClientSide) {
 			BlockState current = world.getBlockState(at);
-			world.setBlock(at, current.cycle(ForlornAppearanceMarshaller.IS_BLUE), StaticData.REPLICATE_CHANGE | StaticData.DO_NOT_NOTIFY_NEIGHBORS);
+			world.setBlock(at, current.cycle(ForlornAppearanceMarshaller.IS_BLUE), StaticData.SILENT_BLOCK_SWAP_NOLIGHT);
 		}
 	}
 	

@@ -8,15 +8,16 @@ import etithespirit.orimod.energy.ILightEnergyConsumer;
 import etithespirit.orimod.energy.ILightEnergyStorage;
 import etithespirit.orimod.registry.world.TileEntityRegistry;
 import net.minecraft.core.BlockPos;
+import net.minecraft.util.Mth;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.state.BlockState;
 
 public class LightToRedstoneSignalTile extends LightEnergyHandlingTile implements IServerUpdatingTile, ILightEnergyConsumer {
 	
-	public static final float CONSUMPTION_RATE = ILightEnergyStorage.LUM_UNIT_SIZE * 4;
+	public static final float REDSTONE_SIGNAL_PER_LUX = ILightEnergyStorage.LUM_UNIT_SIZE;
 	
-	private boolean isPoweredThisTick = false;
-	private final EnergyReservoir consumerHelper = new EnergyReservoir(CONSUMPTION_RATE);
+	float lastAvailablePower = 0;
+	int lastRSSignal = 0;
 	
 	public LightToRedstoneSignalTile(BlockPos pWorldPosition, BlockState pBlockState) {
 		super(TileEntityRegistry.LIGHT_TO_REDSTONE_SIGNAL_TILE.get(), pWorldPosition, pBlockState);
@@ -29,16 +30,20 @@ public class LightToRedstoneSignalTile extends LightEnergyHandlingTile implement
 	@Override
 	public void updateServer(Level inWorld, BlockPos at, BlockState current) {
 		boolean isPoweredVisually = current.getValue(ForlornAppearanceMarshaller.POWERED);
-		isPoweredThisTick = trySpendEnergyForTick();
-		
-		if (isPoweredVisually != isPoweredThisTick) {
-			super.utilSetPoweredStateTo(isPoweredThisTick);
+		int currentRSSignal =  lastAvailablePower > 0 ? 15 : 0; // This is order-sensitive
+		boolean isPoweredThisTick = trySpendEnergyForTick();
+		if (isPoweredVisually != isPoweredThisTick || lastRSSignal != currentRSSignal) {
+			lastRSSignal = currentRSSignal; // Yes, this needs to be here (to update getRedstonePowerLevel())
+			utilSetPoweredStateTo(isPoweredThisTick);
 			inWorld.updateNeighborsAt(at, current.getBlock());
 		}
+		lastRSSignal = currentRSSignal;
 	}
 	
 	private boolean trySpendEnergyForTick() {
-		return consumerHelper.tryConsume(CONSUMPTION_RATE, false);
+		boolean ok = lastAvailablePower >= REDSTONE_SIGNAL_PER_LUX;
+		lastAvailablePower = 0;
+		return ok;
 	}
 	
 	/**
@@ -50,15 +55,18 @@ public class LightToRedstoneSignalTile extends LightEnergyHandlingTile implement
 	 */
 	@Override
 	public float consumeEnergy(float desiredAmount, boolean simulate) {
-		float realAmount = desiredAmount / 2f;
-		return consumerHelper.stash(realAmount, simulate);
+		if (simulate) {
+			lastAvailablePower += desiredAmount; // Do the sim check because on execute, it consumes the amount returned (always 0 here) which just resets this.
+		}
+		return 0;
+	}
+	
+	public int getRedstonePowerLevel() {
+		return lastRSSignal;
 	}
 	
 	@Override
 	public float getMaximumDrawnAmountForDisplay() {
-		if (isPoweredThisTick) {
-			return CONSUMPTION_RATE;
-		}
 		return 0;
 	}
 	

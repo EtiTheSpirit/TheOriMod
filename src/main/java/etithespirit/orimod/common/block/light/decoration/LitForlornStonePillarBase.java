@@ -40,6 +40,7 @@ public abstract class LitForlornStonePillarBase extends RotatedPillarBlock imple
 		registerDefaultState(getStateDefinition().any().setValue(POWERED, false).setValue(IS_BLUE, false).setValue(AXIS, Direction.Axis.Y));
 	}
 	
+	/*
 	@Override
 	@SuppressWarnings("deprecation")
 	public void neighborChanged(BlockState pState, Level pLevel, BlockPos pPos, Block pBlock, BlockPos pFromPos, boolean pIsMoving) {
@@ -62,6 +63,7 @@ public abstract class LitForlornStonePillarBase extends RotatedPillarBlock imple
 			pLevel.setBlock(pPos, pState.cycle(POWERED), StaticData.REPLICATE_CHANGE);
 		}
 	}
+	*/
 	
 	@Override
 	protected void createBlockStateDefinition(StateDefinition.Builder<Block, BlockState> pBuilder) {
@@ -70,12 +72,12 @@ public abstract class LitForlornStonePillarBase extends RotatedPillarBlock imple
 	
 	@Override
 	public BlockState getStateForPlacement(BlockPlaceContext pContext) {
-		return this.defaultBlockState().setValue(AXIS, pContext.getClickedFace().getAxis()).setValue(POWERED, pContext.getLevel().hasNeighborSignal(pContext.getClickedPos())).setValue(ForlornAppearanceMarshaller.IS_BLUE, true);
+		return this.defaultBlockState().setValue(AXIS, pContext.getClickedFace().getAxis()).setValue(POWERED, false).setValue(ForlornAppearanceMarshaller.IS_BLUE, true);
 	}
 	
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	

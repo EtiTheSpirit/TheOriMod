@@ -38,7 +38,7 @@ public final class BlockToolRelations extends BlockTagsProvider {
 			Block block = blockReg.get();
 			if (block instanceof IBlockTagProvider) {
 				IBlockTagProvider provider = (IBlockTagProvider)block;
-				for (TagKey<Block> tag : provider.getTagsForBlock()) {
+				for (TagKey<Block> tag : provider.getAdditionalTagsForBlock()) {
 					this.tag(tag).add(block);
 					OriMod.LOG.printf(Level.INFO, "Added tag %s to %s", tag.toString(), blockReg.getId().toString());
 				}

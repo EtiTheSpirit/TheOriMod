@@ -83,7 +83,9 @@ public final class SpiritSize {
 				event.setNewEyeHeight(0.86f);
 			}
 			
-			if (newSize != null) event.setNewSize(newSize);
+			if (newSize != null) {
+				event.setNewSize(newSize);
+			}
 		}
 	}
 	
@@ -179,15 +181,15 @@ public final class SpiritSize {
 		if (!evt.player.isAddedToWorld()) return;
 		if (evt.phase == TickEvent.Phase.END) return;
 		boolean isSpirit = SpiritIdentifier.isSpirit(evt.player);
+		boolean isClient = evt.player.getCommandSenderWorld().isClientSide;
 		if (isSpirit) {
 			updatePose(evt.player);
 		} else {
-			boolean isClient = evt.player.getCommandSenderWorld().isClientSide;
 			if (WAS_SPIRIT_ON_LAST_TICK.get(isClient)) {
 				evt.player.setForcedPose(null);
-				WAS_SPIRIT_ON_LAST_TICK.set(isClient, false);
 			}
 		}
+		WAS_SPIRIT_ON_LAST_TICK.set(isClient, isSpirit);
 	}
 	
 	static {

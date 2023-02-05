@@ -19,7 +19,7 @@ public final class SpiritRestrictions {
 				FoodProperties food = evt.getItem().getFoodProperties(evt.getEntity());
 				if (food != null && food.isMeat()) {
 					if (!entity.getLevel().isClientSide) {
-						GeneralUtils.message((ServerPlayer)player, "orimod.spirit_restrictions.no_meat");
+						GeneralUtils.Server.message((ServerPlayer)player, "orimod.spirit_restrictions.no_meat");
 					}
 					evt.setCanceled(true);
 				}

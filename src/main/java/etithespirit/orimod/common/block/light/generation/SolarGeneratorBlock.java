@@ -55,7 +55,7 @@ public class SolarGeneratorBlock extends ConnectableLightTechBlock implements IB
 	
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 }

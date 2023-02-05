@@ -7,6 +7,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.util.Mth;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.level.WorldGenLevel;
+import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.levelgen.feature.Feature;
@@ -228,7 +229,7 @@ public class GorlekCrystalFeature extends Feature<GorlekCrystalConfiguration> {
 			}
 		}
 		
-		fillStates.forEach((pos, state) -> level.setBlock(pos, state, StaticData.REPLICATE_CHANGE));
+		fillStates.forEach((pos, state) -> level.setBlock(pos, state, Block.UPDATE_CLIENTS));
 		return true;
 	}
 }

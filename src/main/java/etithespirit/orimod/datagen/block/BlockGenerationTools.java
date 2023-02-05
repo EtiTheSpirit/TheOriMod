@@ -657,6 +657,7 @@ public final class BlockGenerationTools {
 			
 			BlockModelBuilder blockBuilder = provider.models().cubeAll(texture.getPath() + colorSuffix, texture)
 				.texture("glow", glowTexture)
+				.ao(false)
 				.renderType("cutout");
 			blockBuilder.element()
 				.from(4f, 4f, 4f)
@@ -751,6 +752,7 @@ public final class BlockGenerationTools {
 				.texture("westglow", sidesGlow)
 				.texture("northglow", connectionSurfaceGlow)
 				.texture("southglow", connectionSurfaceGlow)
+				.ao(false)
 				.renderType("cutout");
 			blockBuilder.element()
 				.from(4f, 4f, 0f)

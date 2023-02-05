@@ -1,0 +1,7 @@
+{
+  "replace": false,
+  "values": [
+    "#orimod:lumo_controllable/skin",
+    "#orimod:lumo_controllable/powered"
+  ]
+}

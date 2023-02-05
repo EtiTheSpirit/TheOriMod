@@ -176,9 +176,9 @@
 	"death.attack.spirit_arc.player" : "%2$s pierced %1$s with Hard Light.",
 
 	"death.attack.self_energy" : "%s sacrificed too much of their internal Light.",
-	"death.attack.self_energy.player" : "%2$s tricked %1$s into spending too much of their internal Light.",
+	"death.attack.self_energy.player" : "Somehow, %2$s managed to spend the life energy of %1$s. I won't ask.",
 
-	"orimod.spirit_restrictions.no_meat" : "You know you can't eat this. You're a herbivore!",
+	"orimod.spirit_restrictions.no_meat" : "You are not able to eat meaty foods.",
 
 	"config.orimod.general" : "General Configuration",
 

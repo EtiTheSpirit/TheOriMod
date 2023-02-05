@@ -13,6 +13,6 @@ public interface IBlockTagProvider {
 	 * Reminder to self: Because it keeps eluding you, this is not a MC method. This is your method.
 	 * @return A list of tags that this block must use.
 	 */
-	Iterable<TagKey<Block>> getTagsForBlock();
+	Iterable<TagKey<Block>> getAdditionalTagsForBlock();
 	
 }

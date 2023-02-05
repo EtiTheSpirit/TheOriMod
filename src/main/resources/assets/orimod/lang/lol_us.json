@@ -169,7 +169,7 @@
   "death.attack.decay.player" : "%2$s kil $1$s by makin tem sick!!",
 
   "death.attack.light" : "%s lookd at the sun",
-  "death.attack.light.player" : "%2$s trick %1$s to look at the sun.",
+  "death.attack.light.player" : "%2$s trick %1$s to look at the sun (IDIOT XD).",
 
   "death.attack.spirit_arc" : "%s got stabby by lite stik",
   "death.attack.spirit_arc.player" : "%2$s stab %1$s with a lite stik.",
@@ -177,7 +177,7 @@
   "death.attack.self_energy" : "%s forget they need lite too",
   "death.attack.self_energy.player" : "%2$s made %1$s forget they need lite",
 
-  "orimod.spirit_restrictions.no_meat" : "this is not tasty any mor :(",
+  "orimod.spirit_restrictions.no_meat" : "this is not very yummy ..",
 
   "config.orimod.general" : "idk optinz",
 

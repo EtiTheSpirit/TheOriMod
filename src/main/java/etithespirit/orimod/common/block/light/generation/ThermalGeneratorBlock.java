@@ -49,7 +49,7 @@ public class ThermalGeneratorBlock extends ConnectableLightTechBlock implements 
 	 * @return A list of tags that this block must use.
 	 */
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	

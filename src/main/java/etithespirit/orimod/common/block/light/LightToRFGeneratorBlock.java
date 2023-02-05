@@ -4,8 +4,10 @@ import etithespirit.orimod.common.block.IBlockTagProvider;
 import etithespirit.orimod.common.block.light.connection.ConnectableLightTechBlock;
 import etithespirit.orimod.common.block.light.decoration.ForlornAppearanceMarshaller;
 import etithespirit.orimod.common.block.light.decoration.IForlornBlueOrangeBlock;
+import etithespirit.orimod.common.chat.ExtendedChatColors;
 import etithespirit.orimod.common.tile.light.implementations.LightToRFTile;
 import etithespirit.orimod.common.tags.PresetBlockTags;
+import net.minecraft.ChatFormatting;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
 import net.minecraft.tags.TagKey;
@@ -71,13 +73,13 @@ public class LightToRFGeneratorBlock extends ConnectableLightTechBlock implement
 	}
 	
 	@Override
-	public Iterable<TagKey<Block>> getTagsForBlock() {
+	public Iterable<TagKey<Block>> getAdditionalTagsForBlock() {
 		return PresetBlockTags.PICKAXE_ONLY_AND_LIGHT;
 	}
 	
 	@Override
 	public void appendHoverText(ItemStack pStack, @org.jetbrains.annotations.Nullable BlockGetter pLevel, List<Component> pTooltip, TooltipFlag pFlag) {
 		super.appendHoverText(pStack, pLevel, pTooltip, pFlag);
-		pTooltip.add(Component.translatable("block.orimod.light_to_rf.tip"));
+		pTooltip.add(Component.translatable("block.orimod.light_to_rf.tip").withStyle(ChatFormatting.DARK_AQUA));
 	}
 }

@@ -16,6 +16,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.properties.BlockStateProperties;
 import net.minecraft.world.level.block.state.properties.BooleanProperty;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.phys.Vec3;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -376,6 +377,21 @@ public final class SixSidedUtils {
 				level.setBlockAndUpdate(origin.offset(ADJACENTS_IN_ORDER[i]), state);
 			}
 		}
+	}
+	
+	@SuppressWarnings({"unchecked", "rawtypes"})
+	public static BlockState copySingleProperty(BlockState toModify, BlockState from, Property prop) {
+		return toModify.setValue(prop, from.getValue(prop));
+	}
+	
+	public static BlockState copyDirs(BlockState defaultState, BlockState toCopyFrom) {
+		defaultState = copySingleProperty(defaultState, toCopyFrom, BlockStateProperties.EAST);
+		defaultState = copySingleProperty(defaultState, toCopyFrom, BlockStateProperties.WEST);
+		defaultState = copySingleProperty(defaultState, toCopyFrom, BlockStateProperties.NORTH);
+		defaultState = copySingleProperty(defaultState, toCopyFrom, BlockStateProperties.SOUTH);
+		defaultState = copySingleProperty(defaultState, toCopyFrom, BlockStateProperties.UP);
+		defaultState = copySingleProperty(defaultState, toCopyFrom, BlockStateProperties.DOWN);
+		return defaultState;
 	}
 	
 }

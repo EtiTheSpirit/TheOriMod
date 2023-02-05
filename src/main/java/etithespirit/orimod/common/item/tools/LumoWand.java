@@ -59,7 +59,7 @@ public class LumoWand extends Item {
 		if (block.getBlock() instanceof IForlornBlueOrangeBlock forlornBlock) {
 			forlornBlock.switchLuxenColor(world, at);
 			if (!world.isClientSide()) {
-				GeneralUtils.message((ServerPlayer) ctx.getPlayer(), "info.orimod.lumowand.colorswap." + (block.getValue(ForlornAppearanceMarshaller.IS_BLUE) ? "orange" : "blue")); // purposely inverted!
+				GeneralUtils.Server.message((ServerPlayer)ctx.getPlayer(), "info.orimod.lumowand.colorswap." + (block.getValue(ForlornAppearanceMarshaller.IS_BLUE) ? "orange" : "blue")); // purposely inverted!
 			}
 			return InteractionResult.SUCCESS;
 		}

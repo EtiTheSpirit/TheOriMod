@@ -8,8 +8,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * The {@link ServerUseOnly @ServerUseOnly} annotation signifies that the associated item relies on classes that only
- * exist on the server, and thus using it on the client will cause a crash, an exception, or have unexpected behavior.
+ * The {@link ServerUseOnly @ServerUseOnly} annotation signifies that the associated item should only be called from a
+ * dedicated or integrated server. Using this on the client will not work and/or cause an exception to occur.
  */
 @Retention (RetentionPolicy.CLASS)
 @Documented

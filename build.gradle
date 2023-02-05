@@ -253,6 +253,7 @@ dependencies {
     implementation fg.deobf("curse.maven:configured-457570:4011355")
     implementation fg.deobf("curse.maven:catalogue-459701:3873264")
     implementation fg.deobf("curse.maven:jade-324717:4096513") // full build
+    // implementation fg.deobf("curse.maven:shield-expansion-583318:4333629") // full build
     compileOnly fg.deobf("ru.dbotthepony:overdrive-that-matters:1.0-SNAPSHOT")
     compileOnly fg.deobf("curse.maven:biomes-o-plenty-220318:4128419")
     //implementation fg.deobf("curse.maven:terrablender-563928:4205706")
